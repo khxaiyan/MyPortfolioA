@@ -289,53 +289,75 @@ body {
   background: var(--red-dim);
 }
 
-/* ── Project Loading Skeleton ── */
-.project-skeleton {
-  display: flex;
-  align-items: center;
-  gap: 12px;
-  padding: 16px;
-  border-bottom: 1px solid var(--line);
+/* ─── Boneyard Pixel-Perfect Skeleton Screen ─── */
+.bone-row {
+  pointer-events: none;
+  cursor: default;
 }
 
-.project-skeleton:last-child {
-  border-bottom: none;
-}
-
-.skeleton-avatar {
-  width: 34px;
-  height: 34px;
-  border-radius: 8px;
+.bone {
   background: var(--surface-hover);
-  animation: pulseSkeleton 1.4s ease-in-out infinite;
-  flex-shrink: 0;
+  position: relative;
+  overflow: hidden;
+  border-radius: var(--radius-sm);
 }
 
-.skeleton-text {
-  flex: 1;
-  display: flex;
-  flex-direction: column;
-  gap: 8px;
+.bone::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  transform: translateX(-100%);
+  background: linear-gradient(
+    90deg,
+    transparent 0%,
+    rgba(255, 255, 255, 0.04) 35%,
+    rgba(255, 255, 255, 0.12) 50%,
+    rgba(255, 255, 255, 0.04) 65%,
+    transparent 100%
+  );
+  animation: boneyardShimmer 1.7s cubic-bezier(0.4, 0, 0.2, 1) infinite;
 }
 
-.skeleton-line {
-  height: 10px;
+[data-theme="light"] .bone::after {
+  background: linear-gradient(
+    90deg,
+    transparent 0%,
+    rgba(0, 0, 0, 0.02) 35%,
+    rgba(0, 0, 0, 0.07) 50%,
+    rgba(0, 0, 0, 0.02) 65%,
+    transparent 100%
+  );
+}
+
+@keyframes boneyardShimmer {
+  0%   { transform: translateX(-100%); }
+  100% { transform: translateX(100%); }
+}
+
+.bone-title {
+  height: 15px;
+  width: 42%;
   border-radius: 4px;
-  background: var(--surface-hover);
-  animation: pulseSkeleton 1.4s ease-in-out infinite;
 }
 
-.skeleton-line--title {
-  width: 45%;
+.bone-desc {
+  height: 11px;
+  width: 78%;
+  border-radius: 3px;
+  margin-top: 4px;
 }
 
-.skeleton-line--desc {
-  width: 75%;
+.bone-stat-top {
+  height: 13px;
+  width: 28px;
+  border-radius: 3px;
 }
 
-@keyframes pulseSkeleton {
-  0%, 100% { opacity: 0.35; }
-  50% { opacity: 0.8; }
+.bone-stat-bot {
+  height: 10px;
+  width: 42px;
+  border-radius: 3px;
+  margin-top: 4px;
 }
 
 .org-row-text {
