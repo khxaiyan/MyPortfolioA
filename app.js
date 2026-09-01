@@ -34,32 +34,121 @@
     }
   }
 
-  /* ─── GitHub repo stats (live fetch) ─── */
+  /* ─── Live GitHub Pinned Projects ─── */
+  var projectsContainer = document.getElementById('projects-container');
+
   function formatStars(n) {
+    if (!n) return '\u2605 0';
     if (n >= 1000) return '\u2605 ' + (n / 1000).toFixed(1).replace(/\.0$/, '') + 'k';
     return '\u2605 ' + n;
   }
 
-  function fetchRepoStars(repoPath, starEl) {
-    fetch('https://api.github.com/repos/' + repoPath, {
-      headers: { Accept: 'application/vnd.github+json' }
-    })
-    .then(function (r) { return r.ok ? r.json() : null; })
-    .then(function (data) {
-      if (!data) return;
-      if (starEl && typeof data.stargazers_count === 'number') {
-        starEl.textContent = formatStars(data.stargazers_count);
-      }
-    })
-    .catch(function () {});
+  function highlightCapitals(text) {
+    return (text || '').replace(/([A-Z])/g, '<span class="glyph-5">$1</span>');
   }
 
-  fetchRepoStars('khxaiyan/CarryOn-E-Commerce-Website',
-    document.getElementById('carryon-stars')
-  );
-  fetchRepoStars('khxaiyan/GetWeb_Screenshot',
-    document.getElementById('getweb-stars')
-  );
+  function formatProjectName(name) {
+    if (!name) return '';
+    return name
+      .replace(/-Website$/i, '')
+      .replace(/_/g, ' ')
+      .replace(/-/g, ' ');
+  }
+
+  function getProjectIcon(name) {
+    var lower = (name || '').toLowerCase();
+    if (lower.indexOf('screen') !== -1 || lower.indexOf('shot') !== -1 || lower.indexOf('cam') !== -1) {
+      return '<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">' +
+        '<path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"/>' +
+        '<circle cx="12" cy="13" r="4"/>' +
+      '</svg>';
+    }
+    if (lower.indexOf('commerce') !== -1 || lower.indexOf('shop') !== -1 || lower.indexOf('carry') !== -1 || lower.indexOf('store') !== -1) {
+      return '<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">' +
+        '<path d="M6 2 3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4Z"/>' +
+        '<path d="M3 6h18"/>' +
+        '<path d="M16 10a4 4 0 0 1-8 0"/>' +
+      '</svg>';
+    }
+    return '<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">' +
+      '<polyline points="16 18 22 12 16 6"/>' +
+      '<polyline points="8 6 2 12 8 18"/>' +
+    '</svg>';
+  }
+
+  function renderProjects(projects) {
+    if (!projectsContainer || !projects || !projects.length) return;
+
+    // Filter out profile readme repo 'khxaiyan' if other projects exist
+    var valid = projects.filter(function (p) {
+      return p && p.name && p.name.toLowerCase() !== 'khxaiyan';
+    });
+    if (!valid.length) valid = projects;
+
+    var html = '';
+    valid.slice(0, 4).forEach(function (p) {
+      var displayName = formatProjectName(p.name);
+      var styledTitle = highlightCapitals(displayName);
+      var desc = p.description || 'Open source project on GitHub';
+      var stars = formatStars(p.stars || p.stargazers_count || 0);
+      var tag = p.language || 'GitHub';
+      var author = p.author || (typeof CONFIG !== 'undefined' && CONFIG.github ? CONFIG.github : 'khxaiyan');
+      var url = 'https://github.com/' + author + '/' + p.name;
+      var icon = getProjectIcon(p.name);
+
+      html += '<a class="org-row" href="' + url + '" target="_blank" rel="noopener noreferrer">' +
+        '<div class="project-avatar" aria-hidden="true">' + icon + '</div>' +
+        '<div class="org-row-text">' +
+          '<span class="org-row-name">' + styledTitle + '</span>' +
+          '<span class="org-row-desc">' + desc + '</span>' +
+        '</div>' +
+        '<div class="org-row-stats">' +
+          '<span class="org-row-star">' + stars + '</span>' +
+          '<span class="org-row-repos">' + tag + '</span>' +
+        '</div>' +
+      '</a>';
+    });
+
+    projectsContainer.innerHTML = html;
+  }
+
+  function loadPinnedProjects() {
+    var username = (typeof CONFIG !== 'undefined' && CONFIG.github) ? CONFIG.github : 'khxaiyan';
+
+    fetch('https://pinned.berrysauce.me/get/' + username)
+      .then(function (r) { return r.ok ? r.json() : null; })
+      .then(function (data) {
+        if (Array.isArray(data) && data.length) {
+          renderProjects(data);
+        } else {
+          fallbackPinnedFetch(username);
+        }
+      })
+      .catch(function () {
+        fallbackPinnedFetch(username);
+      });
+  }
+
+  function fallbackPinnedFetch(username) {
+    fetch('https://api.github.com/users/' + username + '/repos?sort=pushed&per_page=6')
+      .then(function (r) { return r.ok ? r.json() : null; })
+      .then(function (repos) {
+        if (Array.isArray(repos) && repos.length) {
+          renderProjects(repos.map(function (r) {
+            return {
+              author: username,
+              name: r.name,
+              description: r.description,
+              language: r.language,
+              stars: r.stargazers_count
+            };
+          }));
+        }
+      })
+      .catch(function () {});
+  }
+
+  loadPinnedProjects();
 
   /* ─── Contact form ─── */
   var btn     = document.getElementById('cf-submit');
