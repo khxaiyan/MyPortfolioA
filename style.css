@@ -478,6 +478,29 @@ body {
 
 .msg-field textarea::placeholder { color: var(--ink-faint); }
 
+/* ── hCaptcha Theme Match ── */
+.h-captcha {
+  min-height: 78px;
+  display: flex;
+  justify-content: flex-start;
+  margin-bottom: 14px;
+  border-radius: var(--radius-sm);
+  overflow: hidden;
+}
+
+.h-captcha iframe {
+  border-radius: var(--radius-sm) !important;
+  max-width: 100% !important;
+}
+
+[data-theme="dark"] .h-captcha {
+  color-scheme: dark;
+}
+
+[data-theme="light"] .h-captcha {
+  color-scheme: light;
+}
+
 .send-btn {
   width: 100%;
   display: flex;

@@ -2,15 +2,46 @@
   'use strict';
 
   /* ─── Theme toggle ─── */
-  var root    = document.documentElement;
-  var aw      = document.getElementById('avatar-wrap');
+  var root = document.documentElement;
+  var aw = document.getElementById('avatar-wrap');
   var metaClr = document.getElementById('meta-theme-color');
 
   function applyTheme(t) {
     root.setAttribute('data-theme', t);
     localStorage.setItem('theme', t);
     if (metaClr) metaClr.content = t === 'dark' ? '#0a0a0e' : '#f7f5f1';
+    renderHcaptcha(t);
   }
+
+  /* ─── Dynamic Themeable hCaptcha ─── */
+  var hcaptchaWidgetId = null;
+
+  function renderHcaptcha(theme) {
+    var container = document.getElementById('hcaptcha-container');
+    if (!container) return;
+
+    var sitekey = (typeof CONFIG !== 'undefined' && CONFIG.hcaptcha_sitekey)
+      ? CONFIG.hcaptcha_sitekey
+      : '4e42ae9a-c9a2-4a7a-b9ae-0526a248f402';
+
+    if (window.hcaptcha && typeof window.hcaptcha.render === 'function') {
+      try {
+        container.innerHTML = '';
+        hcaptchaWidgetId = window.hcaptcha.render('hcaptcha-container', {
+          sitekey: sitekey,
+          theme: theme === 'light' ? 'light' : 'dark',
+          size: 'normal'
+        });
+      } catch (_) {}
+    } else {
+      container.setAttribute('data-theme', theme === 'light' ? 'light' : 'dark');
+    }
+  }
+
+  window.initHcaptcha = function () {
+    var curTheme = root.getAttribute('data-theme') || 'dark';
+    renderHcaptcha(curTheme);
+  };
 
   applyTheme(
     localStorage.getItem('theme') ||
@@ -26,11 +57,19 @@
     });
   }
 
-  /* ─── Sync Config Links ─── */
+  /* ─── Sync Config Links & Analytics ─── */
   if (typeof CONFIG !== 'undefined') {
     var emailLink = document.getElementById('link-email');
     if (emailLink && CONFIG.email && CONFIG.email !== 'your@email.com') {
       emailLink.href = 'mailto:' + CONFIG.email;
+    }
+
+    if (CONFIG.cf_analytics && typeof CONFIG.cf_analytics === 'string') {
+      var cfScript = document.createElement('script');
+      cfScript.defer = true;
+      cfScript.src = 'https://static.cloudflareinsights.com/beacon.min.js';
+      cfScript.setAttribute('data-cf-beacon', JSON.stringify({ token: CONFIG.cf_analytics }));
+      document.head.appendChild(cfScript);
     }
   }
 
@@ -61,26 +100,26 @@
       return '<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">' +
         '<path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"/>' +
         '<circle cx="12" cy="13" r="4"/>' +
-      '</svg>';
+        '</svg>';
     }
     if (lower.indexOf('commerce') !== -1 || lower.indexOf('shop') !== -1 || lower.indexOf('carry') !== -1 || lower.indexOf('store') !== -1) {
       return '<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">' +
         '<path d="M6 2 3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4Z"/>' +
         '<path d="M3 6h18"/>' +
         '<path d="M16 10a4 4 0 0 1-8 0"/>' +
-      '</svg>';
+        '</svg>';
     }
     if (lower.indexOf('portfolio') !== -1 || lower.indexOf('web') !== -1 || lower.indexOf('site') !== -1) {
       return '<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">' +
         '<rect width="20" height="16" x="2" y="4" rx="2"/>' +
         '<path d="M10 4v4"/>' +
         '<path d="M2 8h20"/>' +
-      '</svg>';
+        '</svg>';
     }
     return '<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">' +
       '<polyline points="16 18 22 12 16 6"/>' +
       '<polyline points="8 6 2 12 8 18"/>' +
-    '</svg>';
+      '</svg>';
   }
 
   function renderProjects(projects) {
@@ -109,14 +148,14 @@
       html += '<a class="org-row" href="' + url + '" target="_blank" rel="noopener noreferrer">' +
         '<div class="project-avatar" aria-hidden="true">' + icon + '</div>' +
         '<div class="org-row-text">' +
-          '<span class="org-row-name">' + styledTitle + '</span>' +
-          '<span class="org-row-desc">' + desc + '</span>' +
+        '<span class="org-row-name">' + styledTitle + '</span>' +
+        '<span class="org-row-desc">' + desc + '</span>' +
         '</div>' +
         '<div class="org-row-stats">' +
-          '<span class="org-row-star">' + stars + '</span>' +
-          '<span class="org-row-repos">' + tag + '</span>' +
+        '<span class="org-row-star">' + stars + '</span>' +
+        '<span class="org-row-repos">' + tag + '</span>' +
         '</div>' +
-      '</a>';
+        '</a>';
     });
 
     projectsContainer.innerHTML = html;
@@ -157,14 +196,14 @@
           }));
         }
       })
-      .catch(function () {});
+      .catch(function () { });
   }
 
   loadPinnedProjects();
 
   /* ─── Contact form ─── */
-  var btn     = document.getElementById('cf-submit');
-  var status  = document.getElementById('contact-status');
+  var btn = document.getElementById('cf-submit');
+  var status = document.getElementById('contact-status');
   var msgArea = document.getElementById('cf-message');
 
   if (!btn) return;
@@ -179,8 +218,14 @@
       return;
     }
 
-    var captchaEl  = document.querySelector('textarea[name="h-captcha-response"]');
-    var captchaVal = captchaEl ? captchaEl.value : '';
+    var captchaVal = '';
+    if (window.hcaptcha && hcaptchaWidgetId !== null) {
+      try { captchaVal = window.hcaptcha.getResponse(hcaptchaWidgetId); } catch (_) {}
+    }
+    if (!captchaVal) {
+      var captchaEl = document.querySelector('textarea[name="h-captcha-response"]');
+      captchaVal = captchaEl ? captchaEl.value : '';
+    }
     if (!captchaVal) {
       status.textContent = 'please complete the captcha.';
       status.style.color = 'var(--red)';
@@ -197,33 +242,35 @@
       : 'd36ee933-00cb-453e-aa38-b18ee60ce5d1';
 
     fetch('https://api.web3forms.com/submit', {
-      method:  'POST',
+      method: 'POST',
       headers: { 'Content-Type': 'application/json', Accept: 'application/json' },
       body: JSON.stringify({
-        access_key:           accessKey,
-        message:              msg,
+        access_key: accessKey,
+        message: msg,
         'h-captcha-response': captchaVal
       })
     })
-    .then(function (r)  { return r.json(); })
-    .then(function (d)  {
-      if (d.success) {
-        status.textContent = 'message sent!';
-        status.style.color = 'var(--success)';
-        if (msgArea) msgArea.value = '';
-        if (window.hcaptcha) { try { window.hcaptcha.reset(); } catch (_) {} }
-      } else {
-        status.textContent = d.message || 'something went wrong. try again.';
+      .then(function (r) { return r.json(); })
+      .then(function (d) {
+        if (d.success) {
+          status.textContent = 'message sent!';
+          status.style.color = 'var(--success)';
+          if (msgArea) msgArea.value = '';
+          if (window.hcaptcha && hcaptchaWidgetId !== null) {
+            try { window.hcaptcha.reset(hcaptchaWidgetId); } catch (_) {}
+          }
+        } else {
+          status.textContent = d.message || 'something went wrong. try again.';
+          status.style.color = 'var(--red)';
+        }
+      })
+      .catch(function () {
+        status.textContent = 'network error. check connection.';
         status.style.color = 'var(--red)';
-      }
-    })
-    .catch(function () {
-      status.textContent = 'network error. check connection.';
-      status.style.color = 'var(--red)';
-    })
-    .finally(function () {
-      btn.disabled = false;
-      btn.querySelector('span').textContent = 'send message';
-    });
+      })
+      .finally(function () {
+        btn.disabled = false;
+        btn.querySelector('span').textContent = 'send message';
+      });
   });
 }());

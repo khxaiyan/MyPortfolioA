@@ -7,7 +7,10 @@ const CONFIG = {
   site_name: 'khxaiyan',
   site_desc: 'khxaiyan | developer in active building mode. crafting clean web tools & digital experiences.',
   seo_desc: 'khxaiyan | Web developer crafting clean tools, interfaces, and digital experiences.',
-  
+
+  // Cloudflare Web Analytics (Paste your Cloudflare Web Analytics token here, or false to disable)
+  cf_analytics: false,
+
   // Contact Form & Security
   // Get your free access key at https://web3forms.com
   web3forms_access_key: 'd36ee933-00cb-453e-aa38-b18ee60ce5d1', // Replace with your own Web3Forms key
