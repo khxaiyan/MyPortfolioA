@@ -1,0 +1,17 @@
+{
+  "name": "myportfolio1",
+  "version": "1.0.0",
+  "description": "khxaiyan portfolio website",
+  "scripts": {
+    "dev": "npx serve .",
+    "start": "npx serve .",
+    "serve": "npx serve ."
+  },
+  "keywords": [
+    "portfolio",
+    "khxaiyan",
+    "website"
+  ],
+  "author": "khxaiyan",
+  "license": "MIT"
+}
