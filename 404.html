@@ -1,34 +1,81 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" data-theme="dark">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Page Not Found</title>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+  <title>404 | khxaiyan</title>
+  <link rel="icon" href="logo.png" type="image/png">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;700&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+  <script>
+    (function(){
+      var t=localStorage.getItem('theme')||(matchMedia('(prefers-color-scheme:light)').matches?'light':'dark');
+      document.documentElement.setAttribute('data-theme',t);
+    }());
+  </script>
+  <style>
+    .not-found-wrap {
+      min-height: 70vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      padding: 32px 16px;
+      gap: 16px;
+    }
+    .not-found-code {
+      font-family: var(--font-display);
+      font-size: 4.5rem;
+      font-weight: 700;
+      color: var(--ink);
+      line-height: 1;
+      letter-spacing: -0.04em;
+    }
+    .not-found-msg {
+      font-size: 0.92rem;
+      color: var(--ink-dim);
+      max-width: 320px;
+      line-height: 1.6;
+    }
+    .not-found-btn {
+      margin-top: 12px;
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 10px 20px;
+      border-radius: var(--radius-sm);
+      background: var(--surface);
+      border: 1px solid var(--line-strong);
+      color: var(--ink);
+      text-decoration: none;
+      font-size: 0.85rem;
+      font-weight: 500;
+      transition: border-color 0.18s, background-color 0.18s, color 0.18s;
+    }
+    .not-found-btn:hover {
+      border-color: var(--red);
+      color: var(--red);
+      background: var(--red-dim);
+    }
+  </style>
 </head>
 <body>
-    <div id="content">
-        <h2>404 - Page Not Found</h2>
-        <p>The page you are looking for does not exist.</p>
-    </div>
 
-    <script>
-        const path = window.location.pathname.replace(/\/$/, "");
+<main class="sheet">
+  <div class="not-found-wrap">
+    <h1 class="not-found-code">40<span class="glyph-5">4</span></h1>
+    <p class="not-found-msg">The page or route you are looking for does not exist.</p>
+    <a href="/" class="not-found-btn">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+        <path d="M19 12H5"/><path d="m12 19-7-7 7-7"/>
+      </svg>
+      <span>Return home</span>
+    </a>
+  </div>
+</main>
 
-        const routes = {
-            "/fcetool": {
-                title: "Project Moved",
-                html: `
-                    <h2>Project Has Moved</h2>
-                    <p>fcetool has moved from <code>github.com/offici5l/fcetool</code> to <strong>github.com/fcetool</strong></p>
-                    <p>Go to new location:<br><a href="https://fcetool.github.io">https://fcetool.github.io</a></p>
-                `
-            }
-        };
-
-        if (routes[path]) {
-            document.getElementById("content").innerHTML = routes[path].html;
-            document.title = routes[path].title;
-        }
-    </script>
 </body>
 </html>
