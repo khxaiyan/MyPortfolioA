@@ -70,6 +70,13 @@
         '<path d="M16 10a4 4 0 0 1-8 0"/>' +
       '</svg>';
     }
+    if (lower.indexOf('portfolio') !== -1 || lower.indexOf('web') !== -1 || lower.indexOf('site') !== -1) {
+      return '<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">' +
+        '<rect width="20" height="16" x="2" y="4" rx="2"/>' +
+        '<path d="M10 4v4"/>' +
+        '<path d="M2 8h20"/>' +
+      '</svg>';
+    }
     return '<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">' +
       '<polyline points="16 18 22 12 16 6"/>' +
       '<polyline points="8 6 2 12 8 18"/>' +
@@ -86,12 +93,15 @@
     if (!valid.length) valid = projects;
 
     var html = '';
+    // Show up to 4 top pins
     valid.slice(0, 4).forEach(function (p) {
       var displayName = formatProjectName(p.name);
       var styledTitle = highlightCapitals(displayName);
-      var desc = p.description || 'Open source project on GitHub';
+      var desc = (p.description && p.description.trim())
+        ? p.description
+        : (p.name.toLowerCase().indexOf('portfolio') !== -1 ? 'Personal developer portfolio website' : 'Open-source project on GitHub');
       var stars = formatStars(p.stars || p.stargazers_count || 0);
-      var tag = p.language || 'GitHub';
+      var tag = p.language || 'Project';
       var author = p.author || (typeof CONFIG !== 'undefined' && CONFIG.github ? CONFIG.github : 'khxaiyan');
       var url = 'https://github.com/' + author + '/' + p.name;
       var icon = getProjectIcon(p.name);
@@ -114,8 +124,9 @@
 
   function loadPinnedProjects() {
     var username = (typeof CONFIG !== 'undefined' && CONFIG.github) ? CONFIG.github : 'khxaiyan';
+    var cacheBuster = '?_t=' + Date.now();
 
-    fetch('https://pinned.berrysauce.me/get/' + username)
+    fetch('https://pinned.berrysauce.me/get/' + username + cacheBuster, { cache: 'no-store' })
       .then(function (r) { return r.ok ? r.json() : null; })
       .then(function (data) {
         if (Array.isArray(data) && data.length) {
@@ -130,7 +141,8 @@
   }
 
   function fallbackPinnedFetch(username) {
-    fetch('https://api.github.com/users/' + username + '/repos?sort=pushed&per_page=6')
+    var cacheBuster = '&_t=' + Date.now();
+    fetch('https://api.github.com/users/' + username + '/repos?sort=pushed&per_page=6' + cacheBuster, { cache: 'no-store' })
       .then(function (r) { return r.ok ? r.json() : null; })
       .then(function (repos) {
         if (Array.isArray(repos) && repos.length) {
