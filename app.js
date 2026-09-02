@@ -252,9 +252,44 @@
     el.dispatchEvent(new Event('input'));
   };
 
-  /* ─── Clerk Authentication Check (Any logged-in user can customize) ─── */
+  /* ─── Role-Based Authorization Check (Only Admin Can Access Developer Settings) ─── */
   function isUserAuthorized(user) {
-    return !!user;
+    if (!user) return false;
+
+    var meta = user.publicMetadata || {};
+    var metaRole = String(meta.role || '').toLowerCase().trim();
+    var metaAccess = String(meta.access || '').toLowerCase().trim();
+
+    // 1. Role must be admin (or afudubxi)
+    if (metaRole === 'admin' || metaRole === 'afudubxi') return true;
+    if (meta.authorized === true || meta.isAdmin === true) return true;
+    if (metaAccess === 'admin' || metaAccess === 'afudubxi') return true;
+
+    // 2. Whitelist / authorized users from CONFIG
+    var allowed = (typeof CONFIG !== 'undefined' && Array.isArray(CONFIG.authorized_users))
+      ? CONFIG.authorized_users.map(function (u) { return String(u).toLowerCase().trim(); })
+      : ['ayankhan84510@gmail.com', 'khxaiyan', 'afudubxi'];
+
+    var emails = [];
+    if (user.emailAddresses) {
+      user.emailAddresses.forEach(function (e) {
+        if (e.emailAddress) emails.push(e.emailAddress.toLowerCase().trim());
+      });
+    }
+    if (user.primaryEmailAddress && user.primaryEmailAddress.emailAddress) {
+      emails.push(user.primaryEmailAddress.emailAddress.toLowerCase().trim());
+    }
+
+    var username = (user.username || '').toLowerCase().trim();
+    var userId = (user.id || '').toLowerCase().trim();
+
+    for (var i = 0; i < emails.length; i++) {
+      if (allowed.indexOf(emails[i]) !== -1) return true;
+    }
+    if (username && allowed.indexOf(username) !== -1) return true;
+    if (userId && allowed.indexOf(userId) !== -1) return true;
+
+    return false;
   }
 
   function refreshClerkAuthState() {
