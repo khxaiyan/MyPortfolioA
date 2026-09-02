@@ -478,6 +478,15 @@ body {
 
 .msg-field textarea::placeholder { color: var(--ink-faint); }
 
+.msg-hint {
+  font-family: var(--font-mono);
+  font-size: 0.78rem;
+  color: var(--red);
+  margin-top: -4px;
+  margin-bottom: 14px;
+  line-height: 1.5;
+}
+
 /* ── hCaptcha Theme Match ── */
 .h-captcha {
   min-height: 78px;
