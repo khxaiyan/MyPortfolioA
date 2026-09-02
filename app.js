@@ -185,11 +185,11 @@
       .then(function (r) { return r.ok ? r.json() : null; })
       .catch(function () { return null; });
 
-    var reposPromise = fetch('https://api.github.com/users/' + username + '/repos?sort=pushed&per_page=100&_t=' + Date.now(), { cache: 'no-store' })
+    var userReposPromise = fetch('https://api.github.com/users/' + username + '/repos?sort=pushed&per_page=100&_t=' + Date.now(), { cache: 'no-store' })
       .then(function (r) { return r.ok ? r.json() : null; })
       .catch(function () { return null; });
 
-    Promise.all([pinnedPromise, reposPromise])
+    Promise.all([pinnedPromise, userReposPromise])
       .then(function (results) {
         var pinnedData = results[0];
         var reposData = results[1];
@@ -199,24 +199,58 @@
           reposData.forEach(function (r) {
             if (r && r.name) {
               repoMap[r.name.toLowerCase()] = r;
+              if (r.full_name) repoMap[r.full_name.toLowerCase()] = r;
             }
           });
         }
 
         if (Array.isArray(pinnedData) && pinnedData.length) {
-          var enriched = pinnedData.map(function (p) {
-            var r = (p && p.name) ? repoMap[p.name.toLowerCase()] : null;
+          // Render initial pinned list immediately to avoid skeleton delay
+          var initialList = pinnedData.map(function (p) {
+            var author = p.author || username;
+            var key = (author + '/' + p.name).toLowerCase();
+            var r = (p && p.name) ? (repoMap[key] || repoMap[p.name.toLowerCase()]) : null;
             return {
-              author: p.author || username,
+              author: author,
               name: p.name,
               description: p.description || (r ? r.description : ''),
               language: p.language || (r ? r.language : ''),
               stars: p.stars || (r ? r.stargazers_count : 0),
               homepage: r ? r.homepage : null,
-              html_url: r ? r.html_url : ('https://github.com/' + (p.author || username) + '/' + p.name)
+              html_url: (r && r.html_url) || ('https://github.com/' + author + '/' + p.name)
             };
           });
-          renderProjects(enriched);
+          renderProjects(initialList);
+
+          // For any pinned repo where homepage or details are needed, fetch directly
+          var detailFetches = pinnedData.map(function (p) {
+            var author = p.author || username;
+            var key = (author + '/' + p.name).toLowerCase();
+            if (repoMap[key] || repoMap[p.name.toLowerCase()]) {
+              return Promise.resolve(repoMap[key] || repoMap[p.name.toLowerCase()]);
+            }
+            return fetch('https://api.github.com/repos/' + author + '/' + p.name + '?_t=' + Date.now(), { cache: 'no-store' })
+              .then(function (res) { return res.ok ? res.json() : null; })
+              .catch(function () { return null; });
+          });
+
+          Promise.all(detailFetches).then(function (detailsList) {
+            var updated = pinnedData.map(function (p, idx) {
+              var author = p.author || username;
+              var key = (author + '/' + p.name).toLowerCase();
+              var r = detailsList[idx] || repoMap[key] || repoMap[p.name.toLowerCase()];
+              return {
+                author: author,
+                name: p.name,
+                description: (r && r.description) || p.description || '',
+                language: (r && r.language) || p.language || '',
+                stars: (r && typeof r.stargazers_count === 'number') ? r.stargazers_count : (p.stars || 0),
+                homepage: r ? r.homepage : null,
+                html_url: (r && r.html_url) || ('https://github.com/' + author + '/' + p.name)
+              };
+            });
+            renderProjects(updated);
+          });
         } else if (Array.isArray(reposData) && reposData.length) {
           renderProjects(reposData.map(function (r) {
             return {
