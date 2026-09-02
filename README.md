@@ -95,7 +95,7 @@ const CONFIG = {
   
   // Contact Form & Security (https://web3forms.com)
   web3forms_access_key: 'YOUR_WEB3FORMS_ACCESS_KEY',
-  hcaptcha_sitekey: '4e42ae9a-c9a2-4a7a-b9ae-0526a248f402',
+  hcaptcha_sitekey: '50b2fe65-b00b-4b9e-ad62-3ba471098be2',
 };
 ```
 

@@ -22,7 +22,7 @@
 
     var sitekey = (typeof CONFIG !== 'undefined' && CONFIG.hcaptcha_sitekey)
       ? CONFIG.hcaptcha_sitekey
-      : '4e42ae9a-c9a2-4a7a-b9ae-0526a248f402';
+      : '50b2fe65-b00b-4b9e-ad62-3ba471098be2';
 
     if (window.hcaptcha && typeof window.hcaptcha.render === 'function') {
       try {
