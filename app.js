@@ -181,15 +181,24 @@
     var username = (typeof CONFIG !== 'undefined' && CONFIG.github) ? CONFIG.github : 'khxaiyan';
     var cacheBuster = '?_t=' + Date.now();
 
-    var pinnedPromise = fetch('https://pinned.berrysauce.me/get/' + username + cacheBuster, { cache: 'no-store' })
-      .then(function (r) { return r.ok ? r.json() : null; })
-      .catch(function () { return null; });
+    function fetchPins() {
+      return fetch('https://pinned.berrysauce.dev/get/' + username + cacheBuster, { cache: 'no-store' })
+        .then(function (r) {
+          if (r.ok) return r.json();
+          throw new Error('primary pin endpoint failed');
+        })
+        .catch(function () {
+          return fetch('https://pinned.berrysauce.me/get/' + username + cacheBuster, { cache: 'no-store' })
+            .then(function (r) { return r.ok ? r.json() : null; })
+            .catch(function () { return null; });
+        });
+    }
 
     var userReposPromise = fetch('https://api.github.com/users/' + username + '/repos?sort=pushed&per_page=100&_t=' + Date.now(), { cache: 'no-store' })
       .then(function (r) { return r.ok ? r.json() : null; })
       .catch(function () { return null; });
 
-    Promise.all([pinnedPromise, userReposPromise])
+    Promise.all([fetchPins(), userReposPromise])
       .then(function (results) {
         var pinnedData = results[0];
         var reposData = results[1];
@@ -205,7 +214,7 @@
         }
 
         if (Array.isArray(pinnedData) && pinnedData.length) {
-          // Render initial pinned list immediately to avoid skeleton delay
+          // Render initial list immediately
           var initialList = pinnedData.map(function (p) {
             var author = p.author || username;
             var key = (author + '/' + p.name).toLowerCase();
@@ -222,12 +231,12 @@
           });
           renderProjects(initialList);
 
-          // For any pinned repo where homepage or details are needed, fetch directly
+          // Resolve full repository details (including homepage / website URL) for every pinned repository
           var detailFetches = pinnedData.map(function (p) {
             var author = p.author || username;
             var key = (author + '/' + p.name).toLowerCase();
-            if (repoMap[key] || repoMap[p.name.toLowerCase()]) {
-              return Promise.resolve(repoMap[key] || repoMap[p.name.toLowerCase()]);
+            if (repoMap[key] && repoMap[key].homepage) {
+              return Promise.resolve(repoMap[key]);
             }
             return fetch('https://api.github.com/repos/' + author + '/' + p.name + '?_t=' + Date.now(), { cache: 'no-store' })
               .then(function (res) { return res.ok ? res.json() : null; })
@@ -238,7 +247,7 @@
             var updated = pinnedData.map(function (p, idx) {
               var author = p.author || username;
               var key = (author + '/' + p.name).toLowerCase();
-              var r = detailsList[idx] || repoMap[key] || repoMap[p.name.toLowerCase()];
+              var r = detailsList[idx] || repoMap[key] || (p && p.name ? repoMap[p.name.toLowerCase()] : null);
               return {
                 author: author,
                 name: p.name,
