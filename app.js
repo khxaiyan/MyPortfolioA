@@ -32,7 +32,7 @@
           theme: theme === 'light' ? 'light' : 'dark',
           size: 'normal'
         });
-      } catch (_) {}
+      } catch (_) { }
     } else {
       container.setAttribute('data-theme', theme === 'light' ? 'light' : 'dark');
     }
@@ -63,23 +63,76 @@
     if (savedCustom && typeof CONFIG !== 'undefined') {
       Object.assign(CONFIG, JSON.parse(savedCustom));
     }
-  } catch (_) {}
+  } catch (_) { }
+
+  /* ─── Wordmark & Accent Highlighting ─── */
+  function formatWordmark(name, accent) {
+    if (!name) return '';
+    if (/\{([^}]+)\}/.test(name)) {
+      return name.replace(/\{([^}]+)\}/g, '<span class="glyph-5">$1</span>');
+    }
+    var target = accent !== undefined && accent !== null ? accent : ((typeof CONFIG !== 'undefined' && CONFIG.accent_letter) ? CONFIG.accent_letter : 'x');
+    if (target && target.trim()) {
+      var letter = target.trim();
+      var escaped = letter.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+      var regex = new RegExp('(' + escaped + ')', 'i');
+      if (regex.test(name)) {
+        return name.replace(regex, '<span class="glyph-5">$1</span>');
+      }
+    }
+    return highlightCapitals(name);
+  }
+
+  /* ─── Rich Text Parser (Bold, Italic, Underline, Code, Quote, Links, Accent, \n) ─── */
+  function parseRichText(raw) {
+    if (!raw) return '';
+    var s = String(raw)
+      .replace(/&/g, '&amp;')
+      .replace(/</g, '&lt;')
+      .replace(/>/g, '&gt;')
+      .replace(/"/g, '&quot;');
+
+    s = s.replace(/\\n/g, '\n');
+    s = s.replace(/\[([^\]]+)\]\((https?:\/\/[^\s\)]+)\)/g, '<a href="$2" target="_blank" rel="noopener noreferrer" class="rich-link">$1</a>');
+    s = s.replace(/\{([^}]+)\}/g, '<span class="glyph-5">$1</span>');
+    s = s.replace(/\*\*([^*]+)\*\*/g, '<strong>$1</strong>');
+    s = s.replace(/__([^_]+)__/g, '<u>$1</u>');
+    s = s.replace(/(?:^|\s)\*([^*\s][^*]*[^*\s]|[^*])\*(?=\s|$|[.,!?:;])/g, ' <em>$1</em>');
+    s = s.replace(/(?:^|\s)_([^_\s][^_]*[^_\s]|[^_])_(?=\s|$|[.,!?:;])/g, ' <em>$1</em>');
+    s = s.replace(/`([^`]+)`/g, '<code class="rich-code">$1</code>');
+
+    var lines = s.split('\n');
+    var parsedLines = lines.map(function (line) {
+      var trimmed = line.trim();
+      if (trimmed.indexOf('&gt; ') === 0 || trimmed.indexOf('&gt;') === 0) {
+        return '<blockquote class="rich-quote">' + trimmed.replace(/^&gt;\s?/, '') + '</blockquote>';
+      }
+      return line;
+    });
+
+    return parsedLines.join('<br>');
+  }
 
   /* ─── Sync Config Links, Bio & Analytics ─── */
   if (typeof CONFIG !== 'undefined') {
     var wordmark = document.querySelector('.wordmark');
     if (wordmark && CONFIG.site_name) {
-      wordmark.innerHTML = highlightCapitals(CONFIG.site_name);
+      wordmark.innerHTML = formatWordmark(CONFIG.site_name, CONFIG.accent_letter);
+    }
+
+    var cornerTag = document.getElementById('corner-tag');
+    if (cornerTag && CONFIG.site_name) {
+      cornerTag.innerHTML = '@' + formatWordmark(CONFIG.site_name, CONFIG.accent_letter);
     }
 
     var bioEl = document.querySelector('.bio');
     if (bioEl && CONFIG.site_desc) {
-      bioEl.textContent = CONFIG.site_desc;
+      bioEl.innerHTML = parseRichText(CONFIG.site_desc);
     }
 
     var introEl = document.getElementById('intro-text');
     if (introEl && CONFIG.intro) {
-      introEl.textContent = CONFIG.intro;
+      introEl.innerHTML = parseRichText(CONFIG.intro);
     }
 
     var emailLink = document.getElementById('link-email');
@@ -111,12 +164,14 @@
     }
   }
 
-  /* ─── Android-Style Developer Settings Unlock (10 Taps) ─── */
+  /* ─── Android-Style Developer Settings Unlock & Modal Popup (10 Taps) ─── */
   var cornerClicks = 0;
   var cornerClickTimer = null;
   var toastTimer = null;
   var cornerTagEl = document.getElementById('corner-tag');
   var devToast = document.getElementById('dev-toast');
+  var devModalOverlay = document.getElementById('dev-modal-overlay');
+  var btnModalClose = document.getElementById('btn-modal-close');
 
   function showDevToast(msg) {
     if (!devToast) return;
@@ -128,32 +183,419 @@
     }, 2200);
   }
 
+  function openDevModal() {
+    if (!devModalOverlay) return;
+    devModalOverlay.classList.add('open');
+    devModalOverlay.setAttribute('aria-hidden', 'false');
+    document.body.style.overflow = 'hidden';
+    refreshClerkAuthState();
+  }
+
+  function closeDevModal() {
+    if (!devModalOverlay) return;
+    devModalOverlay.classList.remove('open');
+    devModalOverlay.setAttribute('aria-hidden', 'true');
+    document.body.style.overflow = '';
+  }
+
+  if (btnModalClose) {
+    btnModalClose.addEventListener('click', closeDevModal);
+  }
+
+  if (devModalOverlay) {
+    devModalOverlay.addEventListener('click', function (e) {
+      if (e.target === devModalOverlay) {
+        closeDevModal();
+      }
+    });
+  }
+
+  document.addEventListener('keydown', function (e) {
+    if (e.key === 'Escape' && devModalOverlay && devModalOverlay.classList.contains('open')) {
+      closeDevModal();
+    }
+  });
+
   if (cornerTagEl) {
     cornerTagEl.addEventListener('click', function (e) {
       if (e) e.preventDefault();
       cornerClicks++;
       clearTimeout(cornerClickTimer);
 
-      var remaining = 10 - cornerClicks;
-
       if (cornerClicks >= 10) {
         cornerClicks = 0;
-        showDevToast('🔓 Developer Mode unlocked! Opening customizer...');
+        showDevToast('developer settings unlocked');
         setTimeout(function () {
-          window.location.href = 'login.html';
-        }, 750);
+          openDevModal();
+        }, 600);
         return;
-      }
-
-      if (cornerClicks >= 4) {
-        showDevToast('You are now ' + remaining + ' step' + (remaining === 1 ? '' : 's') + ' away from Developer Mode.');
       }
 
       cornerClickTimer = setTimeout(function () {
         cornerClicks = 0;
-      }, 3500);
+      }, 3000);
     });
   }
+
+  /* ─── Global Modal Rich Formatting Helper ─── */
+  window.applyModalFormat = function (textareaId, prefix, suffix) {
+    var el = document.getElementById(textareaId);
+    if (!el) return;
+    var start = el.selectionStart;
+    var end = el.selectionEnd;
+    var val = el.value;
+    var selected = val.substring(start, end) || 'text';
+    var replacement = prefix + selected + suffix;
+    el.value = val.substring(0, start) + replacement + val.substring(end);
+    el.focus();
+    el.setSelectionRange(start + prefix.length, start + prefix.length + selected.length);
+    el.dispatchEvent(new Event('input'));
+  };
+
+  /* ─── Clerk Authentication & Role-Based Authorization Check ─── */
+  function isUserAuthorized(user) {
+    if (!user) return false;
+
+    var allowed = (typeof CONFIG !== 'undefined' && Array.isArray(CONFIG.authorized_users))
+      ? CONFIG.authorized_users.map(function (u) { return String(u).toLowerCase().trim(); })
+      : ['ayankhan84510@gmail.com', 'khxaiyan', 'afudubxi'];
+
+    var emails = [];
+    if (user.emailAddresses) {
+      user.emailAddresses.forEach(function (e) {
+        if (e.emailAddress) emails.push(e.emailAddress.toLowerCase().trim());
+      });
+    }
+    if (user.primaryEmailAddress && user.primaryEmailAddress.emailAddress) {
+      emails.push(user.primaryEmailAddress.emailAddress.toLowerCase().trim());
+    }
+
+    var username = (user.username || '').toLowerCase().trim();
+    var userId = (user.id || '').toLowerCase().trim();
+    var meta = user.publicMetadata || {};
+
+    for (var i = 0; i < emails.length; i++) {
+      if (allowed.indexOf(emails[i]) !== -1) return true;
+    }
+    if (username && allowed.indexOf(username) !== -1) return true;
+    if (userId && allowed.indexOf(userId) !== -1) return true;
+    if (meta.role === 'admin' || meta.authorized === true) return true;
+    if (meta.access && allowed.indexOf(String(meta.access).toLowerCase()) !== -1) return true;
+
+    return false;
+  }
+
+  function refreshClerkAuthState() {
+    var authView = document.getElementById('modal-auth-view');
+    var deniedView = document.getElementById('modal-denied-view');
+    var customizerView = document.getElementById('modal-customizer-view');
+    var userBtnTarget = document.getElementById('modal-clerk-user-btn');
+    var deniedUserName = document.getElementById('denied-user-name');
+    var sessionText = document.getElementById('modal-session-text');
+
+    if (!authView || !deniedView || !customizerView) return;
+
+    if (window.Clerk && window.Clerk.user) {
+      var user = window.Clerk.user;
+      var identifier = user.primaryEmailAddress
+        ? user.primaryEmailAddress.emailAddress
+        : (user.username || 'User');
+
+      if (userBtnTarget && !userBtnTarget.hasChildNodes()) {
+        window.Clerk.mountUserButton(userBtnTarget);
+      }
+
+      if (isUserAuthorized(user)) {
+        // Authorized: Unlock full customizer
+        authView.style.display = 'none';
+        deniedView.style.display = 'none';
+        customizerView.style.display = 'block';
+        if (sessionText) sessionText.textContent = 'Authorized: ' + identifier;
+        loadModalCustomizer();
+      } else {
+        // Unauthorized: Deny access completely
+        authView.style.display = 'none';
+        customizerView.style.display = 'none';
+        deniedView.style.display = 'flex';
+        if (deniedUserName) deniedUserName.textContent = identifier;
+
+        var signoutBtn = document.getElementById('btn-denied-signout');
+        if (signoutBtn) {
+          signoutBtn.onclick = function () {
+            window.Clerk.signOut().then(function () {
+              refreshClerkAuthState();
+            });
+          };
+        }
+      }
+    } else {
+      // Signed Out: Render Clerk sign in popup
+      customizerView.style.display = 'none';
+      deniedView.style.display = 'none';
+      authView.style.display = 'flex';
+
+      var signInTarget = document.getElementById('modal-clerk-sign-in');
+      if (window.Clerk && signInTarget && !signInTarget.hasChildNodes() && typeof window.Clerk.mountSignIn === 'function') {
+        try {
+          window.Clerk.mountSignIn(signInTarget);
+        } catch (_) { }
+      }
+    }
+  }
+
+  /* ─── Direct Google Sign-In & Clerk Modal Triggers ─── */
+  async function triggerGoogleSignIn() {
+    if (window.Clerk) {
+      // 1. Direct Google OAuth flow via Clerk API (leads directly to Google accounts screen Pic 2)
+      try {
+        if (window.Clerk.client && window.Clerk.client.signIn) {
+          var res = await window.Clerk.client.signIn.create({
+            strategy: 'oauth_google',
+            redirectUrl: window.location.href,
+            actionCompleteRedirectUrl: window.location.href
+          });
+          if (res && res.firstFactorVerification && res.firstFactorVerification.externalVerificationRedirectURL) {
+            window.location.href = res.firstFactorVerification.externalVerificationRedirectURL.href;
+            return;
+          }
+        }
+      } catch (err1) {
+        console.warn('Google signIn.create attempt failed:', err1);
+      }
+
+      // 2. Direct authenticateWithRedirect
+      try {
+        if (typeof window.Clerk.authenticateWithRedirect === 'function') {
+          await window.Clerk.authenticateWithRedirect({
+            strategy: 'oauth_google',
+            redirectUrl: window.location.href,
+            redirectUrlComplete: window.location.href
+          });
+          return;
+        }
+      } catch (err2) {
+        console.warn('authenticateWithRedirect failed:', err2);
+      }
+
+      // 3. Native Clerk Modal
+      try {
+        if (typeof window.Clerk.openSignIn === 'function') {
+          closeDevModal();
+          window.Clerk.openSignIn({
+            appearance: {
+              variables: {
+                colorPrimary: '#ff2a5f',
+                colorBackground: '#131319',
+                colorText: '#eef0f4',
+                colorInputBackground: '#0a0a0e',
+                colorInputText: '#eef0f4'
+              }
+            }
+          });
+          return;
+        }
+      } catch (err3) {
+        console.warn('openSignIn failed:', err3);
+      }
+    }
+
+    window.location.href = 'login.html';
+  }
+
+  function triggerClerkSignIn() {
+    closeDevModal();
+    if (window.Clerk && typeof window.Clerk.openSignIn === 'function') {
+      try {
+        window.Clerk.openSignIn({
+          appearance: {
+            variables: {
+              colorPrimary: '#ff2a5f',
+              colorBackground: '#131319',
+              colorText: '#eef0f4',
+              colorInputBackground: '#0a0a0e',
+              colorInputText: '#eef0f4'
+            }
+          }
+        });
+        return;
+      } catch (_) { }
+    }
+    window.location.href = 'login.html';
+  }
+
+  var btnGoogleSignin = document.getElementById('btn-google-signin');
+  if (btnGoogleSignin) {
+    btnGoogleSignin.addEventListener('click', triggerGoogleSignIn);
+  }
+
+  var btnOpenClerk = document.getElementById('btn-open-clerk-popup');
+  if (btnOpenClerk) {
+    btnOpenClerk.addEventListener('click', triggerClerkSignIn);
+  }
+
+  /* ─── Modal Customizer Field Sync & Instant Apply ─── */
+  function loadModalCustomizer() {
+    var cfg = Object.assign({}, typeof CONFIG !== 'undefined' ? CONFIG : {});
+    try {
+      var saved = localStorage.getItem('portfolio_custom_config');
+      if (saved) Object.assign(cfg, JSON.parse(saved));
+    } catch (_) { }
+
+    var siteNameEl = document.getElementById('m-cust-sitename');
+    var accentEl = document.getElementById('m-cust-accent');
+    var bioEl = document.getElementById('m-cust-bio');
+    var introEl = document.getElementById('m-cust-intro');
+    var projEl = document.getElementById('m-cust-projectlinks');
+    var ghEl = document.getElementById('m-cust-github');
+    var tgEl = document.getElementById('m-cust-telegram');
+    var xEl = document.getElementById('m-cust-x');
+    var emailEl = document.getElementById('m-cust-email');
+
+    if (siteNameEl) siteNameEl.value = cfg.site_name || '';
+    if (accentEl) accentEl.value = cfg.accent_letter || 'x';
+    if (bioEl) bioEl.value = cfg.site_desc || '';
+    if (introEl) introEl.value = cfg.intro || '';
+    if (projEl) projEl.value = JSON.stringify(cfg.project_links || {}, null, 2);
+    if (ghEl) ghEl.value = cfg.github || '';
+    if (tgEl) tgEl.value = cfg.telegram || '';
+    if (xEl) xEl.value = cfg.x || '';
+    if (emailEl) emailEl.value = cfg.email || '';
+
+    updateModalPreviews();
+  }
+
+  function updateModalPreviews() {
+    var name = (document.getElementById('m-cust-sitename') || {}).value || 'khxaiyan';
+    var accent = (document.getElementById('m-cust-accent') || {}).value || 'x';
+    var wordmarkPrev = document.getElementById('m-wordmark-preview');
+    if (wordmarkPrev) {
+      wordmarkPrev.innerHTML = formatWordmark(name, accent);
+    }
+
+    var bioVal = (document.getElementById('m-cust-bio') || {}).value || '';
+    var bioPrev = document.getElementById('m-bio-preview');
+    if (bioPrev) {
+      bioPrev.innerHTML = parseRichText(bioVal || 'developer in active building mode.');
+    }
+
+    var introVal = (document.getElementById('m-cust-intro') || {}).value || '';
+    var introPrev = document.getElementById('m-intro-preview');
+    if (introPrev) {
+      introPrev.innerHTML = parseRichText(introVal || 'Passionate developer specializing in web apps.');
+    }
+  }
+
+  ['m-cust-sitename', 'm-cust-accent', 'm-cust-bio', 'm-cust-intro'].forEach(function (id) {
+    var el = document.getElementById(id);
+    if (el) el.addEventListener('input', updateModalPreviews);
+  });
+
+  var btnModalSave = document.getElementById('m-btn-save');
+  if (btnModalSave) {
+    btnModalSave.addEventListener('click', function () {
+      var projectLinks = {};
+      try {
+        projectLinks = JSON.parse((document.getElementById('m-cust-projectlinks') || {}).value || '{}');
+      } catch (_) { }
+
+      var updated = {
+        github: (document.getElementById('m-cust-github') || {}).value.trim(),
+        x: (document.getElementById('m-cust-x') || {}).value.trim(),
+        telegram: (document.getElementById('m-cust-telegram') || {}).value.trim(),
+        email: (document.getElementById('m-cust-email') || {}).value.trim(),
+        logo: 'logo.png',
+        site_name: (document.getElementById('m-cust-sitename') || {}).value.trim(),
+        accent_letter: (document.getElementById('m-cust-accent') || {}).value.trim() || 'x',
+        site_desc: (document.getElementById('m-cust-bio') || {}).value.trim(),
+        seo_desc: (document.getElementById('m-cust-bio') || {}).value.trim(),
+        intro: (document.getElementById('m-cust-intro') || {}).value.trim(),
+        project_links: projectLinks,
+        authorized_users: (typeof CONFIG !== 'undefined' && CONFIG.authorized_users) ? CONFIG.authorized_users : ['ayankhan84510@gmail.com', 'khxaiyan', 'afudubxi'],
+        cf_analytics: (typeof CONFIG !== 'undefined' && CONFIG.cf_analytics) ? CONFIG.cf_analytics : false,
+        web3forms_access_key: (typeof CONFIG !== 'undefined' && CONFIG.web3forms_access_key) ? CONFIG.web3forms_access_key : 'd36ee933-00cb-453e-aa38-b18ee60ce5d1',
+        hcaptcha_sitekey: (typeof CONFIG !== 'undefined' && CONFIG.hcaptcha_sitekey) ? CONFIG.hcaptcha_sitekey : '50b2fe65-b00b-4b9e-ad62-3ba471098be2',
+        clerk_publishable_key: (typeof CONFIG !== 'undefined' && CONFIG.clerk_publishable_key) ? CONFIG.clerk_publishable_key : 'pk_test_c2hpbmluZy10dXJrZXktMTMyNS5jbGVyay5hY2NvdW50cy5kZXYk',
+        clerk_frontend_api: 'https://shining-turkey-1325.clerk.accounts.dev'
+      };
+
+      localStorage.setItem('portfolio_custom_config', JSON.stringify(updated));
+      Object.assign(CONFIG, updated);
+
+      // Live update portfolio UI without reloading
+      var wordmark = document.querySelector('.wordmark');
+      if (wordmark && updated.site_name) {
+        wordmark.innerHTML = formatWordmark(updated.site_name, updated.accent_letter);
+      }
+      var cornerTag = document.getElementById('corner-tag');
+      if (cornerTag && updated.site_name) {
+        cornerTag.innerHTML = '@' + formatWordmark(updated.site_name, updated.accent_letter);
+      }
+      var bioEl = document.querySelector('.bio');
+      if (bioEl && updated.site_desc) {
+        bioEl.innerHTML = parseRichText(updated.site_desc);
+      }
+      var introEl = document.getElementById('intro-text');
+      if (introEl && updated.intro) {
+        introEl.innerHTML = parseRichText(updated.intro);
+      }
+      var emailLink = document.getElementById('link-email');
+      if (emailLink && updated.email) {
+        emailLink.href = 'mailto:' + updated.email;
+      }
+      var githubLink = document.getElementById('link-github');
+      if (githubLink && updated.github) {
+        githubLink.href = 'https://github.com/' + updated.github;
+      }
+      var xLink = document.getElementById('link-x');
+      if (xLink && updated.x) {
+        xLink.href = 'https://x.com/' + updated.x;
+      }
+      var tgLink = document.getElementById('link-telegram');
+      if (tgLink && updated.telegram) {
+        tgLink.href = 'https://t.me/' + updated.telegram;
+      }
+
+      var saveStatus = document.getElementById('m-save-status');
+      if (saveStatus) {
+        saveStatus.style.display = 'block';
+        setTimeout(function () {
+          saveStatus.style.display = 'none';
+        }, 3000);
+      }
+    });
+  }
+
+  // Initialize Clerk on page load
+  window.addEventListener('load', async function () {
+    var pubKey = (typeof CONFIG !== 'undefined' && CONFIG.clerk_publishable_key)
+      ? CONFIG.clerk_publishable_key
+      : 'pk_test_c2hpbmluZy10dXJrZXktMTMyNS5jbGVyay5hY2NvdW50cy5kZXYk';
+
+    if (window.Clerk) {
+      try {
+        await window.Clerk.load({
+          publishableKey: pubKey,
+          appearance: {
+            variables: {
+              colorPrimary: '#ff2a5f',
+              colorBackground: '#131319',
+              colorText: '#eef0f4',
+              colorInputBackground: '#0a0a0e',
+              colorInputText: '#eef0f4'
+            }
+          }
+        });
+
+        window.Clerk.addListener(function () {
+          refreshClerkAuthState();
+        });
+
+        refreshClerkAuthState();
+      } catch (err) {
+        console.warn('Clerk load error:', err);
+      }
+    }
+  });
 
   /* ─── Live GitHub Pinned Projects ─── */
   var projectsContainer = document.getElementById('projects-container');
@@ -232,7 +674,7 @@
       var stars = formatStars(p.stars || p.stargazers_count || 0);
       var tag = p.language || 'Project';
       var author = p.author || (typeof CONFIG !== 'undefined' && CONFIG.github ? CONFIG.github : 'khxaiyan');
-      
+
       // Determine project URL: prioritize custom override in config, then live website (homepage), then github html_url
       var customLink = null;
       if (typeof CONFIG !== 'undefined' && (CONFIG.project_links || CONFIG.project_urls)) {
@@ -406,7 +848,7 @@
 
     var captchaVal = '';
     if (window.hcaptcha && hcaptchaWidgetId !== null) {
-      try { captchaVal = window.hcaptcha.getResponse(hcaptchaWidgetId); } catch (_) {}
+      try { captchaVal = window.hcaptcha.getResponse(hcaptchaWidgetId); } catch (_) { }
     }
     if (!captchaVal) {
       var captchaEl = document.querySelector('textarea[name="h-captcha-response"]');
@@ -443,7 +885,7 @@
           status.style.color = 'var(--success)';
           if (msgArea) msgArea.value = '';
           if (window.hcaptcha && hcaptchaWidgetId !== null) {
-            try { window.hcaptcha.reset(hcaptchaWidgetId); } catch (_) {}
+            try { window.hcaptcha.reset(hcaptchaWidgetId); } catch (_) { }
           }
         } else {
           status.textContent = d.message || 'something went wrong. try again.';

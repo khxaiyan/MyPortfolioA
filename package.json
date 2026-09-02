@@ -3,8 +3,9 @@
   "version": "1.0.0",
   "description": "khxaiyan portfolio website",
   "scripts": {
-    "dev": "npx serve .",
-    "start": "npx serve .",
+    "sync": "node sync-env.js",
+    "dev": "node sync-env.js && npx serve .",
+    "start": "node sync-env.js && npx serve .",
     "serve": "npx serve ."
   },
   "keywords": [
