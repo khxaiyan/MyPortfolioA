@@ -94,6 +94,14 @@
       .replace(/-/g, ' ');
   }
 
+  function normalizeUrl(url) {
+    if (!url || typeof url !== 'string') return '';
+    url = url.trim();
+    if (!url) return '';
+    if (/^(https?:\/\/|mailto:|\/\/)/i.test(url)) return url;
+    return 'https://' + url;
+  }
+
   function getProjectIcon(name) {
     var lower = (name || '').toLowerCase();
     if (lower.indexOf('screen') !== -1 || lower.indexOf('shot') !== -1 || lower.indexOf('cam') !== -1) {
@@ -142,10 +150,18 @@
       var stars = formatStars(p.stars || p.stargazers_count || 0);
       var tag = p.language || 'Project';
       var author = p.author || (typeof CONFIG !== 'undefined' && CONFIG.github ? CONFIG.github : 'khxaiyan');
-      var url = 'https://github.com/' + author + '/' + p.name;
+      
+      // Determine project URL: prioritize custom override in config, then live website (homepage), then github html_url
+      var customLink = null;
+      if (typeof CONFIG !== 'undefined' && (CONFIG.project_links || CONFIG.project_urls)) {
+        var links = CONFIG.project_links || CONFIG.project_urls;
+        customLink = links[p.name] || links[p.name.toLowerCase()] || links[displayName];
+      }
+      var targetUrl = customLink || p.homepage || p.website || p.url || p.html_url || ('https://github.com/' + author + '/' + p.name);
+      var finalUrl = normalizeUrl(targetUrl);
       var icon = getProjectIcon(p.name);
 
-      html += '<a class="org-row" href="' + url + '" target="_blank" rel="noopener noreferrer">' +
+      html += '<a class="org-row" href="' + finalUrl + '" target="_blank" rel="noopener noreferrer">' +
         '<div class="project-avatar" aria-hidden="true">' + icon + '</div>' +
         '<div class="org-row-text">' +
         '<span class="org-row-name">' + styledTitle + '</span>' +
@@ -165,11 +181,54 @@
     var username = (typeof CONFIG !== 'undefined' && CONFIG.github) ? CONFIG.github : 'khxaiyan';
     var cacheBuster = '?_t=' + Date.now();
 
-    fetch('https://pinned.berrysauce.me/get/' + username + cacheBuster, { cache: 'no-store' })
+    var pinnedPromise = fetch('https://pinned.berrysauce.me/get/' + username + cacheBuster, { cache: 'no-store' })
       .then(function (r) { return r.ok ? r.json() : null; })
-      .then(function (data) {
-        if (Array.isArray(data) && data.length) {
-          renderProjects(data);
+      .catch(function () { return null; });
+
+    var reposPromise = fetch('https://api.github.com/users/' + username + '/repos?sort=pushed&per_page=100&_t=' + Date.now(), { cache: 'no-store' })
+      .then(function (r) { return r.ok ? r.json() : null; })
+      .catch(function () { return null; });
+
+    Promise.all([pinnedPromise, reposPromise])
+      .then(function (results) {
+        var pinnedData = results[0];
+        var reposData = results[1];
+
+        var repoMap = {};
+        if (Array.isArray(reposData)) {
+          reposData.forEach(function (r) {
+            if (r && r.name) {
+              repoMap[r.name.toLowerCase()] = r;
+            }
+          });
+        }
+
+        if (Array.isArray(pinnedData) && pinnedData.length) {
+          var enriched = pinnedData.map(function (p) {
+            var r = (p && p.name) ? repoMap[p.name.toLowerCase()] : null;
+            return {
+              author: p.author || username,
+              name: p.name,
+              description: p.description || (r ? r.description : ''),
+              language: p.language || (r ? r.language : ''),
+              stars: p.stars || (r ? r.stargazers_count : 0),
+              homepage: r ? r.homepage : null,
+              html_url: r ? r.html_url : ('https://github.com/' + (p.author || username) + '/' + p.name)
+            };
+          });
+          renderProjects(enriched);
+        } else if (Array.isArray(reposData) && reposData.length) {
+          renderProjects(reposData.map(function (r) {
+            return {
+              author: username,
+              name: r.name,
+              description: r.description,
+              language: r.language,
+              stars: r.stargazers_count,
+              homepage: r.homepage,
+              html_url: r.html_url
+            };
+          }));
         } else {
           fallbackPinnedFetch(username);
         }
@@ -191,7 +250,9 @@
               name: r.name,
               description: r.description,
               language: r.language,
-              stars: r.stargazers_count
+              stars: r.stargazers_count,
+              homepage: r.homepage,
+              html_url: r.html_url
             };
           }));
         }

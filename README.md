@@ -87,7 +87,11 @@ const CONFIG = {
   logo: 'logo.png',
   site_name: 'khxaiyan',
   site_desc: 'khxaiyan | developer in active building mode. crafting clean web tools & digital experiences.',
-  seo_desc: 'khxaiyan | Web developer crafting clean tools, interfaces, and digital experiences.',
+  // Custom project links (optional override; live websites from GitHub repo homepage are used automatically)
+  project_links: {
+    // 'CarryOn-E-Commerce-Website': 'https://carryon-five.vercel.app/',
+    // 'GetWeb_Screenshot': 'https://getweb-screenshot.vercel.app',
+  },
   
   // Contact Form & Security (https://web3forms.com)
   web3forms_access_key: 'YOUR_WEB3FORMS_ACCESS_KEY',

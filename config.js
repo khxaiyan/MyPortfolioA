@@ -8,6 +8,12 @@ const CONFIG = {
   site_desc: 'khxaiyan | developer in active building mode. crafting clean web tools & digital experiences.',
   seo_desc: 'khxaiyan | Web developer crafting clean tools, interfaces, and digital experiences.',
 
+  // Custom project links (optional override; live websites from GitHub repo settings/homepage are used automatically)
+  project_links: {
+    // 'CarryOn-E-Commerce-Website': 'https://carryon-five.vercel.app/',
+    // 'GetWeb_Screenshot': 'https://getweb-screenshot.vercel.app',
+  },
+
   // Cloudflare Web Analytics (Paste your Cloudflare Web Analytics token here, or false to disable)
   cf_analytics: false,
 
