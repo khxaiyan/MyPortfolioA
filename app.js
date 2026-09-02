@@ -323,6 +323,10 @@
         // Unauthorized: Deny access completely
         authView.style.display = 'none';
         customizerView.style.display = 'none';
+        // Security: clear all inputs in modal customizer
+        var modalInputs = customizerView.querySelectorAll('input, textarea');
+        modalInputs.forEach(function (inp) { inp.value = ''; });
+
         deniedView.style.display = 'flex';
         if (deniedUserName) deniedUserName.textContent = identifier;
 
@@ -500,6 +504,11 @@
   var btnModalSave = document.getElementById('m-btn-save');
   if (btnModalSave) {
     btnModalSave.addEventListener('click', function () {
+      if (!window.Clerk || !window.Clerk.user || !isUserAuthorized(window.Clerk.user)) {
+        alert('Access Denied: Only authorized administrators can save changes.');
+        return;
+      }
+
       var projectLinks = {};
       try {
         projectLinks = JSON.parse((document.getElementById('m-cust-projectlinks') || {}).value || '{}');

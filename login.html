@@ -641,6 +641,11 @@
       }
 
       document.getElementById('btn-save-customizer').addEventListener('click', function () {
+        if (!window.Clerk || !window.Clerk.user || !isUserAuthorized(window.Clerk.user)) {
+          alert('Access Denied: Only authorized administrators can save changes.');
+          return;
+        }
+
         var projectLinks = {};
         try {
           projectLinks = JSON.parse(document.getElementById('cust-projectlinks').value || '{}');
@@ -736,11 +741,16 @@
                   authBox.style.display = 'none';
                   if (deniedBox) deniedBox.style.display = 'none';
                   customizerSections.style.display = 'block';
-                  sessionUserText.textContent = 'Authorized: ' + identifier;
+                  sessionUserText.textContent = 'Authorized Admin: ' + identifier;
                   loadConfigIntoForm();
                 } else {
                   authBox.style.display = 'none';
                   customizerSections.style.display = 'none';
+                  // Security: Clear all input values so unauthorized users cannot see your settings
+                  var inputs = customizerSections.querySelectorAll('input, textarea');
+                  inputs.forEach(function (inp) { inp.value = ''; });
+                  if (configCodePreview) configCodePreview.textContent = '// Access Restricted: Only admin can view settings';
+
                   if (deniedBox) deniedBox.style.display = 'flex';
                   if (deniedEmail) deniedEmail.textContent = identifier;
                   if (btnLoginSignout) {
