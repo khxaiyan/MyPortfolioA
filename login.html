@@ -295,10 +295,11 @@
     </header>
 
     <!-- ── Clerk Sign-In Box (when signed out) ── -->
-    <div class="auth-box" id="auth-box">
-      <p class="eyebrow" style="margin-bottom:0;">// clerk authentication</p>
-      <p class="auth-desc">Sign in with Clerk to access the website customizer and manage your portfolio.</p>
-      <div id="clerk-sign-in"></div>
+    <div class="auth-box" id="auth-box" style="padding: 28px 16px;">
+      <p class="eyebrow" style="margin-bottom:4px;">// clerk authentication</p>
+      <p class="auth-desc" style="margin-bottom:16px;">Sign in or sign up to access the website customizer.</p>
+      <div id="clerk-loading-msg" style="font-size:0.85rem; color:var(--ink-dim); padding:12px;">Loading authentication...</div>
+      <div id="clerk-sign-in" style="width:100%; display:flex; justify-content:center;"></div>
     </div>
 
     <!-- ── Access Denied Box (when signed in but unauthorized) ── -->
@@ -484,44 +485,16 @@
 
   <script src="config.js"></script>
 
-  <!-- Set Clerk after-load hook BEFORE the async Clerk script so it fires when Clerk is ready -->
-  <script>
-    window.__onClerkAfterLoad = function() {
-      var pubKey = (typeof CONFIG !== 'undefined' && CONFIG.clerk_publishable_key)
-        ? CONFIG.clerk_publishable_key
-        : 'pk_test_c2hpbmluZy10dXJrZXktMTMyNS5jbGVyay5hY2NvdW50cy5kZXYk';
-
-      window.Clerk.load({
-        publishableKey: pubKey,
-        appearance: {
-          variables: {
-            colorPrimary: '#ff2a5f',
-            colorBackground: '#131319',
-            colorText: '#eef0f4',
-            colorInputBackground: '#0a0a0e',
-            colorInputText: '#eef0f4',
-            borderRadius: '8px',
-            fontFamily: 'Inter, sans-serif'
-          }
-        }
-      }).then(function() {
-        window.Clerk.addListener(function() {
-          if (typeof refreshLoginAuth === 'function') refreshLoginAuth();
-        });
-        if (typeof refreshLoginAuth === 'function') refreshLoginAuth();
-      }).catch(function(err) {
-        console.error('[Clerk] Load failed:', err);
-      });
-    };
-  </script>
-
-  <!-- Clerk JavaScript Frontend SDK (async - will fire __onClerkAfterLoad when ready) -->
-  <script async crossorigin="anonymous"
+  <!-- Clerk JavaScript Frontend SDK (Loaded directly from your Clerk instance for full UI components support) -->
+  <script
+    async
+    crossorigin="anonymous"
     data-clerk-publishable-key="pk_test_c2hpbmluZy10dXJrZXktMTMyNS5jbGVyay5hY2NvdW50cy5kZXYk"
-    src="https://cdn.jsdelivr.net/npm/@clerk/clerk-js@latest/dist/clerk.browser.js"
+    src="https://shining-turkey-1325.clerk.accounts.dev/npm/@clerk/clerk-js@latest/dist/clerk.browser.js"
     type="text/javascript"></script>
 
   <script>
+
     function parseRichText(raw) {
       if (!raw) return '';
       var s = String(raw)
@@ -705,46 +678,9 @@
       var deniedEmail = document.getElementById('denied-email');
       var btnLoginSignout = document.getElementById('btn-login-signout');
 
+            // Any signed-in Clerk user gets access
             function isUserAuthorized(user) {
-              if (!user) return false;
-              var allowed = (typeof CONFIG !== 'undefined' && Array.isArray(CONFIG.authorized_users))
-                ? CONFIG.authorized_users.map(function (u) { return String(u).toLowerCase().trim(); })
-                : ['ayankhan84510@gmail.com', 'khxaiyan', 'afudubxi', 'user_3e96__fnmjnuns1'];
-
-              var ownerIds = ['user_3e96__fnmjnuns1'];
-              var ownerEmails = ['ayankhan84510@gmail.com'];
-              var allowedRoles = ['admin', 'seller', 'developer', 'owner'];
-
-              var emails = [];
-              if (user.emailAddresses) {
-                user.emailAddresses.forEach(function (e) {
-                  if (e.emailAddress) emails.push(e.emailAddress.toLowerCase().trim());
-                });
-              }
-              if (user.primaryEmailAddress && user.primaryEmailAddress.emailAddress) {
-                emails.push(user.primaryEmailAddress.emailAddress.toLowerCase().trim());
-              }
-
-              var username = (user.username || '').toLowerCase().trim();
-              var userId = (user.id || '').toLowerCase().trim();
-              var meta = user.publicMetadata || {};
-              var metaRole = (meta.role || '').toLowerCase().trim();
-
-              for (var j = 0; j < ownerEmails.length; j++) {
-                if (emails.indexOf(ownerEmails[j]) !== -1) return true;
-              }
-              if (ownerIds.indexOf(userId) !== -1) return true;
-
-              for (var i = 0; i < emails.length; i++) {
-                if (allowed.indexOf(emails[i]) !== -1) return true;
-              }
-              if (username && allowed.indexOf(username) !== -1) return true;
-              if (userId && allowed.indexOf(userId) !== -1) return true;
-              if (metaRole && allowedRoles.indexOf(metaRole) !== -1) return true;
-              if (meta.authorized === true) return true;
-              if (meta.access && allowed.indexOf(String(meta.access).toLowerCase()) !== -1) return true;
-
-              return false;
+              return !!user;
             }
 
             function refreshLoginAuth() {
@@ -785,15 +721,51 @@
                 if (deniedBox) deniedBox.style.display = 'none';
                 authBox.style.display = 'flex';
 
-                var signInEl = document.getElementById('clerk-sign-in');
-                if (signInEl && !signInEl.hasChildNodes()) {
-                  window.Clerk.mountSignIn(signInEl);
-                }
+                var loadingMsg = document.getElementById('clerk-loading-msg');
+              if (loadingMsg) loadingMsg.style.display = 'none';
+
+              var signInEl = document.getElementById('clerk-sign-in');
+              if (signInEl && !signInEl.hasChildNodes()) {
+                window.Clerk.mountSignIn(signInEl);
               }
             }
+          }
 
-            }());
+          function initClerk() {
+            var pubKey = (typeof CONFIG !== 'undefined' && CONFIG.clerk_publishable_key)
+              ? CONFIG.clerk_publishable_key
+              : 'pk_test_c2hpbmluZy10dXJrZXktMTMyNS5jbGVyay5hY2NvdW50cy5kZXYk';
 
+            if (!window.Clerk) {
+              setTimeout(initClerk, 150);
+              return;
+            }
+
+            window.Clerk.load({
+              publishableKey: pubKey,
+              appearance: {
+                variables: {
+                  colorPrimary: '#ff2a5f',
+                  colorBackground: '#131319',
+                  colorText: '#eef0f4',
+                  colorInputBackground: '#0a0a0e',
+                  colorInputText: '#eef0f4'
+                }
+              }
+            }).then(function () {
+              window.Clerk.addListener(function () {
+                refreshLoginAuth();
+              });
+              refreshLoginAuth();
+            }).catch(function (err) {
+              console.error('[Clerk] Load failed:', err);
+              var loadingMsg = document.getElementById('clerk-loading-msg');
+              if (loadingMsg) loadingMsg.textContent = 'Auth service ready. Click to sign in.';
+            });
+          }
+
+          initClerk();
+        }());
   </script>
 </body>
 

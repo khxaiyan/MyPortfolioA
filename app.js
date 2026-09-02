@@ -252,37 +252,9 @@
     el.dispatchEvent(new Event('input'));
   };
 
-  /* ─── Clerk Authentication & Role-Based Authorization Check ─── */
+  /* ─── Clerk Authentication Check (Any logged-in user can customize) ─── */
   function isUserAuthorized(user) {
-    if (!user) return false;
-
-    var allowed = (typeof CONFIG !== 'undefined' && Array.isArray(CONFIG.authorized_users))
-      ? CONFIG.authorized_users.map(function (u) { return String(u).toLowerCase().trim(); })
-      : ['ayankhan84510@gmail.com', 'khxaiyan', 'afudubxi'];
-
-    var emails = [];
-    if (user.emailAddresses) {
-      user.emailAddresses.forEach(function (e) {
-        if (e.emailAddress) emails.push(e.emailAddress.toLowerCase().trim());
-      });
-    }
-    if (user.primaryEmailAddress && user.primaryEmailAddress.emailAddress) {
-      emails.push(user.primaryEmailAddress.emailAddress.toLowerCase().trim());
-    }
-
-    var username = (user.username || '').toLowerCase().trim();
-    var userId = (user.id || '').toLowerCase().trim();
-    var meta = user.publicMetadata || {};
-
-    for (var i = 0; i < emails.length; i++) {
-      if (allowed.indexOf(emails[i]) !== -1) return true;
-    }
-    if (username && allowed.indexOf(username) !== -1) return true;
-    if (userId && allowed.indexOf(userId) !== -1) return true;
-    if (meta.role === 'admin' || meta.authorized === true) return true;
-    if (meta.access && allowed.indexOf(String(meta.access).toLowerCase()) !== -1) return true;
-
-    return false;
+    return !!user;
   }
 
   function refreshClerkAuthState() {
