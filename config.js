@@ -7,6 +7,7 @@ const CONFIG = {
   site_name: 'khxaiyan',
   site_desc: 'khxaiyan | developer in active building mode. crafting clean web tools & digital experiences.',
   seo_desc: 'khxaiyan | Web developer crafting clean tools, interfaces, and digital experiences.',
+  intro: 'Passionate developer specializing in building modern web applications, clean user interfaces, and dynamic digital tools. Focused on performance, aesthetics, and crafting clean, scalable code.',
 
   // Custom project links (optional override; live websites from GitHub repo settings/homepage are used automatically)
   project_links: {

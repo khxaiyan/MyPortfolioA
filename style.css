@@ -244,6 +244,18 @@ body {
   background: var(--surface);
 }
 
+/* ── Intro card ── */
+.intro-card {
+  padding: 16px 18px;
+}
+
+.intro-text {
+  font-size: 0.83rem;
+  color: var(--ink-dim);
+  line-height: 1.7;
+  font-family: var(--font-mono);
+}
+
 /* ── Org rows ── */
 .org-row {
   display: flex;
@@ -541,6 +553,33 @@ body {
   font-size: 0.78rem;
   color: var(--ink-faint);
   min-height: 1.2em;
+}
+
+/* ── Bottom Right Corner Tag ── */
+.corner-tag {
+  position: fixed;
+  bottom: 16px;
+  right: 18px;
+  font-family: var(--font-mono);
+  font-size: 0.75rem;
+  color: var(--ink-faint);
+  text-decoration: none;
+  background: var(--surface);
+  border: 1px solid var(--line);
+  padding: 5px 10px;
+  border-radius: var(--radius-sm);
+  z-index: 99;
+  letter-spacing: 0.02em;
+  transition: color 0.18s, border-color 0.18s, background 0.18s, transform 0.18s;
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+}
+
+.corner-tag:hover {
+  color: var(--ink);
+  border-color: var(--red);
+  background: var(--surface-hover);
+  transform: translateY(-1px);
 }
 
 /* ── Utility ── */

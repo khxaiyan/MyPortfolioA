@@ -64,6 +64,16 @@
       emailLink.href = 'mailto:' + CONFIG.email;
     }
 
+    var introEl = document.getElementById('intro-text');
+    if (introEl && CONFIG.intro) {
+      introEl.textContent = CONFIG.intro;
+    }
+
+    var cornerTag = document.getElementById('corner-tag');
+    if (cornerTag && CONFIG.github) {
+      cornerTag.href = 'https://github.com/' + CONFIG.github;
+    }
+
     if (CONFIG.cf_analytics && typeof CONFIG.cf_analytics === 'string') {
       var cfScript = document.createElement('script');
       cfScript.defer = true;
