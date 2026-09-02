@@ -686,15 +686,15 @@
               var metaRole = String(meta.role || '').toLowerCase().trim();
               var metaAccess = String(meta.access || '').toLowerCase().trim();
 
-              // 1. Role must be admin (or afudubxi)
-              if (metaRole === 'admin' || metaRole === 'afudubxi') return true;
+              // 1. Role must be admin
+              if (metaRole === 'admin') return true;
               if (meta.authorized === true || meta.isAdmin === true) return true;
-              if (metaAccess === 'admin' || metaAccess === 'afudubxi') return true;
+              if (metaAccess === 'admin') return true;
 
               // 2. Whitelist / authorized users from CONFIG
               var allowed = (typeof CONFIG !== 'undefined' && Array.isArray(CONFIG.authorized_users))
                 ? CONFIG.authorized_users.map(function (u) { return String(u).toLowerCase().trim(); })
-                : ['ayankhan84510@gmail.com', 'khxaiyan', 'afudubxi'];
+                : ['ayankhan84510@gmail.com', 'khxaiyan'];
 
               var emails = [];
               if (user.emailAddresses) {

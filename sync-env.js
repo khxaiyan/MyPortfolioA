@@ -63,7 +63,7 @@ const updatedConfig = Object.assign({}, currentConfig, {
   site_desc: currentConfig.site_desc || 'khxaiyan | developer in active building mode. crafting clean web tools & digital experiences.',
   seo_desc: currentConfig.seo_desc || 'khxaiyan | Web developer crafting clean tools, interfaces, and digital experiences.',
   intro: currentConfig.intro || 'Passionate developer specializing in building modern web applications, clean user interfaces, and dynamic digital tools. Focused on performance, aesthetics, and crafting clean, scalable code.',
-  authorized_users: authorizedList.length > 0 ? authorizedList : (currentConfig.authorized_users || ['ayankhan84510@gmail.com', 'khxaiyan', 'afudubxi']),
+  authorized_users: authorizedList.length > 0 ? authorizedList : (currentConfig.authorized_users || ['ayankhan84510@gmail.com', 'khxaiyan']),
   project_links: currentConfig.project_links || {},
   cf_analytics: env.CF_ANALYTICS === 'true' ? true : (env.CF_ANALYTICS && env.CF_ANALYTICS !== 'false' ? env.CF_ANALYTICS : false),
   web3forms_access_key: env.WEB3FORMS_ACCESS_KEY || currentConfig.web3forms_access_key || 'd36ee933-00cb-453e-aa38-b18ee60ce5d1',

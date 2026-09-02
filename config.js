@@ -11,8 +11,7 @@ const CONFIG = {
   "intro": "Passionate developer specializing in building modern web applications, clean user interfaces, and dynamic digital tools. Focused on performance, aesthetics, and crafting clean, scalable code.",
   "authorized_users": [
     "ayankhan84510@gmail.com",
-    "khxaiyan",
-    "afudubxi"
+    "khxaiyan"
   ],
   "project_links": {},
   "cf_analytics": false,
