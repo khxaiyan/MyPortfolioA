@@ -47,23 +47,17 @@ if (fs.existsSync(configPath)) {
   } catch (_) {}
 }
 
-const authorizedList = (env.AUTHORIZED_USERS || '')
-  .split(',')
-  .map((s) => s.trim())
-  .filter(Boolean);
-
 const updatedConfig = Object.assign({}, currentConfig, {
   github: env.GITHUB_USERNAME || currentConfig.github || 'khxaiyan',
   x: env.X_USERNAME || currentConfig.x || 'khxaiyan',
   telegram: env.TELEGRAM_USERNAME || currentConfig.telegram || 'khxaiyan',
-  email: env.CONTACT_EMAIL || currentConfig.email || '[EMAIL_ADDRESS]',
+  email: env.CONTACT_EMAIL || currentConfig.email || 'ayankhan84510@gmail.com',
   logo: 'logo.png',
   site_name: env.SITE_NAME || currentConfig.site_name || 'khxaiyan',
   accent_letter: env.ACCENT_LETTER || currentConfig.accent_letter || 'x',
   site_desc: currentConfig.site_desc || 'khxaiyan | developer in active building mode. crafting clean web tools & digital experiences.',
   seo_desc: currentConfig.seo_desc || 'khxaiyan | Web developer crafting clean tools, interfaces, and digital experiences.',
   intro: currentConfig.intro || 'Passionate developer specializing in building modern web applications, clean user interfaces, and dynamic digital tools. Focused on performance, aesthetics, and crafting clean, scalable code.',
-  authorized_users: authorizedList.length > 0 ? authorizedList : (currentConfig.authorized_users || ['ayankhan84510@gmail.com', 'khxaiyan']),
   project_links: currentConfig.project_links || {},
   cf_analytics: env.CF_ANALYTICS === 'true' ? true : (env.CF_ANALYTICS && env.CF_ANALYTICS !== 'false' ? env.CF_ANALYTICS : false),
   web3forms_access_key: env.WEB3FORMS_ACCESS_KEY || currentConfig.web3forms_access_key || 'd36ee933-00cb-453e-aa38-b18ee60ce5d1',

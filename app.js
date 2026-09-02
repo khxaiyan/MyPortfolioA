@@ -252,44 +252,15 @@
     el.dispatchEvent(new Event('input'));
   };
 
-  /* ─── Role-Based Authorization Check (Only Admin Can Access Developer Settings) ─── */
+  /* ─── Strictly Role-Based Access Control: ONLY users with role: "admin" can access ─── */
   function isUserAuthorized(user) {
     if (!user) return false;
 
     var meta = user.publicMetadata || {};
     var metaRole = String(meta.role || '').toLowerCase().trim();
-    var metaAccess = String(meta.access || '').toLowerCase().trim();
 
-    // 1. Role must be admin
-    if (metaRole === 'admin') return true;
-    if (meta.authorized === true || meta.isAdmin === true) return true;
-    if (metaAccess === 'admin') return true;
-
-    // 2. Whitelist / authorized users from CONFIG
-    var allowed = (typeof CONFIG !== 'undefined' && Array.isArray(CONFIG.authorized_users))
-      ? CONFIG.authorized_users.map(function (u) { return String(u).toLowerCase().trim(); })
-      : ['ayankhan84510@gmail.com', 'khxaiyan'];
-
-    var emails = [];
-    if (user.emailAddresses) {
-      user.emailAddresses.forEach(function (e) {
-        if (e.emailAddress) emails.push(e.emailAddress.toLowerCase().trim());
-      });
-    }
-    if (user.primaryEmailAddress && user.primaryEmailAddress.emailAddress) {
-      emails.push(user.primaryEmailAddress.emailAddress.toLowerCase().trim());
-    }
-
-    var username = (user.username || '').toLowerCase().trim();
-    var userId = (user.id || '').toLowerCase().trim();
-
-    for (var i = 0; i < emails.length; i++) {
-      if (allowed.indexOf(emails[i]) !== -1) return true;
-    }
-    if (username && allowed.indexOf(username) !== -1) return true;
-    if (userId && allowed.indexOf(userId) !== -1) return true;
-
-    return false;
+    // Only accounts with role: "admin" in Clerk publicMetadata can access or view settings
+    return metaRole === 'admin';
   }
 
   function refreshClerkAuthState() {
@@ -526,7 +497,6 @@
         seo_desc: (document.getElementById('m-cust-bio') || {}).value.trim(),
         intro: (document.getElementById('m-cust-intro') || {}).value.trim(),
         project_links: projectLinks,
-        authorized_users: (typeof CONFIG !== 'undefined' && CONFIG.authorized_users) ? CONFIG.authorized_users : ['ayankhan84510@gmail.com', 'khxaiyan'],
         cf_analytics: (typeof CONFIG !== 'undefined' && CONFIG.cf_analytics) ? CONFIG.cf_analytics : false,
         web3forms_access_key: (typeof CONFIG !== 'undefined' && CONFIG.web3forms_access_key) ? CONFIG.web3forms_access_key : 'd36ee933-00cb-453e-aa38-b18ee60ce5d1',
         hcaptcha_sitekey: (typeof CONFIG !== 'undefined' && CONFIG.hcaptcha_sitekey) ? CONFIG.hcaptcha_sitekey : '50b2fe65-b00b-4b9e-ad62-3ba471098be2',

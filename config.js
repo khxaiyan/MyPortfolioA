@@ -9,10 +9,6 @@ const CONFIG = {
   "site_desc": "khxaiyan | developer in active building mode. crafting clean web tools & digital experiences.",
   "seo_desc": "khxaiyan | Web developer crafting clean tools, interfaces, and digital experiences.",
   "intro": "Passionate developer specializing in building modern web applications, clean user interfaces, and dynamic digital tools. Focused on performance, aesthetics, and crafting clean, scalable code.",
-  "authorized_users": [
-    "ayankhan84510@gmail.com",
-    "khxaiyan"
-  ],
   "project_links": {},
   "cf_analytics": false,
   "web3forms_access_key": "d36ee933-00cb-453e-aa38-b18ee60ce5d1",
