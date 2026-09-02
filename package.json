@@ -13,5 +13,8 @@
     "website"
   ],
   "author": "khxaiyan",
-  "license": "MIT"
+  "license": "MIT",
+  "dependencies": {
+    "@clerk/clerk-js": "^6.30.3"
+  }
 }

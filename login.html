@@ -1,0 +1,457 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+  <meta name="color-scheme" content="dark light">
+  <title>Admin & Customizer | khxaiyan</title>
+  <link rel="icon" href="logo.png" type="image/png">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link
+    href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600&display=swap"
+    rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+  <script>
+    (function () {
+      var t = localStorage.getItem('theme') || (matchMedia('(prefers-color-scheme:light)').matches ? 'light' : 'dark');
+      document.documentElement.setAttribute('data-theme', t);
+    }());
+  </script>
+  <style>
+    .admin-container {
+      max-width: 640px;
+      margin: 0 auto;
+      padding: 32px 16px 64px;
+      width: 100%;
+    }
+
+    .admin-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 28px;
+      padding-bottom: 16px;
+      border-bottom: 1px solid var(--line);
+    }
+
+    .admin-title-group {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .admin-title {
+      font-family: var(--font-display);
+      font-size: 1.4rem;
+      font-weight: 700;
+      color: var(--ink);
+    }
+
+    .admin-nav-actions {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .back-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 6px 12px;
+      border-radius: var(--radius-sm);
+      background: var(--surface);
+      border: 1px solid var(--line);
+      color: var(--ink-dim);
+      font-size: 0.78rem;
+      text-decoration: none;
+      transition: all 0.18s;
+    }
+
+    .back-btn:hover {
+      color: var(--ink);
+      border-color: var(--line-strong);
+      background: var(--surface-hover);
+    }
+
+    /* Auth card */
+    .auth-box {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding: 32px 20px;
+      background: var(--surface);
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      text-align: center;
+      gap: 16px;
+    }
+
+    .auth-desc {
+      font-size: 0.85rem;
+      color: var(--ink-dim);
+      max-width: 380px;
+      line-height: 1.6;
+    }
+
+    /* Customizer form */
+    .customizer-box {
+      display: none;
+      flex-direction: column;
+      gap: 20px;
+    }
+
+    .customizer-box.active {
+      display: flex;
+    }
+
+    .form-group {
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+    }
+
+    .form-group label {
+      font-size: 0.75rem;
+      color: var(--ink-faint);
+      font-weight: 500;
+      letter-spacing: 0.02em;
+    }
+
+    .form-group input,
+    .form-group textarea {
+      width: 100%;
+      background: var(--surface);
+      border: 1px solid var(--line);
+      border-radius: var(--radius-sm);
+      padding: 10px 14px;
+      font-family: var(--font-mono);
+      font-size: 0.82rem;
+      color: var(--ink);
+      outline: none;
+      transition: border-color 0.18s;
+    }
+
+    .form-group input:focus,
+    .form-group textarea:focus {
+      border-color: var(--red);
+    }
+
+    .grid-2 {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 14px;
+    }
+
+    @media (max-width: 600px) {
+      .grid-2 {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    .action-row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      margin-top: 10px;
+    }
+
+    .save-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      background: var(--red-solid);
+      color: #fff;
+      border: none;
+      border-radius: var(--radius);
+      padding: 12px 24px;
+      font-family: var(--font-mono);
+      font-size: 0.84rem;
+      font-weight: 500;
+      cursor: pointer;
+      transition: background 0.18s;
+    }
+
+    .save-btn:hover {
+      background: var(--red-solid-hov);
+    }
+
+    .status-alert {
+      font-size: 0.8rem;
+      color: var(--success);
+      margin-top: 8px;
+      display: none;
+    }
+
+    .code-preview {
+      background: var(--surface-hover);
+      border: 1px solid var(--line);
+      border-radius: var(--radius-sm);
+      padding: 12px;
+      font-family: var(--font-mono);
+      font-size: 0.75rem;
+      color: var(--ink-dim);
+      white-space: pre-wrap;
+      word-break: break-all;
+      max-height: 180px;
+      overflow-y: auto;
+    }
+  </style>
+</head>
+
+<body>
+
+  <main class="admin-container">
+
+    <header class="admin-header">
+      <div class="admin-title-group">
+        <h1 class="admin-title">kh<span class="glyph-5">x</span>aiyan <span style="font-size:0.9rem; color:var(--ink-faint); font-weight:400;">// customizer</span></h1>
+      </div>
+      <div class="admin-nav-actions">
+        <div id="clerk-user-button"></div>
+        <a href="index.html" class="back-btn">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M19 12H5"/><path d="m12 19-7-7 7-7"/>
+          </svg>
+          <span>Portfolio</span>
+        </a>
+      </div>
+    </header>
+
+    <!-- ── Clerk Sign-In Box (when logged out) ── -->
+    <div class="auth-box" id="auth-box">
+      <p class="eyebrow" style="margin-bottom:0;">// clerk authentication</p>
+      <p class="auth-desc">Sign in with Clerk to access your website customizer and manage your live developer portfolio.</p>
+      <div id="clerk-sign-in"></div>
+    </div>
+
+    <!-- ── Customizer Box (when logged in) ── -->
+    <div class="customizer-box" id="customizer-box">
+      <div class="surface-card intro-card" style="margin-bottom:12px;">
+        <p class="eyebrow" style="margin-bottom:6px;">// logged in session</p>
+        <p class="intro-text" id="user-welcome" style="color:var(--ink);">Welcome, verified developer.</p>
+      </div>
+
+      <div class="surface-card" style="padding: 20px;">
+        <p class="eyebrow" style="margin-bottom:16px;">// customize portfolio settings</p>
+        
+        <div class="grid-2">
+          <div class="form-group">
+            <label for="cust-sitename">Site Wordmark / Name</label>
+            <input type="text" id="cust-sitename" placeholder="khxaiyan">
+          </div>
+          <div class="form-group">
+            <label for="cust-email">Contact Email</label>
+            <input type="email" id="cust-email" placeholder="your@email.com">
+          </div>
+        </div>
+
+        <div class="form-group" style="margin-top:14px;">
+          <label for="cust-bio">Headline Bio</label>
+          <input type="text" id="cust-bio" placeholder="developer in active building mode. crafting clean web tools & digital experiences.">
+        </div>
+
+        <div class="form-group" style="margin-top:14px;">
+          <label for="cust-intro">// Intro Paragraph</label>
+          <textarea id="cust-intro" rows="3" placeholder="Passionate developer specializing in building modern web applications..."></textarea>
+        </div>
+
+        <div class="grid-2" style="margin-top:14px;">
+          <div class="form-group">
+            <label for="cust-github">GitHub Username</label>
+            <input type="text" id="cust-github" placeholder="khxaiyan">
+          </div>
+          <div class="form-group">
+            <label for="cust-x">X (Twitter) Handle</label>
+            <input type="text" id="cust-x" placeholder="khxaiyan">
+          </div>
+        </div>
+
+        <div class="grid-2" style="margin-top:14px;">
+          <div class="form-group">
+            <label for="cust-telegram">Telegram Username</label>
+            <input type="text" id="cust-telegram" placeholder="khxaiyan">
+          </div>
+          <div class="form-group">
+            <label for="cust-web3forms">Web3Forms Access Key</label>
+            <input type="text" id="cust-web3forms" placeholder="d36ee933-...">
+          </div>
+        </div>
+
+        <div class="form-group" style="margin-top:14px;">
+          <label for="cust-projectlinks">Custom Project Websites (JSON format)</label>
+          <textarea id="cust-projectlinks" rows="2" placeholder='{"CarryOn-E-Commerce-Website": "https://carryon-five.vercel.app/"}'></textarea>
+        </div>
+
+        <div class="action-row" style="margin-top:20px;">
+          <button type="button" class="save-btn" id="btn-save-customizer">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2z"/>
+              <polyline points="17 21 17 13 7 13 7 21"/>
+              <polyline points="7 3 7 8 15 8"/>
+            </svg>
+            <span>Save & Apply Changes</span>
+          </button>
+          <a href="index.html" class="back-btn" style="padding: 10px 16px;">View Live Portfolio &rarr;</a>
+        </div>
+
+        <p id="save-status" class="status-alert">Changes saved! Active on your portfolio.</p>
+
+        <div class="form-group" style="margin-top:20px;">
+          <label>// Updated config.js code snippet (ready to copy):</label>
+          <pre class="code-preview" id="config-code-preview"></pre>
+        </div>
+      </div>
+    </div>
+
+  </main>
+
+  <script src="config.js"></script>
+  <!-- Clerk JavaScript SDK -->
+  <script
+    async
+    crossorigin="anonymous"
+    data-clerk-publishable-key="pk_test_c2hpbmluZy10dXJrZXktMTMyNS5jbGVyay5hY2NvdW50cy5kZXYk"
+    src="https://cdn.jsdelivr.net/npm/@clerk/clerk-js@latest/dist/clerk.browser.js"
+    type="text/javascript"></script>
+
+  <script>
+    (function () {
+      'use strict';
+
+      var authBox = document.getElementById('auth-box');
+      var customizerBox = document.getElementById('customizer-box');
+      var userWelcome = document.getElementById('user-welcome');
+      var saveStatus = document.getElementById('save-status');
+      var configCodePreview = document.getElementById('config-code-preview');
+
+      // Populate current config values into form fields
+      function loadCurrentConfig() {
+        var cfg = Object.assign({}, typeof CONFIG !== 'undefined' ? CONFIG : {});
+        try {
+          var saved = localStorage.getItem('portfolio_custom_config');
+          if (saved) {
+            Object.assign(cfg, JSON.parse(saved));
+          }
+        } catch (_) {}
+
+        document.getElementById('cust-sitename').value = cfg.site_name || '';
+        document.getElementById('cust-email').value = cfg.email || '';
+        document.getElementById('cust-bio').value = cfg.site_desc || '';
+        document.getElementById('cust-intro').value = cfg.intro || '';
+        document.getElementById('cust-github').value = cfg.github || '';
+        document.getElementById('cust-x').value = cfg.x || '';
+        document.getElementById('cust-telegram').value = cfg.telegram || '';
+        document.getElementById('cust-web3forms').value = cfg.web3forms_access_key || '';
+        document.getElementById('cust-projectlinks').value = JSON.stringify(cfg.project_links || {}, null, 2);
+
+        updateCodeSnippet(cfg);
+      }
+
+      function updateCodeSnippet(cfg) {
+        if (!configCodePreview) return;
+        var code = 'const CONFIG = ' + JSON.stringify(cfg, null, 2) + ';';
+        configCodePreview.textContent = code;
+      }
+
+      // Handle saving changes
+      document.getElementById('btn-save-customizer').addEventListener('click', function () {
+        var projectLinks = {};
+        try {
+          projectLinks = JSON.parse(document.getElementById('cust-projectlinks').value || '{}');
+        } catch (_) {}
+
+        var updated = {
+          github: document.getElementById('cust-github').value.trim(),
+          x: document.getElementById('cust-x').value.trim(),
+          telegram: document.getElementById('cust-telegram').value.trim(),
+          email: document.getElementById('cust-email').value.trim(),
+          logo: 'logo.png',
+          site_name: document.getElementById('cust-sitename').value.trim(),
+          site_desc: document.getElementById('cust-bio').value.trim(),
+          seo_desc: document.getElementById('cust-bio').value.trim(),
+          intro: document.getElementById('cust-intro').value.trim(),
+          project_links: projectLinks,
+          cf_analytics: (typeof CONFIG !== 'undefined' && CONFIG.cf_analytics) ? CONFIG.cf_analytics : false,
+          web3forms_access_key: document.getElementById('cust-web3forms').value.trim() || 'd36ee933-00cb-453e-aa38-b18ee60ce5d1',
+          hcaptcha_sitekey: '50b2fe65-b00b-4b9e-ad62-3ba471098be2',
+          clerk_publishable_key: 'pk_test_c2hpbmluZy10dXJrZXktMTMyNS5jbGVyay5hY2NvdW50cy5kZXYk'
+        };
+
+        localStorage.setItem('portfolio_custom_config', JSON.stringify(updated));
+        updateCodeSnippet(updated);
+
+        saveStatus.style.display = 'block';
+        setTimeout(function () {
+          saveStatus.style.display = 'none';
+        }, 3000);
+      });
+
+      // Initialize Clerk Authentication
+      window.addEventListener('load', async function () {
+        var pubKey = (typeof CONFIG !== 'undefined' && CONFIG.clerk_publishable_key)
+          ? CONFIG.clerk_publishable_key
+          : 'pk_test_c2hpbmluZy10dXJrZXktMTMyNS5jbGVyay5hY2NvdW50cy5kZXYk';
+
+        if (window.Clerk) {
+          try {
+            await window.Clerk.load({
+              publishableKey: pubKey,
+              appearance: {
+                variables: {
+                  colorPrimary: '#ff2a5f',
+                  colorBackground: '#131319',
+                  colorText: '#eef0f4',
+                  colorInputBackground: '#0a0a0e',
+                  colorInputText: '#eef0f4'
+                }
+              }
+            });
+
+            if (window.Clerk.user) {
+              // User is authenticated
+              authBox.style.display = 'none';
+              customizerBox.classList.add('active');
+
+              var identifier = window.Clerk.user.primaryEmailAddress
+                ? window.Clerk.user.primaryEmailAddress.emailAddress
+                : window.Clerk.user.username || 'Developer';
+
+              userWelcome.textContent = 'Welcome back, ' + identifier + '! You have full access to customize the portfolio.';
+
+              var userBtnEl = document.getElementById('clerk-user-button');
+              if (userBtnEl) {
+                window.Clerk.mountUserButton(userBtnEl);
+              }
+
+              loadCurrentConfig();
+            } else {
+              // User is not signed in - mount sign in
+              authBox.style.display = 'flex';
+              customizerBox.classList.remove('active');
+
+              var signInEl = document.getElementById('clerk-sign-in');
+              if (signInEl) {
+                window.Clerk.mountSignIn(signInEl);
+              }
+            }
+          } catch (err) {
+            console.error('Clerk load error:', err);
+            authBox.style.display = 'none';
+            customizerBox.classList.add('active');
+            loadCurrentConfig();
+          }
+        } else {
+          authBox.style.display = 'none';
+          customizerBox.classList.add('active');
+          loadCurrentConfig();
+        }
+      });
+    }());
+  </script>
+</body>
+
+</html>

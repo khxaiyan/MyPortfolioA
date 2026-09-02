@@ -36,6 +36,7 @@
 - **🌓 Dual Theme Support (Dark & Light)**: Smooth theme toggling with immediate `localStorage` state persistence and system color-scheme detection.
 - **📬 Working Contact Form**: Web3Forms integration with hCaptcha bot verification for spam protection.
 - **🔒 Privacy & Security First**: Complete `.gitignore` setup, sanitized credentials, and support for 100% private repository hosting.
+- **🔐 Clerk Authentication & Secret Customizer**: Secret 10-click trigger on the bottom-right `@khxaiyan` tag opens the Clerk-authenticated admin customizer (`login.html`), allowing you to easily edit profile information, links, and custom project settings with live instant preview.
 - **📱 Fully Responsive**: Flawless experience across mobile, tablet, and widescreen desktop monitors.
 
 ---

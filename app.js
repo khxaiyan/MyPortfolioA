@@ -57,11 +57,24 @@
     });
   }
 
-  /* ─── Sync Config Links & Analytics ─── */
+  /* ─── Load Local Customizer Overrides if present ─── */
+  try {
+    var savedCustom = localStorage.getItem('portfolio_custom_config');
+    if (savedCustom && typeof CONFIG !== 'undefined') {
+      Object.assign(CONFIG, JSON.parse(savedCustom));
+    }
+  } catch (_) {}
+
+  /* ─── Sync Config Links, Bio & Analytics ─── */
   if (typeof CONFIG !== 'undefined') {
-    var emailLink = document.getElementById('link-email');
-    if (emailLink && CONFIG.email && CONFIG.email !== 'your@email.com') {
-      emailLink.href = 'mailto:' + CONFIG.email;
+    var wordmark = document.querySelector('.wordmark');
+    if (wordmark && CONFIG.site_name) {
+      wordmark.innerHTML = highlightCapitals(CONFIG.site_name);
+    }
+
+    var bioEl = document.querySelector('.bio');
+    if (bioEl && CONFIG.site_desc) {
+      bioEl.textContent = CONFIG.site_desc;
     }
 
     var introEl = document.getElementById('intro-text');
@@ -69,9 +82,24 @@
       introEl.textContent = CONFIG.intro;
     }
 
-    var cornerTag = document.getElementById('corner-tag');
-    if (cornerTag && CONFIG.github) {
-      cornerTag.href = 'https://github.com/' + CONFIG.github;
+    var emailLink = document.getElementById('link-email');
+    if (emailLink && CONFIG.email && CONFIG.email !== 'your@email.com') {
+      emailLink.href = 'mailto:' + CONFIG.email;
+    }
+
+    var githubLink = document.getElementById('link-github');
+    if (githubLink && CONFIG.github) {
+      githubLink.href = 'https://github.com/' + CONFIG.github;
+    }
+
+    var xLink = document.getElementById('link-x');
+    if (xLink && CONFIG.x) {
+      xLink.href = 'https://x.com/' + CONFIG.x;
+    }
+
+    var tgLink = document.getElementById('link-telegram');
+    if (tgLink && CONFIG.telegram) {
+      tgLink.href = 'https://t.me/' + CONFIG.telegram;
     }
 
     if (CONFIG.cf_analytics && typeof CONFIG.cf_analytics === 'string') {
@@ -81,6 +109,50 @@
       cfScript.setAttribute('data-cf-beacon', JSON.stringify({ token: CONFIG.cf_analytics }));
       document.head.appendChild(cfScript);
     }
+  }
+
+  /* ─── Android-Style Developer Settings Unlock (10 Taps) ─── */
+  var cornerClicks = 0;
+  var cornerClickTimer = null;
+  var toastTimer = null;
+  var cornerTagEl = document.getElementById('corner-tag');
+  var devToast = document.getElementById('dev-toast');
+
+  function showDevToast(msg) {
+    if (!devToast) return;
+    devToast.textContent = msg;
+    devToast.classList.add('show');
+    clearTimeout(toastTimer);
+    toastTimer = setTimeout(function () {
+      devToast.classList.remove('show');
+    }, 2200);
+  }
+
+  if (cornerTagEl) {
+    cornerTagEl.addEventListener('click', function (e) {
+      if (e) e.preventDefault();
+      cornerClicks++;
+      clearTimeout(cornerClickTimer);
+
+      var remaining = 10 - cornerClicks;
+
+      if (cornerClicks >= 10) {
+        cornerClicks = 0;
+        showDevToast('🔓 Developer Mode unlocked! Opening customizer...');
+        setTimeout(function () {
+          window.location.href = 'login.html';
+        }, 750);
+        return;
+      }
+
+      if (cornerClicks >= 4) {
+        showDevToast('You are now ' + remaining + ' step' + (remaining === 1 ? '' : 's') + ' away from Developer Mode.');
+      }
+
+      cornerClickTimer = setTimeout(function () {
+        cornerClicks = 0;
+      }, 3500);
+    });
   }
 
   /* ─── Live GitHub Pinned Projects ─── */
