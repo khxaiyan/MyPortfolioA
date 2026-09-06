@@ -5,6 +5,8 @@ node_modules/
 .env
 .env.local
 .env.*.local
+keys/.env
+keys/.env.local
 *.pem
 *.key
 
