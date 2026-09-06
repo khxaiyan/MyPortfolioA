@@ -29,7 +29,20 @@ function parseEnv(filePath) {
 const envPath      = path.join(__dirname, '..', 'keys', '.env');
 const envLocalPath = path.join(__dirname, '..', 'keys', '.env.local');
 
-const env = Object.assign({}, parseEnv(envPath), parseEnv(envLocalPath));
+const supportedKeys = [
+  'GITHUB_USERNAME', 'X_USERNAME', 'TELEGRAM_USERNAME', 'CONTACT_EMAIL',
+  'SITE_NAME', 'ACCENT_LETTER', 'CF_ANALYTICS', 'WEB3FORMS_ACCESS_KEY',
+  'HCAPTCHA_SITEKEY', 'CLERK_PUBLISHABLE_KEY', 'CLERK_FRONTEND_API',
+  'AUTHORIZED_USERS'
+];
+const envFromProcess = {};
+supportedKeys.forEach((key) => {
+  if (process.env[key]) {
+    envFromProcess[key] = process.env[key];
+  }
+});
+
+const env = Object.assign({}, envFromProcess, parseEnv(envPath), parseEnv(envLocalPath));
 
 if (Object.keys(env).length === 0) {
   console.log('ℹ️ No .env found. Using existing config.js.');

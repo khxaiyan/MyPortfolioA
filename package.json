@@ -4,6 +4,7 @@
   "description": "khxaiyan portfolio website",
   "scripts": {
     "sync":  "node backend/sync-env.js",
+    "build": "node backend/sync-env.js",
     "dev":   "node backend/sync-env.js && npx serve frontend",
     "start": "node backend/sync-env.js && npx serve frontend",
     "serve": "npx serve frontend"
