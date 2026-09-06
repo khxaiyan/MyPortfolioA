@@ -174,8 +174,24 @@
   /* ─── Load Local Customizer Overrides if present ─── */
   try {
     var savedCustom = localStorage.getItem('portfolio_custom_config');
-    if (savedCustom && typeof CONFIG !== 'undefined') {
-      Object.assign(CONFIG, JSON.parse(savedCustom));
+    if (savedCustom) {
+      var parsedCustom = JSON.parse(savedCustom);
+      var needsSave = false;
+      if (parsedCustom.avatar_url === 'avatar.svg' || parsedCustom.logo === 'avatar.svg') {
+        parsedCustom.avatar_url = 'Diluc.svg';
+        parsedCustom.logo = 'Diluc.svg';
+        needsSave = true;
+      }
+      if (parsedCustom.favicon_url === 'favicon.svg') {
+        parsedCustom.favicon_url = 'favicon.png';
+        needsSave = true;
+      }
+      if (needsSave) {
+        try { localStorage.setItem('portfolio_custom_config', JSON.stringify(parsedCustom)); } catch (_) {}
+      }
+      if (typeof CONFIG !== 'undefined') {
+        Object.assign(CONFIG, parsedCustom);
+      }
     }
   } catch (_) { }
 
@@ -1358,7 +1374,7 @@
 
   /* ── Avatar helpers & format handling ── */
   function applyPageFavicon(url) {
-    if (!url) url = 'favicon.png';
+    if (!url || url === 'favicon.svg') url = 'favicon.png';
     var links = document.querySelectorAll("link[rel*='icon']");
     if (!links || links.length === 0) {
       var link = document.createElement('link');
@@ -1419,13 +1435,14 @@
         }
       }
     } else {
+      var finalImgSrc = (url && url !== 'avatar.svg') ? url : 'Diluc.svg';
       if (currentEl && currentEl.tagName.toLowerCase() === 'img') {
-        currentEl.src = url || 'Diluc.svg';
+        currentEl.src = finalImgSrc;
         currentEl.setAttribute('draggable', 'false');
       } else {
         var img = document.createElement('img');
         img.className = 'avatar-img';
-        img.src = url || 'Diluc.svg';
+        img.src = finalImgSrc;
         img.alt = 'khxaiyan';
         img.setAttribute('width', '88');
         img.setAttribute('height', '88');

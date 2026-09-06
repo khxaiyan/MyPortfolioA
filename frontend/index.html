@@ -21,6 +21,7 @@
     content="khxaiyan | Developer in active building mode. Crafting clean web tools & interfaces.">
   <meta name="twitter:image" content="https://khxaiyan.vercel.app/Diluc.svg">
   <link rel="icon" href="favicon.png" type="image/png">
+  <link rel="shortcut icon" href="favicon.ico" type="image/x-icon">
   <link rel="apple-touch-icon" href="favicon.png">
   <link rel="canonical" href="https://khxaiyan.github.io/">
   <meta name="theme-color" id="meta-theme-color" content="#0a0a0e">
@@ -35,18 +36,35 @@
     (function () {
       var customCfg = null;
       try { customCfg = JSON.parse(localStorage.getItem('portfolio_custom_config')); } catch (_) {}
+      if (customCfg) {
+        var needsUpdate = false;
+        if (customCfg.favicon_url === 'favicon.svg') {
+          customCfg.favicon_url = 'favicon.png';
+          needsUpdate = true;
+        }
+        if (customCfg.avatar_url === 'avatar.svg' || customCfg.logo === 'avatar.svg') {
+          customCfg.avatar_url = 'Diluc.svg';
+          customCfg.logo = 'Diluc.svg';
+          needsUpdate = true;
+        }
+        if (needsUpdate) {
+          try { localStorage.setItem('portfolio_custom_config', JSON.stringify(customCfg)); } catch (_) {}
+        }
+      }
       var themeCfg = (customCfg && customCfg.theme_config) || {};
       var defTheme = themeCfg.mode || (customCfg && customCfg.default_theme) || 'dark';
       var t = localStorage.getItem('theme') || defTheme;
       document.documentElement.setAttribute('data-theme', t);
 
-      var fav = (customCfg && customCfg.favicon_url) || null;
+      var fav = (customCfg && customCfg.favicon_url) || 'favicon.png';
+      if (fav === 'favicon.svg') fav = 'favicon.png';
       if (fav) {
         var fi = document.querySelector("link[rel~='icon']");
         if (fi) {
           if (fav.startsWith('data:image/svg') || /\.svg(\?.*)?$/i.test(fav)) fi.type = 'image/svg+xml';
           else if (fav.startsWith('data:image/x-icon') || /\.ico(\?.*)?$/i.test(fav)) fi.type = 'image/x-icon';
           else if (fav.startsWith('data:image/gif') || /\.gif(\?.*)?$/i.test(fav)) fi.type = 'image/gif';
+          else fi.type = 'image/png';
           fi.href = fav;
         }
         var afi = document.querySelector("link[rel='apple-touch-icon']");

@@ -9,6 +9,8 @@ Disallow: /backend/
 # Allow root and assets
 Allow: /
 Allow: /favicon.png
+Allow: /favicon.ico
 Allow: /Diluc.svg
+Allow: /Diluc.png
 Allow: /style.css
 Allow: /app.js
