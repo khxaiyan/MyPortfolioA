@@ -1,8 +1,8 @@
 <div align="center">
 
-# kh<span style="color:#ff2a5f">x</span>aiyan — Developer Portfolio
+# khxaiyan — Developer Portfolio
 
-<p><em>Minimalist, ultra-clean developer portfolio featuring dynamic real-time GitHub pinned projects, Boneyard skeleton loading, dark/light themes, and secure deployment architecture.</em></p>
+<p><em>Minimalist, ultra-clean developer portfolio featuring dynamic real-time projects showcase, smooth skeleton shimmer loading, dark/light themes, and secure deployment architecture.</em></p>
 
 [![Live Site](https://img.shields.io/badge/Live_Site-khxaiyan.vercel.app-ff2a5f?style=for-the-badge&logo=vercel&logoColor=white)](https://khxaiyan.vercel.app)
 [![GitHub](https://img.shields.io/badge/GitHub-@khxaiyan-181717?style=for-the-badge&logo=github&logoColor=white)](https://github.com/khxaiyan)
@@ -16,7 +16,7 @@
 - [✨ Key Features](#-key-features)
 - [🛠️ Tech Stack](#️-tech-stack)
 - [📁 Project Structure](#-project-structure)
-- [⚙️ Configuration (`config.js`)](#️-configuration-configjs)
+- [⚙️ Configuration](#️-configuration)
 - [🚀 Quick Start / Local Development](#-quick-start--local-development)
 - [🌐 Deployment Options](#-deployment-options)
   - [Option A: Deploy on Vercel (Recommended)](#option-a-deploy-on-vercel-recommended)
@@ -30,13 +30,13 @@
 
 ## ✨ Key Features
 
-- **⚡ Real-Time Dynamic GitHub Pins**: Automatically fetches and renders your live GitHub pinned repositories in real-time with zero caching delay (`no-store` + cache busting). When you update your pins on GitHub, your portfolio updates instantly without code changes or rebuilds.
-- **💀 Boneyard Pixel-Perfect Skeleton Screen**: Zero layout-shift skeleton shimmer loader mirroring the exact DOM bones (avatars, text lines, star badges) during initial data resolution.
+- **⚡ Dynamic Projects Showcase**: Automatically renders your curated portfolio projects with direct links to live deployments.
+- **⚡ Pixel-Perfect Skeleton Shimmer Loading**: Zero layout-shift skeleton shimmer loader mirroring the exact card dimensions during initial data resolution.
 - **🎨 Signature Tech Branding**: Sleek rail-node timeline layout, modern typography with *Space Grotesk* and *IBM Plex Mono*, and automatic red accent highlighting (`glyph-5`) on all project capital letters.
 - **🌓 Dual Theme Support (Dark & Light)**: Smooth theme toggling with immediate `localStorage` state persistence and system color-scheme detection.
 - **📬 Working Contact Form**: Web3Forms integration with hCaptcha bot verification for spam protection.
-- **🔒 Privacy & Security First**: Complete `.gitignore` setup, sanitized credentials, and support for 100% private repository hosting.
-- **🔐 Clerk Authentication & Secret Customizer**: Secret 10-click trigger on the bottom-right `@khxaiyan` tag opens the Clerk-authenticated admin customizer (`login.html`), allowing you to easily edit profile information, links, and custom project settings with live instant preview.
+- **🔒 Privacy & Security First**: Complete `.gitignore` setup, sanitized credentials, and isolated `keys/` folder — secrets are never served to the browser.
+- **🔐 Clerk Authentication & Secret Customizer**: Secret 10-click trigger on the bottom-right `@khxaiyan` tag opens the Clerk-authenticated admin customizer, allowing you to edit profile picture, bio, links, and custom project settings with live instant preview.
 - **📱 Fully Responsive**: Flawless experience across mobile, tablet, and widescreen desktop monitors.
 
 ---
@@ -51,6 +51,7 @@
 | **Google Fonts** | `Space Grotesk` (Headings/Display) & `IBM Plex Mono` (Body/Code) |
 | **Web3Forms API** | Serverless contact form submission endpoint |
 | **hCaptcha** | Privacy-friendly CAPTCHA protection |
+| **Clerk** | Authentication for the developer admin customizer |
 | **GitHub Actions** | Automated CI/CD deployment trigger |
 
 ---
@@ -59,46 +60,69 @@
 
 ```text
 MyPortfolioA/
+│
+├── frontend/                        ← Everything the browser loads
+│   ├── index.html                   # Main portfolio homepage
+│   ├── developer.html               # Clerk-authenticated admin customizer (/developer)
+│   ├── 404.html                     # Themed 404 error page
+│   ├── style.css                    # Core stylesheet, tokens & skeleton shimmer
+│   ├── app.js                       # Main application logic & GitHub pins loader
+│   ├── config.js                    # Auto-generated config (synced from keys/.env)
+│   └── logo.png                     # Default profile avatar image
+│
+├── backend/                         ← Node / server-side scripts
+│   └── sync-env.js                  # Reads keys/.env → writes frontend/config.js
+│
+├── keys/                            ← API keys & secrets (never served to browser)
+│   ├── .env                         # Real secrets (gitignored ✓)
+│   ├── .env.local                   # Local overrides (gitignored ✓)
+│   └── .env.example                 # Safe template (committed to git ✓)
+│
 ├── .github/
 │   └── workflows/
-│       └── notify-deploy.yml   # Auto-triggers deployment on push
-├── .gitignore                  # Keeps secrets, cache & OS files untracked
-├── 404.html                    # Themed 404 error page with Return Home action
-├── app.js                      # Main application logic & live GitHub pins loader
-├── config.js                   # Centralized configuration (links, email, keys)
-├── index.html                  # Main portfolio homepage
-├── logo.png                    # Profile avatar image
-├── package.json                # Project manifest & dev scripts (npx serve)
-├── style.css                   # Core stylesheet, tokens & Boneyard skeletons
-└── README.md                   # Complete documentation
+│       └── notify-deploy.yml        # Auto-triggers deployment on push
+├── .gitignore
+├── package.json                     # Project manifest & npm scripts
+└── README.md
 ```
+
+> **Security note:** `npm run serve` only serves the `frontend/` folder.
+> The `keys/` and `backend/` folders are completely unreachable from the browser.
 
 ---
 
-## ⚙️ Configuration (`config.js`)
+## ⚙️ Configuration
 
-All personal information and public configuration settings are centralized inside `config.js`:
+All personal information and API keys live in `keys/.env`.
+Run `npm run sync` to write them into `frontend/config.js`.
 
-```javascript
-const CONFIG = {
-  github: 'khxaiyan',
-  x: 'khxaiyan',
-  telegram: 'khxaiyan',
-  email: 'your-email@example.com', // Your contact email
-  logo: 'logo.png',
-  site_name: 'khxaiyan',
-  site_desc: 'khxaiyan | developer in active building mode. crafting clean web tools & digital experiences.',
-  // Custom project links (optional override; live websites from GitHub repo homepage are used automatically)
-  project_links: {
-    // 'CarryOn-E-Commerce-Website': 'https://carryon-five.vercel.app/',
-    // 'GetWeb_Screenshot': 'https://getweb-screenshot.vercel.app',
-  },
-  
-  // Contact Form & Security (https://web3forms.com)
-  web3forms_access_key: 'YOUR_WEB3FORMS_ACCESS_KEY',
-  hcaptcha_sitekey: '50b2fe65-b00b-4b9e-ad62-3ba471098be2',
-};
+**`keys/.env` structure:**
+```bash
+# Clerk Authentication
+CLERK_PUBLISHABLE_KEY=pk_test_...
+CLERK_SECRET_KEY=sk_test_...
+CLERK_FRONTEND_API=https://your-app.clerk.accounts.dev
+
+# Contact Form & Security
+WEB3FORMS_ACCESS_KEY=your_web3forms_access_key
+HCAPTCHA_SITEKEY=50b2fe65-b00b-4b9e-ad62-3ba471098be2
+
+# Socials & Profile Identity
+GITHUB_USERNAME=khxaiyan
+TELEGRAM_USERNAME=khxaiyan
+X_USERNAME=khxaiyan
+CONTACT_EMAIL=your@email.com
+SITE_NAME=khxaiyan
+ACCENT_LETTER=x
+
+# Whitelist of Authorized Admins (comma-separated)
+AUTHORIZED_USERS=your@email.com
+
+# Optional Cloudflare Analytics Token
+CF_ANALYTICS=false
 ```
+
+> Copy `keys/.env.example` → `keys/.env` and fill in your values, then run `npm run sync`.
 
 ---
 
@@ -113,14 +137,35 @@ git clone https://github.com/khxaiyan/MyPortfolioA.git
 cd MyPortfolioA
 ```
 
-### 2. Start the local development server
+### 2. Set up your environment keys
 ```bash
-npm run dev
+cp keys/.env.example keys/.env
+# Edit keys/.env with your real values
 ```
-*(or run `npx serve .`)*
 
-### 3. Open in Browser
+### 3. Sync keys into config
+```bash
+npm run sync
+```
+
+### 4. Start the local development server
+```bash
+npm run serve
+```
+
+### 5. Open in Browser
 Visit **`http://localhost:3000`** in your browser.
+
+---
+
+### npm scripts reference
+
+| Command | What it does |
+| :--- | :--- |
+| `npm run sync` | Reads `keys/.env` → writes `frontend/config.js` |
+| `npm run serve` | Serves `frontend/` at `http://localhost:3000` |
+| `npm run dev` | `sync` + `serve` in one step |
+| `npm run start` | Same as `dev` |
 
 ---
 
@@ -129,7 +174,8 @@ Visit **`http://localhost:3000`** in your browser.
 ### Option A: Deploy on Vercel (Recommended)
 1. Push your repository to GitHub as **Private** (or Public).
 2. Go to **[vercel.com/new](https://vercel.com/new)** and import your `MyPortfolioA` repository.
-3. Click **Deploy**. Vercel will automatically build and assign a free SSL-secured domain.
+3. Set the **Root Directory** to `frontend/` in the Vercel project settings.
+4. Click **Deploy**. Vercel will automatically build and assign a free SSL-secured domain.
 
 ---
 
@@ -145,7 +191,7 @@ If you want to host on `https://<username>.github.io` while keeping your source 
 
 ## 🎨 Design System & Customization
 
-### Color Palette (CSS Variables in `style.css`)
+### Color Palette (CSS Variables in `frontend/style.css`)
 ```css
 :root {
   --bg:           #0a0a0e;       /* Deep dark background */
@@ -167,8 +213,9 @@ If you want to host on `https://<username>.github.io` while keeping your source 
 ## 📬 Contact Form Setup
 
 1. Register for a free Access Key at **[web3forms.com](https://web3forms.com/)**.
-2. Paste your Access Key into `config.js` under `web3forms_access_key`.
-3. Messages submitted through the contact form on your portfolio will be delivered directly to your email inbox.
+2. Add your Access Key to `keys/.env` under `WEB3FORMS_ACCESS_KEY`.
+3. Run `npm run sync` to push the key into `frontend/config.js`.
+4. Messages submitted through the contact form will be delivered directly to your email inbox.
 
 ---
 
