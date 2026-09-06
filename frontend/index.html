@@ -13,15 +13,15 @@
   <meta property="og:title" content="khxaiyan">
   <meta property="og:description"
     content="khxaiyan | Developer in active building mode. Crafting clean web tools & interfaces.">
-  <meta property="og:image" content="https://khxaiyan.github.io/logo.png">
+  <meta property="og:image" content="https://khxaiyan.vercel.app/avatar.svg">
   <meta name="twitter:card" content="summary">
   <meta name="twitter:site" content="@khxaiyan">
   <meta name="twitter:title" content="khxaiyan">
   <meta name="twitter:description"
     content="khxaiyan | Developer in active building mode. Crafting clean web tools & interfaces.">
-  <meta name="twitter:image" content="https://khxaiyan.github.io/logo.png">
-  <link rel="icon" href="logo.png" type="image/png">
-  <link rel="apple-touch-icon" href="logo.png">
+  <meta name="twitter:image" content="https://khxaiyan.vercel.app/avatar.svg">
+  <link rel="icon" href="favicon.svg" type="image/svg+xml">
+  <link rel="apple-touch-icon" href="favicon.svg">
   <link rel="canonical" href="https://khxaiyan.github.io/">
   <meta name="theme-color" id="meta-theme-color" content="#0a0a0e">
   <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -111,7 +111,7 @@
       <div class="content-col id-col">
         <div class="id-block">
           <button class="avatar-wrap" id="avatar-wrap" aria-label="Toggle theme">
-            <img class="avatar-img" src="logo.png" alt="khxaiyan" width="88" height="88" loading="eager" draggable="false">
+            <img class="avatar-img" src="avatar.svg" alt="khxaiyan" width="88" height="88" loading="eager" draggable="false">
             <span class="theme-badge" id="theme-badge" aria-hidden="true">
               <!-- Sun icon: visible in dark mode -->
               <svg class="badge-sun" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor"
@@ -331,7 +331,7 @@
         <!-- Instagram-style profile picture upload -->
         <div style="display:flex; flex-direction:column; align-items:center; gap:10px; padding:18px 0 14px; border-bottom:1px solid var(--line); margin-bottom:16px;">
           <div style="position:relative; width:88px; height:88px; cursor:pointer;" id="m-avatar-upload-wrap" title="Change profile picture">
-            <img id="m-avatar-preview" src="logo.png" alt="Profile picture" draggable="false"
+            <img id="m-avatar-preview" src="avatar.svg" alt="Profile picture" draggable="false"
               style="width:88px; height:88px; border-radius:50%; object-fit:cover; border:2.5px solid var(--line); display:block; transition:filter 0.2s; pointer-events:none; -webkit-user-drag:none; user-select:none;">
             <!-- Camera overlay -->
             <div id="m-avatar-overlay"
@@ -362,10 +362,6 @@
               </span>
             </div>
           </div>
-          <button type="button" id="m-avatar-reset-btn"
-            style="font-size:0.68rem; color:var(--ink-faint); background:none; border:1px solid var(--line); border-radius:20px; padding:3px 12px; cursor:pointer; transition:color 0.15s, border-color 0.15s; margin-top:2px;">
-            Reset to default
-          </button>
         </div>
 
         <!-- Favicon Customization Section in Modal -->
@@ -375,7 +371,7 @@
             <span style="font-size:0.63rem; color:var(--ink-faint); font-family:var(--font-mono); letter-spacing:0.04em;">// BROWSER TAB PREVIEW</span>
             <div class="favicon-tab-preview" id="m-favicon-tab-preview" title="Live browser tab preview">
               <div class="tab-icon" id="m-favicon-tab-icon">
-                <img id="m-favicon-tab-img" src="logo.png" alt="Favicon" style="width:16px; height:16px; border-radius:3px; object-fit:cover; display:block;">
+                <img id="m-favicon-tab-img" src="favicon.svg" alt="Favicon" style="width:16px; height:16px; border-radius:3px; object-fit:cover; display:block;">
               </div>
               <span class="tab-title" id="m-favicon-tab-title">khxaiyan</span>
               <span class="tab-close">✕</span>
@@ -385,7 +381,7 @@
           <div style="display:flex; align-items:center; justify-content:center; gap:12px; margin-top:4px;">
             <!-- Upload custom favicon button -->
             <div style="position:relative; width:48px; height:48px; cursor:pointer;" id="m-favicon-upload-wrap" title="Upload custom favicon">
-              <img id="m-favicon-preview" src="logo.png" alt="Favicon"
+              <img id="m-favicon-preview" src="favicon.svg" alt="Favicon"
                 style="width:48px; height:48px; border-radius:10px; object-fit:cover; border:2px solid var(--line); display:block; transition:border-color 0.2s; pointer-events:none; -webkit-user-drag:none; user-select:none;">
               <div id="m-favicon-overlay"
                 style="position:absolute; inset:0; border-radius:10px; background:rgba(0,0,0,0.55); display:flex; flex-direction:column; align-items:center; justify-content:center; opacity:0; transition:opacity 0.2s; pointer-events:none;">
@@ -402,17 +398,13 @@
 
             <div style="text-align:left;">
               <p style="font-size:0.78rem; font-weight:600; color:var(--ink); margin:0 0 2px;">Website Favicon</p>
-              <p style="font-size:0.68rem; color:var(--ink-faint); margin:0 0 6px;">Upload image, sync from avatar, or choose an emoji</p>
+              <p style="font-size:0.68rem; color:var(--ink-faint); margin:0 0 6px;">Upload image or sync from avatar</p>
               <div style="display:flex; gap:6px; flex-wrap:wrap;">
                 <button type="button" id="m-favicon-sync-avatar-btn"
                   style="font-size:0.67rem; padding:3px 9px; border-radius:14px; display:inline-flex; align-items:center; gap:4px; background:var(--bg); border:1px solid var(--line); color:var(--ink-dim); cursor:pointer; font-family:var(--font-mono); transition:all 0.16s ease;"
                   title="Use current profile avatar as favicon">
                   <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
                   Sync from Avatar
-                </button>
-                <button type="button" id="m-favicon-reset-btn"
-                  style="font-size:0.67rem; color:var(--ink-faint); background:none; border:1px solid var(--line); border-radius:14px; padding:3px 9px; cursor:pointer; font-family:var(--font-mono); transition:color 0.15s, border-color 0.15s;">
-                  Reset default
                 </button>
               </div>
             </div>

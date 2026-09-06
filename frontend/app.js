@@ -1218,11 +1218,11 @@
 
     /* Restore saved avatar into modal preview */
     pendingAvatarData = null;
-    setModalAvatarPreview((cfg.avatar_url && cfg.avatar_url.trim()) ? cfg.avatar_url.trim() : 'logo.png');
+    setModalAvatarPreview((cfg.avatar_url && cfg.avatar_url.trim()) ? cfg.avatar_url.trim() : 'avatar.svg');
 
     /* Restore saved favicon into modal preview */
     pendingFaviconData = null;
-    setModalFaviconPreview((cfg.favicon_url && cfg.favicon_url.trim()) ? cfg.favicon_url.trim() : 'logo.png');
+    setModalFaviconPreview((cfg.favicon_url && cfg.favicon_url.trim()) ? cfg.favicon_url.trim() : 'favicon.svg');
 
     updateModalPreviews();
 
@@ -1358,7 +1358,7 @@
 
   /* ── Avatar helpers & format handling ── */
   function applyPageFavicon(url) {
-    if (!url) url = 'logo.png';
+    if (!url) url = 'favicon.svg';
     var links = document.querySelectorAll("link[rel*='icon']");
     if (!links || links.length === 0) {
       var link = document.createElement('link');
@@ -1366,27 +1366,22 @@
       document.head.appendChild(link);
       links = [link];
     }
-    var type = 'image/png';
+    var type = 'image/svg+xml';
     if (url.startsWith('data:image/svg') || /\.svg(\?.*)?$/i.test(url)) {
       type = 'image/svg+xml';
     } else if (url.startsWith('data:image/x-icon') || /\.ico(\?.*)?$/i.test(url)) {
       type = 'image/x-icon';
     } else if (url.startsWith('data:image/gif') || /\.gif(\?.*)?$/i.test(url)) {
       type = 'image/gif';
-    } else if (url.startsWith('data:image/webp') || /\.webp(\?.*)?$/i.test(url)) {
-      type = 'image/webp';
+    } else if (url.startsWith('data:image/png') || /\.png(\?.*)?$/i.test(url)) {
+      type = 'image/png';
     }
     links.forEach(function (l) {
       l.type = type;
       l.href = url;
     });
     var appleLink = document.querySelector("link[rel='apple-touch-icon']");
-    if (!appleLink) {
-      appleLink = document.createElement('link');
-      appleLink.rel = 'apple-touch-icon';
-      document.head.appendChild(appleLink);
-    }
-    appleLink.href = url;
+    if (appleLink) appleLink.href = url;
   }
 
   function emojiToSvgDataUrl(emoji) {
@@ -1400,8 +1395,8 @@
 
   function setPageAvatar(url) {
     var wrap = document.getElementById('avatar-wrap');
+    var currentEl = wrap ? wrap.querySelector('.avatar-img, video.avatar-img') : null;
     if (!wrap) return;
-    var currentEl = wrap.querySelector('.avatar-img');
     var isWebm = isWebmSource(url);
     if (isWebm) {
       if (currentEl && currentEl.tagName.toLowerCase() === 'video') {
@@ -1425,12 +1420,12 @@
       }
     } else {
       if (currentEl && currentEl.tagName.toLowerCase() === 'img') {
-        currentEl.src = url || 'logo.png';
+        currentEl.src = url || 'avatar.svg';
         currentEl.setAttribute('draggable', 'false');
       } else {
         var img = document.createElement('img');
         img.className = 'avatar-img';
-        img.src = url || 'logo.png';
+        img.src = url || 'avatar.svg';
         img.alt = 'khxaiyan';
         img.setAttribute('width', '88');
         img.setAttribute('height', '88');
@@ -1473,12 +1468,12 @@
       }
     } else {
       if (currentEl && currentEl.tagName.toLowerCase() === 'img') {
-        currentEl.src = url || 'logo.png';
+        currentEl.src = url || 'avatar.svg';
         currentEl.setAttribute('draggable', 'false');
       } else {
         var img = document.createElement('img');
         img.id = 'm-avatar-preview';
-        img.src = url || 'logo.png';
+        img.src = url || 'avatar.svg';
         img.alt = 'Profile picture';
         img.setAttribute('draggable', 'false');
         img.style.cssText = 'width:88px; height:88px; border-radius:50%; object-fit:cover; border:2.5px solid var(--line); display:block; pointer-events:none; -webkit-user-drag:none; user-select:none;';
@@ -1492,10 +1487,10 @@
   }
 
   /* ── Avatar file upload (Instagram-style) ── */
+  var pendingAvatarData = null;
   var avatarFileInput = document.getElementById('m-cust-avatar-file');
   var avatarWrap = document.getElementById('m-avatar-upload-wrap');
   var avatarOverlay = document.getElementById('m-avatar-overlay');
-  var avatarResetBtn = document.getElementById('m-avatar-reset-btn');
 
   if (avatarWrap && avatarOverlay) {
     avatarWrap.addEventListener('mouseenter', function () {
@@ -1577,19 +1572,11 @@
     });
   }
 
-  if (avatarResetBtn) {
-    avatarResetBtn.addEventListener('click', function () {
-      pendingAvatarData = '';
-      setModalAvatarPreview('logo.png');
-    });
-  }
-
-  /* ── Favicon file upload & emoji picker ── */
+  /* ── Favicon file upload & management ── */
   var pendingFaviconData = null;
   var faviconFileInput = document.getElementById('m-cust-favicon-file');
   var faviconWrap = document.getElementById('m-favicon-upload-wrap');
   var faviconOverlay = document.getElementById('m-favicon-overlay');
-  var faviconResetBtn = document.getElementById('m-favicon-reset-btn');
   var faviconSyncAvatarBtn = document.getElementById('m-favicon-sync-avatar-btn');
 
   if (faviconWrap && faviconOverlay) {
@@ -1608,7 +1595,7 @@
     var siteNameVal = (document.getElementById('m-cust-sitename') || {}).value || 'khxaiyan';
     if (tabTitle) tabTitle.textContent = siteNameVal;
 
-    var finalUrl = url || 'logo.png';
+    var finalUrl = url || 'favicon.svg';
     if (thumb) thumb.src = finalUrl;
     if (tabImg) tabImg.src = finalUrl;
     applyPageFavicon(finalUrl);
@@ -1672,19 +1659,12 @@
       var avatarSrc = pendingAvatarData;
       if (!avatarSrc) {
         var currentAvatarImg = document.getElementById('m-avatar-preview');
-        avatarSrc = currentAvatarImg ? currentAvatarImg.src : 'logo.png';
+        avatarSrc = currentAvatarImg ? currentAvatarImg.src : 'avatar.svg';
       }
       if (avatarSrc) {
         pendingFaviconData = avatarSrc;
         setModalFaviconPreview(pendingFaviconData);
       }
-    });
-  }
-
-  if (faviconResetBtn) {
-    faviconResetBtn.addEventListener('click', function () {
-      pendingFaviconData = '';
-      setModalFaviconPreview('logo.png');
     });
   }
 
@@ -1751,12 +1731,12 @@
       });
 
       /* Resolve avatar: use newly picked file data, or keep existing saved one */
-      var existingAvatarUrl = (typeof CONFIG !== 'undefined' && CONFIG.avatar_url) ? CONFIG.avatar_url : '';
+      var existingAvatarUrl = (typeof CONFIG !== 'undefined' && CONFIG.avatar_url) ? CONFIG.avatar_url : 'avatar.svg';
       var resolvedAvatar = (pendingAvatarData !== null) ? pendingAvatarData : existingAvatarUrl;
 
-      /* Resolve favicon: newly picked file/emoji, or existing saved one */
-      var existingFaviconUrl = (typeof CONFIG !== 'undefined' && CONFIG.favicon_url) ? CONFIG.favicon_url : 'logo.png';
-      var resolvedFavicon = (pendingFaviconData !== null) ? (pendingFaviconData || 'logo.png') : existingFaviconUrl;
+      /* Resolve favicon: newly picked file, or existing saved one */
+      var existingFaviconUrl = (typeof CONFIG !== 'undefined' && CONFIG.favicon_url) ? CONFIG.favicon_url : 'favicon.svg';
+      var resolvedFavicon = (pendingFaviconData !== null) ? (pendingFaviconData || 'favicon.svg') : existingFaviconUrl;
 
       var updated = {
         github: (document.getElementById('m-cust-github') || {}).value.trim(),
@@ -1764,7 +1744,7 @@
         telegram: (document.getElementById('m-cust-telegram') || {}).value.trim(),
         email: (document.getElementById('m-cust-email') || {}).value.trim(),
         social_links: socialLinks,
-        logo: 'logo.png',
+        logo: 'avatar.svg',
         avatar_url: resolvedAvatar,
         favicon_url: resolvedFavicon,
         site_name: (document.getElementById('m-cust-sitename') || {}).value.trim(),
@@ -1822,7 +1802,7 @@
       }
 
       /* Live apply avatar to page */
-      setPageAvatar(updated.avatar_url || 'logo.png');
+      setPageAvatar(updated.avatar_url || 'avatar.svg');
 
       var saveStatus = document.getElementById('m-save-status');
       if (saveStatus) {
