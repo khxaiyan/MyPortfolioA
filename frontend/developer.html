@@ -26,6 +26,19 @@
       var t = localStorage.getItem('theme') || defTheme;
       document.documentElement.setAttribute('data-theme', t);
 
+      var fav = (customCfg && customCfg.favicon_url) || null;
+      if (fav) {
+        var fi = document.querySelector("link[rel~='icon']");
+        if (fi) {
+          if (fav.startsWith('data:image/svg') || /\.svg(\?.*)?$/i.test(fav)) fi.type = 'image/svg+xml';
+          else if (fav.startsWith('data:image/x-icon') || /\.ico(\?.*)?$/i.test(fav)) fi.type = 'image/x-icon';
+          else if (fav.startsWith('data:image/gif') || /\.gif(\?.*)?$/i.test(fav)) fi.type = 'image/gif';
+          fi.href = fav;
+        }
+        var afi = document.querySelector("link[rel='apple-touch-icon']");
+        if (afi) afi.href = fav;
+      }
+
       var accent = themeCfg.accent_color || (customCfg && customCfg.accent_color) || '#ff2a5f';
       var bgPreset = themeCfg.bg_preset || 'midnight';
 
@@ -546,6 +559,97 @@
             style="border-radius:20px; padding:4px 14px; font-size:0.72rem; margin-top:2px;">
             Reset to default
           </button>
+        </div>
+      </div>
+
+      <!-- 0.1 // favicon -->
+      <div class="cust-section">
+        <p class="eyebrow">// favicon</p>
+        <div class="surface-card cust-card"
+          style="display:flex; flex-direction:column; align-items:center; text-align:center; padding:22px 16px; gap:14px;">
+          <!-- Browser Tab Live Preview Mockup -->
+          <div style="display:flex; flex-direction:column; align-items:center; gap:6px;">
+            <span style="font-size:0.7rem; color:var(--ink-faint); font-family:var(--font-mono); letter-spacing:0.04em;">// BROWSER TAB PREVIEW</span>
+            <div class="favicon-tab-preview" id="cust-favicon-tab-preview" title="Live browser tab preview">
+              <div class="tab-icon" id="cust-favicon-tab-icon">
+                <img id="cust-favicon-tab-img" src="logo.png" alt="Favicon" style="width:16px; height:16px; border-radius:3px; object-fit:cover; display:block;">
+              </div>
+              <span class="tab-title" id="cust-favicon-tab-title">khxaiyan</span>
+              <span class="tab-close">✕</span>
+            </div>
+          </div>
+
+          <div style="display:flex; align-items:center; justify-content:center; gap:16px; flex-wrap:wrap;">
+            <div
+              style="position:relative; width:64px; height:64px; border-radius:14px; overflow:hidden; border:2px solid var(--line); flex-shrink:0; cursor:pointer;"
+              id="cust-favicon-upload-wrap" title="Click to upload custom favicon">
+              <img id="cust-favicon-preview" src="logo.png" alt="Favicon preview" draggable="false"
+                style="width:100%; height:100%; object-fit:cover; display:block; pointer-events:none; -webkit-user-drag:none; user-select:none;">
+              <div id="cust-favicon-overlay"
+                style="position:absolute; inset:0; background:rgba(0,0,0,0.55); display:flex; flex-direction:column; align-items:center; justify-content:center; opacity:0; transition:opacity 0.2s; gap:2px; pointer-events:none;">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#ffffff" stroke-width="2"
+                  stroke-linecap="round" stroke-linejoin="round">
+                  <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/>
+                  <polyline points="17 8 12 3 7 8"/>
+                  <line x1="12" y1="3" x2="12" y2="15"/>
+                </svg>
+                <span
+                  style="font-size:0.6rem; color:#fff; font-weight:600; text-transform:uppercase; letter-spacing:0.04em;">Edit</span>
+              </div>
+              <input type="file" id="cust-favicon-file"
+                accept="image/x-icon, image/png, image/svg+xml, image/webp, image/jpeg, image/gif, .ico, .png, .svg, .webp, .jpg, .gif"
+                style="position:absolute; inset:0; opacity:0; cursor:pointer; width:100%; height:100%;">
+            </div>
+            <div style="text-align:left;">
+              <p style="font-size:0.88rem; font-weight:600; color:var(--ink); margin:0 0 3px 0;">Website Favicon</p>
+              <p style="font-size:0.73rem; color:var(--ink-faint); margin:0 0 8px 0;">Upload from device, sync from avatar, or choose an emoji</p>
+              <div style="display:flex; align-items:center; gap:8px; flex-wrap:wrap;">
+                <button type="button" id="cust-favicon-sync-avatar-btn" class="toolbar-btn"
+                  style="border-radius:20px; padding:4px 14px; font-size:0.72rem; display:inline-flex; align-items:center; gap:5px;"
+                  title="Copy current profile picture as website favicon">
+                  <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+                  Sync from Avatar
+                </button>
+                <button type="button" id="cust-favicon-reset-btn" class="toolbar-btn"
+                  style="border-radius:20px; padding:4px 14px; font-size:0.72rem;">
+                  Reset to default
+                </button>
+              </div>
+            </div>
+          </div>
+
+          <!-- Format Pills -->
+          <div style="display:flex; align-items:center; justify-content:center; gap:6px; flex-wrap:wrap;">
+            <span
+              style="display:inline-flex; align-items:center; gap:4px; font-size:0.68rem; font-family:var(--font-mono); color:var(--ink-dim); background:var(--bg); border:1px solid var(--line); padding:3px 9px; border-radius:12px;">
+              ICO, PNG, SVG, WEBP, GIF
+            </span>
+            <span
+              style="display:inline-flex; align-items:center; gap:4px; font-size:0.68rem; font-family:var(--font-mono); color:var(--ink-dim); background:var(--bg); border:1px solid var(--line); padding:3px 9px; border-radius:12px;">
+              1:1 Square (64×64 recommended)
+            </span>
+            <span
+              style="display:inline-flex; align-items:center; gap:4px; font-size:0.68rem; font-family:var(--font-mono); color:var(--ink-dim); background:var(--bg); border:1px solid var(--line); padding:3px 9px; border-radius:12px;">
+              Max 1 MB
+            </span>
+          </div>
+
+          <!-- Emoji Favicon Picker -->
+          <div style="display:flex; flex-direction:column; align-items:center; gap:8px; width:100%; border-top:1px solid var(--line); padding-top:12px; margin-top:2px;">
+            <span style="font-size:0.72rem; color:var(--ink-faint); font-family:var(--font-mono);">Or choose an Emoji Favicon</span>
+            <div style="display:flex; align-items:center; gap:6px; flex-wrap:wrap; justify-content:center;">
+              <button type="button" class="favicon-emoji-btn cust-fav-emoji" data-emoji="🚀" title="Rocket">🚀</button>
+              <button type="button" class="favicon-emoji-btn cust-fav-emoji" data-emoji="💻" title="Laptop">💻</button>
+              <button type="button" class="favicon-emoji-btn cust-fav-emoji" data-emoji="⚡" title="Lightning">⚡</button>
+              <button type="button" class="favicon-emoji-btn cust-fav-emoji" data-emoji="🔥" title="Fire">🔥</button>
+              <button type="button" class="favicon-emoji-btn cust-fav-emoji" data-emoji="🎯" title="Target">🎯</button>
+              <button type="button" class="favicon-emoji-btn cust-fav-emoji" data-emoji="👾" title="Alien">👾</button>
+              <button type="button" class="favicon-emoji-btn cust-fav-emoji" data-emoji="☕" title="Coffee">☕</button>
+              <button type="button" class="favicon-emoji-btn cust-fav-emoji" data-emoji="🖤" title="Black Heart">🖤</button>
+              <button type="button" class="favicon-emoji-btn cust-fav-emoji" data-emoji="🐺" title="Wolf">🐺</button>
+              <button type="button" class="favicon-emoji-btn cust-fav-emoji" data-emoji="🌐" title="Globe">🌐</button>
+            </div>
+          </div>
         </div>
       </div>
 
@@ -1389,6 +1493,159 @@
         });
       }
 
+      /* ── Favicon management ── */
+      var pendingFaviconData = null;
+      var faviconFileInput = document.getElementById('cust-favicon-file');
+      var faviconWrap = document.getElementById('cust-favicon-upload-wrap');
+      var faviconOverlay = document.getElementById('cust-favicon-overlay');
+      var faviconResetBtn = document.getElementById('cust-favicon-reset-btn');
+      var faviconSyncAvatarBtn = document.getElementById('cust-favicon-sync-avatar-btn');
+
+      if (faviconWrap && faviconOverlay) {
+        faviconWrap.addEventListener('mouseenter', function () {
+          faviconOverlay.style.opacity = '1';
+        });
+        faviconWrap.addEventListener('mouseleave', function () {
+          faviconOverlay.style.opacity = '0';
+        });
+      }
+
+      function emojiToSvgDataUrl(emoji) {
+        var svg = '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><text y=".9em" font-size="90">' + emoji + '</text></svg>';
+        return 'data:image/svg+xml,' + encodeURIComponent(svg);
+      }
+
+      function applyBrowserFavicon(url) {
+        if (!url) url = 'logo.png';
+        var links = document.querySelectorAll("link[rel*='icon']");
+        if (!links || links.length === 0) {
+          var link = document.createElement('link');
+          link.rel = 'icon';
+          document.head.appendChild(link);
+          links = [link];
+        }
+        var type = 'image/png';
+        if (url.startsWith('data:image/svg') || /\.svg(\?.*)?$/i.test(url)) {
+          type = 'image/svg+xml';
+        } else if (url.startsWith('data:image/x-icon') || /\.ico(\?.*)?$/i.test(url)) {
+          type = 'image/x-icon';
+        } else if (url.startsWith('data:image/gif') || /\.gif(\?.*)?$/i.test(url)) {
+          type = 'image/gif';
+        }
+        links.forEach(function (l) {
+          l.type = type;
+          l.href = url;
+        });
+        var appleLink = document.querySelector("link[rel='apple-touch-icon']");
+        if (appleLink) appleLink.href = url;
+      }
+
+      function setCustPreviewFavicon(url) {
+        var thumb = document.getElementById('cust-favicon-preview');
+        var tabImg = document.getElementById('cust-favicon-tab-img');
+        var tabTitle = document.getElementById('cust-favicon-tab-title');
+        var siteNameVal = (document.getElementById('cust-sitename') || {}).value || 'khxaiyan';
+        if (tabTitle) tabTitle.textContent = siteNameVal;
+
+        var finalUrl = url || 'logo.png';
+        if (thumb) {
+          thumb.src = finalUrl;
+        }
+        if (tabImg) {
+          tabImg.src = finalUrl;
+        }
+        applyBrowserFavicon(finalUrl);
+      }
+
+      function processFaviconFile(file, callback) {
+        if (!file) return;
+        var type = (file.type || '').toLowerCase();
+        var name = (file.name || '').toLowerCase();
+
+        var isDirect = type === 'image/svg+xml' ||
+                       type === 'image/x-icon' ||
+                       type === 'image/vnd.microsoft.icon' ||
+                       type === 'image/gif' ||
+                       /\.(svg|ico|gif)$/i.test(name);
+
+        if (isDirect) {
+          var directReader = new FileReader();
+          directReader.onload = function (e) { callback(e.target.result); };
+          directReader.readAsDataURL(file);
+          return;
+        }
+
+        var reader = new FileReader();
+        reader.onload = function (e) {
+          var img = new Image();
+          img.onload = function () {
+            var size = Math.min(img.width, img.height);
+            var sx = (img.width - size) / 2;
+            var sy = (img.height - size) / 2;
+            var canvas = document.createElement('canvas');
+            canvas.width = 128;
+            canvas.height = 128;
+            var ctx = canvas.getContext('2d');
+            ctx.drawImage(img, sx, sy, size, size, 0, 0, 128, 128);
+            var compressed = canvas.toDataURL('image/png');
+            callback(compressed || e.target.result);
+          };
+          img.onerror = function () {
+            callback(e.target.result);
+          };
+          img.src = e.target.result;
+        };
+        reader.readAsDataURL(file);
+      }
+
+      if (faviconFileInput) {
+        faviconFileInput.addEventListener('change', function () {
+          var file = faviconFileInput.files && faviconFileInput.files[0];
+          if (!file) return;
+          processFaviconFile(file, function (dataUrl) {
+            pendingFaviconData = dataUrl;
+            setCustPreviewFavicon(pendingFaviconData);
+            document.querySelectorAll('.cust-fav-emoji').forEach(function (b) { b.classList.remove('active'); });
+          });
+          faviconFileInput.value = '';
+        });
+      }
+
+      if (faviconSyncAvatarBtn) {
+        faviconSyncAvatarBtn.addEventListener('click', function () {
+          var avatarSrc = pendingAvatarData;
+          if (!avatarSrc) {
+            var currentAvatarImg = document.getElementById('cust-avatar-preview');
+            avatarSrc = currentAvatarImg ? currentAvatarImg.src : 'logo.png';
+          }
+          if (avatarSrc) {
+            pendingFaviconData = avatarSrc;
+            setCustPreviewFavicon(pendingFaviconData);
+            document.querySelectorAll('.cust-fav-emoji').forEach(function (b) { b.classList.remove('active'); });
+          }
+        });
+      }
+
+      if (faviconResetBtn) {
+        faviconResetBtn.addEventListener('click', function () {
+          pendingFaviconData = '';
+          setCustPreviewFavicon('logo.png');
+          document.querySelectorAll('.cust-fav-emoji').forEach(function (b) { b.classList.remove('active'); });
+        });
+      }
+
+      document.querySelectorAll('.cust-fav-emoji').forEach(function (btn) {
+        btn.addEventListener('click', function () {
+          var emoji = this.getAttribute('data-emoji');
+          if (!emoji) return;
+          document.querySelectorAll('.cust-fav-emoji').forEach(function (b) { b.classList.remove('active'); });
+          this.classList.add('active');
+          var svgUrl = emojiToSvgDataUrl(emoji);
+          pendingFaviconData = svgUrl;
+          setCustPreviewFavicon(pendingFaviconData);
+        });
+      });
+
       /* Global non-draggable image guard */
       document.addEventListener('dragstart', function (e) {
         if (e.target && (e.target.tagName === 'IMG' || e.target.tagName === 'VIDEO')) {
@@ -2056,6 +2313,10 @@
         pendingAvatarData = null;
         setCustPreviewAvatar((cfg.avatar_url && cfg.avatar_url.trim()) ? cfg.avatar_url.trim() : 'logo.png');
 
+        /* Restore saved favicon */
+        pendingFaviconData = null;
+        setCustPreviewFavicon((cfg.favicon_url && cfg.favicon_url.trim()) ? cfg.favicon_url.trim() : 'logo.png');
+
         /* Apply and sync theme option (default is current theme) */
         var themeCfg = cfg.theme_config || {};
         currentThemeMode = themeCfg.mode || document.documentElement.getAttribute('data-theme') || localStorage.getItem('theme') || (cfg.default_theme || 'dark');
@@ -2150,6 +2411,10 @@
         var existingAvatarUrl = existingCustom.avatar_url || ((typeof CONFIG !== 'undefined' && CONFIG.avatar_url) ? CONFIG.avatar_url : '');
         var resolvedAvatar = (pendingAvatarData !== null) ? pendingAvatarData : existingAvatarUrl;
 
+        /* Resolve favicon: newly chosen base64/emoji, or existing saved, or CONFIG */
+        var existingFaviconUrl = existingCustom.favicon_url || ((typeof CONFIG !== 'undefined' && CONFIG.favicon_url) ? CONFIG.favicon_url : 'logo.png');
+        var resolvedFavicon = (pendingFaviconData !== null) ? (pendingFaviconData || 'logo.png') : existingFaviconUrl;
+
         var updated = {
           github: document.getElementById('cust-github').value.trim(),
           x: document.getElementById('cust-x').value.trim(),
@@ -2158,6 +2423,7 @@
           social_links: socialLinks,
           logo: 'logo.png',
           avatar_url: resolvedAvatar,
+          favicon_url: resolvedFavicon,
           site_name: document.getElementById('cust-sitename').value.trim(),
           accent_letter: document.getElementById('cust-accent').value.trim() || 'x',
           site_desc: document.getElementById('cust-bio').value.trim(),
@@ -2180,6 +2446,8 @@
         };
 
         localStorage.setItem('portfolio_custom_config', JSON.stringify(updated));
+        applyBrowserFavicon(resolvedFavicon);
+        pendingFaviconData = null;
         updateCodeSnippet(updated);
 
         saveStatusMsg.style.display = 'block';

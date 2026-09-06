@@ -40,6 +40,19 @@
       var t = localStorage.getItem('theme') || defTheme;
       document.documentElement.setAttribute('data-theme', t);
 
+      var fav = (customCfg && customCfg.favicon_url) || null;
+      if (fav) {
+        var fi = document.querySelector("link[rel~='icon']");
+        if (fi) {
+          if (fav.startsWith('data:image/svg') || /\.svg(\?.*)?$/i.test(fav)) fi.type = 'image/svg+xml';
+          else if (fav.startsWith('data:image/x-icon') || /\.ico(\?.*)?$/i.test(fav)) fi.type = 'image/x-icon';
+          else if (fav.startsWith('data:image/gif') || /\.gif(\?.*)?$/i.test(fav)) fi.type = 'image/gif';
+          fi.href = fav;
+        }
+        var afi = document.querySelector("link[rel='apple-touch-icon']");
+        if (afi) afi.href = fav;
+      }
+
       var accent = themeCfg.accent_color || (customCfg && customCfg.accent_color) || '#ff2a5f';
       var bgPreset = themeCfg.bg_preset || 'midnight';
 
@@ -353,6 +366,74 @@
             style="font-size:0.68rem; color:var(--ink-faint); background:none; border:1px solid var(--line); border-radius:20px; padding:3px 12px; cursor:pointer; transition:color 0.15s, border-color 0.15s; margin-top:2px;">
             Reset to default
           </button>
+        </div>
+
+        <!-- Favicon Customization Section in Modal -->
+        <div style="display:flex; flex-direction:column; align-items:center; gap:10px; padding:12px 0 14px; border-bottom:1px solid var(--line); margin-bottom:16px;">
+          <!-- Browser Tab Live Preview Mockup -->
+          <div style="display:flex; flex-direction:column; align-items:center; gap:5px;">
+            <span style="font-size:0.63rem; color:var(--ink-faint); font-family:var(--font-mono); letter-spacing:0.04em;">// BROWSER TAB PREVIEW</span>
+            <div class="favicon-tab-preview" id="m-favicon-tab-preview" title="Live browser tab preview">
+              <div class="tab-icon" id="m-favicon-tab-icon">
+                <img id="m-favicon-tab-img" src="logo.png" alt="Favicon" style="width:16px; height:16px; border-radius:3px; object-fit:cover; display:block;">
+              </div>
+              <span class="tab-title" id="m-favicon-tab-title">khxaiyan</span>
+              <span class="tab-close">✕</span>
+            </div>
+          </div>
+
+          <div style="display:flex; align-items:center; justify-content:center; gap:12px; margin-top:4px;">
+            <!-- Upload custom favicon button -->
+            <div style="position:relative; width:48px; height:48px; cursor:pointer;" id="m-favicon-upload-wrap" title="Upload custom favicon">
+              <img id="m-favicon-preview" src="logo.png" alt="Favicon"
+                style="width:48px; height:48px; border-radius:10px; object-fit:cover; border:2px solid var(--line); display:block; transition:border-color 0.2s; pointer-events:none; -webkit-user-drag:none; user-select:none;">
+              <div id="m-favicon-overlay"
+                style="position:absolute; inset:0; border-radius:10px; background:rgba(0,0,0,0.55); display:flex; flex-direction:column; align-items:center; justify-content:center; opacity:0; transition:opacity 0.2s; pointer-events:none;">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                  <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/>
+                  <polyline points="17 8 12 3 7 8"/>
+                  <line x1="12" y1="3" x2="12" y2="15"/>
+                </svg>
+                <span style="font-size:0.55rem; color:#fff; font-weight:600; margin-top:2px;">UPLOAD</span>
+              </div>
+              <input type="file" id="m-cust-favicon-file" accept="image/x-icon, image/png, image/svg+xml, image/webp, image/jpeg, image/gif, .ico, .png, .svg, .webp, .jpg, .gif"
+                style="position:absolute; inset:0; opacity:0; cursor:pointer; width:100%; height:100%;">
+            </div>
+
+            <div style="text-align:left;">
+              <p style="font-size:0.78rem; font-weight:600; color:var(--ink); margin:0 0 2px;">Website Favicon</p>
+              <p style="font-size:0.68rem; color:var(--ink-faint); margin:0 0 6px;">Upload image, sync from avatar, or choose an emoji</p>
+              <div style="display:flex; gap:6px; flex-wrap:wrap;">
+                <button type="button" id="m-favicon-sync-avatar-btn"
+                  style="font-size:0.67rem; padding:3px 9px; border-radius:14px; display:inline-flex; align-items:center; gap:4px; background:var(--bg); border:1px solid var(--line); color:var(--ink-dim); cursor:pointer; font-family:var(--font-mono); transition:all 0.16s ease;"
+                  title="Use current profile avatar as favicon">
+                  <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+                  Sync from Avatar
+                </button>
+                <button type="button" id="m-favicon-reset-btn"
+                  style="font-size:0.67rem; color:var(--ink-faint); background:none; border:1px solid var(--line); border-radius:14px; padding:3px 9px; cursor:pointer; font-family:var(--font-mono); transition:color 0.15s, border-color 0.15s;">
+                  Reset default
+                </button>
+              </div>
+            </div>
+          </div>
+
+          <!-- Quick Emoji Favicons -->
+          <div style="display:flex; flex-direction:column; align-items:center; gap:5px; margin-top:2px; width:100%;">
+            <span style="font-size:0.65rem; color:var(--ink-faint); font-family:var(--font-mono);">Or choose an Emoji Favicon:</span>
+            <div style="display:flex; align-items:center; gap:5px; flex-wrap:wrap; justify-content:center;">
+              <button type="button" class="favicon-emoji-btn m-fav-emoji" data-emoji="🚀" title="Rocket">🚀</button>
+              <button type="button" class="favicon-emoji-btn m-fav-emoji" data-emoji="💻" title="Laptop">💻</button>
+              <button type="button" class="favicon-emoji-btn m-fav-emoji" data-emoji="⚡" title="Lightning">⚡</button>
+              <button type="button" class="favicon-emoji-btn m-fav-emoji" data-emoji="🔥" title="Fire">🔥</button>
+              <button type="button" class="favicon-emoji-btn m-fav-emoji" data-emoji="🎯" title="Target">🎯</button>
+              <button type="button" class="favicon-emoji-btn m-fav-emoji" data-emoji="👾" title="Alien">👾</button>
+              <button type="button" class="favicon-emoji-btn m-fav-emoji" data-emoji="☕" title="Coffee">☕</button>
+              <button type="button" class="favicon-emoji-btn m-fav-emoji" data-emoji="🖤" title="Black Heart">🖤</button>
+              <button type="button" class="favicon-emoji-btn m-fav-emoji" data-emoji="🐺" title="Wolf">🐺</button>
+              <button type="button" class="favicon-emoji-btn m-fav-emoji" data-emoji="🌐" title="Globe">🌐</button>
+            </div>
+          </div>
         </div>
 
         <!-- Theme Section in modal -->

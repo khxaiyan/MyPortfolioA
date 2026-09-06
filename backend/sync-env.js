@@ -33,7 +33,7 @@ const supportedKeys = [
   'GITHUB_USERNAME', 'X_USERNAME', 'TELEGRAM_USERNAME', 'CONTACT_EMAIL',
   'SITE_NAME', 'ACCENT_LETTER', 'CF_ANALYTICS', 'WEB3FORMS_ACCESS_KEY',
   'HCAPTCHA_SITEKEY', 'CLERK_PUBLISHABLE_KEY', 'CLERK_FRONTEND_API',
-  'AUTHORIZED_USERS'
+  'AUTHORIZED_USERS', 'FAVICON_URL'
 ];
 const envFromProcess = {};
 supportedKeys.forEach((key) => {
@@ -69,6 +69,7 @@ const updatedConfig = Object.assign({}, currentConfig, {
   telegram: env.TELEGRAM_USERNAME || currentConfig.telegram || 'khxaiyan',
   email: env.CONTACT_EMAIL || currentConfig.email || 'ayankhan84510@gmail.com',
   logo: 'logo.png',
+  favicon_url: env.FAVICON_URL || currentConfig.favicon_url || 'logo.png',
   site_name: env.SITE_NAME || currentConfig.site_name || 'khxaiyan',
   accent_letter: env.ACCENT_LETTER || currentConfig.accent_letter || 'x',
   site_desc: currentConfig.site_desc || 'khxaiyan | developer in active building mode. crafting clean web tools & digital experiences.',

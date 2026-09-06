@@ -464,6 +464,11 @@
       setPageAvatar(CONFIG.avatar_url.trim());
     }
 
+    /* Apply saved favicon */
+    if (CONFIG.favicon_url && CONFIG.favicon_url.trim()) {
+      applyPageFavicon(CONFIG.favicon_url.trim());
+    }
+
     /* Apply dynamic and core channel links */
     renderChannelList(CONFIG);
 
@@ -1215,6 +1220,10 @@
     pendingAvatarData = null;
     setModalAvatarPreview((cfg.avatar_url && cfg.avatar_url.trim()) ? cfg.avatar_url.trim() : 'logo.png');
 
+    /* Restore saved favicon into modal preview */
+    pendingFaviconData = null;
+    setModalFaviconPreview((cfg.favicon_url && cfg.favicon_url.trim()) ? cfg.favicon_url.trim() : 'logo.png');
+
     updateModalPreviews();
 
     var themeCfg = cfg.theme_config || {};
@@ -1321,6 +1330,11 @@
     if (introPrev) {
       introPrev.innerHTML = parseRichText(introVal || 'Passionate developer specializing in web apps.');
     }
+
+    var favTabTitle = document.getElementById('m-favicon-tab-title');
+    if (favTabTitle) {
+      favTabTitle.textContent = name;
+    }
   }
 
   ['m-cust-sitename', 'm-cust-accent', 'm-cust-bio', 'm-cust-intro'].forEach(function (id) {
@@ -1343,6 +1357,43 @@
   }
 
   /* ── Avatar helpers & format handling ── */
+  function applyPageFavicon(url) {
+    if (!url) url = 'logo.png';
+    var links = document.querySelectorAll("link[rel*='icon']");
+    if (!links || links.length === 0) {
+      var link = document.createElement('link');
+      link.rel = 'icon';
+      document.head.appendChild(link);
+      links = [link];
+    }
+    var type = 'image/png';
+    if (url.startsWith('data:image/svg') || /\.svg(\?.*)?$/i.test(url)) {
+      type = 'image/svg+xml';
+    } else if (url.startsWith('data:image/x-icon') || /\.ico(\?.*)?$/i.test(url)) {
+      type = 'image/x-icon';
+    } else if (url.startsWith('data:image/gif') || /\.gif(\?.*)?$/i.test(url)) {
+      type = 'image/gif';
+    } else if (url.startsWith('data:image/webp') || /\.webp(\?.*)?$/i.test(url)) {
+      type = 'image/webp';
+    }
+    links.forEach(function (l) {
+      l.type = type;
+      l.href = url;
+    });
+    var appleLink = document.querySelector("link[rel='apple-touch-icon']");
+    if (!appleLink) {
+      appleLink = document.createElement('link');
+      appleLink.rel = 'apple-touch-icon';
+      document.head.appendChild(appleLink);
+    }
+    appleLink.href = url;
+  }
+
+  function emojiToSvgDataUrl(emoji) {
+    var svg = '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><text y=".9em" font-size="90">' + emoji + '</text></svg>';
+    return 'data:image/svg+xml,' + encodeURIComponent(svg);
+  }
+
   function isWebmSource(url) {
     return typeof url === 'string' && (url.startsWith('data:video/webm') || /\.webm(\?.*)?$/i.test(url));
   }
@@ -1533,6 +1584,125 @@
     });
   }
 
+  /* ── Favicon file upload & emoji picker ── */
+  var pendingFaviconData = null;
+  var faviconFileInput = document.getElementById('m-cust-favicon-file');
+  var faviconWrap = document.getElementById('m-favicon-upload-wrap');
+  var faviconOverlay = document.getElementById('m-favicon-overlay');
+  var faviconResetBtn = document.getElementById('m-favicon-reset-btn');
+  var faviconSyncAvatarBtn = document.getElementById('m-favicon-sync-avatar-btn');
+
+  if (faviconWrap && faviconOverlay) {
+    faviconWrap.addEventListener('mouseenter', function () {
+      faviconOverlay.style.opacity = '1';
+    });
+    faviconWrap.addEventListener('mouseleave', function () {
+      faviconOverlay.style.opacity = '0';
+    });
+  }
+
+  function setModalFaviconPreview(url) {
+    var thumb = document.getElementById('m-favicon-preview');
+    var tabImg = document.getElementById('m-favicon-tab-img');
+    var tabTitle = document.getElementById('m-favicon-tab-title');
+    var siteNameVal = (document.getElementById('m-cust-sitename') || {}).value || 'khxaiyan';
+    if (tabTitle) tabTitle.textContent = siteNameVal;
+
+    var finalUrl = url || 'logo.png';
+    if (thumb) thumb.src = finalUrl;
+    if (tabImg) tabImg.src = finalUrl;
+    applyPageFavicon(finalUrl);
+  }
+
+  function processFaviconFile(file, callback) {
+    if (!file) return;
+    var type = (file.type || '').toLowerCase();
+    var name = (file.name || '').toLowerCase();
+
+    var isDirect = type === 'image/svg+xml' ||
+                   type === 'image/x-icon' ||
+                   type === 'image/vnd.microsoft.icon' ||
+                   type === 'image/gif' ||
+                   /\.(svg|ico|gif)$/i.test(name);
+
+    if (isDirect) {
+      var directReader = new FileReader();
+      directReader.onload = function (e) { callback(e.target.result); };
+      directReader.readAsDataURL(file);
+      return;
+    }
+
+    var reader = new FileReader();
+    reader.onload = function (e) {
+      var img = new Image();
+      img.onload = function () {
+        var size = Math.min(img.width, img.height);
+        var sx = (img.width - size) / 2;
+        var sy = (img.height - size) / 2;
+        var canvas = document.createElement('canvas');
+        canvas.width = 128;
+        canvas.height = 128;
+        var ctx = canvas.getContext('2d');
+        ctx.drawImage(img, sx, sy, size, size, 0, 0, 128, 128);
+        var compressed = canvas.toDataURL('image/png');
+        callback(compressed || e.target.result);
+      };
+      img.onerror = function () {
+        callback(e.target.result);
+      };
+      img.src = e.target.result;
+    };
+    reader.readAsDataURL(file);
+  }
+
+  if (faviconFileInput) {
+    faviconFileInput.addEventListener('change', function () {
+      var file = faviconFileInput.files && faviconFileInput.files[0];
+      if (!file) return;
+      processFaviconFile(file, function (dataUrl) {
+        pendingFaviconData = dataUrl;
+        setModalFaviconPreview(pendingFaviconData);
+        document.querySelectorAll('.m-fav-emoji').forEach(function (b) { b.classList.remove('active'); });
+      });
+      faviconFileInput.value = '';
+    });
+  }
+
+  if (faviconSyncAvatarBtn) {
+    faviconSyncAvatarBtn.addEventListener('click', function () {
+      var avatarSrc = pendingAvatarData;
+      if (!avatarSrc) {
+        var currentAvatarImg = document.getElementById('m-avatar-preview');
+        avatarSrc = currentAvatarImg ? currentAvatarImg.src : 'logo.png';
+      }
+      if (avatarSrc) {
+        pendingFaviconData = avatarSrc;
+        setModalFaviconPreview(pendingFaviconData);
+        document.querySelectorAll('.m-fav-emoji').forEach(function (b) { b.classList.remove('active'); });
+      }
+    });
+  }
+
+  if (faviconResetBtn) {
+    faviconResetBtn.addEventListener('click', function () {
+      pendingFaviconData = '';
+      setModalFaviconPreview('logo.png');
+      document.querySelectorAll('.m-fav-emoji').forEach(function (b) { b.classList.remove('active'); });
+    });
+  }
+
+  document.querySelectorAll('.m-fav-emoji').forEach(function (btn) {
+    btn.addEventListener('click', function () {
+      var emoji = this.getAttribute('data-emoji');
+      if (!emoji) return;
+      document.querySelectorAll('.m-fav-emoji').forEach(function (b) { b.classList.remove('active'); });
+      this.classList.add('active');
+      var svgUrl = emojiToSvgDataUrl(emoji);
+      pendingFaviconData = svgUrl;
+      setModalFaviconPreview(pendingFaviconData);
+    });
+  });
+
   var btnModalSave = document.getElementById('m-btn-save');
   if (btnModalSave) {
     btnModalSave.addEventListener('click', function () {
@@ -1599,6 +1769,10 @@
       var existingAvatarUrl = (typeof CONFIG !== 'undefined' && CONFIG.avatar_url) ? CONFIG.avatar_url : '';
       var resolvedAvatar = (pendingAvatarData !== null) ? pendingAvatarData : existingAvatarUrl;
 
+      /* Resolve favicon: newly picked file/emoji, or existing saved one */
+      var existingFaviconUrl = (typeof CONFIG !== 'undefined' && CONFIG.favicon_url) ? CONFIG.favicon_url : 'logo.png';
+      var resolvedFavicon = (pendingFaviconData !== null) ? (pendingFaviconData || 'logo.png') : existingFaviconUrl;
+
       var updated = {
         github: (document.getElementById('m-cust-github') || {}).value.trim(),
         x: (document.getElementById('m-cust-x') || {}).value.trim(),
@@ -1607,6 +1781,7 @@
         social_links: socialLinks,
         logo: 'logo.png',
         avatar_url: resolvedAvatar,
+        favicon_url: resolvedFavicon,
         site_name: (document.getElementById('m-cust-sitename') || {}).value.trim(),
         accent_letter: (document.getElementById('m-cust-accent') || {}).value.trim() || 'x',
         site_desc: (document.getElementById('m-cust-bio') || {}).value.trim(),
@@ -1631,7 +1806,9 @@
       localStorage.setItem('portfolio_custom_config', JSON.stringify(updated));
       Object.assign(CONFIG, updated);
       applyThemeColors(currentAccentColor, currentBgPreset, currentThemeMode);
+      applyPageFavicon(resolvedFavicon);
       pendingAvatarData = null; /* clear pending after save */
+      pendingFaviconData = null;
 
       // Live update portfolio UI without reloading
       var wordmark = document.querySelector('.wordmark');

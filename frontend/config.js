@@ -5,6 +5,7 @@ const CONFIG = {
   "email": "ayankhan84510@gmail.com",
   "social_links": [],
   "logo": "logo.png",
+  "favicon_url": "logo.png",
   "site_name": "khxaiyan",
   "accent_letter": "x",
   "site_desc": "khxaiyan | developer in active building mode. crafting clean web tools & digital experiences.",
