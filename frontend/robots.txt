@@ -8,7 +8,7 @@ Disallow: /backend/
 
 # Allow root and assets
 Allow: /
-Allow: /favicon.svg
-Allow: /avatar.svg
+Allow: /favicon.png
+Allow: /Diluc.svg
 Allow: /style.css
 Allow: /app.js

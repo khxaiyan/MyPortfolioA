@@ -4,7 +4,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
   <title>404 | khxaiyan</title>
-  <link rel="icon" href="favicon.svg" type="image/svg+xml">
+  <link rel="icon" href="favicon.png" type="image/png">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;700&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
@@ -20,6 +20,7 @@
           if (fi) {
             if (cfg.favicon_url.startsWith('data:image/svg')) fi.type = 'image/svg+xml';
             else if (cfg.favicon_url.startsWith('data:image/x-icon')) fi.type = 'image/x-icon';
+            else if (cfg.favicon_url.endsWith('.png') || cfg.favicon_url.startsWith('data:image/png')) fi.type = 'image/png';
             fi.href = cfg.favicon_url;
           }
         }

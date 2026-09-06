@@ -9,7 +9,7 @@
   <meta name="googlebot" content="noindex, nofollow, noarchive, nosnippet">
   <meta name="referrer" content="no-referrer">
   <title>Developer | khxaiyan</title>
-  <link rel="icon" href="favicon.svg" type="image/svg+xml">
+  <link rel="icon" href="favicon.png" type="image/png">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link
@@ -502,7 +502,7 @@
           <div
             style="position:relative; width:84px; height:84px; border-radius:50%; overflow:hidden; border:2.5px solid var(--line); flex-shrink:0; cursor:pointer;"
             id="cust-avatar-upload-wrap" title="Click to upload profile photo">
-            <img id="cust-avatar-preview" src="avatar.svg" alt="Profile avatar" draggable="false"
+            <img id="cust-avatar-preview" src="Diluc.svg" alt="Profile avatar" draggable="false"
               style="width:100%; height:100%; object-fit:cover; display:block; pointer-events:none; -webkit-user-drag:none; user-select:none;">
             <div id="cust-avatar-overlay"
               style="position:absolute; inset:0; background:rgba(0,0,0,0.55); display:flex; flex-direction:column; align-items:center; justify-content:center; opacity:0; transition:opacity 0.2s; gap:2px; pointer-events:none;">
@@ -568,7 +568,7 @@
             <span style="font-size:0.7rem; color:var(--ink-faint); font-family:var(--font-mono); letter-spacing:0.04em;">// BROWSER TAB PREVIEW</span>
             <div class="favicon-tab-preview" id="cust-favicon-tab-preview" title="Live browser tab preview">
               <div class="tab-icon" id="cust-favicon-tab-icon">
-                <img id="cust-favicon-tab-img" src="favicon.svg" alt="Favicon" style="width:16px; height:16px; border-radius:3px; object-fit:cover; display:block;">
+                <img id="cust-favicon-tab-img" src="favicon.png" alt="Favicon" style="width:16px; height:16px; border-radius:3px; object-fit:cover; display:block;">
               </div>
               <span class="tab-title" id="cust-favicon-tab-title">khxaiyan</span>
               <span class="tab-close">✕</span>
@@ -579,7 +579,7 @@
             <div
               style="position:relative; width:64px; height:64px; border-radius:14px; overflow:hidden; border:2px solid var(--line); flex-shrink:0; cursor:pointer;"
               id="cust-favicon-upload-wrap" title="Click to upload custom favicon">
-              <img id="cust-favicon-preview" src="favicon.svg" alt="Favicon preview" draggable="false"
+              <img id="cust-favicon-preview" src="favicon.png" alt="Favicon preview" draggable="false"
                 style="width:100%; height:100%; object-fit:cover; display:block; pointer-events:none; -webkit-user-drag:none; user-select:none;">
               <div id="cust-favicon-overlay"
                 style="position:absolute; inset:0; background:rgba(0,0,0,0.55); display:flex; flex-direction:column; align-items:center; justify-content:center; opacity:0; transition:opacity 0.2s; gap:2px; pointer-events:none;">
@@ -1374,12 +1374,12 @@
           }
         } else {
           if (thumb && thumb.tagName.toLowerCase() === 'img') {
-            thumb.src = url || 'avatar.svg';
+            thumb.src = url || 'Diluc.svg';
             thumb.setAttribute('draggable', 'false');
           } else {
             var img = document.createElement('img');
             img.id = 'cust-avatar-preview';
-            img.src = url || 'avatar.svg';
+            img.src = url || 'Diluc.svg';
             img.alt = 'Profile avatar';
             img.setAttribute('draggable', 'false');
             img.style.cssText = 'width:100%; height:100%; object-fit:cover; display:block; pointer-events:none; -webkit-user-drag:none; user-select:none;';
@@ -1480,7 +1480,7 @@
       }
 
       function applyBrowserFavicon(url) {
-        if (!url) url = 'favicon.svg';
+        if (!url) url = 'favicon.png';
         var links = document.querySelectorAll("link[rel*='icon']");
         if (!links || links.length === 0) {
           var link = document.createElement('link');
@@ -1488,7 +1488,7 @@
           document.head.appendChild(link);
           links = [link];
         }
-        var type = 'image/svg+xml';
+        var type = 'image/png';
         if (url.startsWith('data:image/svg') || /\.svg(\?.*)?$/i.test(url)) {
           type = 'image/svg+xml';
         } else if (url.startsWith('data:image/x-icon') || /\.ico(\?.*)?$/i.test(url)) {
@@ -1513,7 +1513,7 @@
         var siteNameVal = (document.getElementById('cust-sitename') || {}).value || 'khxaiyan';
         if (tabTitle) tabTitle.textContent = siteNameVal;
 
-        var finalUrl = url || 'favicon.svg';
+        var finalUrl = url || 'favicon.png';
         if (thumb) {
           thumb.src = finalUrl;
         }
@@ -1581,7 +1581,7 @@
           var avatarSrc = pendingAvatarData;
           if (!avatarSrc) {
             var currentAvatarImg = document.getElementById('cust-avatar-preview');
-            avatarSrc = currentAvatarImg ? currentAvatarImg.src : 'avatar.svg';
+            avatarSrc = currentAvatarImg ? currentAvatarImg.src : 'Diluc.svg';
           }
           if (avatarSrc) {
             pendingFaviconData = avatarSrc;
@@ -2255,11 +2255,11 @@
 
         /* Restore saved avatar */
         pendingAvatarData = null;
-        setCustPreviewAvatar((cfg.avatar_url && cfg.avatar_url.trim()) ? cfg.avatar_url.trim() : 'avatar.svg');
+        setCustPreviewAvatar((cfg.avatar_url && cfg.avatar_url.trim()) ? cfg.avatar_url.trim() : 'Diluc.svg');
 
         /* Restore saved favicon */
         pendingFaviconData = null;
-        setCustPreviewFavicon((cfg.favicon_url && cfg.favicon_url.trim()) ? cfg.favicon_url.trim() : 'favicon.svg');
+        setCustPreviewFavicon((cfg.favicon_url && cfg.favicon_url.trim()) ? cfg.favicon_url.trim() : 'favicon.png');
 
         /* Apply and sync theme option (default is current theme) */
         var themeCfg = cfg.theme_config || {};
@@ -2352,12 +2352,12 @@
         } catch (_) { }
 
         /* Resolve avatar: newly chosen base64, or existing saved, or CONFIG */
-        var existingAvatarUrl = existingCustom.avatar_url || ((typeof CONFIG !== 'undefined' && CONFIG.avatar_url) ? CONFIG.avatar_url : 'avatar.svg');
+        var existingAvatarUrl = existingCustom.avatar_url || ((typeof CONFIG !== 'undefined' && CONFIG.avatar_url) ? CONFIG.avatar_url : 'Diluc.svg');
         var resolvedAvatar = (pendingAvatarData !== null) ? pendingAvatarData : existingAvatarUrl;
 
         /* Resolve favicon: newly chosen base64, or existing saved, or CONFIG */
-        var existingFaviconUrl = existingCustom.favicon_url || ((typeof CONFIG !== 'undefined' && CONFIG.favicon_url) ? CONFIG.favicon_url : 'favicon.svg');
-        var resolvedFavicon = (pendingFaviconData !== null) ? (pendingFaviconData || 'favicon.svg') : existingFaviconUrl;
+        var existingFaviconUrl = existingCustom.favicon_url || ((typeof CONFIG !== 'undefined' && CONFIG.favicon_url) ? CONFIG.favicon_url : 'favicon.png');
+        var resolvedFavicon = (pendingFaviconData !== null) ? (pendingFaviconData || 'favicon.png') : existingFaviconUrl;
 
         var updated = {
           github: document.getElementById('cust-github').value.trim(),
@@ -2365,7 +2365,7 @@
           telegram: document.getElementById('cust-telegram').value.trim(),
           email: document.getElementById('cust-email').value.trim(),
           social_links: socialLinks,
-          logo: 'avatar.svg',
+          logo: 'Diluc.svg',
           avatar_url: resolvedAvatar,
           favicon_url: resolvedFavicon,
           site_name: document.getElementById('cust-sitename').value.trim(),

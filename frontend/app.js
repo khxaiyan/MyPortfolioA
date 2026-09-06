@@ -1218,11 +1218,11 @@
 
     /* Restore saved avatar into modal preview */
     pendingAvatarData = null;
-    setModalAvatarPreview((cfg.avatar_url && cfg.avatar_url.trim()) ? cfg.avatar_url.trim() : 'avatar.svg');
+    setModalAvatarPreview((cfg.avatar_url && cfg.avatar_url.trim()) ? cfg.avatar_url.trim() : 'Diluc.svg');
 
     /* Restore saved favicon into modal preview */
     pendingFaviconData = null;
-    setModalFaviconPreview((cfg.favicon_url && cfg.favicon_url.trim()) ? cfg.favicon_url.trim() : 'favicon.svg');
+    setModalFaviconPreview((cfg.favicon_url && cfg.favicon_url.trim()) ? cfg.favicon_url.trim() : 'favicon.png');
 
     updateModalPreviews();
 
@@ -1358,7 +1358,7 @@
 
   /* ── Avatar helpers & format handling ── */
   function applyPageFavicon(url) {
-    if (!url) url = 'favicon.svg';
+    if (!url) url = 'favicon.png';
     var links = document.querySelectorAll("link[rel*='icon']");
     if (!links || links.length === 0) {
       var link = document.createElement('link');
@@ -1366,7 +1366,7 @@
       document.head.appendChild(link);
       links = [link];
     }
-    var type = 'image/svg+xml';
+    var type = 'image/png';
     if (url.startsWith('data:image/svg') || /\.svg(\?.*)?$/i.test(url)) {
       type = 'image/svg+xml';
     } else if (url.startsWith('data:image/x-icon') || /\.ico(\?.*)?$/i.test(url)) {
@@ -1420,12 +1420,12 @@
       }
     } else {
       if (currentEl && currentEl.tagName.toLowerCase() === 'img') {
-        currentEl.src = url || 'avatar.svg';
+        currentEl.src = url || 'Diluc.svg';
         currentEl.setAttribute('draggable', 'false');
       } else {
         var img = document.createElement('img');
         img.className = 'avatar-img';
-        img.src = url || 'avatar.svg';
+        img.src = url || 'Diluc.svg';
         img.alt = 'khxaiyan';
         img.setAttribute('width', '88');
         img.setAttribute('height', '88');
@@ -1468,12 +1468,12 @@
       }
     } else {
       if (currentEl && currentEl.tagName.toLowerCase() === 'img') {
-        currentEl.src = url || 'avatar.svg';
+        currentEl.src = url || 'Diluc.svg';
         currentEl.setAttribute('draggable', 'false');
       } else {
         var img = document.createElement('img');
         img.id = 'm-avatar-preview';
-        img.src = url || 'avatar.svg';
+        img.src = url || 'Diluc.svg';
         img.alt = 'Profile picture';
         img.setAttribute('draggable', 'false');
         img.style.cssText = 'width:88px; height:88px; border-radius:50%; object-fit:cover; border:2.5px solid var(--line); display:block; pointer-events:none; -webkit-user-drag:none; user-select:none;';
@@ -1595,7 +1595,7 @@
     var siteNameVal = (document.getElementById('m-cust-sitename') || {}).value || 'khxaiyan';
     if (tabTitle) tabTitle.textContent = siteNameVal;
 
-    var finalUrl = url || 'favicon.svg';
+    var finalUrl = url || 'favicon.png';
     if (thumb) thumb.src = finalUrl;
     if (tabImg) tabImg.src = finalUrl;
     applyPageFavicon(finalUrl);
@@ -1659,7 +1659,7 @@
       var avatarSrc = pendingAvatarData;
       if (!avatarSrc) {
         var currentAvatarImg = document.getElementById('m-avatar-preview');
-        avatarSrc = currentAvatarImg ? currentAvatarImg.src : 'avatar.svg';
+        avatarSrc = currentAvatarImg ? currentAvatarImg.src : 'Diluc.svg';
       }
       if (avatarSrc) {
         pendingFaviconData = avatarSrc;
@@ -1731,12 +1731,12 @@
       });
 
       /* Resolve avatar: use newly picked file data, or keep existing saved one */
-      var existingAvatarUrl = (typeof CONFIG !== 'undefined' && CONFIG.avatar_url) ? CONFIG.avatar_url : 'avatar.svg';
+      var existingAvatarUrl = (typeof CONFIG !== 'undefined' && CONFIG.avatar_url) ? CONFIG.avatar_url : 'Diluc.svg';
       var resolvedAvatar = (pendingAvatarData !== null) ? pendingAvatarData : existingAvatarUrl;
 
       /* Resolve favicon: newly picked file, or existing saved one */
-      var existingFaviconUrl = (typeof CONFIG !== 'undefined' && CONFIG.favicon_url) ? CONFIG.favicon_url : 'favicon.svg';
-      var resolvedFavicon = (pendingFaviconData !== null) ? (pendingFaviconData || 'favicon.svg') : existingFaviconUrl;
+      var existingFaviconUrl = (typeof CONFIG !== 'undefined' && CONFIG.favicon_url) ? CONFIG.favicon_url : 'favicon.png';
+      var resolvedFavicon = (pendingFaviconData !== null) ? (pendingFaviconData || 'favicon.png') : existingFaviconUrl;
 
       var updated = {
         github: (document.getElementById('m-cust-github') || {}).value.trim(),
@@ -1744,7 +1744,7 @@
         telegram: (document.getElementById('m-cust-telegram') || {}).value.trim(),
         email: (document.getElementById('m-cust-email') || {}).value.trim(),
         social_links: socialLinks,
-        logo: 'avatar.svg',
+        logo: 'Diluc.svg',
         avatar_url: resolvedAvatar,
         favicon_url: resolvedFavicon,
         site_name: (document.getElementById('m-cust-sitename') || {}).value.trim(),
@@ -1802,7 +1802,7 @@
       }
 
       /* Live apply avatar to page */
-      setPageAvatar(updated.avatar_url || 'avatar.svg');
+      setPageAvatar(updated.avatar_url || 'Diluc.svg');
 
       var saveStatus = document.getElementById('m-save-status');
       if (saveStatus) {
