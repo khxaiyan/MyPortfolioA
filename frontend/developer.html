@@ -32,6 +32,11 @@
           customCfg.logo = 'Diluc.svg';
           needsUpdate = true;
         }
+        if (customCfg.accent_color === '#00f0ff' || customCfg.accent_color === '#a855f7') {
+          customCfg.accent_color = '#ff2a5f';
+          if (customCfg.theme_config) customCfg.theme_config.accent_color = '#ff2a5f';
+          needsUpdate = true;
+        }
         if (needsUpdate) {
           try { localStorage.setItem('portfolio_custom_config', JSON.stringify(customCfg)); } catch (_) {}
         }
@@ -56,7 +61,7 @@
         if (afi) afi.href = fav;
       }
 
-      var accent = themeCfg.accent_color || (customCfg && customCfg.accent_color) || '#ff2a5f';
+      var accent = themeCfg.accent_color || (customCfg && customCfg.accent_color) || (typeof CONFIG !== 'undefined' && CONFIG.accent_color) || '#ff2a5f';
       var bgPreset = themeCfg.bg_preset || 'midnight';
 
       function hexToRgba(hex, alpha) {
@@ -707,7 +712,7 @@
 
             <div class="accent-swatches-wrap" id="accent-swatches-container">
               <button type="button" class="accent-swatch-btn active" data-color="#ff2a5f"
-                title="Crimson Red (Default Current Theme)" style="background:#ff2a5f;"></button>
+                title="Crimson Red (Default Theme)" style="background:#ff2a5f;"></button>
               <button type="button" class="accent-swatch-btn" data-color="#00f0ff" title="Cyber Cyan"
                 style="background:#00f0ff;"></button>
               <button type="button" class="accent-swatch-btn" data-color="#10b981" title="Matrix Emerald"
@@ -1338,7 +1343,7 @@
       var btnResetTheme = document.getElementById('btn-reset-theme');
       if (btnResetTheme) {
         btnResetTheme.addEventListener('click', function () {
-          currentAccentColor = '#ff2a5f';
+          currentAccentColor = (typeof CONFIG !== 'undefined' && CONFIG.accent_color) || '#ff2a5f';
           currentBgPreset = 'midnight';
           switchSiteTheme('dark');
         });
@@ -2281,7 +2286,7 @@
         /* Apply and sync theme option (default is current theme) */
         var themeCfg = cfg.theme_config || {};
         currentThemeMode = themeCfg.mode || document.documentElement.getAttribute('data-theme') || localStorage.getItem('theme') || (cfg.default_theme || 'dark');
-        currentAccentColor = themeCfg.accent_color || cfg.accent_color || '#ff2a5f';
+        currentAccentColor = themeCfg.accent_color || cfg.accent_color || (typeof CONFIG !== 'undefined' && CONFIG.accent_color) || '#ff2a5f';
         currentBgPreset = themeCfg.bg_preset || 'midnight';
         document.documentElement.setAttribute('data-theme', currentThemeMode);
         applyThemeColors(currentAccentColor, currentBgPreset, currentThemeMode);
@@ -2568,7 +2573,7 @@
           publishableKey: pubKey,
           appearance: {
             variables: {
-              colorPrimary: '#ff2a5f',
+              colorPrimary: currentAccentColor || '#ff2a5f',
               colorBackground: '#131319',
               colorText: '#eef0f4',
               colorInputBackground: '#0a0a0e',

@@ -47,6 +47,11 @@
           customCfg.logo = 'Diluc.svg';
           needsUpdate = true;
         }
+        if (customCfg.accent_color === '#00f0ff' || customCfg.accent_color === '#a855f7') {
+          customCfg.accent_color = '#ff2a5f';
+          if (customCfg.theme_config) customCfg.theme_config.accent_color = '#ff2a5f';
+          needsUpdate = true;
+        }
         if (needsUpdate) {
           try { localStorage.setItem('portfolio_custom_config', JSON.stringify(customCfg)); } catch (_) {}
         }
@@ -71,7 +76,7 @@
         if (afi) afi.href = fav;
       }
 
-      var accent = themeCfg.accent_color || (customCfg && customCfg.accent_color) || '#ff2a5f';
+      var accent = themeCfg.accent_color || (customCfg && customCfg.accent_color) || (typeof CONFIG !== 'undefined' && CONFIG.accent_color) || '#ff2a5f';
       var bgPreset = themeCfg.bg_preset || 'midnight';
 
       function hexToRgba(hex, alpha) {

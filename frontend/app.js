@@ -157,7 +157,7 @@
   try { customCfg = JSON.parse(localStorage.getItem('portfolio_custom_config')); } catch (_) {}
   var themeCfg = (customCfg && customCfg.theme_config) || {};
   currentThemeMode = themeCfg.mode || (customCfg && customCfg.default_theme) || localStorage.getItem('theme') || 'dark';
-  currentAccentColor = themeCfg.accent_color || (customCfg && customCfg.accent_color) || '#ff2a5f';
+  currentAccentColor = themeCfg.accent_color || (customCfg && customCfg.accent_color) || (typeof CONFIG !== 'undefined' && CONFIG.accent_color) || '#ff2a5f';
   currentBgPreset = themeCfg.bg_preset || 'midnight';
 
   applyTheme(currentThemeMode);
@@ -184,6 +184,11 @@
       }
       if (parsedCustom.favicon_url === 'favicon.svg') {
         parsedCustom.favicon_url = 'favicon.png';
+        needsSave = true;
+      }
+      if (parsedCustom.accent_color === '#00f0ff' || parsedCustom.accent_color === '#a855f7') {
+        parsedCustom.accent_color = '#ff2a5f';
+        if (parsedCustom.theme_config) parsedCustom.theme_config.accent_color = '#ff2a5f';
         needsSave = true;
       }
       if (needsSave) {
@@ -1244,7 +1249,7 @@
 
     var themeCfg = cfg.theme_config || {};
     currentThemeMode = themeCfg.mode || root.getAttribute('data-theme') || (cfg.default_theme || 'dark');
-    currentAccentColor = themeCfg.accent_color || cfg.accent_color || '#ff2a5f';
+    currentAccentColor = themeCfg.accent_color || cfg.accent_color || (typeof CONFIG !== 'undefined' && CONFIG.accent_color) || '#ff2a5f';
     currentBgPreset = themeCfg.bg_preset || 'midnight';
     applyThemeColors(currentAccentColor, currentBgPreset, currentThemeMode);
     updateModalThemeUI();
@@ -1321,7 +1326,7 @@
   var mResetBtn = document.getElementById('m-btn-reset-theme');
   if (mResetBtn) {
     mResetBtn.addEventListener('click', function () {
-      currentAccentColor = '#ff2a5f';
+      currentAccentColor = (typeof CONFIG !== 'undefined' && CONFIG.accent_color) || '#ff2a5f';
       currentBgPreset = 'midnight';
       applyTheme('dark');
     });
@@ -1843,7 +1848,7 @@
           publishableKey: pubKey,
           appearance: {
             variables: {
-              colorPrimary: '#ff2a5f',
+              colorPrimary: currentAccentColor || '#ff2a5f',
               colorBackground: '#131319',
               colorText: '#eef0f4',
               colorInputBackground: '#0a0a0e',

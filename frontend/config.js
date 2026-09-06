@@ -52,5 +52,12 @@ const CONFIG = {
   "intro": "Passionate developer specializing in building modern web applications, clean user interfaces, and dynamic digital tools. Focused on performance, aesthetics, and crafting clean, scalable code.",
   "authorized_users": [
     "ayankhan84510@gmail.com"
-  ]
+  ],
+  "accent_color": "#ff2a5f",
+  "default_theme": "dark",
+  "theme_config": {
+    "mode": "dark",
+    "accent_color": "#ff2a5f",
+    "bg_preset": "midnight"
+  }
 };

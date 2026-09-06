@@ -33,7 +33,7 @@ const supportedKeys = [
   'GITHUB_USERNAME', 'X_USERNAME', 'TELEGRAM_USERNAME', 'CONTACT_EMAIL',
   'SITE_NAME', 'ACCENT_LETTER', 'CF_ANALYTICS', 'WEB3FORMS_ACCESS_KEY',
   'HCAPTCHA_SITEKEY', 'CLERK_PUBLISHABLE_KEY', 'CLERK_FRONTEND_API',
-  'AUTHORIZED_USERS', 'FAVICON_URL', 'AVATAR_URL'
+  'AUTHORIZED_USERS', 'FAVICON_URL', 'AVATAR_URL', 'ACCENT_COLOR', 'DEFAULT_THEME'
 ];
 const envFromProcess = {};
 supportedKeys.forEach((key) => {
@@ -72,6 +72,13 @@ const updatedConfig = Object.assign({}, currentConfig, {
   favicon_url: env.FAVICON_URL || (currentConfig.favicon_url === 'favicon.svg' ? 'favicon.png' : currentConfig.favicon_url) || 'favicon.png',
   site_name: env.SITE_NAME || currentConfig.site_name || 'khxaiyan',
   accent_letter: env.ACCENT_LETTER || currentConfig.accent_letter || 'x',
+  accent_color: env.ACCENT_COLOR || currentConfig.accent_color || '#ff2a5f',
+  default_theme: env.DEFAULT_THEME || currentConfig.default_theme || 'dark',
+  theme_config: {
+    mode: env.DEFAULT_THEME || (currentConfig.theme_config && currentConfig.theme_config.mode) || 'dark',
+    accent_color: env.ACCENT_COLOR || (currentConfig.theme_config && currentConfig.theme_config.accent_color) || '#ff2a5f',
+    bg_preset: (currentConfig.theme_config && currentConfig.theme_config.bg_preset) || 'midnight'
+  },
   site_desc: currentConfig.site_desc || 'khxaiyan | developer in active building mode. crafting clean web tools & digital experiences.',
   seo_desc: currentConfig.seo_desc || 'khxaiyan | Web developer crafting clean tools, interfaces, and digital experiences.',
   intro: currentConfig.intro || 'Passionate developer specializing in building modern web applications, clean user interfaces, and dynamic digital tools. Focused on performance, aesthetics, and crafting clean, scalable code.',
