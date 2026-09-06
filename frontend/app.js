@@ -1662,7 +1662,6 @@
       processFaviconFile(file, function (dataUrl) {
         pendingFaviconData = dataUrl;
         setModalFaviconPreview(pendingFaviconData);
-        document.querySelectorAll('.m-fav-emoji').forEach(function (b) { b.classList.remove('active'); });
       });
       faviconFileInput.value = '';
     });
@@ -1678,7 +1677,6 @@
       if (avatarSrc) {
         pendingFaviconData = avatarSrc;
         setModalFaviconPreview(pendingFaviconData);
-        document.querySelectorAll('.m-fav-emoji').forEach(function (b) { b.classList.remove('active'); });
       }
     });
   }
@@ -1687,21 +1685,8 @@
     faviconResetBtn.addEventListener('click', function () {
       pendingFaviconData = '';
       setModalFaviconPreview('logo.png');
-      document.querySelectorAll('.m-fav-emoji').forEach(function (b) { b.classList.remove('active'); });
     });
   }
-
-  document.querySelectorAll('.m-fav-emoji').forEach(function (btn) {
-    btn.addEventListener('click', function () {
-      var emoji = this.getAttribute('data-emoji');
-      if (!emoji) return;
-      document.querySelectorAll('.m-fav-emoji').forEach(function (b) { b.classList.remove('active'); });
-      this.classList.add('active');
-      var svgUrl = emojiToSvgDataUrl(emoji);
-      pendingFaviconData = svgUrl;
-      setModalFaviconPreview(pendingFaviconData);
-    });
-  });
 
   var btnModalSave = document.getElementById('m-btn-save');
   if (btnModalSave) {

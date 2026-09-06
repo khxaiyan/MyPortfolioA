@@ -1593,30 +1593,7 @@ select, option, optgroup {
   margin-left: 4px;
   font-family: sans-serif;
 }
-.favicon-emoji-btn {
-  width: 32px;
-  height: 32px;
-  border-radius: 8px;
-  border: 1px solid var(--line);
-  background: var(--bg);
-  cursor: pointer;
-  font-size: 16px;
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  transition: all 0.16s ease;
-  padding: 0;
-}
-.favicon-emoji-btn:hover {
-  border-color: var(--red);
-  background: var(--surface-hover);
-  transform: translateY(-1px);
-}
-.favicon-emoji-btn.active {
-  border-color: var(--red);
-  background: var(--red-dim);
-  box-shadow: 0 0 0 1px var(--red);
-}
+
 
 /* ── Utility ── */
 .sr-only {
