@@ -1,0 +1,2393 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+  <meta name="color-scheme" content="dark light">
+  <meta name="robots" content="noindex, nofollow, noarchive, nosnippet">
+  <meta name="googlebot" content="noindex, nofollow, noarchive, nosnippet">
+  <meta name="referrer" content="no-referrer">
+  <title>Developer | khxaiyan</title>
+  <link rel="icon" href="logo.png" type="image/png">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link
+    href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600&display=swap"
+    rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+  <script src="https://code.iconify.design/iconify-icon/2.1.0/iconify-icon.min.js"></script>
+  <script>
+    (function () {
+      var customCfg = null;
+      try { customCfg = JSON.parse(localStorage.getItem('portfolio_custom_config')); } catch (_) { }
+      var themeCfg = (customCfg && customCfg.theme_config) || {};
+      var defTheme = themeCfg.mode || (customCfg && customCfg.default_theme) || 'dark';
+      var t = localStorage.getItem('theme') || defTheme;
+      document.documentElement.setAttribute('data-theme', t);
+
+      var accent = themeCfg.accent_color || (customCfg && customCfg.accent_color) || '#ff2a5f';
+      var bgPreset = themeCfg.bg_preset || 'midnight';
+
+      function hexToRgba(hex, alpha) {
+        var c = hex.replace('#', '');
+        if (c.length === 3) c = c[0] + c[0] + c[1] + c[1] + c[2] + c[2];
+        var num = parseInt(c, 16);
+        return 'rgba(' + ((num >> 16) & 255) + ',' + ((num >> 8) & 255) + ',' + (num & 255) + ',' + alpha + ')';
+      }
+      function shadeColor(color, percent) {
+        var c = color.replace('#', '');
+        if (c.length === 3) c = c[0] + c[0] + c[1] + c[1] + c[2] + c[2];
+        var num = parseInt(c, 16);
+        var amt = Math.round(2.55 * percent);
+        var R = (num >> 16) + amt, G = ((num >> 8) & 255) + amt, B = (num & 255) + amt;
+        return '#' + (0x1000000 + (R < 255 ? (R < 0 ? 0 : R) : 255) * 0x10000 + (G < 255 ? (G < 0 ? 0 : G) : 255) * 0x100 + (B < 255 ? (B < 0 ? 0 : B) : 255)).toString(16).slice(1);
+      }
+      var PRESETS = {
+        midnight: { bg: '#0a0a0e', surface: '#131319', surfaceHover: '#191a22', rail: '#363a63' },
+        oled: { bg: '#000000', surface: '#0a0a0a', surfaceHover: '#141414', rail: '#262630' },
+        navy: { bg: '#070a13', surface: '#0d1322', surfaceHover: '#141d33', rail: '#223252' },
+        charcoal: { bg: '#101114', surface: '#17181d', surfaceHover: '#1f2027', rail: '#383947' }
+      };
+
+      if (accent && accent.toLowerCase() !== '#ff2a5f') {
+        var root = document.documentElement;
+        root.style.setProperty('--red', accent);
+        root.style.setProperty('--red-solid', shadeColor(accent, -18));
+        root.style.setProperty('--red-solid-hov', shadeColor(accent, -30));
+        root.style.setProperty('--red-dim', hexToRgba(accent, 0.16));
+        root.style.setProperty('--border-accent', hexToRgba(accent, 0.45));
+        root.style.setProperty('--border-accent-glow', hexToRgba(accent, 0.12));
+      }
+      if (t === 'dark' && bgPreset && PRESETS[bgPreset] && bgPreset !== 'midnight') {
+        var p = PRESETS[bgPreset];
+        var root = document.documentElement;
+        root.style.setProperty('--bg', p.bg);
+        root.style.setProperty('--surface', p.surface);
+        root.style.setProperty('--surface-hover', p.surfaceHover);
+        root.style.setProperty('--rail', p.rail);
+      }
+    }());
+  </script>
+  <style>
+    img,
+    video {
+      -webkit-user-drag: none;
+      -khtml-user-drag: none;
+      -moz-user-drag: none;
+      -o-user-drag: none;
+      user-drag: none;
+      -webkit-user-select: none;
+      -moz-user-select: none;
+      -ms-user-select: none;
+      user-select: none;
+    }
+
+    .cust-container {
+      width: 100%;
+      max-width: 640px;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .cust-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 24px;
+      padding-bottom: 14px;
+      border-bottom: 1px solid var(--line);
+    }
+
+    .cust-title-group {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .cust-title {
+      font-family: var(--font-display);
+      font-size: 1.25rem;
+      font-weight: 700;
+      color: var(--ink);
+    }
+
+    .back-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 6px 12px;
+      border-radius: var(--radius-sm);
+      background: var(--surface);
+      border: 1px solid var(--line);
+      color: var(--ink-dim);
+      font-size: 0.78rem;
+      text-decoration: none;
+      transition: all 0.18s;
+    }
+
+    .back-btn:hover {
+      color: var(--ink);
+      border-color: var(--red);
+      background: var(--surface-hover);
+    }
+
+    /* Auth card */
+    .auth-box {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding: 32px 20px;
+      background: var(--surface);
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      text-align: center;
+      gap: 16px;
+      margin-bottom: 32px;
+      transition: border-color 0.2s ease, box-shadow 0.2s ease;
+    }
+
+    .auth-box:hover,
+    .auth-box:focus-within {
+      border-color: var(--border-accent, rgba(255, 42, 95, 0.45));
+      box-shadow: 0 0 14px var(--border-accent-glow, rgba(255, 42, 95, 0.12));
+    }
+
+    .auth-desc {
+      font-size: 0.85rem;
+      color: var(--ink-dim);
+      max-width: 360px;
+      line-height: 1.6;
+    }
+
+    /* Form Fields */
+    .cust-section {
+      margin-bottom: 24px;
+    }
+
+    .cust-card {
+      padding: 16px;
+      display: flex;
+      flex-direction: column;
+      gap: 14px;
+      transition: border-color 0.2s ease, box-shadow 0.2s ease;
+    }
+
+    .cust-card:hover,
+    .cust-card:focus-within {
+      border-color: var(--border-accent, rgba(255, 42, 95, 0.45));
+      box-shadow: 0 0 14px var(--border-accent-glow, rgba(255, 42, 95, 0.12));
+    }
+
+    .field-group {
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+    }
+
+    .field-label {
+      font-size: 0.74rem;
+      color: var(--ink-faint);
+      font-weight: 500;
+      letter-spacing: 0.02em;
+    }
+
+    .field-input {
+      width: 100%;
+      background: var(--bg);
+      border: 1px solid var(--line);
+      border-radius: var(--radius-sm);
+      padding: 10px 13px;
+      font-family: var(--font-mono);
+      font-size: 0.84rem;
+      color: var(--ink);
+      outline: none;
+      transition: border-color 0.18s ease, box-shadow 0.18s ease;
+    }
+
+    .field-textarea {
+      width: 100%;
+      background: var(--bg);
+      border: 1px solid var(--line);
+      border-radius: var(--radius-sm);
+      padding: 12px 14px;
+      font-family: var(--font-mono);
+      font-size: 0.84rem;
+      line-height: 1.65;
+      color: var(--ink);
+      outline: none;
+      transition: border-color 0.18s ease, box-shadow 0.18s ease;
+      resize: vertical;
+      min-height: 110px;
+    }
+
+    .field-input:hover,
+    .field-textarea:hover {
+      border-color: var(--border-accent, rgba(255, 42, 95, 0.45));
+    }
+
+    .field-input:focus,
+    .field-textarea:focus {
+      border-color: var(--red);
+      box-shadow: 0 0 8px var(--border-accent-glow, rgba(255, 42, 95, 0.2));
+    }
+
+    .textarea-with-toolbar {
+      border-top-left-radius: 0 !important;
+      border-top-right-radius: 0 !important;
+    }
+
+    /* Format Toolbar */
+    .format-toolbar {
+      display: flex;
+      align-items: center;
+      gap: 4px;
+      flex-wrap: wrap;
+      background: var(--surface);
+      border: 1px solid var(--line);
+      border-bottom: none;
+      border-top-left-radius: var(--radius-sm);
+      border-top-right-radius: var(--radius-sm);
+      padding: 5px 8px;
+      transition: border-color 0.18s ease;
+    }
+
+    .format-toolbar:hover,
+    .format-toolbar:focus-within {
+      border-color: var(--border-accent, rgba(255, 42, 95, 0.45));
+    }
+
+    .toolbar-btn {
+      background: var(--bg);
+      border: 1px solid var(--line);
+      color: var(--ink-dim);
+      font-family: var(--font-mono);
+      font-size: 0.72rem;
+      padding: 3px 7px;
+      border-radius: 4px;
+      cursor: pointer;
+      transition: all 0.15s;
+    }
+
+    .toolbar-btn:hover {
+      border-color: var(--red);
+      color: var(--ink);
+      background: var(--surface-hover);
+    }
+
+    .preview-box {
+      background: var(--bg);
+      border: 1px dashed var(--line);
+      border-radius: var(--radius-sm);
+      padding: 10px 12px;
+      font-size: 0.82rem;
+      color: var(--ink-dim);
+      line-height: 1.6;
+      transition: border-color 0.18s ease, box-shadow 0.18s ease;
+    }
+
+    .preview-box:hover {
+      border-color: var(--border-accent, rgba(255, 42, 95, 0.45));
+      box-shadow: 0 0 10px var(--border-accent-glow, rgba(255, 42, 95, 0.12));
+    }
+
+    .field-grid-2 {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 12px;
+    }
+
+    @media (max-width: 520px) {
+      .field-grid-2 {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    .save-actions {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+      margin-top: 8px;
+    }
+
+    .save-btn {
+      width: 100%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      background: var(--red-solid);
+      color: #ffffff;
+      border: none;
+      border-radius: var(--radius);
+      padding: 13px 22px;
+      font-family: var(--font-mono);
+      font-size: 0.85rem;
+      font-weight: 500;
+      cursor: pointer;
+      transition: background 0.2s;
+    }
+
+    .save-btn:hover {
+      background: var(--red-solid-hov);
+    }
+
+    .status-toast {
+      font-size: 0.8rem;
+      color: var(--success);
+      display: none;
+      text-align: center;
+    }
+
+    .code-preview {
+      background: var(--surface-hover);
+      border: 1px solid var(--line);
+      border-radius: var(--radius-sm);
+      padding: 12px;
+      font-family: var(--font-mono);
+      font-size: 0.74rem;
+      color: var(--ink-dim);
+      white-space: pre-wrap;
+      word-break: break-all;
+      max-height: 160px;
+      overflow-y: auto;
+      transition: border-color 0.18s ease, box-shadow 0.18s ease;
+    }
+
+    .code-preview:hover {
+      border-color: var(--border-accent, rgba(255, 42, 95, 0.45));
+      box-shadow: 0 0 10px var(--border-accent-glow, rgba(255, 42, 95, 0.12));
+    }
+
+    .session-badge {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 12px 16px;
+      background: var(--surface);
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      margin-bottom: 24px;
+      transition: border-color 0.2s ease, box-shadow 0.2s ease;
+    }
+
+    .session-badge:hover {
+      border-color: var(--border-accent, rgba(255, 42, 95, 0.45));
+      box-shadow: 0 0 12px var(--border-accent-glow, rgba(255, 42, 95, 0.12));
+    }
+
+    .cust-section .m-proj-card {
+      background: var(--surface);
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      padding: 14px 16px;
+      position: relative;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      transition: border-color 0.18s ease, box-shadow 0.18s ease;
+    }
+
+    .cust-section .m-proj-card:hover,
+    .cust-section .m-proj-card:focus-within {
+      border-color: var(--border-accent, rgba(255, 42, 95, 0.45));
+      box-shadow: 0 0 12px var(--border-accent-glow, rgba(255, 42, 95, 0.12));
+    }
+
+    .cust-section .m-social-card {
+      background: var(--surface);
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      padding: 14px 16px;
+      position: relative;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      transition: border-color 0.18s ease, box-shadow 0.18s ease;
+    }
+
+    .cust-section .m-social-card:hover,
+    .cust-section .m-social-card:focus-within {
+      border-color: var(--border-accent, rgba(255, 42, 95, 0.45));
+      box-shadow: 0 0 12px var(--border-accent-glow, rgba(255, 42, 95, 0.12));
+    }
+  </style>
+</head>
+
+<body>
+  <div id="scroll-progress" class="scroll-progress-bar" aria-hidden="true"></div>
+
+  <main class="sheet cust-container">
+
+    <header class="cust-header">
+      <div class="cust-title-group">
+        <h1 class="cust-title">kh<span class="glyph-5">x</span>aiyan</h1>
+        <span style="font-size:0.8rem; color:var(--ink-faint);">// developer</span>
+      </div>
+      <div style="display:flex; align-items:center; gap:10px;">
+        <div id="clerk-user-button"></div>
+        <button type="button" class="back-btn" id="btn-theme-toggle" title="Toggle dark / light theme"
+          style="cursor:pointer;">
+          <span id="theme-toggle-icon">🌙</span>
+          <span id="theme-toggle-label" style="font-size:0.75rem;">Theme</span>
+        </button>
+        <a href="index.html" class="back-btn">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+            stroke-linecap="round" stroke-linejoin="round">
+            <path d="M19 12H5" />
+            <path d="m12 19-7-7 7-7" />
+          </svg>
+          <span>Portfolio</span>
+        </a>
+      </div>
+    </header>
+
+    <!-- ── Clerk Sign-In Box (when signed out) ── -->
+    <div class="auth-box" id="auth-box" style="padding: 28px 16px;">
+      <p class="eyebrow" style="margin-bottom:4px;">// developer authentication</p>
+      <p class="auth-desc" style="margin-bottom:16px;">Sign in with your authorized admin account to access developer
+        controls.</p>
+      <div id="clerk-loading-msg" style="font-size:0.85rem; color:var(--ink-dim); padding:12px;">Loading
+        authentication...</div>
+      <div id="clerk-sign-in" style="width:100%; display:flex; justify-content:center;"></div>
+    </div>
+
+    <!-- ── Access Denied Box (when signed in but unauthorized with auto-redirect) ── -->
+    <div class="auth-box" id="denied-box" style="display:none; padding:40px 20px;">
+      <div style="font-size:2.4rem; line-height:1;">🚫</div>
+      <h2
+        style="font-family:var(--font-display); font-size:1.25rem; font-weight:700; color:var(--ink); margin-top:4px;">
+        Access Restricted</h2>
+      <p class="auth-desc">Signed in as <strong id="denied-email" style="color:var(--ink);">user</strong>.<br>This
+        account is not on the authorized developer whitelist.<br>
+        <span
+          style="color:var(--red); font-size:0.8rem; font-family:var(--font-mono); display:inline-block; margin-top:10px;">
+          Redirecting to home in <span id="denied-countdown">3</span>s...
+        </span>
+      </p>
+      <div style="display:flex; gap:10px; margin-top:10px; justify-content:center;">
+        <button type="button" class="btn-signout" id="btn-login-signout">Sign Out & Exit</button>
+        <a href="index.html" class="back-btn" style="text-decoration:none;">Go Home Now</a>
+      </div>
+    </div>
+
+    <!-- ── Sequence-Wise Customizer (matches main page order) ── -->
+    <div id="customizer-sections" style="display:none;">
+
+      <!-- Session indicator -->
+      <div class="session-badge">
+        <span id="session-user-text" style="font-size:0.8rem; color:var(--ink);">Signed in as developer</span>
+        <span style="font-size:0.75rem; color:var(--success); font-weight:600;">● Authorized</span>
+      </div>
+
+      <!-- 0. // avatar -->
+      <div class="cust-section">
+        <p class="eyebrow">// avatar</p>
+        <div class="surface-card cust-card"
+          style="display:flex; flex-direction:column; align-items:center; text-align:center; padding:22px 16px; gap:12px;">
+          <div
+            style="position:relative; width:84px; height:84px; border-radius:50%; overflow:hidden; border:2.5px solid var(--line); flex-shrink:0; cursor:pointer;"
+            id="cust-avatar-upload-wrap" title="Click to upload profile photo">
+            <img id="cust-avatar-preview" src="logo.png" alt="Profile avatar" draggable="false"
+              style="width:100%; height:100%; object-fit:cover; display:block; pointer-events:none; -webkit-user-drag:none; user-select:none;">
+            <div id="cust-avatar-overlay"
+              style="position:absolute; inset:0; background:rgba(0,0,0,0.55); display:flex; flex-direction:column; align-items:center; justify-content:center; opacity:0; transition:opacity 0.2s; gap:2px; pointer-events:none;">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#ffffff" stroke-width="2"
+                stroke-linecap="round" stroke-linejoin="round">
+                <path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z" />
+                <circle cx="12" cy="13" r="4" />
+              </svg>
+              <span
+                style="font-size:0.62rem; color:#fff; font-weight:600; text-transform:uppercase; letter-spacing:0.04em;">Edit</span>
+            </div>
+            <input type="file" id="cust-avatar-file"
+              accept="image/jpeg, image/png, image/webp, image/avif, image/gif, image/svg+xml, video/webm, .jpg, .jpeg, .png, .webp, .avif, .gif, .svg, .webm"
+              style="position:absolute; inset:0; opacity:0; cursor:pointer; width:100%; height:100%;">
+          </div>
+          <div>
+            <p style="font-size:0.88rem; font-weight:600; color:var(--ink); margin:0 0 3px 0;">Profile Avatar</p>
+            <p style="font-size:0.73rem; color:var(--ink-faint); margin:0 0 10px 0;">Click the avatar to upload from
+              your device</p>
+            <!-- Stylish format & size pills -->
+            <div style="display:flex; align-items:center; justify-content:center; gap:6px; flex-wrap:wrap;">
+              <span
+                style="display:inline-flex; align-items:center; gap:4px; font-size:0.68rem; font-family:var(--font-mono); color:var(--ink-dim); background:var(--bg); border:1px solid var(--line); padding:3px 9px; border-radius:12px;">
+                <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                  stroke-linecap="round" stroke-linejoin="round">
+                  <rect width="18" height="18" x="3" y="3" rx="2" />
+                  <circle cx="9" cy="9" r="2" />
+                  <path d="m21 15-3.086-3.086a2 2 0 0 0-2.828 0L6 21" />
+                </svg>
+                JPG, PNG, WEBP, AVIF, GIF, SVG, WEBM
+              </span>
+              <span
+                style="display:inline-flex; align-items:center; gap:4px; font-size:0.68rem; font-family:var(--font-mono); color:var(--ink-dim); background:var(--bg); border:1px solid var(--line); padding:3px 9px; border-radius:12px;">
+                <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                  stroke-linecap="round" stroke-linejoin="round">
+                  <circle cx="12" cy="12" r="10" />
+                  <path d="m4.93 4.93 4.24 4.24" />
+                </svg>
+                1:1 Square (e.g. 512×512)
+              </span>
+              <span
+                style="display:inline-flex; align-items:center; gap:4px; font-size:0.68rem; font-family:var(--font-mono); color:var(--ink-dim); background:var(--bg); border:1px solid var(--line); padding:3px 9px; border-radius:12px;">
+                <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                  stroke-linecap="round" stroke-linejoin="round">
+                  <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4" />
+                  <polyline points="17 8 12 3 7 8" />
+                  <line x1="12" x2="12" y1="3" y2="15" />
+                </svg>
+                Max 2 MB
+              </span>
+            </div>
+          </div>
+          <button type="button" id="cust-avatar-reset-btn" class="toolbar-btn"
+            style="border-radius:20px; padding:4px 14px; font-size:0.72rem; margin-top:2px;">
+            Reset to default
+          </button>
+        </div>
+      </div>
+
+      <!-- // theme -->
+      <div class="cust-section">
+        <p class="eyebrow">// theme</p>
+        <div class="surface-card cust-card">
+          <div style="display:flex; align-items:center; justify-content:space-between; flex-wrap:wrap; gap:8px;">
+            <div>
+              <p style="font-size:0.86rem; font-weight:600; color:var(--ink); margin:0 0 2px 0;">Portfolio Theme &amp;
+                Accent</p>
+              <p style="font-size:0.72rem; color:var(--ink-faint); margin:0;">Customize appearance, highlights,
+                background tone, and colors.</p>
+            </div>
+            <span id="theme-status-pill"
+              style="font-size:0.7rem; font-family:var(--font-mono); padding:3px 10px; border-radius:12px; border:1px solid var(--line); background:var(--bg); color:var(--ink-dim);">Dark
+              Mode Active</span>
+          </div>
+
+          <!-- Theme Mode Selection -->
+          <div
+            style="display:grid; grid-template-columns:repeat(auto-fit, minmax(180px, 1fr)); gap:10px; margin-top:8px;">
+            <label class="theme-choice-card" id="card-theme-dark"
+              style="cursor:pointer; display:flex; align-items:center; gap:12px; padding:12px 14px; border:1.5px solid var(--line); border-radius:var(--radius-sm); background:var(--bg); transition:all 0.18s ease;">
+              <input type="radio" name="site-theme-choice" value="dark" id="radio-theme-dark"
+                style="accent-color:var(--red); cursor:pointer;">
+              <div style="display:flex; flex-direction:column; gap:2px;">
+                <span
+                  style="font-size:0.84rem; font-weight:600; color:var(--ink); display:flex; align-items:center; gap:6px;">
+                  <span>🌙</span> Dark Mode
+                </span>
+                <span style="font-size:0.7rem; color:var(--ink-faint);">Midnight dark &amp; neon highlights
+                  (Default)</span>
+              </div>
+            </label>
+
+            <label class="theme-choice-card" id="card-theme-light"
+              style="cursor:pointer; display:flex; align-items:center; gap:12px; padding:12px 14px; border:1.5px solid var(--line); border-radius:var(--radius-sm); background:var(--bg); transition:all 0.18s ease;">
+              <input type="radio" name="site-theme-choice" value="light" id="radio-theme-light"
+                style="accent-color:var(--red); cursor:pointer;">
+              <div style="display:flex; flex-direction:column; gap:2px;">
+                <span
+                  style="font-size:0.84rem; font-weight:600; color:var(--ink); display:flex; align-items:center; gap:6px;">
+                  <span>☀️</span> Light Mode
+                </span>
+                <span style="font-size:0.7rem; color:var(--ink-faint);">Clean paper &amp; colored highlights</span>
+              </div>
+            </label>
+          </div>
+
+          <!-- Accent Highlight Color -->
+          <div class="field-group" style="margin-top:12px; border-top:1px solid var(--line); padding-top:14px;">
+            <div style="display:flex; align-items:center; justify-content:space-between; margin-bottom:4px;">
+              <label class="field-label" style="font-weight:600; color:var(--ink);">Highlight Accent Color</label>
+              <span id="accent-hex-indicator"
+                style="font-family:var(--font-mono); font-size:0.74rem; color:var(--ink-dim); background:var(--bg); padding:2px 8px; border-radius:10px; border:1px solid var(--line);">#ff2a5f</span>
+            </div>
+            <p style="font-size:0.72rem; color:var(--ink-faint); margin-bottom:10px;">
+              Colors project letter highlights, icons, circular timeline rail nodes, badges, and buttons.
+            </p>
+
+            <div class="accent-swatches-wrap" id="accent-swatches-container">
+              <button type="button" class="accent-swatch-btn active" data-color="#ff2a5f"
+                title="Crimson Red (Default Current Theme)" style="background:#ff2a5f;"></button>
+              <button type="button" class="accent-swatch-btn" data-color="#00f0ff" title="Cyber Cyan"
+                style="background:#00f0ff;"></button>
+              <button type="button" class="accent-swatch-btn" data-color="#10b981" title="Matrix Emerald"
+                style="background:#10b981;"></button>
+              <button type="button" class="accent-swatch-btn" data-color="#a855f7" title="Neon Violet"
+                style="background:#a855f7;"></button>
+              <button type="button" class="accent-swatch-btn" data-color="#f59e0b" title="Solar Amber"
+                style="background:#f59e0b;"></button>
+              <button type="button" class="accent-swatch-btn" data-color="#ff5722" title="Sunset Flame"
+                style="background:#ff5722;"></button>
+              <button type="button" class="accent-swatch-btn" data-color="#3b82f6" title="Electric Blue"
+                style="background:#3b82f6;"></button>
+              <button type="button" class="accent-swatch-btn" data-color="#ec4899" title="Sakura Pink"
+                style="background:#ec4899;"></button>
+              <button type="button" class="accent-swatch-btn" data-color="#e2e8f0" title="Arctic White"
+                style="background:#e2e8f0;"></button>
+            </div>
+
+            <div style="display:flex; align-items:center; gap:8px; margin-top:10px;">
+              <div
+                style="position:relative; width:34px; height:34px; border-radius:50%; overflow:hidden; border:2px solid var(--line); flex-shrink:0; cursor:pointer;"
+                title="Choose any custom color">
+                <input type="color" id="accent-color-picker" value="#ff2a5f"
+                  style="position:absolute; inset:-8px; width:52px; height:52px; cursor:pointer; border:none; background:transparent;">
+              </div>
+              <div
+                style="display:flex; align-items:center; background:var(--bg); border:1px solid var(--line); border-radius:var(--radius-sm); padding:4px 10px; flex:1;">
+                <span
+                  style="font-family:var(--font-mono); font-size:0.75rem; color:var(--ink-faint); margin-right:4px;">HEX</span>
+                <input type="text" id="accent-hex-input" value="#ff2a5f" maxlength="7" placeholder="#ff2a5f"
+                  style="background:transparent; border:none; outline:none; font-family:var(--font-mono); font-size:0.78rem; color:var(--ink); width:100%;">
+              </div>
+              <button type="button" id="btn-reset-theme" class="toolbar-btn"
+                style="white-space:nowrap; padding:6px 12px; font-size:0.72rem;"
+                title="Reset to default Crimson theme">Reset</button>
+            </div>
+          </div>
+
+          <!-- Background Tone Presets (Dark mode) -->
+          <div class="field-group" style="margin-top:12px; border-top:1px solid var(--line); padding-top:14px;">
+            <label class="field-label" style="font-weight:600; color:var(--ink); margin-bottom:4px;">Dark Background
+              Tone</label>
+            <p style="font-size:0.72rem; color:var(--ink-faint); margin-bottom:8px;">Choose the shade of dark theme
+              background.</p>
+            <div style="display:flex; gap:8px; flex-wrap:wrap;" id="bg-presets-container">
+              <button type="button" class="bg-preset-btn active" data-preset="midnight"
+                title="Midnight Deep Black (Default)">
+                <span
+                  style="width:10px; height:10px; border-radius:50%; background:#0a0a0e; border:1px solid rgba(255,255,255,0.3);"></span>
+                <span>Midnight</span>
+              </button>
+              <button type="button" class="bg-preset-btn" data-preset="oled" title="OLED Pure Black">
+                <span
+                  style="width:10px; height:10px; border-radius:50%; background:#000000; border:1px solid rgba(255,255,255,0.3);"></span>
+                <span>OLED Pure Black</span>
+              </button>
+              <button type="button" class="bg-preset-btn" data-preset="navy" title="Deep Navy Slate">
+                <span
+                  style="width:10px; height:10px; border-radius:50%; background:#070a13; border:1px solid rgba(255,255,255,0.3);"></span>
+                <span>Navy Slate</span>
+              </button>
+              <button type="button" class="bg-preset-btn" data-preset="charcoal" title="Studio Charcoal">
+                <span
+                  style="width:10px; height:10px; border-radius:50%; background:#101114; border:1px solid rgba(255,255,255,0.3);"></span>
+                <span>Charcoal</span>
+              </button>
+            </div>
+          </div>
+
+          <!-- Live Interactive Mini-Preview (Replicating pic1) -->
+          <div style="margin-top:12px; border-top:1px solid var(--line); padding-top:14px;">
+            <div style="display:flex; align-items:center; justify-content:space-between; margin-bottom:8px;">
+              <span class="field-label" style="font-weight:600; color:var(--ink);">Live Theme Preview</span>
+              <span style="font-size:0.68rem; color:var(--ink-dim); font-family:var(--font-mono);">Instant Live
+                Sync</span>
+            </div>
+
+            <!-- Preview Card replicating User Screenshot (pic1) -->
+            <div
+              style="background:var(--surface); border:1px solid var(--line); border-radius:var(--radius); padding:14px 16px; display:flex; flex-direction:column; gap:10px;">
+              <div style="display:flex; align-items:center; gap:8px;">
+                <div
+                  style="width:9px; height:9px; border-radius:50%; border:1.5px solid var(--red); background:var(--bg); flex-shrink:0;">
+                </div>
+                <span
+                  style="font-family:var(--font-mono); font-size:0.75rem; color:var(--ink-faint); font-weight:500;">//
+                  projects</span>
+              </div>
+              <div
+                style="background:var(--bg); border:1px solid var(--line); border-radius:var(--radius-sm); padding:12px 14px; display:flex; align-items:flex-start; gap:12px;">
+                <div
+                  style="width:36px; height:36px; border-radius:10px; border:1.5px solid var(--red); background:var(--red-dim); color:var(--red); display:flex; align-items:center; justify-content:center; flex-shrink:0;">
+                  <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                    stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M6 2 3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4Z" />
+                    <path d="M3 6h18" />
+                    <path d="M16 10a4 4 0 0 1-8 0" />
+                  </svg>
+                </div>
+                <div style="flex:1; min-width:0;">
+                  <div style="display:flex; align-items:center; justify-content:space-between; gap:6px;">
+                    <span style="font-family:var(--font-display); font-weight:600; font-size:0.86rem; color:var(--ink);"
+                      id="theme-prev-title">
+                      <span class="glyph-5">C</span>arry<span class="glyph-5">O</span>n <span
+                        class="glyph-5">E</span>-<span class="glyph-5">C</span>ommerce
+                    </span>
+                    <span
+                      style="font-size:0.68rem; color:var(--success); font-family:var(--font-mono); display:flex; align-items:center; gap:2px;">
+                      ★ 1 <span style="color:var(--ink-faint); margin-left:4px;">Project</span>
+                    </span>
+                  </div>
+                  <p style="font-size:0.72rem; color:var(--ink-dim); line-height:1.4; margin-top:3px; margin-bottom:0;">
+                    E-Commerce Website fully customizable by Seller
+                  </p>
+                </div>
+              </div>
+            </div>
+          </div>
+
+        </div>
+      </div>
+
+      <!-- 1. // identity (Matches Main Page Row 1) -->
+      <div class="cust-section">
+        <p class="eyebrow">// identity</p>
+        <div class="surface-card cust-card">
+          <div class="field-grid-2">
+            <div class="field-group">
+              <label class="field-label" for="cust-sitename">Site Wordmark / Name</label>
+              <input type="text" class="field-input" id="cust-sitename" placeholder="khxaiyan">
+            </div>
+            <div class="field-group">
+              <label class="field-label" for="cust-accent">Accent Letter (e.g. x)</label>
+              <input type="text" class="field-input" id="cust-accent" maxlength="8" placeholder="x">
+            </div>
+          </div>
+          <div class="field-group"
+            style="background:var(--bg); border:1px solid var(--line); border-radius:var(--radius-sm); padding:10px 14px; display:flex; align-items:center; justify-content:space-between;">
+            <span style="font-size:0.75rem; color:var(--ink-faint);">Live Wordmark Preview:</span>
+            <span id="wordmark-preview"
+              style="font-family:var(--font-display); font-weight:700; font-size:1.15rem; color:var(--ink); letter-spacing:-0.02em;">kh<span
+                class="glyph-5">x</span>aiyan</span>
+          </div>
+
+          <div class="field-group" style="margin-top:6px;">
+            <label class="field-label" for="cust-bio">Headline Bio</label>
+            <div class="format-toolbar">
+              <button type="button" class="toolbar-btn" onclick="applyFormat('cust-bio', '**', '**')"
+                title="Bold (Ctrl+B)"><b>B</b></button>
+              <button type="button" class="toolbar-btn" onclick="applyFormat('cust-bio', '_', '_')"
+                title="Italic (Ctrl+I)"><i>I</i></button>
+              <button type="button" class="toolbar-btn" onclick="applyFormat('cust-bio', '__', '__')"
+                title="Underline (Ctrl+U)"><u>U</u></button>
+              <button type="button" class="toolbar-btn" onclick="applyFormat('cust-bio', '`', '`')"
+                title="Code">&lt;&gt;</button>
+              <button type="button" class="toolbar-btn" onclick="applyFormat('cust-bio', '> ', '')"
+                title="Quote">&rdquo;</button>
+              <button type="button" class="toolbar-btn" onclick="applyFormat('cust-bio', '[', '](https://)')"
+                title="Link (Ctrl+K)">🔗</button>
+              <button type="button" class="toolbar-btn" onclick="applyFormat('cust-bio', '{', '}')"
+                title="Accent Color">{color}</button>
+            </div>
+            <textarea class="field-textarea textarea-with-toolbar" id="cust-bio" rows="4" style="min-height:100px;"
+              placeholder="developer in active building mode. crafting clean web tools & digital experiences."></textarea>
+            <div class="preview-box bio" id="bio-preview"></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- 2. // intro (Matches Main Page Row 2) -->
+      <div class="cust-section">
+        <p class="eyebrow">// intro</p>
+        <div class="surface-card cust-card">
+          <div class="field-group">
+            <label class="field-label" for="cust-intro">Intro Paragraph</label>
+            <div class="format-toolbar">
+              <button type="button" class="toolbar-btn" onclick="applyFormat('cust-intro', '**', '**')"
+                title="Bold"><b>B</b></button>
+              <button type="button" class="toolbar-btn" onclick="applyFormat('cust-intro', '_', '_')"
+                title="Italic"><i>I</i></button>
+              <button type="button" class="toolbar-btn" onclick="applyFormat('cust-intro', '__', '__')"
+                title="Underline"><u>U</u></button>
+              <button type="button" class="toolbar-btn" onclick="applyFormat('cust-intro', '`', '`')"
+                title="Code">&lt;&gt;</button>
+              <button type="button" class="toolbar-btn" onclick="applyFormat('cust-intro', '> ', '')"
+                title="Quote">&rdquo;</button>
+              <button type="button" class="toolbar-btn" onclick="applyFormat('cust-intro', '[', '](https://)')"
+                title="Link">🔗</button>
+              <button type="button" class="toolbar-btn" onclick="applyFormat('cust-intro', '{', '}')"
+                title="Accent Color">{color}</button>
+            </div>
+            <textarea class="field-textarea textarea-with-toolbar" id="cust-intro" rows="6" style="min-height:160px;"
+              placeholder="Passionate developer specializing in building modern web applications..."></textarea>
+            <div class="preview-box intro-text" id="intro-preview"></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- 3. // projects (Matches Main Page Row 3) -->
+      <div class="cust-section">
+        <div style="display:flex; align-items:center; justify-content:space-between; margin-bottom:6px;">
+          <p class="eyebrow" style="margin:0;">// projects</p>
+          <button type="button" class="toolbar-btn" id="cust-btn-add-project"
+            style="color:var(--ink); font-weight:600; padding:4px 10px; border-color:var(--red); background:rgba(255,42,95,0.08); font-size:0.75rem;">+
+            Add Project</button>
+        </div>
+        <p style="font-size:0.72rem; color:var(--ink-faint); margin-bottom:10px;">Manage projects displayed on your
+          portfolio. Add, edit, or remove anytime.</p>
+        <div id="cust-projects-list" style="display:flex; flex-direction:column; gap:10px; margin-bottom:14px;"></div>
+      </div>
+
+      <!-- 4. // reach (Matches Main Page Row 4) -->
+      <div class="cust-section">
+        <div style="display:flex; align-items:center; justify-content:space-between; margin-bottom:6px;">
+          <p class="eyebrow" style="margin:0;">// reach</p>
+          <button type="button" class="toolbar-btn" id="cust-btn-add-social"
+            style="color:var(--ink); font-weight:600; padding:4px 10px; border-color:var(--red); background:var(--red-dim); font-size:0.75rem;">+
+            Add Social Link</button>
+        </div>
+        <p style="font-size:0.72rem; color:var(--ink-faint); margin-bottom:10px;">Primary profiles and additional social
+          media links displayed in your reach section.</p>
+        <div class="surface-card cust-card">
+          <div class="field-grid-2">
+            <div class="field-group">
+              <label class="field-label" for="cust-github">GitHub Username</label>
+              <input type="text" class="field-input" id="cust-github" placeholder="khxaiyan">
+            </div>
+            <div class="field-group">
+              <label class="field-label" for="cust-telegram">Telegram Username</label>
+              <input type="text" class="field-input" id="cust-telegram" placeholder="khxaiyan">
+            </div>
+          </div>
+          <div class="field-grid-2">
+            <div class="field-group">
+              <label class="field-label" for="cust-x">X (Twitter) Username</label>
+              <input type="text" class="field-input" id="cust-x" placeholder="khxaiyan">
+            </div>
+            <div class="field-group">
+              <label class="field-label" for="cust-email">Contact Email</label>
+              <input type="email" class="field-input" id="cust-email" placeholder="your@email.com">
+            </div>
+          </div>
+
+          <!-- Dynamic Additional Social Links -->
+          <div id="cust-social-links-wrap" style="margin-top:6px; border-top:1px solid var(--line); padding-top:12px;">
+            <div
+              style="display:flex; align-items:center; justify-content:space-between; margin-bottom:8px; flex-wrap:wrap; gap:6px;">
+              <span class="field-label" style="font-weight:600; color:var(--ink);">Additional Social Links &amp;
+                Profiles</span>
+              <div style="display:flex; align-items:center; gap:6px;">
+                <span style="font-size:0.68rem; color:var(--ink-faint); font-family:var(--font-mono);">Libraries:</span>
+                <a href="https://simpleicons.org/" target="_blank" rel="noopener noreferrer" class="pack-browse-link"
+                  title="Browse 3,450+ official brand logos on Simple Icons">
+                  <iconify-icon icon="simple-icons:simpleicons" width="11" height="11"></iconify-icon>
+                  <span>simpleicons.org ↗</span>
+                </a>
+                <a href="https://lucide.dev/icons/" target="_blank" rel="noopener noreferrer" class="pack-browse-link"
+                  title="Browse 1,400+ modern outline icons on Lucide">
+                  <iconify-icon icon="lucide:feather" width="11" height="11"></iconify-icon>
+                  <span>lucide.dev ↗</span>
+                </a>
+              </div>
+            </div>
+            <div id="cust-social-links-list" style="display:flex; flex-direction:column; gap:8px;"></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- 5. // message (Matches Main Page Row 5) -->
+      <div class="cust-section">
+        <p class="eyebrow">// message & security</p>
+        <div class="surface-card cust-card">
+          <div class="field-grid-2">
+            <div class="field-group">
+              <label class="field-label" for="cust-web3forms">Web3Forms Access Key</label>
+              <input type="text" class="field-input" id="cust-web3forms" placeholder="d36ee933-...">
+            </div>
+            <div class="field-group">
+              <label class="field-label" for="cust-hcaptcha">hCaptcha Sitekey</label>
+              <input type="text" class="field-input" id="cust-hcaptcha" value="50b2fe65-b00b-4b9e-ad62-3ba471098be2"
+                placeholder="50b2fe65-b00b-4b9e-ad62-3ba471098be2">
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- 6. // save & apply -->
+      <div class="cust-section">
+        <p class="eyebrow">// save & apply</p>
+        <div class="save-actions">
+          <button type="button" class="save-btn" id="btn-save-customizer">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+              stroke-linecap="round" stroke-linejoin="round">
+              <path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2z" />
+              <polyline points="17 21 17 13 7 13 7 21" />
+              <polyline points="7 3 7 8 15 8" />
+            </svg>
+            <span>Save & Apply Changes</span>
+          </button>
+          <p id="save-status-msg" class="status-toast">✓ Changes saved! Live on your portfolio.</p>
+        </div>
+
+        <div class="field-group" style="margin-top:16px;">
+          <label class="field-label">// Updated config.js code (ready to copy):</label>
+          <pre class="code-preview" id="config-code-preview"></pre>
+        </div>
+      </div>
+
+    </div>
+
+  </main>
+
+  <script src="config.js"></script>
+
+  <!-- Clerk JavaScript Frontend SDK (Loaded directly from your Clerk instance for full UI components support) -->
+  <script async crossorigin="anonymous"
+    data-clerk-publishable-key="pk_test_c2hpbmluZy10dXJrZXktMTMyNS5jbGVyay5hY2NvdW50cy5kZXYk"
+    src="https://shining-turkey-1325.clerk.accounts.dev/npm/@clerk/clerk-js@latest/dist/clerk.browser.js"
+    type="text/javascript"></script>
+
+  <script>
+
+    function parseRichText(raw) {
+      if (!raw) return '';
+      var s = String(raw)
+        .replace(/&/g, '&amp;')
+        .replace(/</g, '&lt;')
+        .replace(/>/g, '&gt;')
+        .replace(/"/g, '&quot;');
+
+      s = s.replace(/\\n/g, '\n');
+      s = s.replace(/\[([^\]]+)\]\((https?:\/\/[^\s\)]+)\)/g, '<a href="$2" target="_blank" rel="noopener noreferrer" class="rich-link">$1</a>');
+      s = s.replace(/\{([^}]+)\}/g, '<span class="glyph-5">$1</span>');
+      s = s.replace(/\*\*([^*]+)\*\*/g, '<strong>$1</strong>');
+      s = s.replace(/__([^_]+)__/g, '<u>$1</u>');
+      s = s.replace(/(?:^|\s)\*([^*\s][^*]*[^*\s]|[^*])\*(?=\s|$|[.,!?:;])/g, ' <em>$1</em>');
+      s = s.replace(/(?:^|\s)_([^_\s][^_]*[^_\s]|[^_])_(?=\s|$|[.,!?:;])/g, ' <em>$1</em>');
+      s = s.replace(/`([^`]+)`/g, '<code class="rich-code">$1</code>');
+
+      var lines = s.split('\n');
+      var parsedLines = lines.map(function (line) {
+        var trimmed = line.trim();
+        if (trimmed.indexOf('&gt; ') === 0 || trimmed.indexOf('&gt;') === 0) {
+          return '<blockquote class="rich-quote">' + trimmed.replace(/^&gt;\s?/, '') + '</blockquote>';
+        }
+        return line;
+      });
+
+      return parsedLines.join('<br>');
+    }
+
+    function applyFormat(textareaId, prefix, suffix) {
+      var el = document.getElementById(textareaId);
+      if (!el) return;
+      var start = el.selectionStart;
+      var end = el.selectionEnd;
+      var val = el.value;
+      var selected = val.substring(start, end) || 'text';
+      var replacement = prefix + selected + suffix;
+      el.value = val.substring(0, start) + replacement + val.substring(end);
+      el.focus();
+      el.setSelectionRange(start + prefix.length, start + prefix.length + selected.length);
+      el.dispatchEvent(new Event('input'));
+    }
+
+    (function () {
+      'use strict';
+
+      var authBox = document.getElementById('auth-box');
+      var customizerSections = document.getElementById('customizer-sections');
+      var sessionUserText = document.getElementById('session-user-text');
+      var saveStatusMsg = document.getElementById('save-status-msg');
+      var configCodePreview = document.getElementById('config-code-preview');
+      var wordmarkPreview = document.getElementById('wordmark-preview');
+      var bioPreview = document.getElementById('bio-preview');
+      var introPreview = document.getElementById('intro-preview');
+
+      function formatWordmark(name, accent) {
+        if (!name) return '';
+        if (/\{([^}]+)\}/.test(name)) {
+          return name.replace(/\{([^}]+)\}/g, '<span class="glyph-5">$1</span>');
+        }
+        var target = accent !== undefined && accent !== null ? accent : 'x';
+        if (target && target.trim()) {
+          var letter = target.trim();
+          var escaped = letter.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+          var regex = new RegExp('(' + escaped + ')', 'i');
+          if (regex.test(name)) {
+            return name.replace(regex, '<span class="glyph-5">$1</span>');
+          }
+        }
+        return name.replace(/([A-Z])/g, '<span class="glyph-5">$1</span>');
+      }
+
+      function autoResize(el) {
+        if (!el) return;
+        el.style.height = 'auto';
+        el.style.height = Math.max(el.scrollHeight + 4, el.id === 'cust-intro' ? 160 : (el.id === 'cust-bio' ? 100 : 120)) + 'px';
+      }
+
+      function updateLivePreview() {
+        var name = document.getElementById('cust-sitename').value.trim() || 'khxaiyan';
+        var accent = document.getElementById('cust-accent').value.trim();
+        if (wordmarkPreview) {
+          wordmarkPreview.innerHTML = formatWordmark(name, accent);
+        }
+
+        var bioEl = document.getElementById('cust-bio');
+        if (bioPreview && bioEl) {
+          bioPreview.innerHTML = parseRichText(bioEl.value || 'developer in active building mode.');
+          autoResize(bioEl);
+        }
+
+        var introEl = document.getElementById('cust-intro');
+        if (introPreview && introEl) {
+          introPreview.innerHTML = parseRichText(introEl.value || 'Passionate developer specializing in web apps.');
+          autoResize(introEl);
+        }
+      }
+
+      document.getElementById('cust-sitename').addEventListener('input', updateLivePreview);
+      document.getElementById('cust-accent').addEventListener('input', updateLivePreview);
+      document.getElementById('cust-bio').addEventListener('input', updateLivePreview);
+      document.getElementById('cust-intro').addEventListener('input', updateLivePreview);
+
+      /* ── Theme Switching & Customization Logic ── */
+      var currentThemeMode = document.documentElement.getAttribute('data-theme') || 'dark';
+      var currentAccentColor = '#ff2a5f';
+      var currentBgPreset = 'midnight';
+
+      var BG_PRESETS = {
+        midnight: { bg: '#0a0a0e', surface: '#131319', surfaceHover: '#191a22', rail: '#363a63' },
+        oled: { bg: '#000000', surface: '#0a0a0a', surfaceHover: '#141414', rail: '#262630' },
+        navy: { bg: '#070a13', surface: '#0d1322', surfaceHover: '#141d33', rail: '#223252' },
+        charcoal: { bg: '#101114', surface: '#17181d', surfaceHover: '#1f2027', rail: '#383947' }
+      };
+
+      function hexToRgba(hex, alpha) {
+        var c = hex.replace('#', '');
+        if (c.length === 3) c = c[0] + c[0] + c[1] + c[1] + c[2] + c[2];
+        var num = parseInt(c, 16);
+        return 'rgba(' + ((num >> 16) & 255) + ',' + ((num >> 8) & 255) + ',' + (num & 255) + ',' + alpha + ')';
+      }
+
+      function shadeColor(color, percent) {
+        var c = color.replace('#', '');
+        if (c.length === 3) c = c[0] + c[0] + c[1] + c[1] + c[2] + c[2];
+        var num = parseInt(c, 16);
+        var amt = Math.round(2.55 * percent);
+        var R = (num >> 16) + amt, G = ((num >> 8) & 255) + amt, B = (num & 255) + amt;
+        return '#' + (0x1000000 + (R < 255 ? (R < 0 ? 0 : R) : 255) * 0x10000 + (G < 255 ? (G < 0 ? 0 : G) : 255) * 0x100 + (B < 255 ? (B < 0 ? 0 : B) : 255)).toString(16).slice(1);
+      }
+
+      function applyThemeColors(accent, bgPreset, mode) {
+        var root = document.documentElement;
+        var isDark = mode === 'dark';
+
+        if (accent) {
+          root.style.setProperty('--red', accent);
+          root.style.setProperty('--red-solid', shadeColor(accent, -18));
+          root.style.setProperty('--red-solid-hov', shadeColor(accent, -30));
+          root.style.setProperty('--red-dim', hexToRgba(accent, 0.16));
+          root.style.setProperty('--border-accent', hexToRgba(accent, 0.45));
+          root.style.setProperty('--border-accent-glow', hexToRgba(accent, 0.12));
+        }
+
+        if (isDark && bgPreset && BG_PRESETS[bgPreset]) {
+          var p = BG_PRESETS[bgPreset];
+          root.style.setProperty('--bg', p.bg);
+          root.style.setProperty('--surface', p.surface);
+          root.style.setProperty('--surface-hover', p.surfaceHover);
+          root.style.setProperty('--rail', p.rail);
+        } else if (!isDark) {
+          root.style.removeProperty('--bg');
+          root.style.removeProperty('--surface');
+          root.style.removeProperty('--surface-hover');
+          root.style.removeProperty('--rail');
+        }
+      }
+
+      function updateThemeSelectionUI(mode, accent, bgPreset) {
+        var isDark = mode === 'dark';
+        var darkRadio = document.getElementById('radio-theme-dark');
+        var lightRadio = document.getElementById('radio-theme-light');
+        var darkCard = document.getElementById('card-theme-dark');
+        var lightCard = document.getElementById('card-theme-light');
+        var statusPill = document.getElementById('theme-status-pill');
+        var toggleIcon = document.getElementById('theme-toggle-icon');
+
+        if (darkRadio) darkRadio.checked = isDark;
+        if (lightRadio) lightRadio.checked = !isDark;
+
+        if (darkCard) {
+          darkCard.style.borderColor = isDark ? 'var(--red)' : 'var(--line)';
+          darkCard.style.background = isDark ? 'var(--red-dim)' : 'var(--bg)';
+        }
+        if (lightCard) {
+          lightCard.style.borderColor = !isDark ? 'var(--red)' : 'var(--line)';
+          lightCard.style.background = !isDark ? 'var(--red-dim)' : 'var(--bg)';
+        }
+        if (statusPill) {
+          statusPill.textContent = isDark ? '🌙 Dark Mode Active' : '☀️ Light Mode Active';
+          statusPill.style.borderColor = 'var(--red)';
+        }
+        if (toggleIcon) {
+          toggleIcon.textContent = isDark ? '🌙' : '☀️';
+        }
+
+        // Swatches
+        var swatches = document.querySelectorAll('#accent-swatches-container .accent-swatch-btn');
+        swatches.forEach(function (btn) {
+          var c = (btn.getAttribute('data-color') || '').toLowerCase();
+          if (c === (accent || '').toLowerCase()) {
+            btn.classList.add('active');
+          } else {
+            btn.classList.remove('active');
+          }
+        });
+
+        // Color picker and HEX inputs
+        var picker = document.getElementById('accent-color-picker');
+        var hexInp = document.getElementById('accent-hex-input');
+        var hexInd = document.getElementById('accent-hex-indicator');
+        if (picker && accent) picker.value = accent;
+        if (hexInp && accent) hexInp.value = accent;
+        if (hexInd && accent) hexInd.textContent = accent;
+
+        // Background preset buttons
+        var bgBtns = document.querySelectorAll('#bg-presets-container .bg-preset-btn');
+        bgBtns.forEach(function (btn) {
+          var p = btn.getAttribute('data-preset');
+          if (p === bgPreset) {
+            btn.classList.add('active');
+          } else {
+            btn.classList.remove('active');
+          }
+        });
+      }
+
+      function switchSiteTheme(newTheme) {
+        currentThemeMode = newTheme === 'light' ? 'light' : 'dark';
+        document.documentElement.setAttribute('data-theme', currentThemeMode);
+        localStorage.setItem('theme', currentThemeMode);
+        applyThemeColors(currentAccentColor, currentBgPreset, currentThemeMode);
+        updateThemeSelectionUI(currentThemeMode, currentAccentColor, currentBgPreset);
+      }
+
+      function setAccentColor(hex) {
+        if (!hex || !/^#([0-9a-f]{3}|[0-9a-f]{6})$/i.test(hex)) return;
+        currentAccentColor = hex.toLowerCase();
+        applyThemeColors(currentAccentColor, currentBgPreset, currentThemeMode);
+        updateThemeSelectionUI(currentThemeMode, currentAccentColor, currentBgPreset);
+      }
+
+      function setBgPreset(presetName) {
+        if (!BG_PRESETS[presetName]) return;
+        currentBgPreset = presetName;
+        applyThemeColors(currentAccentColor, currentBgPreset, currentThemeMode);
+        updateThemeSelectionUI(currentThemeMode, currentAccentColor, currentBgPreset);
+      }
+
+      // Radio change events
+      var radioDark = document.getElementById('radio-theme-dark');
+      if (radioDark) {
+        radioDark.addEventListener('change', function () {
+          if (this.checked) switchSiteTheme('dark');
+        });
+      }
+      var radioLight = document.getElementById('radio-theme-light');
+      if (radioLight) {
+        radioLight.addEventListener('change', function () {
+          if (this.checked) switchSiteTheme('light');
+        });
+      }
+      var btnThemeToggle = document.getElementById('btn-theme-toggle');
+      if (btnThemeToggle) {
+        btnThemeToggle.addEventListener('click', function () {
+          switchSiteTheme(currentThemeMode === 'dark' ? 'light' : 'dark');
+        });
+      }
+
+      // Swatches click delegation
+      var swatchesContainer = document.getElementById('accent-swatches-container');
+      if (swatchesContainer) {
+        swatchesContainer.addEventListener('click', function (e) {
+          var btn = e.target.closest('.accent-swatch-btn');
+          if (!btn) return;
+          var color = btn.getAttribute('data-color');
+          if (color) setAccentColor(color);
+        });
+      }
+
+      // Color picker input
+      var accentPicker = document.getElementById('accent-color-picker');
+      if (accentPicker) {
+        accentPicker.addEventListener('input', function () {
+          setAccentColor(this.value);
+        });
+        accentPicker.addEventListener('change', function () {
+          setAccentColor(this.value);
+        });
+      }
+
+      // HEX input
+      var accentHexInput = document.getElementById('accent-hex-input');
+      if (accentHexInput) {
+        accentHexInput.addEventListener('input', function () {
+          var val = this.value.trim();
+          if (!val.startsWith('#')) val = '#' + val;
+          if (/^#([0-9a-f]{3}|[0-9a-f]{6})$/i.test(val)) {
+            setAccentColor(val);
+          }
+        });
+      }
+
+      // BG presets delegation
+      var bgPresetsContainer = document.getElementById('bg-presets-container');
+      if (bgPresetsContainer) {
+        bgPresetsContainer.addEventListener('click', function (e) {
+          var btn = e.target.closest('.bg-preset-btn');
+          if (!btn) return;
+          var preset = btn.getAttribute('data-preset');
+          if (preset) setBgPreset(preset);
+        });
+      }
+
+      // Reset button
+      var btnResetTheme = document.getElementById('btn-reset-theme');
+      if (btnResetTheme) {
+        btnResetTheme.addEventListener('click', function () {
+          currentAccentColor = '#ff2a5f';
+          currentBgPreset = 'midnight';
+          switchSiteTheme('dark');
+        });
+      }
+
+      /* ── Avatar file upload ── */
+      var pendingAvatarData = null;
+      var avatarFileInput = document.getElementById('cust-avatar-file');
+      var avatarWrap = document.getElementById('cust-avatar-upload-wrap');
+      var avatarOverlay = document.getElementById('cust-avatar-overlay');
+      var avatarResetBtn = document.getElementById('cust-avatar-reset-btn');
+
+      if (avatarWrap && avatarOverlay) {
+        avatarWrap.addEventListener('mouseenter', function () {
+          avatarOverlay.style.opacity = '1';
+        });
+        avatarWrap.addEventListener('mouseleave', function () {
+          avatarOverlay.style.opacity = '0';
+        });
+      }
+
+      function isWebmSource(url) {
+        return typeof url === 'string' && (url.startsWith('data:video/webm') || /\.webm(\?.*)?$/i.test(url));
+      }
+
+      function setCustPreviewAvatar(url) {
+        var wrap = document.getElementById('cust-avatar-upload-wrap');
+        var thumb = document.getElementById('cust-avatar-preview');
+        if (!wrap) return;
+        var isWebm = isWebmSource(url);
+        if (isWebm) {
+          if (thumb && thumb.tagName.toLowerCase() === 'video') {
+            thumb.src = url;
+          } else {
+            var v = document.createElement('video');
+            v.id = 'cust-avatar-preview';
+            v.src = url;
+            v.autoplay = true;
+            v.loop = true;
+            v.muted = true;
+            v.playsInline = true;
+            v.setAttribute('playsinline', '');
+            v.setAttribute('draggable', 'false');
+            v.style.cssText = 'width:100%; height:100%; object-fit:cover; display:block; pointer-events:none; -webkit-user-drag:none; user-select:none;';
+            if (thumb && thumb.parentNode) {
+              thumb.parentNode.replaceChild(v, thumb);
+            } else {
+              wrap.insertBefore(v, wrap.firstChild);
+            }
+          }
+        } else {
+          if (thumb && thumb.tagName.toLowerCase() === 'img') {
+            thumb.src = url || 'logo.png';
+            thumb.setAttribute('draggable', 'false');
+          } else {
+            var img = document.createElement('img');
+            img.id = 'cust-avatar-preview';
+            img.src = url || 'logo.png';
+            img.alt = 'Profile avatar';
+            img.setAttribute('draggable', 'false');
+            img.style.cssText = 'width:100%; height:100%; object-fit:cover; display:block; pointer-events:none; -webkit-user-drag:none; user-select:none;';
+            if (thumb && thumb.parentNode) {
+              thumb.parentNode.replaceChild(img, thumb);
+            } else {
+              wrap.insertBefore(img, wrap.firstChild);
+            }
+          }
+        }
+      }
+
+      function processAvatarFile(file, callback) {
+        if (!file) return;
+        var type = (file.type || '').toLowerCase();
+        var name = (file.name || '').toLowerCase();
+
+        // 1. Vector (SVG), Animated (GIF), Video (WEBM): preserve directly without flattening
+        var isDirect = type === 'image/svg+xml' ||
+          type === 'image/gif' ||
+          type === 'video/webm' ||
+          /\.(svg|gif|webm)$/i.test(name);
+
+        if (isDirect) {
+          var directReader = new FileReader();
+          directReader.onload = function (e) { callback(e.target.result); };
+          directReader.readAsDataURL(file);
+          return;
+        }
+
+        // 2. Raster images: JPG, PNG, WEBP, AVIF (auto center-crop 1:1, max 512x512)
+        var reader = new FileReader();
+        reader.onload = function (e) {
+          var img = new Image();
+          img.onload = function () {
+            var maxDim = 512;
+            var w = img.width;
+            var h = img.height;
+            var size = Math.min(w, h);
+            var sx = (w - size) / 2;
+            var sy = (h - size) / 2;
+            var canvas = document.createElement('canvas');
+            var outDim = Math.min(size, maxDim);
+            canvas.width = outDim;
+            canvas.height = outDim;
+            var ctx = canvas.getContext('2d');
+            ctx.drawImage(img, sx, sy, size, size, 0, 0, outDim, outDim);
+
+            var compressed;
+            try {
+              if (type === 'image/png' || type === 'image/webp' || type === 'image/avif') {
+                compressed = canvas.toDataURL('image/webp', 0.92);
+                if (!compressed || !compressed.startsWith('data:image/webp')) {
+                  compressed = canvas.toDataURL(type || 'image/png', 0.92);
+                }
+              } else {
+                compressed = canvas.toDataURL('image/jpeg', 0.88);
+              }
+            } catch (err) {
+              compressed = canvas.toDataURL('image/jpeg', 0.88);
+            }
+            callback(compressed || e.target.result);
+          };
+          img.onerror = function () {
+            callback(e.target.result);
+          };
+          img.src = e.target.result;
+        };
+        reader.readAsDataURL(file);
+      }
+
+      if (avatarFileInput) {
+        avatarFileInput.addEventListener('change', function () {
+          var file = avatarFileInput.files && avatarFileInput.files[0];
+          if (!file) return;
+          processAvatarFile(file, function (dataUrl) {
+            pendingAvatarData = dataUrl;
+            setCustPreviewAvatar(pendingAvatarData);
+          });
+          avatarFileInput.value = '';
+        });
+      }
+
+      if (avatarResetBtn) {
+        avatarResetBtn.addEventListener('click', function () {
+          pendingAvatarData = '';
+          setCustPreviewAvatar('logo.png');
+        });
+      }
+
+      /* Global non-draggable image guard */
+      document.addEventListener('dragstart', function (e) {
+        if (e.target && (e.target.tagName === 'IMG' || e.target.tagName === 'VIDEO')) {
+          e.preventDefault();
+          return false;
+        }
+      }, false);
+
+      /* ── Visual Project Manager & GitHub Auto-Fill ── */
+      function formatProjectName(name) {
+        if (!name) return '';
+        return name
+          .replace(/-Website$/i, '')
+          .replace(/_/g, ' ')
+          .replace(/-/g, ' ');
+      }
+
+      function parseGitHubRepo(input) {
+        if (!input) return null;
+        var s = input.trim().replace(/\.git$/i, '').replace(/\/+$/, '');
+        var m = s.match(/(?:https?:\/\/)?(?:www\.)?github\.com\/([^\/\s#?]+)\/([^\/\s#?]+)/i);
+        if (m) {
+          return { owner: m[1], repo: m[2] };
+        }
+        var m2 = s.match(/^([a-zA-Z0-9_.-]+)\/([a-zA-Z0-9_.-]+)$/);
+        if (m2) {
+          return { owner: m2[1], repo: m2[2] };
+        }
+        return null;
+      }
+
+      function autoFetchGitHubRepo(card) {
+        var ghInput = card.querySelector('.m-proj-input-github');
+        var statusEl = card.querySelector('.m-gh-status');
+        if (!ghInput) return;
+        var val = ghInput.value.trim();
+        if (!val) return;
+
+        var repoInfo = parseGitHubRepo(val);
+        if (!repoInfo) {
+          if (statusEl) {
+            statusEl.textContent = 'Invalid GitHub URL';
+            statusEl.style.color = 'var(--red)';
+            statusEl.style.display = 'inline';
+          }
+          return;
+        }
+
+        if (statusEl) {
+          statusEl.textContent = 'fetching repo details...';
+          statusEl.style.color = 'var(--ink-faint)';
+          statusEl.style.display = 'inline';
+        }
+
+        fetch('https://api.github.com/repos/' + repoInfo.owner + '/' + repoInfo.repo)
+          .then(function (r) {
+            if (!r.ok) throw new Error('Repo not found or private');
+            return r.json();
+          })
+          .then(function (data) {
+            var titleInp = card.querySelector('.m-proj-input-title');
+            var tagInp = card.querySelector('.m-proj-input-tag');
+            var urlInp = card.querySelector('.m-proj-input-url');
+            var descInp = card.querySelector('.m-proj-input-desc');
+
+            if (titleInp) {
+              titleInp.value = formatProjectName(data.name);
+            }
+
+            if (descInp && data.description) {
+              descInp.value = data.description;
+            }
+
+            if (tagInp && data.language) {
+              tagInp.value = data.language;
+            }
+
+            if (urlInp) {
+              if (data.homepage && data.homepage.trim()) {
+                urlInp.value = data.homepage.trim();
+              } else if (!urlInp.value || !urlInp.value.trim()) {
+                urlInp.value = data.html_url;
+              }
+            }
+
+            if (statusEl) {
+              statusEl.textContent = '✓ Auto-filled!';
+              statusEl.style.color = '#22c07d';
+              statusEl.style.display = 'inline';
+              setTimeout(function () {
+                statusEl.style.display = 'none';
+              }, 3500);
+            }
+          })
+          .catch(function () {
+            if (statusEl) {
+              statusEl.textContent = 'Could not fetch (not found / rate-limited)';
+              statusEl.style.color = 'var(--red)';
+              statusEl.style.display = 'inline';
+            }
+          });
+      }
+
+      function createProjectCardElement(proj, index) {
+        var p = proj || {};
+        var card = document.createElement('div');
+        card.className = 'surface-card cust-card m-proj-card';
+        card.innerHTML =
+          '<div class="m-proj-card-header">' +
+          '<span class="m-proj-card-title">PROJECT #' + (index + 1) + '</span>' +
+          '<button type="button" class="m-proj-del-btn" title="Remove this project">✕ Remove</button>' +
+          '</div>' +
+          '<div class="field-group" style="margin-bottom:8px;">' +
+          '<div style="display:flex; align-items:center; justify-content:space-between;">' +
+          '<label class="field-label">GitHub Repo URL (Paste to auto-fill ✨)</label>' +
+          '<span class="m-gh-status" style="font-size:0.72rem; display:none;"></span>' +
+          '</div>' +
+          '<div style="display:flex; gap:6px;">' +
+          '<input type="text" class="field-input m-proj-input-github" placeholder="https://github.com/owner/repository" style="flex:1;">' +
+          '<button type="button" class="toolbar-btn m-btn-fetch-gh" style="white-space:nowrap; padding:0 10px; font-size:0.75rem; border-color:var(--red); color:var(--ink);">Fetch</button>' +
+          '</div>' +
+          '</div>' +
+          '<div class="field-grid-2">' +
+          '<div class="field-group" style="margin-bottom:6px;">' +
+          '<label class="field-label">Title / Name</label>' +
+          '<input type="text" class="field-input m-proj-input-title" placeholder="Project Name">' +
+          '</div>' +
+          '<div class="field-group" style="margin-bottom:6px;">' +
+          '<label class="field-label">Tag / Tech</label>' +
+          '<input type="text" class="field-input m-proj-input-tag" placeholder="e.g. React, Next.js, CSS">' +
+          '</div>' +
+          '</div>' +
+          '<div class="field-group" style="margin-bottom:6px;">' +
+          '<label class="field-label">Live Website / Demo URL</label>' +
+          '<input type="text" class="field-input m-proj-input-url" placeholder="https://your-site.vercel.app">' +
+          '</div>' +
+          '<div class="field-group" style="margin-bottom:0;">' +
+          '<label class="field-label">Description</label>' +
+          '<input type="text" class="field-input m-proj-input-desc" placeholder="Short description of your project">' +
+          '</div>';
+
+        var ghInp = card.querySelector('.m-proj-input-github');
+        var fetchBtn = card.querySelector('.m-btn-fetch-gh');
+        var titleInp = card.querySelector('.m-proj-input-title');
+        var tagInp = card.querySelector('.m-proj-input-tag');
+        var urlInp = card.querySelector('.m-proj-input-url');
+        var descInp = card.querySelector('.m-proj-input-desc');
+
+        if (ghInp) {
+          ghInp.value = p.github_url || p.html_url || '';
+          ghInp.addEventListener('paste', function () {
+            setTimeout(function () { autoFetchGitHubRepo(card); }, 80);
+          });
+          ghInp.addEventListener('change', function () {
+            autoFetchGitHubRepo(card);
+          });
+        }
+
+        if (fetchBtn) {
+          fetchBtn.addEventListener('click', function () {
+            autoFetchGitHubRepo(card);
+          });
+        }
+
+        if (titleInp) titleInp.value = p.title || p.name || '';
+        if (tagInp) tagInp.value = p.tag || p.language || 'Project';
+        if (urlInp) urlInp.value = p.url || p.homepage || '';
+        if (descInp) descInp.value = p.description || '';
+
+        var delBtn = card.querySelector('.m-proj-del-btn');
+        if (delBtn) {
+          delBtn.addEventListener('click', function () {
+            card.remove();
+            refreshProjectCardNumbers();
+          });
+        }
+
+        return card;
+      }
+
+      function refreshProjectCardNumbers() {
+        var cards = document.querySelectorAll('#cust-projects-list .m-proj-card');
+        cards.forEach(function (c, idx) {
+          var titleEl = c.querySelector('.m-proj-card-title');
+          if (titleEl) titleEl.textContent = 'PROJECT #' + (idx + 1);
+        });
+      }
+
+      function renderProjectList(projects) {
+        var container = document.getElementById('cust-projects-list');
+        if (!container) return;
+        container.innerHTML = '';
+        var list = (Array.isArray(projects) && projects.length) ? projects : [];
+        list.forEach(function (proj, idx) {
+          container.appendChild(createProjectCardElement(proj, idx));
+        });
+      }
+
+      var btnAddProject = document.getElementById('cust-btn-add-project');
+      if (btnAddProject) {
+        btnAddProject.addEventListener('click', function () {
+          var container = document.getElementById('cust-projects-list');
+          if (!container) return;
+          var count = container.querySelectorAll('.m-proj-card').length;
+          var newCard = createProjectCardElement({ title: '', tag: 'Project', url: '', github_url: '', description: '' }, count);
+          container.appendChild(newCard);
+          var ghInp = newCard.querySelector('.m-proj-input-github');
+          if (ghInp) ghInp.focus();
+        });
+      }
+
+      function escapeHtml(str) {
+        if (!str) return '';
+        return String(str)
+          .replace(/&/g, '&amp;')
+          .replace(/</g, '&lt;')
+          .replace(/>/g, '&gt;')
+          .replace(/"/g, '&quot;')
+          .replace(/'/g, '&#039;');
+      }
+
+      /* ── Comprehensive Platform Presets (Simple Icons + Lucide Icons) ── */
+      var SOCIAL_PRESETS = [
+        // Popular Simple Icons (Brands)
+        { id: 'LinkedIn', label: 'LinkedIn', icon: 'simple-icons:linkedin', url: 'https://linkedin.com/in/username' },
+        { id: 'Instagram', label: 'Instagram', icon: 'simple-icons:instagram', url: 'https://instagram.com/username' },
+        { id: 'YouTube', label: 'YouTube', icon: 'simple-icons:youtube', url: 'https://youtube.com/@channel' },
+        { id: 'Discord', label: 'Discord', icon: 'simple-icons:discord', url: 'https://discord.gg/invitecode' },
+        { id: 'Spotify', label: 'Spotify', icon: 'simple-icons:spotify', url: 'https://open.spotify.com/user/username' },
+        { id: 'Steam', label: 'Steam', icon: 'simple-icons:steam', url: 'https://steamcommunity.com/id/username' },
+        { id: 'TikTok', label: 'TikTok', icon: 'simple-icons:tiktok', url: 'https://tiktok.com/@username' },
+        { id: 'Twitch', label: 'Twitch', icon: 'simple-icons:twitch', url: 'https://twitch.tv/username' },
+        { id: 'Reddit', label: 'Reddit', icon: 'simple-icons:reddit', url: 'https://reddit.com/user/username' },
+        { id: 'Bluesky', label: 'Bluesky', icon: 'simple-icons:bluesky', url: 'https://bsky.app/profile/username.bsky.social' },
+        { id: 'Medium', label: 'Medium', icon: 'simple-icons:medium', url: 'https://medium.com/@username' },
+        { id: 'Substack', label: 'Substack', icon: 'simple-icons:substack', url: 'https://username.substack.com' },
+        { id: 'WhatsApp', label: 'WhatsApp', icon: 'simple-icons:whatsapp', url: 'https://wa.me/phonenumber' },
+        { id: 'Facebook', label: 'Facebook', icon: 'simple-icons:facebook', url: 'https://facebook.com/username' },
+        { id: 'Threads', label: 'Threads', icon: 'simple-icons:threads', url: 'https://threads.net/@username' },
+        { id: 'Pinterest', label: 'Pinterest', icon: 'simple-icons:pinterest', url: 'https://pinterest.com/username' },
+        { id: 'Kick', label: 'Kick', icon: 'simple-icons:kick', url: 'https://kick.com/username' },
+        { id: 'Patreon', label: 'Patreon', icon: 'simple-icons:patreon', url: 'https://patreon.com/username' },
+        { id: 'Snapchat', label: 'Snapchat', icon: 'simple-icons:snapchat', url: 'https://snapchat.com/add/username' },
+        // Lucide Icons (Web, Tools & General)
+        { id: 'Website', label: 'Website', icon: 'lucide:globe', url: 'https://yourwebsite.com' },
+        { id: 'Portfolio', label: 'Portfolio', icon: 'lucide:briefcase', url: 'https://yourportfolio.com' },
+        { id: 'Blog', label: 'Blog / RSS', icon: 'lucide:rss', url: 'https://yourblog.com' },
+        { id: 'Code', label: 'Code / Dev', icon: 'lucide:code-2', url: 'https://...' },
+        // Custom Option (Any Simple Icon or Lucide Icon)
+        { id: 'Custom', label: 'Custom', icon: 'lucide:link', url: 'https://...' }
+      ];
+
+      var ICON_SWITCH_MAP = {
+        'instagram': { simple: 'simple-icons:instagram', lucide: 'lucide:instagram' },
+        'youtube': { simple: 'simple-icons:youtube', lucide: 'lucide:youtube' },
+        'linkedin': { simple: 'simple-icons:linkedin', lucide: 'lucide:linkedin' },
+        'facebook': { simple: 'simple-icons:facebook', lucide: 'lucide:facebook' },
+        'twitch': { simple: 'simple-icons:twitch', lucide: 'lucide:twitch' },
+        'github': { simple: 'simple-icons:github', lucide: 'lucide:github' },
+        'twitter': { simple: 'simple-icons:x', lucide: 'lucide:twitter' },
+        'x': { simple: 'simple-icons:x', lucide: 'lucide:twitter' },
+        'discord': { simple: 'simple-icons:discord', lucide: 'lucide:message-square' },
+        'spotify': { simple: 'simple-icons:spotify', lucide: 'lucide:music' },
+        'steam': { simple: 'simple-icons:steam', lucide: 'lucide:gamepad-2' },
+        'tiktok': { simple: 'simple-icons:tiktok', lucide: 'lucide:video' },
+        'reddit': { simple: 'simple-icons:reddit', lucide: 'lucide:bot' },
+        'bluesky': { simple: 'simple-icons:bluesky', lucide: 'lucide:cloud' },
+        'medium': { simple: 'simple-icons:medium', lucide: 'lucide:book-open' },
+        'substack': { simple: 'simple-icons:substack', lucide: 'lucide:mail' },
+        'whatsapp': { simple: 'simple-icons:whatsapp', lucide: 'lucide:phone' },
+        'threads': { simple: 'simple-icons:threads', lucide: 'lucide:at-sign' },
+        'pinterest': { simple: 'simple-icons:pinterest', lucide: 'lucide:pin' },
+        'kick': { simple: 'simple-icons:kick', lucide: 'lucide:play' },
+        'patreon': { simple: 'simple-icons:patreon', lucide: 'lucide:heart' },
+        'snapchat': { simple: 'simple-icons:snapchat', lucide: 'lucide:ghost' },
+        'website': { simple: 'simple-icons:googlechrome', lucide: 'lucide:globe' },
+        'portfolio': { simple: 'simple-icons:notion', lucide: 'lucide:briefcase' },
+        'blog': { simple: 'simple-icons:rss', lucide: 'lucide:rss' },
+        'code': { simple: 'simple-icons:visualstudiocode', lucide: 'lucide:code-2' }
+      };
+
+      function switchIconLibrary(currentIcon, targetLib, currentPlatform) {
+        var raw = (currentIcon || '').trim().toLowerCase();
+        var plat = (currentPlatform || '').trim().toLowerCase();
+
+        if (plat && ICON_SWITCH_MAP[plat]) {
+          return targetLib === 'lucide' ? ICON_SWITCH_MAP[plat].lucide : ICON_SWITCH_MAP[plat].simple;
+        }
+
+        var iconName = raw.indexOf(':') !== -1 ? raw.split(':')[1] : raw;
+        if (iconName && ICON_SWITCH_MAP[iconName]) {
+          return targetLib === 'lucide' ? ICON_SWITCH_MAP[iconName].lucide : ICON_SWITCH_MAP[iconName].simple;
+        }
+
+        for (var k in ICON_SWITCH_MAP) {
+          if (ICON_SWITCH_MAP[k].simple === raw || ICON_SWITCH_MAP[k].lucide === raw) {
+            return targetLib === 'lucide' ? ICON_SWITCH_MAP[k].lucide : ICON_SWITCH_MAP[k].simple;
+          }
+        }
+
+        if (targetLib === 'lucide') {
+          return 'lucide:' + (iconName || 'globe');
+        } else {
+          return 'simple-icons:' + (iconName || 'simpleicons');
+        }
+      }
+
+      function resolveIconKey(platform, customIcon) {
+        if (customIcon && customIcon.trim()) {
+          var val = customIcon.trim().toLowerCase();
+          if (val.indexOf(':') !== -1) return val;
+          var lucideNames = ['globe', 'link', 'code', 'code-2', 'rss', 'terminal', 'briefcase', 'mail', 'heart', 'sparkles', 'coffee', 'zap', 'music', 'camera', 'cpu', 'shield', 'compass', 'at-sign', 'book', 'layers', 'external-link'];
+          if (lucideNames.indexOf(val) !== -1) return 'lucide:' + val;
+          return 'simple-icons:' + val;
+        }
+        for (var i = 0; i < SOCIAL_PRESETS.length; i++) {
+          if (SOCIAL_PRESETS[i].id.toLowerCase() === (platform || '').toLowerCase()) {
+            return SOCIAL_PRESETS[i].icon;
+          }
+        }
+        return 'lucide:globe';
+      }
+
+      /* ── Dynamic Additional Social Media Links ── */
+      function createSocialLinkCard(link, index) {
+        var item = link || {};
+        var platform = item.platform || 'LinkedIn';
+        var title = item.title || platform;
+        var url = item.url || '';
+        var icon = item.icon || resolveIconKey(platform, '');
+
+        var card = document.createElement('div');
+        card.className = 'surface-card cust-card m-social-card';
+        card.style.cssText = 'padding:10px 12px; background:var(--bg); border:1px solid var(--line); border-radius:var(--radius-sm); display:flex; flex-direction:column; gap:8px;';
+
+        var optionsHtml = '';
+        var customOptionsHtml = '';
+        var found = false;
+        var selectedLabel = platform;
+        var selectedIcon = resolveIconKey(platform, '');
+
+        SOCIAL_PRESETS.forEach(function (p) {
+          var isSel = (platform === p.id);
+          if (isSel) {
+            found = true;
+            selectedLabel = p.label;
+            selectedIcon = p.icon;
+          }
+          optionsHtml += '<option value="' + p.id + '"' + (isSel ? ' selected' : '') + '>' + p.label + '</option>';
+          customOptionsHtml +=
+            '<div class="custom-select-option ' + (isSel ? 'selected' : '') + '" data-val="' + p.id + '">' +
+            '<div class="opt-left">' +
+            '<iconify-icon icon="' + p.icon + '" width="14" height="14"></iconify-icon>' +
+            '<span>' + p.label + '</span>' +
+            '</div>' +
+            '<span class="opt-check">' + (isSel ? '✓' : '') + '</span>' +
+            '</div>';
+        });
+        if (!found) {
+          optionsHtml += '<option value="Custom" selected>Custom</option>';
+          selectedLabel = 'Custom';
+          selectedIcon = 'lucide:link';
+          customOptionsHtml +=
+            '<div class="custom-select-option selected" data-val="Custom">' +
+            '<div class="opt-left">' +
+            '<iconify-icon icon="lucide:link" width="14" height="14"></iconify-icon>' +
+            '<span>Custom</span>' +
+            '</div>' +
+            '<span class="opt-check">✓</span>' +
+            '</div>';
+        }
+
+        var isLucide = (icon.indexOf('lucide:') === 0);
+        var isSimple = !isLucide;
+        var qName = icon.indexOf(':') !== -1 ? icon.split(':')[1] : icon;
+        var browseUrl = isLucide
+          ? 'https://lucide.dev/icons/?search=' + encodeURIComponent(qName)
+          : 'https://simpleicons.org/?q=' + encodeURIComponent(qName);
+
+        card.innerHTML =
+          '<div style="display:flex; align-items:center; justify-content:space-between; gap:8px;">' +
+          '<div style="display:flex; align-items:center; gap:8px; flex:1;">' +
+          '<div class="m-social-icon-badge" title="Live Icon Preview">' +
+          '<iconify-icon icon="' + icon + '" width="18" height="18"></iconify-icon>' +
+          '</div>' +
+          '<div class="custom-select-wrap">' +
+          '<select class="field-input m-social-select-platform" style="display:none;" tabindex="-1">' +
+          optionsHtml +
+          '</select>' +
+          '<button type="button" class="custom-select-trigger" aria-haspopup="listbox" aria-expanded="false" title="Choose platform">' +
+          '<span class="custom-select-label">' +
+          '<iconify-icon icon="' + selectedIcon + '" width="14" height="14" class="custom-select-icon"></iconify-icon>' +
+          '<span class="custom-select-text">' + escapeHtml(selectedLabel) + '</span>' +
+          '</span>' +
+          '<svg class="custom-select-chevron" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">' +
+          '<path d="m6 9 6 6 6-6"/>' +
+          '</svg>' +
+          '</button>' +
+          '<div class="custom-select-dropdown" role="listbox" style="display:none;">' +
+          customOptionsHtml +
+          '</div>' +
+          '</div>' +
+          '<input type="text" class="field-input m-social-input-title" placeholder="Display Title" value="' + escapeHtml(title) + '" style="padding:6px 10px; font-size:0.78rem; flex:1;">' +
+          '</div>' +
+          '<button type="button" class="m-social-del-btn toolbar-btn" style="color:var(--red); border-color:rgba(255,42,95,0.3); padding:4px 8px; font-size:0.72rem; cursor:pointer;" title="Remove this link">✕ Remove</button>' +
+          '</div>' +
+          '<div style="display:flex; align-items:center; gap:8px; flex-wrap:wrap;">' +
+          '<input type="text" class="field-input m-social-input-url" placeholder="https://..." value="' + escapeHtml(url) + '" style="padding:6px 10px; font-size:0.78rem; flex:2; min-width:180px;">' +
+          '<div style="display:flex; align-items:center; gap:6px; flex:1.2; min-width:260px;">' +
+          '<input type="text" class="field-input m-social-input-icon" placeholder="Icon ID" value="' + escapeHtml(icon) + '" style="padding:6px 8px; font-size:0.75rem; flex:1; font-family:var(--font-mono);" title="Simple Icons or Lucide icon identifier">' +
+          '<div class="icon-pack-switch" title="Switch icon style: Simple Icons (official glyph) vs Lucide Icons (clean stroke)">' +
+          '<button type="button" class="pack-switch-btn btn-pack-simple ' + (isSimple ? 'active' : '') + '" title="Switch to Simple Icons official brand glyph (https://simpleicons.org)">' +
+          '<iconify-icon icon="simple-icons:simpleicons" width="11" height="11"></iconify-icon>' +
+          '<span>Simple</span>' +
+          '</button>' +
+          '<button type="button" class="pack-switch-btn btn-pack-lucide ' + (isLucide ? 'active' : '') + '" title="Switch to Lucide modern outline icon (https://lucide.dev/icons/)">' +
+          '<iconify-icon icon="lucide:feather" width="11" height="11"></iconify-icon>' +
+          '<span>Lucide</span>' +
+          '</button>' +
+          '</div>' +
+          '<a href="' + browseUrl + '" target="_blank" rel="noopener noreferrer" class="pack-browse-link" title="Open icon catalog in new tab">' +
+          '<span>↗</span>' +
+          '</a>' +
+          '</div>' +
+          '</div>';
+
+        var badge = card.querySelector('.m-social-icon-badge');
+        var sel = card.querySelector('.m-social-select-platform');
+        var titleInp = card.querySelector('.m-social-input-title');
+        var urlInp = card.querySelector('.m-social-input-url');
+        var iconInp = card.querySelector('.m-social-input-icon');
+        var delBtn = card.querySelector('.m-social-del-btn');
+        var btnSimple = card.querySelector('.btn-pack-simple');
+        var btnLucide = card.querySelector('.btn-pack-lucide');
+        var browseLink = card.querySelector('.pack-browse-link');
+
+        var cWrap = card.querySelector('.custom-select-wrap');
+        var cTrigger = card.querySelector('.custom-select-trigger');
+        var cDropdown = card.querySelector('.custom-select-dropdown');
+        var cText = card.querySelector('.custom-select-text');
+        var cIcon = card.querySelector('.custom-select-icon');
+
+        function toggleCustomDropdown(open) {
+          var isOpen = (typeof open === 'boolean') ? open : (cDropdown.style.display === 'none');
+          if (isOpen) {
+            document.querySelectorAll('.custom-select-wrap.open').forEach(function (w) {
+              if (w !== cWrap) {
+                w.classList.remove('open');
+                var d = w.querySelector('.custom-select-dropdown');
+                if (d) d.style.display = 'none';
+                var pCard = w.closest('.m-social-card');
+                if (pCard) pCard.style.zIndex = '';
+              }
+            });
+            cDropdown.style.display = 'block';
+            cWrap.classList.add('open');
+            cTrigger.setAttribute('aria-expanded', 'true');
+            card.style.zIndex = '200';
+          } else {
+            cDropdown.style.display = 'none';
+            cWrap.classList.remove('open');
+            cTrigger.setAttribute('aria-expanded', 'false');
+            card.style.zIndex = '';
+          }
+        }
+
+        if (cTrigger) {
+          cTrigger.addEventListener('click', function (e) {
+            e.stopPropagation();
+            toggleCustomDropdown();
+          });
+        }
+
+        cDropdown.querySelectorAll('.custom-select-option').forEach(function (opt) {
+          opt.addEventListener('click', function (e) {
+            e.stopPropagation();
+            var val = this.getAttribute('data-val');
+            sel.value = val;
+
+            cDropdown.querySelectorAll('.custom-select-option').forEach(function (o) {
+              var isThis = (o.getAttribute('data-val') === val);
+              o.classList.toggle('selected', isThis);
+              var chk = o.querySelector('.opt-check');
+              if (chk) chk.textContent = isThis ? '✓' : '';
+            });
+
+            var optText = this.querySelector('.opt-left span') ? this.querySelector('.opt-left span').textContent : val;
+            var optIconEl = this.querySelector('iconify-icon');
+            var optIcon = optIconEl ? optIconEl.getAttribute('icon') : 'lucide:globe';
+            cText.textContent = optText;
+            cIcon.setAttribute('icon', optIcon);
+
+            toggleCustomDropdown(false);
+            sel.dispatchEvent(new Event('change'));
+          });
+        });
+
+        function syncCustomTrigger(val) {
+          cDropdown.querySelectorAll('.custom-select-option').forEach(function (o) {
+            var isThis = (o.getAttribute('data-val') === val);
+            o.classList.toggle('selected', isThis);
+            var chk = o.querySelector('.opt-check');
+            if (chk) chk.textContent = isThis ? '✓' : '';
+            if (isThis) {
+              var optText = o.querySelector('.opt-left span');
+              var optIcon = o.querySelector('iconify-icon');
+              if (optText) cText.textContent = optText.textContent;
+              if (optIcon) cIcon.setAttribute('icon', optIcon.getAttribute('icon'));
+            }
+          });
+        }
+
+        function updateBadge() {
+          var ic = resolveIconKey(sel.value, iconInp.value);
+          badge.innerHTML = '<iconify-icon icon="' + ic + '" width="18" height="18"></iconify-icon>';
+          var curIsLucide = (ic.indexOf('lucide:') === 0);
+          var q = ic.indexOf(':') !== -1 ? ic.split(':')[1] : ic;
+          if (btnLucide && btnSimple) {
+            if (curIsLucide) {
+              btnLucide.classList.add('active');
+              btnSimple.classList.remove('active');
+              if (browseLink) {
+                browseLink.href = 'https://lucide.dev/icons/?search=' + encodeURIComponent(q);
+                browseLink.title = 'Browse "' + q + '" on lucide.dev/icons/';
+              }
+            } else {
+              btnSimple.classList.add('active');
+              btnLucide.classList.remove('active');
+              if (browseLink) {
+                browseLink.href = 'https://simpleicons.org/?q=' + encodeURIComponent(q);
+                browseLink.title = 'Browse "' + q + '" on simpleicons.org';
+              }
+            }
+          }
+        }
+
+        if (btnSimple) {
+          btnSimple.addEventListener('click', function () {
+            var newIcon = switchIconLibrary(iconInp.value, 'simple-icons', sel.value);
+            iconInp.value = newIcon;
+            updateBadge();
+          });
+        }
+
+        if (btnLucide) {
+          btnLucide.addEventListener('click', function () {
+            var newIcon = switchIconLibrary(iconInp.value, 'lucide', sel.value);
+            iconInp.value = newIcon;
+            updateBadge();
+          });
+        }
+
+        if (sel) {
+          sel.addEventListener('change', function () {
+            var selectedId = this.value;
+            syncCustomTrigger(selectedId);
+            for (var j = 0; j < SOCIAL_PRESETS.length; j++) {
+              if (SOCIAL_PRESETS[j].id === selectedId) {
+                if (selectedId !== 'Custom') {
+                  titleInp.value = SOCIAL_PRESETS[j].label;
+                  var baseIcon = SOCIAL_PRESETS[j].icon;
+                  if (btnLucide && btnLucide.classList.contains('active')) {
+                    iconInp.value = switchIconLibrary(baseIcon, 'lucide', selectedId);
+                  } else {
+                    iconInp.value = switchIconLibrary(baseIcon, 'simple-icons', selectedId);
+                  }
+                  if (!urlInp.value || urlInp.value.indexOf('http') === -1) {
+                    urlInp.placeholder = SOCIAL_PRESETS[j].url;
+                  }
+                }
+                break;
+              }
+            }
+            updateBadge();
+          });
+        }
+
+        if (iconInp) {
+          iconInp.addEventListener('input', updateBadge);
+        }
+
+        if (delBtn) {
+          delBtn.addEventListener('click', function () {
+            card.remove();
+          });
+        }
+
+        return card;
+      }
+
+      function renderSocialLinkList(links) {
+        var container = document.getElementById('cust-social-links-list');
+        if (!container) return;
+        container.innerHTML = '';
+        var list = (Array.isArray(links) && links.length) ? links : [];
+        list.forEach(function (link, idx) {
+          container.appendChild(createSocialLinkCard(link, idx));
+        });
+      }
+
+      document.addEventListener('click', function (e) {
+        if (!e.target.closest('.custom-select-wrap')) {
+          document.querySelectorAll('.custom-select-wrap.open').forEach(function (w) {
+            w.classList.remove('open');
+            var d = w.querySelector('.custom-select-dropdown');
+            if (d) d.style.display = 'none';
+            var pCard = w.closest('.m-social-card');
+            if (pCard) pCard.style.zIndex = '';
+          });
+        }
+      });
+
+      var btnAddSocial = document.getElementById('cust-btn-add-social');
+      if (btnAddSocial) {
+        btnAddSocial.addEventListener('click', function () {
+          var container = document.getElementById('cust-social-links-list');
+          if (!container) return;
+          var count = container.querySelectorAll('.m-social-card').length;
+          var newCard = createSocialLinkCard({ platform: 'LinkedIn', title: 'LinkedIn', url: '' }, count);
+          container.appendChild(newCard);
+          var urlInp = newCard.querySelector('.m-social-input-url');
+          if (urlInp) urlInp.focus();
+        });
+      }
+
+      function loadConfigIntoForm() {
+        var cfg = Object.assign({}, typeof CONFIG !== 'undefined' ? CONFIG : {});
+        try {
+          var saved = localStorage.getItem('portfolio_custom_config');
+          if (saved) {
+            Object.assign(cfg, JSON.parse(saved));
+          }
+        } catch (_) { }
+
+        document.getElementById('cust-sitename').value = cfg.site_name || '';
+        document.getElementById('cust-accent').value = cfg.accent_letter || 'x';
+        document.getElementById('cust-bio').value = cfg.site_desc || '';
+        document.getElementById('cust-intro').value = cfg.intro || '';
+        document.getElementById('cust-github').value = cfg.github || '';
+        document.getElementById('cust-telegram').value = cfg.telegram || '';
+        document.getElementById('cust-x').value = cfg.x || '';
+        document.getElementById('cust-email').value = cfg.email || '';
+        document.getElementById('cust-web3forms').value = cfg.web3forms_access_key || '';
+        document.getElementById('cust-hcaptcha').value = cfg.hcaptcha_sitekey || '50b2fe65-b00b-4b9e-ad62-3ba471098be2';
+
+        /* Render projects in visual manager */
+        var activeProjs = [];
+        if (cfg.projects && Array.isArray(cfg.projects) && cfg.projects.length > 0) {
+          activeProjs = cfg.projects;
+        } else if (typeof CONFIG !== 'undefined' && Array.isArray(CONFIG.projects) && CONFIG.projects.length > 0) {
+          activeProjs = CONFIG.projects;
+        }
+        renderProjectList(activeProjs);
+
+        /* Render additional social links */
+        var activeSocial = [];
+        if (cfg.social_links && Array.isArray(cfg.social_links) && cfg.social_links.length > 0) {
+          activeSocial = cfg.social_links;
+        } else if (typeof CONFIG !== 'undefined' && Array.isArray(CONFIG.social_links) && CONFIG.social_links.length > 0) {
+          activeSocial = CONFIG.social_links;
+        }
+        renderSocialLinkList(activeSocial);
+
+        /* Restore saved avatar */
+        pendingAvatarData = null;
+        setCustPreviewAvatar((cfg.avatar_url && cfg.avatar_url.trim()) ? cfg.avatar_url.trim() : 'logo.png');
+
+        /* Apply and sync theme option (default is current theme) */
+        var themeCfg = cfg.theme_config || {};
+        currentThemeMode = themeCfg.mode || document.documentElement.getAttribute('data-theme') || localStorage.getItem('theme') || (cfg.default_theme || 'dark');
+        currentAccentColor = themeCfg.accent_color || cfg.accent_color || '#ff2a5f';
+        currentBgPreset = themeCfg.bg_preset || 'midnight';
+        document.documentElement.setAttribute('data-theme', currentThemeMode);
+        applyThemeColors(currentAccentColor, currentBgPreset, currentThemeMode);
+        updateThemeSelectionUI(currentThemeMode, currentAccentColor, currentBgPreset);
+
+        setTimeout(function () {
+          updateLivePreview();
+          autoResize(document.getElementById('cust-bio'));
+          autoResize(document.getElementById('cust-intro'));
+        }, 50);
+
+        updateCodeSnippet(cfg);
+      }
+
+      function updateCodeSnippet(cfg) {
+        if (!configCodePreview) return;
+        configCodePreview.textContent = 'const CONFIG = ' + JSON.stringify(cfg, null, 2) + ';';
+      }
+
+      document.getElementById('btn-save-customizer').addEventListener('click', function () {
+        if (!window.Clerk || !window.Clerk.user || !isUserAuthorized(window.Clerk.user)) {
+          alert('Access Denied: Only authorized administrators can save changes.');
+          window.location.replace('/');
+          return;
+        }
+
+        /* Collect projects from visual cards */
+        var projCards = document.querySelectorAll('#cust-projects-list .m-proj-card');
+        var projectsList = [];
+        var projectLinks = {};
+        projCards.forEach(function (card) {
+          var ghUrl = (card.querySelector('.m-proj-input-github') || {}).value || '';
+          var title = (card.querySelector('.m-proj-input-title') || {}).value || '';
+          var url = (card.querySelector('.m-proj-input-url') || {}).value || '';
+          var desc = (card.querySelector('.m-proj-input-desc') || {}).value || '';
+          var tag = (card.querySelector('.m-proj-input-tag') || {}).value || 'Project';
+          if (title.trim()) {
+            var trimmedTitle = title.trim();
+            var slug = trimmedTitle.replace(/[^a-zA-Z0-9_-]+/g, '-');
+            projectsList.push({
+              title: trimmedTitle,
+              name: slug,
+              url: url.trim(),
+              github_url: ghUrl.trim(),
+              description: desc.trim(),
+              tag: tag.trim() || 'Project',
+              stars: 1
+            });
+            if (url.trim()) {
+              projectLinks[slug] = url.trim();
+              projectLinks[trimmedTitle] = url.trim();
+            }
+          }
+        });
+
+        /* Collect additional social links */
+        var socialCards = document.querySelectorAll('#cust-social-links-list .m-social-card');
+        var socialLinks = [];
+        socialCards.forEach(function (card) {
+          var sel = card.querySelector('.m-social-select-platform');
+          var titleInp = card.querySelector('.m-social-input-title');
+          var urlInp = card.querySelector('.m-social-input-url');
+          var iconInp = card.querySelector('.m-social-input-icon');
+          var title = (titleInp && titleInp.value) ? titleInp.value.trim() : (sel ? sel.value : '');
+          var url = (urlInp && urlInp.value) ? urlInp.value.trim() : '';
+          var icon = (iconInp && iconInp.value) ? iconInp.value.trim() : '';
+          var platform = sel ? sel.value : title;
+          if (url) {
+            if (!/^https?:\/\//i.test(url) && !/^mailto:/i.test(url)) {
+              url = 'https://' + url;
+            }
+            socialLinks.push({
+              platform: platform,
+              title: title || platform,
+              url: url,
+              icon: icon || resolveIconKey(platform, '')
+            });
+          }
+        });
+
+        var existingCustom = {};
+        try {
+          var saved = localStorage.getItem('portfolio_custom_config');
+          if (saved) existingCustom = JSON.parse(saved);
+        } catch (_) { }
+
+        /* Resolve avatar: newly chosen base64, or existing saved, or CONFIG */
+        var existingAvatarUrl = existingCustom.avatar_url || ((typeof CONFIG !== 'undefined' && CONFIG.avatar_url) ? CONFIG.avatar_url : '');
+        var resolvedAvatar = (pendingAvatarData !== null) ? pendingAvatarData : existingAvatarUrl;
+
+        var updated = {
+          github: document.getElementById('cust-github').value.trim(),
+          x: document.getElementById('cust-x').value.trim(),
+          telegram: document.getElementById('cust-telegram').value.trim(),
+          email: document.getElementById('cust-email').value.trim(),
+          social_links: socialLinks,
+          logo: 'logo.png',
+          avatar_url: resolvedAvatar,
+          site_name: document.getElementById('cust-sitename').value.trim(),
+          accent_letter: document.getElementById('cust-accent').value.trim() || 'x',
+          site_desc: document.getElementById('cust-bio').value.trim(),
+          seo_desc: document.getElementById('cust-bio').value.trim(),
+          intro: document.getElementById('cust-intro').value.trim(),
+          projects: projectsList,
+          project_links: projectLinks,
+          default_theme: currentThemeMode,
+          accent_color: currentAccentColor,
+          theme_config: {
+            mode: currentThemeMode,
+            accent_color: currentAccentColor,
+            bg_preset: currentBgPreset
+          },
+          cf_analytics: (typeof CONFIG !== 'undefined' && CONFIG.cf_analytics) ? CONFIG.cf_analytics : false,
+          web3forms_access_key: document.getElementById('cust-web3forms').value.trim() || 'd36ee933-00cb-453e-aa38-b18ee60ce5d1',
+          hcaptcha_sitekey: document.getElementById('cust-hcaptcha').value.trim() || '50b2fe65-b00b-4b9e-ad62-3ba471098be2',
+          clerk_publishable_key: (typeof CONFIG !== 'undefined' && CONFIG.clerk_publishable_key) ? CONFIG.clerk_publishable_key : 'pk_test_c2hpbmluZy10dXJrZXktMTMyNS5jbGVyay5hY2NvdW50cy5kZXYk',
+          clerk_frontend_api: 'https://shining-turkey-1325.clerk.accounts.dev'
+        };
+
+        localStorage.setItem('portfolio_custom_config', JSON.stringify(updated));
+        updateCodeSnippet(updated);
+
+        saveStatusMsg.style.display = 'block';
+        setTimeout(function () {
+          saveStatusMsg.style.display = 'none';
+        }, 3000);
+      });
+
+      var deniedBox = document.getElementById('denied-box');
+      var deniedEmail = document.getElementById('denied-email');
+      var deniedCountdown = document.getElementById('denied-countdown');
+      var btnLoginSignout = document.getElementById('btn-login-signout');
+
+      // Strictly Role-Based Access Control: ONLY users with role: "admin" or whitelisted email can access
+      function isUserAuthorized(user) {
+        if (!user) return false;
+
+        var meta = user.publicMetadata || {};
+        var metaRole = String(meta.role || '').toLowerCase().trim();
+        if (metaRole === 'admin') return true;
+
+        var userEmail = (user.primaryEmailAddress && user.primaryEmailAddress.emailAddress)
+          ? user.primaryEmailAddress.emailAddress.toLowerCase().trim()
+          : '';
+
+        var allowedUsers = [];
+        if (typeof CONFIG !== 'undefined' && Array.isArray(CONFIG.authorized_users) && CONFIG.authorized_users.length > 0) {
+          allowedUsers = CONFIG.authorized_users.map(function (u) { return String(u).toLowerCase().trim(); });
+        }
+        var adminEmail = (typeof CONFIG !== 'undefined' && CONFIG.email)
+          ? CONFIG.email.toLowerCase().trim()
+          : 'ayankhan84510@gmail.com';
+
+        if (adminEmail && allowedUsers.indexOf(adminEmail) === -1) {
+          allowedUsers.push(adminEmail);
+        }
+
+        if (userEmail && allowedUsers.indexOf(userEmail) !== -1) {
+          return true;
+        }
+
+        return false;
+      }
+
+      var isFormLoadedForUserId = null;
+      var redirectCountdownTimer = null;
+
+      function refreshLoginAuth() {
+        if (!window.Clerk) return;
+
+        if (window.Clerk.user) {
+          var user = window.Clerk.user;
+          var identifier = user.primaryEmailAddress
+            ? user.primaryEmailAddress.emailAddress
+            : (user.username || 'User');
+
+          var userBtnEl = document.getElementById('clerk-user-button');
+          if (userBtnEl && !userBtnEl.hasChildNodes()) {
+            window.Clerk.mountUserButton(userBtnEl);
+          }
+
+          if (isUserAuthorized(user)) {
+            authBox.style.display = 'none';
+            if (deniedBox) deniedBox.style.display = 'none';
+            if (redirectCountdownTimer) {
+              clearInterval(redirectCountdownTimer);
+              redirectCountdownTimer = null;
+            }
+
+            customizerSections.style.display = 'block';
+            sessionUserText.textContent = 'Authorized Developer: ' + identifier;
+
+            // Populate form fields only once per user session
+            if (isFormLoadedForUserId !== user.id) {
+              loadConfigIntoForm();
+              isFormLoadedForUserId = user.id;
+            }
+          } else {
+            // Unauthorized account: Lock down & auto-redirect in 3s
+            isFormLoadedForUserId = null;
+            authBox.style.display = 'none';
+            customizerSections.style.display = 'none';
+
+            // Security wipe
+            var inputs = customizerSections.querySelectorAll('input, textarea');
+            inputs.forEach(function (inp) { inp.value = ''; });
+            var projList = document.getElementById('cust-projects-list');
+            if (projList) projList.innerHTML = '';
+            if (configCodePreview) configCodePreview.textContent = '// Access Denied: Unauthorized Account';
+
+            if (deniedBox) deniedBox.style.display = 'block';
+            if (deniedEmail) deniedEmail.textContent = identifier;
+
+            var seconds = 3;
+            if (deniedCountdown) deniedCountdown.textContent = seconds;
+            if (redirectCountdownTimer) clearInterval(redirectCountdownTimer);
+            redirectCountdownTimer = setInterval(function () {
+              seconds--;
+              if (deniedCountdown) deniedCountdown.textContent = seconds;
+              if (seconds <= 0) {
+                clearInterval(redirectCountdownTimer);
+                if (window.Clerk) {
+                  window.Clerk.signOut().finally(function () {
+                    window.location.replace('/');
+                  });
+                } else {
+                  window.location.replace('/');
+                }
+              }
+            }, 1000);
+
+            if (btnLoginSignout) {
+              btnLoginSignout.onclick = function () {
+                if (redirectCountdownTimer) clearInterval(redirectCountdownTimer);
+                if (window.Clerk) {
+                  window.Clerk.signOut().finally(function () {
+                    window.location.replace('/');
+                  });
+                } else {
+                  window.location.replace('/');
+                }
+              };
+            }
+          }
+        } else {
+          // Signed out
+          isFormLoadedForUserId = null;
+          if (redirectCountdownTimer) {
+            clearInterval(redirectCountdownTimer);
+            redirectCountdownTimer = null;
+          }
+          customizerSections.style.display = 'none';
+          if (deniedBox) deniedBox.style.display = 'none';
+          authBox.style.display = 'flex';
+
+          var loadingMsg = document.getElementById('clerk-loading-msg');
+          if (loadingMsg) loadingMsg.style.display = 'none';
+
+          var signInEl = document.getElementById('clerk-sign-in');
+          if (signInEl && !signInEl.hasChildNodes()) {
+            window.Clerk.mountSignIn(signInEl);
+          }
+        }
+      }
+
+      function initClerk() {
+        var pubKey = (typeof CONFIG !== 'undefined' && CONFIG.clerk_publishable_key)
+          ? CONFIG.clerk_publishable_key
+          : 'pk_test_c2hpbmluZy10dXJrZXktMTMyNS5jbGVyay5hY2NvdW50cy5kZXYk';
+
+        if (!window.Clerk) {
+          setTimeout(initClerk, 150);
+          return;
+        }
+
+        window.Clerk.load({
+          publishableKey: pubKey,
+          appearance: {
+            variables: {
+              colorPrimary: '#ff2a5f',
+              colorBackground: '#131319',
+              colorText: '#eef0f4',
+              colorInputBackground: '#0a0a0e',
+              colorInputText: '#eef0f4'
+            }
+          }
+        }).then(function () {
+          window.Clerk.addListener(function () {
+            refreshLoginAuth();
+          });
+          refreshLoginAuth();
+        }).catch(function (err) {
+          console.error('[Clerk] Load failed:', err);
+          var loadingMsg = document.getElementById('clerk-loading-msg');
+          if (loadingMsg) loadingMsg.textContent = 'Auth service ready. Click to sign in.';
+        });
+      }
+
+      initClerk();
+
+      /* ─── Slim Theme-Based Scroll Progress Bar ─── */
+      var scrollProgressBar = document.getElementById('scroll-progress');
+      if (scrollProgressBar) {
+        var isTicking = false;
+        function updateScrollProgress() {
+          var doc = document.documentElement;
+          var body = document.body;
+          var scrollTop = window.pageYOffset || doc.scrollTop || body.scrollTop || 0;
+          var scrollHeight = (doc.scrollHeight || body.scrollHeight) - window.innerHeight;
+          var pct = scrollHeight > 0 ? (scrollTop / scrollHeight) * 100 : 0;
+          if (pct < 0) pct = 0;
+          if (pct > 100) pct = 100;
+          scrollProgressBar.style.width = pct + '%';
+          isTicking = false;
+        }
+
+        window.addEventListener('scroll', function () {
+          if (!isTicking) {
+            window.requestAnimationFrame(updateScrollProgress);
+            isTicking = true;
+          }
+        }, { passive: true });
+
+        window.addEventListener('resize', updateScrollProgress, { passive: true });
+        updateScrollProgress();
+      }
+    }());
+  </script>
+</body>
+
+</html>

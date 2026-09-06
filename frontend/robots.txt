@@ -1,0 +1,13 @@
+User-agent: *
+Disallow: /developer
+Disallow: /developer.html
+Disallow: /login
+Disallow: /login.html
+Disallow: /keys/
+Disallow: /backend/
+
+# Allow root and assets
+Allow: /
+Allow: /logo.png
+Allow: /style.css
+Allow: /app.js
