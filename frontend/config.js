@@ -22,18 +22,18 @@ const CONFIG = {
   "projects": [
     {
       "title": "CarryOn E-Commerce",
-      "name": "CarryOn-E-Commerce",
+      "name": "CarryOn-E-Commerce-Website",
       "url": "https://carryon-five.vercel.app/",
-      "github_url": "",
+      "github_url": "https://github.com/khxaiyan/CarryOn-E-Commerce-Website",
       "description": "E-Commerce Website fully customizable by Seller",
       "tag": "Project",
       "stars": 1
     },
     {
       "title": "GetWeb Screenshot",
-      "name": "GetWeb-Screenshot",
+      "name": "GetWeb_Screenshot",
       "url": "https://getweb-screenshot.vercel.app",
-      "github_url": "",
+      "github_url": "https://github.com/khxaiyan/GetWeb_Screenshot",
       "description": "Capture full-page screenshots of any website instantly – supports Desktop, Tablet & Mobile viewports, PNG/JPG/PDF export. Built with React, Vite & Microlink API. ( mini project )",
       "tag": "CSS",
       "stars": 1
@@ -42,7 +42,7 @@ const CONFIG = {
       "title": "MyPortfolio",
       "name": "MyPortfolio",
       "url": "https://khxaiyan.vercel.app",
-      "github_url": "",
+      "github_url": "https://github.com/khxaiyan/MyPortfolioA",
       "description": "Personal developer portfolio website",
       "tag": "HTML",
       "stars": 1

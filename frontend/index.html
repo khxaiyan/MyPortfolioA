@@ -107,8 +107,17 @@
         root.style.setProperty('--red-dim', hexToRgba(accent, 0.16));
         root.style.setProperty('--border-accent', hexToRgba(accent, 0.45));
         root.style.setProperty('--border-accent-glow', hexToRgba(accent, 0.12));
+        try {
+          var c = accent.replace('#', '');
+          if (c.length === 3) c = c[0] + c[0] + c[1] + c[1] + c[2] + c[2];
+          var n = parseInt(c, 16);
+          var lum = 0.299 * ((n >> 16) & 255) + 0.587 * ((n >> 8) & 255) + 0.114 * (n & 255);
+          root.style.setProperty('--btn-text-color', lum > 165 ? '#0a0a0e' : '#ffffff');
+        } catch (_) {
+          root.style.setProperty('--btn-text-color', '#ffffff');
+        }
       }
-      if (t === 'dark' && bgPreset && PRESETS[bgPreset] && bgPreset !== 'midnight') {
+      if (defTheme === 'dark' && bgPreset && PRESETS[bgPreset] && bgPreset !== 'midnight') {
         var p = PRESETS[bgPreset];
         var root = document.documentElement;
         root.style.setProperty('--bg', p.bg);

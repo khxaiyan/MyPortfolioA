@@ -5,7 +5,6 @@ img, video {
   -khtml-user-drag: none;
   -moz-user-drag: none;
   -o-user-drag: none;
-  user-drag: none;
   -webkit-user-select: none;
   -moz-user-select: none;
   -ms-user-select: none;
@@ -221,7 +220,6 @@ video.avatar-img {
   -khtml-user-drag: none;
   -moz-user-drag: none;
   -o-user-drag: none;
-  user-drag: none;
   -webkit-user-select: none;
   -moz-user-select: none;
   -ms-user-select: none;
@@ -963,7 +961,7 @@ select, option, optgroup {
   justify-content: center;
   gap: 8px;
   background: var(--red-solid);
-  color: #ffffff;
+  color: var(--btn-text-color, #ffffff);
   border: none;
   border-radius: var(--radius);
   padding: 13px 22px;

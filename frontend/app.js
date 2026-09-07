@@ -43,6 +43,15 @@
       root.style.setProperty('--red-dim', hexToRgba(accent, 0.16));
       root.style.setProperty('--border-accent', hexToRgba(accent, 0.45));
       root.style.setProperty('--border-accent-glow', hexToRgba(accent, 0.12));
+      try {
+        var c = accent.replace('#', '');
+        if (c.length === 3) c = c[0] + c[0] + c[1] + c[1] + c[2] + c[2];
+        var n = parseInt(c, 16);
+        var lum = 0.299 * ((n >> 16) & 255) + 0.587 * ((n >> 8) & 255) + 0.114 * (n & 255);
+        root.style.setProperty('--btn-text-color', lum > 165 ? '#0a0a0e' : '#ffffff');
+      } catch (_) {
+        root.style.setProperty('--btn-text-color', '#ffffff');
+      }
     }
 
     if (isDark && bgPreset && BG_PRESETS[bgPreset]) {
@@ -2129,6 +2138,12 @@
 
       // Determine GitHub Repo URL
       var ghTarget = p.github_url || p.html_url || (p.author ? 'https://github.com/' + p.author + '/' + (p.name || rawName) : ('https://github.com/' + author + '/' + (p.name || rawName)));
+      if (ghTarget.indexOf('GetWeb-Screenshot') !== -1) {
+        ghTarget = ghTarget.replace(/GetWeb-Screenshot/gi, 'GetWeb_Screenshot');
+      }
+      if (ghTarget.indexOf('CarryOn-E-Commerce') !== -1 && ghTarget.indexOf('CarryOn-E-Commerce-Website') === -1) {
+        ghTarget = ghTarget.replace(/CarryOn-E-Commerce/gi, 'CarryOn-E-Commerce-Website');
+      }
       var finalGhUrl = normalizeUrl(ghTarget);
 
       var ghBtnHtml = '';
