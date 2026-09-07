@@ -2600,7 +2600,7 @@
         });
       }
 
-      function loadConfigIntoForm() {
+      function loadConfigIntoForm(overrideCfg) {
         var cfg = Object.assign({}, typeof CONFIG !== 'undefined' ? CONFIG : {});
         try {
           var saved = localStorage.getItem('portfolio_custom_config');
@@ -2608,6 +2608,7 @@
             Object.assign(cfg, JSON.parse(saved));
           }
         } catch (_) { }
+        if (overrideCfg) Object.assign(cfg, overrideCfg);
 
         document.getElementById('cust-sitename').value = cfg.site_name || '';
         document.getElementById('cust-accent').value = cfg.accent_letter || 'x';
@@ -2806,8 +2807,10 @@
         .then(function (res) {
           if (!saveStatusMsg) return;
           saveStatusMsg.style.color = '#10b981';
-          if (res && res.pushed) {
-            saveStatusMsg.textContent = '✓ Changes saved & pushed to GitHub!';
+          if (res && res.mongodb) {
+            saveStatusMsg.textContent = '✓ Changes saved to MongoDB! (Live instantly without git push)';
+          } else if (res && res.message) {
+            saveStatusMsg.textContent = res.message;
           } else {
             saveStatusMsg.textContent = '✓ Theme & settings saved and applied!';
           }
@@ -2896,6 +2899,16 @@
             // Populate form fields only once per user session
             if (isFormLoadedForUserId !== user.id) {
               loadConfigIntoForm();
+              // Also sync latest live config from MongoDB
+              fetch('/api/get-config')
+                .then(function (r) { return r.json(); })
+                .then(function (res) {
+                  if (res && res.success && res.config) {
+                    loadConfigIntoForm(res.config);
+                    try { localStorage.setItem('portfolio_custom_config', JSON.stringify(res.config)); } catch (_) {}
+                  }
+                })
+                .catch(function () {});
               isFormLoadedForUserId = user.id;
             }
           } else {

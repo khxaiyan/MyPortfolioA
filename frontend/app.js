@@ -226,6 +226,23 @@
     }
   } catch (_) { }
 
+  /* ─── Sync Live Config from MongoDB (background sync) ─── */
+  fetch('/api/get-config')
+    .then(function (r) { return r.json(); })
+    .then(function (res) {
+      if (res && res.success && res.config) {
+        var remoteCfg = res.config;
+        var localRaw = localStorage.getItem('portfolio_custom_config');
+        if (localRaw !== JSON.stringify(remoteCfg)) {
+          try { localStorage.setItem('portfolio_custom_config', JSON.stringify(remoteCfg)); } catch (_) {}
+          if (typeof CONFIG !== 'undefined') Object.assign(CONFIG, remoteCfg);
+          if (remoteCfg.site_name) setSiteName(remoteCfg.site_name, remoteCfg.accent_letter);
+          if (remoteCfg.avatar_url) setPageAvatar(remoteCfg.avatar_url);
+        }
+      }
+    })
+    .catch(function () {});
+
   /* ─── Wordmark & Accent Highlighting ─── */
   function formatWordmark(name, accent) {
     if (!name) return '';
@@ -1989,8 +2006,10 @@
       .then(function (res) {
         if (!saveStatus) return;
         saveStatus.style.color = '#10b981';
-        if (res && res.pushed) {
-          saveStatus.textContent = '✓ Changes saved & pushed to GitHub!';
+        if (res && res.mongodb) {
+          saveStatus.textContent = '✓ Changes saved to MongoDB! (Live instantly without git push)';
+        } else if (res && res.message) {
+          saveStatus.textContent = res.message;
         } else {
           saveStatus.textContent = '✓ Theme & settings saved and applied!';
         }

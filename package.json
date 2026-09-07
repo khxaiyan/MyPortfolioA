@@ -19,6 +19,7 @@
   "license": "MIT",
   "dependencies": {
     "@clerk/clerk-js": "^6.30.3",
-    "inngest": "^4.20.0"
+    "inngest": "^4.20.0",
+    "mongodb": "^7.6.0"
   }
 }

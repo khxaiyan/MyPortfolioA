@@ -24,6 +24,7 @@ const MIME_TYPES = {
 
 // Load API handlers
 const saveConfigHandler = require('../api/save-config');
+const getConfigHandler = require('../api/get-config');
 let inngestHandler = null;
 try {
   inngestHandler = require('../api/inngest');
@@ -32,6 +33,20 @@ try {
 const server = http.createServer(async (req, res) => {
   const parsedUrl = url.parse(req.url, true);
   let pathname = decodeURIComponent(parsedUrl.pathname);
+
+  // ── Handle /api/get-config & /api/config ──
+  if (pathname === '/api/get-config' || pathname === '/api/config') {
+    res.status = (code) => {
+      res.statusCode = code;
+      return res;
+    };
+    res.json = (data) => {
+      res.setHeader('Content-Type', 'application/json');
+      res.end(JSON.stringify(data));
+    };
+    await getConfigHandler(req, res);
+    return;
+  }
 
   // ── Handle /api/save-config ──
   if (pathname === '/api/save-config') {
