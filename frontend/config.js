@@ -6,19 +6,53 @@ const CONFIG = {
   "github": "khxaiyan",
   "x": "khxaiyan",
   "telegram": "khxaiyan",
-  "email": "ayankhan84510@gmail.com",
-  "accent_color": "#ff2a5f",
+  "email": "[EMAIL_ADDRESS]",
+  "accent_color": "#851313",
   "default_theme": "dark",
   "theme_config": {
     "mode": "dark",
-    "accent_color": "#ff2a5f",
+    "accent_color": "#851313",
     "bg_preset": "midnight"
   },
   "site_desc": "khxaiyan | developer in active building mode. crafting clean web tools & digital experiences.",
-  "seo_desc": "khxaiyan | Web developer crafting clean tools, interfaces, and digital experiences.",
+  "seo_desc": "khxaiyan | developer in active building mode. crafting clean web tools & digital experiences.",
   "intro": "Passionate developer specializing in building modern web applications, clean user interfaces, and dynamic digital tools. Focused on performance, aesthetics, and crafting clean, scalable code.",
-  "projects": [],
-  "project_links": {},
+  "projects": [
+    {
+      "title": "CarryOn E-Commerce",
+      "name": "CarryOn-E-Commerce",
+      "url": "https://carryon-five.vercel.app/",
+      "github_url": "",
+      "description": "E-Commerce Website fully customizable by Seller",
+      "tag": "Project",
+      "stars": 1
+    },
+    {
+      "title": "GetWeb Screenshot",
+      "name": "GetWeb-Screenshot",
+      "url": "https://getweb-screenshot.vercel.app",
+      "github_url": "",
+      "description": "Capture full-page screenshots of any website instantly – supports Desktop, Tablet & Mobile viewports, PNG/JPG/PDF export. Built with React, Vite & Microlink API. ( mini project )",
+      "tag": "CSS",
+      "stars": 1
+    },
+    {
+      "title": "MyPortfolio",
+      "name": "MyPortfolio",
+      "url": "https://khxaiyan.vercel.app",
+      "github_url": "",
+      "description": "Personal developer portfolio website",
+      "tag": "HTML",
+      "stars": 1
+    }
+  ],
+  "project_links": {
+    "CarryOn-E-Commerce": "https://carryon-five.vercel.app/",
+    "CarryOn E-Commerce": "https://carryon-five.vercel.app/",
+    "GetWeb-Screenshot": "https://getweb-screenshot.vercel.app",
+    "GetWeb Screenshot": "https://getweb-screenshot.vercel.app",
+    "MyPortfolio": "https://khxaiyan.vercel.app"
+  },
   "cf_analytics": false,
   "web3forms_access_key": "d36ee933-00cb-453e-aa38-b18ee60ce5d1",
   "hcaptcha_sitekey": "50b2fe65-b00b-4b9e-ad62-3ba471098be2",
@@ -29,5 +63,13 @@ const CONFIG = {
   ],
   "cloudinary_cloud_name": "dqxccz5bn",
   "cloudinary_upload_preset": "myportfolioa",
-  "avatar_url": "https://res.cloudinary.com/dqxccz5bn/image/upload/profile_icon_wf7thb.svg"
+  "avatar_url": "https://res.cloudinary.com/dqxccz5bn/image/upload/profile_icon_wf7thb.svg",
+  "social_links": [
+    {
+      "platform": "Bluesky",
+      "title": "Bluesky",
+      "url": "https://bsky.app/profile/khxaiyan.bsky.social",
+      "icon": "lucide:cloud"
+    }
+  ]
 };
