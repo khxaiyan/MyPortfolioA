@@ -177,9 +177,9 @@
     if (savedCustom) {
       var parsedCustom = JSON.parse(savedCustom);
       var needsSave = false;
-      if (parsedCustom.avatar_url === 'avatar.svg' || parsedCustom.logo === 'avatar.svg') {
-        parsedCustom.avatar_url = 'Diluc.svg';
-        parsedCustom.logo = 'Diluc.svg';
+      if (parsedCustom.avatar_url === 'avatar.svg' || parsedCustom.avatar_url === 'Diluc.svg' || parsedCustom.logo === 'avatar.svg' || parsedCustom.logo === 'Diluc.svg') {
+        parsedCustom.avatar_url = 'profile_icon.svg';
+        parsedCustom.logo = 'profile_icon.svg';
         needsSave = true;
       }
       if (parsedCustom.favicon_url === 'favicon.svg') {
@@ -1239,7 +1239,7 @@
 
     /* Restore saved avatar into modal preview */
     pendingAvatarData = null;
-    setModalAvatarPreview((cfg.avatar_url && cfg.avatar_url.trim()) ? cfg.avatar_url.trim() : 'Diluc.svg');
+    setModalAvatarPreview((cfg.avatar_url && cfg.avatar_url.trim()) ? cfg.avatar_url.trim() : 'profile_icon.svg');
 
     /* Restore saved favicon into modal preview */
     pendingFaviconData = null;
@@ -1440,7 +1440,7 @@
         }
       }
     } else {
-      var finalImgSrc = (url && url !== 'avatar.svg') ? url : 'Diluc.svg';
+      var finalImgSrc = (url && url !== 'avatar.svg' && url !== 'Diluc.svg') ? url : 'profile_icon.svg';
       if (currentEl && currentEl.tagName.toLowerCase() === 'img') {
         currentEl.src = finalImgSrc;
         currentEl.setAttribute('draggable', 'false');
@@ -1490,12 +1490,12 @@
       }
     } else {
       if (currentEl && currentEl.tagName.toLowerCase() === 'img') {
-        currentEl.src = url || 'Diluc.svg';
+        currentEl.src = url || 'profile_icon.svg';
         currentEl.setAttribute('draggable', 'false');
       } else {
         var img = document.createElement('img');
         img.id = 'm-avatar-preview';
-        img.src = url || 'Diluc.svg';
+        img.src = url || 'profile_icon.svg';
         img.alt = 'Profile picture';
         img.setAttribute('draggable', 'false');
         img.style.cssText = 'width:88px; height:88px; border-radius:50%; object-fit:cover; border:2.5px solid var(--line); display:block; pointer-events:none; -webkit-user-drag:none; user-select:none;';
@@ -1582,10 +1582,53 @@
     reader.readAsDataURL(file);
   }
 
+  async function uploadToCloudinary(file, folder) {
+    var cloudName = (typeof CONFIG !== 'undefined' && CONFIG.cloudinary_cloud_name) ? CONFIG.cloudinary_cloud_name.trim() : '';
+    var preset = (typeof CONFIG !== 'undefined' && CONFIG.cloudinary_upload_preset) ? CONFIG.cloudinary_upload_preset.trim() : '';
+    if (!cloudName || !preset) return null;
+
+    var formData = new FormData();
+    formData.append('file', file);
+    formData.append('upload_preset', preset);
+    if (folder) formData.append('folder', folder);
+
+    var endpoint = 'https://api.cloudinary.com/v1_1/' + encodeURIComponent(cloudName) + '/auto/upload';
+    var res = await fetch(endpoint, {
+      method: 'POST',
+      body: formData
+    });
+
+    if (!res.ok) {
+      var errData = {};
+      try { errData = await res.json(); } catch (_) {}
+      var msg = (errData && errData.error && errData.error.message) ? errData.error.message : ('HTTP ' + res.status);
+      throw new Error(msg);
+    }
+
+    var data = await res.json();
+    return data.secure_url;
+  }
+
   if (avatarFileInput) {
-    avatarFileInput.addEventListener('change', function () {
+    avatarFileInput.addEventListener('change', async function () {
       var file = avatarFileInput.files && avatarFileInput.files[0];
       if (!file) return;
+
+      var cloudName = (typeof CONFIG !== 'undefined' && CONFIG.cloudinary_cloud_name) ? CONFIG.cloudinary_cloud_name.trim() : '';
+      var preset = (typeof CONFIG !== 'undefined' && CONFIG.cloudinary_upload_preset) ? CONFIG.cloudinary_upload_preset.trim() : '';
+
+      if (cloudName && preset) {
+        try {
+          var secureUrl = await uploadToCloudinary(file, 'MyPortfolioA');
+          pendingAvatarData = secureUrl;
+          setModalAvatarPreview(pendingAvatarData);
+          avatarFileInput.value = '';
+          return;
+        } catch (err) {
+          console.warn('[Cloudinary Modal] Avatar upload failed, falling back to local storage:', err);
+        }
+      }
+
       processAvatarFile(file, function (dataUrl) {
         pendingAvatarData = dataUrl;
         setModalAvatarPreview(pendingAvatarData);
@@ -1665,9 +1708,25 @@
   }
 
   if (faviconFileInput) {
-    faviconFileInput.addEventListener('change', function () {
+    faviconFileInput.addEventListener('change', async function () {
       var file = faviconFileInput.files && faviconFileInput.files[0];
       if (!file) return;
+
+      var cloudName = (typeof CONFIG !== 'undefined' && CONFIG.cloudinary_cloud_name) ? CONFIG.cloudinary_cloud_name.trim() : '';
+      var preset = (typeof CONFIG !== 'undefined' && CONFIG.cloudinary_upload_preset) ? CONFIG.cloudinary_upload_preset.trim() : '';
+
+      if (cloudName && preset) {
+        try {
+          var secureUrl = await uploadToCloudinary(file, 'MyPortfolioA/favicons');
+          pendingFaviconData = secureUrl;
+          setModalFaviconPreview(pendingFaviconData);
+          faviconFileInput.value = '';
+          return;
+        } catch (err) {
+          console.warn('[Cloudinary Modal] Favicon upload failed, falling back to local storage:', err);
+        }
+      }
+
       processFaviconFile(file, function (dataUrl) {
         pendingFaviconData = dataUrl;
         setModalFaviconPreview(pendingFaviconData);
@@ -1681,12 +1740,28 @@
       var avatarSrc = pendingAvatarData;
       if (!avatarSrc) {
         var currentAvatarImg = document.getElementById('m-avatar-preview');
-        avatarSrc = currentAvatarImg ? currentAvatarImg.src : 'Diluc.svg';
+        avatarSrc = currentAvatarImg ? currentAvatarImg.src : 'profile_icon.svg';
       }
       if (avatarSrc) {
         pendingFaviconData = avatarSrc;
         setModalFaviconPreview(pendingFaviconData);
       }
+    });
+  }
+
+  var modalAvatarResetBtn = document.getElementById('m-avatar-reset-btn');
+  if (modalAvatarResetBtn) {
+    modalAvatarResetBtn.addEventListener('click', function () {
+      pendingAvatarData = 'profile_icon.svg';
+      setModalAvatarPreview(pendingAvatarData);
+    });
+  }
+
+  var modalFaviconResetBtn = document.getElementById('m-favicon-reset-btn');
+  if (modalFaviconResetBtn) {
+    modalFaviconResetBtn.addEventListener('click', function () {
+      pendingFaviconData = 'favicon.png';
+      setModalFaviconPreview(pendingFaviconData);
     });
   }
 
@@ -1753,7 +1828,7 @@
       });
 
       /* Resolve avatar: use newly picked file data, or keep existing saved one */
-      var existingAvatarUrl = (typeof CONFIG !== 'undefined' && CONFIG.avatar_url) ? CONFIG.avatar_url : 'Diluc.svg';
+      var existingAvatarUrl = (typeof CONFIG !== 'undefined' && CONFIG.avatar_url) ? CONFIG.avatar_url : 'profile_icon.svg';
       var resolvedAvatar = (pendingAvatarData !== null) ? pendingAvatarData : existingAvatarUrl;
 
       /* Resolve favicon: newly picked file, or existing saved one */
@@ -1766,7 +1841,7 @@
         telegram: (document.getElementById('m-cust-telegram') || {}).value.trim(),
         email: (document.getElementById('m-cust-email') || {}).value.trim(),
         social_links: socialLinks,
-        logo: 'Diluc.svg',
+        logo: 'profile_icon.svg',
         avatar_url: resolvedAvatar,
         favicon_url: resolvedFavicon,
         site_name: (document.getElementById('m-cust-sitename') || {}).value.trim(),
@@ -1786,6 +1861,8 @@
         cf_analytics: (typeof CONFIG !== 'undefined' && CONFIG.cf_analytics) ? CONFIG.cf_analytics : false,
         web3forms_access_key: (typeof CONFIG !== 'undefined' && CONFIG.web3forms_access_key) ? CONFIG.web3forms_access_key : 'd36ee933-00cb-453e-aa38-b18ee60ce5d1',
         hcaptcha_sitekey: (typeof CONFIG !== 'undefined' && CONFIG.hcaptcha_sitekey) ? CONFIG.hcaptcha_sitekey : '50b2fe65-b00b-4b9e-ad62-3ba471098be2',
+        cloudinary_cloud_name: (typeof CONFIG !== 'undefined' && CONFIG.cloudinary_cloud_name) ? CONFIG.cloudinary_cloud_name : '',
+        cloudinary_upload_preset: (typeof CONFIG !== 'undefined' && CONFIG.cloudinary_upload_preset) ? CONFIG.cloudinary_upload_preset : '',
         clerk_publishable_key: (typeof CONFIG !== 'undefined' && CONFIG.clerk_publishable_key) ? CONFIG.clerk_publishable_key : 'pk_test_c2hpbmluZy10dXJrZXktMTMyNS5jbGVyay5hY2NvdW50cy5kZXYk',
         clerk_frontend_api: 'https://shining-turkey-1325.clerk.accounts.dev'
       };
@@ -1824,7 +1901,7 @@
       }
 
       /* Live apply avatar to page */
-      setPageAvatar(updated.avatar_url || 'Diluc.svg');
+      setPageAvatar(updated.avatar_url || 'profile_icon.svg');
 
       var saveStatus = document.getElementById('m-save-status');
       if (saveStatus) {

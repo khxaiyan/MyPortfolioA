@@ -9,8 +9,8 @@ const helloWorld = inngest.createFunction(
   {
     id: "hello-world",
     name: "Portfolio: Hello World Handshake",
+    triggers: [{ event: EVENTS.HELLO_WORLD }],
   },
-  { event: EVENTS.HELLO_WORLD },
   async ({ event, step }) => {
     // 1. Log receipt
     await step.run("log-trigger", async () => {
