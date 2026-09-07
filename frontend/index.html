@@ -28,7 +28,7 @@
   <link
     href="https://fonts.googleapis.com/css2?family=Cinzel:wght@500;600;700&family=Fira+Code:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500;600&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600;700&family=Montserrat:wght@400;500;600;700&family=Outfit:wght@400;500;600;700&family=Playfair+Display:ital,wght@0,500;0,600;0,700;1,400&family=Plus+Jakarta+Sans:wght@400;500;600;700&family=Poppins:wght@400;500;600;700&family=Sora:wght@400;500;600;700&family=Space+Grotesk:wght@400;500;600;700&family=Syne:wght@500;600;700;800&display=swap"
     rel="stylesheet">
-  <link rel="stylesheet" href="style.css?v=2">
+  <link rel="stylesheet" href="style.css?v=31">
   <script src="https://code.iconify.design/iconify-icon/2.1.0/iconify-icon.min.js"></script>
   <script src="config.js?v=27"></script>
   <script>
@@ -144,6 +144,21 @@
 
 <body>
   <div id="scroll-progress" class="scroll-progress-bar" aria-hidden="true"></div>
+
+  <!-- ── Prominent Floating Theme Toggle Button ── -->
+  <button id="theme-toggle" class="floating-theme-toggle" aria-label="Toggle Light and Dark Mode" title="Toggle theme">
+    <span class="theme-badge" style="position:relative; width:20px; height:20px; display:inline-flex; align-items:center; justify-content:center; overflow:hidden; border:none; background:transparent;">
+      <!-- Sun icon: visible in dark mode -->
+      <svg class="badge-sun" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <circle cx="12" cy="12" r="4" />
+        <path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M6.34 17.66l-1.41 1.41M19.07 4.93l-1.41 1.41" />
+      </svg>
+      <!-- Moon icon: visible in light mode -->
+      <svg class="badge-moon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z" />
+      </svg>
+    </span>
+  </button>
 
   <main class="sheet">
 
@@ -671,7 +686,7 @@
       data-clerk-after-sign-out-url="/"
       src="https://shining-turkey-1325.clerk.accounts.dev/npm/@clerk/clerk-js@latest/dist/clerk.browser.js"
       type="text/javascript"></script>
-    <script src="app.js?v=26"></script>
+    <script src="app.js?v=31"></script>
     <script src="https://js.hcaptcha.com/1/api.js?onload=initHcaptcha&render=explicit" async defer></script>
 </body>
 

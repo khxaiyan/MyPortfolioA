@@ -239,6 +239,15 @@
     });
   }
 
+  var themeToggleBtn = document.getElementById('theme-toggle');
+  if (themeToggleBtn) {
+    themeToggleBtn.addEventListener('click', function () {
+      var nextTheme = root.getAttribute('data-theme') === 'dark' ? 'light' : 'dark';
+      applyTheme(nextTheme);
+      syncThemeIfAdmin(nextTheme);
+    });
+  }
+
   /* ─── Load Local Customizer Overrides if present ─── */
   try {
     var savedCustom = localStorage.getItem('portfolio_custom_config');
