@@ -1867,20 +1867,25 @@
       var existingFaviconUrl = (typeof CONFIG !== 'undefined' && CONFIG.favicon_url && CONFIG.favicon_url !== 'profile_icon.svg') ? CONFIG.favicon_url : 'https://res.cloudinary.com/dqxccz5bn/image/upload/favicon_jzygcw.png';
       var resolvedFavicon = (pendingFaviconData !== null) ? (pendingFaviconData || 'https://res.cloudinary.com/dqxccz5bn/image/upload/favicon_jzygcw.png') : existingFaviconUrl;
 
+      var ghEl = document.getElementById('m-cust-github');
+      var xEl = document.getElementById('m-cust-x');
+      var tgEl = document.getElementById('m-cust-telegram');
+      var emailEl = document.getElementById('m-cust-email');
+
       var updated = {
-        github: (document.getElementById('m-cust-github') || {}).value.trim(),
-        x: (document.getElementById('m-cust-x') || {}).value.trim(),
-        telegram: (document.getElementById('m-cust-telegram') || {}).value.trim(),
-        email: (document.getElementById('m-cust-email') || {}).value.trim(),
-        social_links: socialLinks,
+        github: (ghEl && ghEl.value !== undefined) ? ghEl.value.trim() : ((typeof CONFIG !== 'undefined' && CONFIG.github) ? CONFIG.github : 'khxaiyan'),
+        x: (xEl && xEl.value !== undefined) ? xEl.value.trim() : ((typeof CONFIG !== 'undefined' && CONFIG.x) ? CONFIG.x : 'khxaiyan'),
+        telegram: (tgEl && tgEl.value !== undefined) ? tgEl.value.trim() : ((typeof CONFIG !== 'undefined' && CONFIG.telegram) ? CONFIG.telegram : 'khxaiyan'),
+        email: (emailEl && emailEl.value !== undefined) ? emailEl.value.trim() : ((typeof CONFIG !== 'undefined' && CONFIG.email) ? CONFIG.email : 'ayankhan84510@gmail.com'),
+        social_links: (socialLinks.length > 0 || document.getElementById('m-social-links-list')) ? socialLinks : ((typeof CONFIG !== 'undefined' && Array.isArray(CONFIG.social_links)) ? CONFIG.social_links : []),
         logo: resolvedAvatar || 'https://res.cloudinary.com/dqxccz5bn/image/upload/profile_icon_wf7thb.svg',
         avatar_url: resolvedAvatar,
         favicon_url: resolvedFavicon,
-        site_name: (document.getElementById('m-cust-sitename') || {}).value.trim(),
-        accent_letter: (document.getElementById('m-cust-accent') || {}).value.trim() || 'x',
-        site_desc: (document.getElementById('m-cust-bio') || {}).value.trim(),
-        seo_desc: (document.getElementById('m-cust-bio') || {}).value.trim(),
-        intro: (document.getElementById('m-cust-intro') || {}).value.trim(),
+        site_name: ((document.getElementById('m-cust-sitename') || {}).value || '').trim(),
+        accent_letter: ((document.getElementById('m-cust-accent') || {}).value || '').trim() || 'x',
+        site_desc: ((document.getElementById('m-cust-bio') || {}).value || '').trim(),
+        seo_desc: ((document.getElementById('m-cust-bio') || {}).value || '').trim(),
+        intro: ((document.getElementById('m-cust-intro') || {}).value || '').trim(),
         projects: projectsList,
         project_links: projectLinks,
         default_theme: currentThemeMode,
