@@ -22,18 +22,18 @@ const CONFIG = {
   "projects": [
     {
       "title": "CarryOn E-Commerce",
-      "name": "CarryOn-E-Commerce-Website",
+      "name": "CarryOn-E-Commerce",
       "url": "https://carryon-five.vercel.app/",
-      "github_url": "https://github.com/khxaiyan/CarryOn-E-Commerce-Website",
+      "github_url": "",
       "description": "E-Commerce Website fully customizable by Seller",
       "tag": "Project",
       "stars": 1
     },
     {
       "title": "GetWeb Screenshot",
-      "name": "GetWeb_Screenshot",
+      "name": "GetWeb-Screenshot",
       "url": "https://getweb-screenshot.vercel.app",
-      "github_url": "https://github.com/khxaiyan/GetWeb_Screenshot",
+      "github_url": "",
       "description": "Capture full-page screenshots of any website instantly – supports Desktop, Tablet & Mobile viewports, PNG/JPG/PDF export. Built with React, Vite & Microlink API. ( mini project )",
       "tag": "CSS",
       "stars": 1
@@ -42,7 +42,7 @@ const CONFIG = {
       "title": "MyPortfolio",
       "name": "MyPortfolio",
       "url": "https://khxaiyan.vercel.app",
-      "github_url": "https://github.com/khxaiyan/MyPortfolioA",
+      "github_url": "",
       "description": "Personal developer portfolio website",
       "tag": "HTML",
       "stars": 1
@@ -65,7 +65,7 @@ const CONFIG = {
   "cf_analytics": false,
   "web3forms_access_key": "d36ee933-00cb-453e-aa38-b18ee60ce5d1",
   "hcaptcha_sitekey": "50b2fe65-b00b-4b9e-ad62-3ba471098be2",
-  "cloudinary_cloud_name": "dqxccz5bnn",
+  "cloudinary_cloud_name": "dqxccz5bn",
   "cloudinary_upload_preset": "myportfolioa",
   "clerk_publishable_key": "pk_test_c2hpbmluZy10dXJrZXktMTMyNS5jbGVyay5hY2NvdW50cy5kZXYk",
   "clerk_frontend_api": "https://shining-turkey-1325.clerk.accounts.dev"
