@@ -13,13 +13,13 @@
   <meta property="og:title" content="khxaiyan">
   <meta property="og:description"
     content="khxaiyan | Developer in active building mode. Crafting clean web tools & interfaces.">
-  <meta property="og:image" content="https://khxaiyan.vercel.app/Diluc.svg">
+  <meta property="og:image" content="https://khxaiyan.vercel.app/profile_icon.svg">
   <meta name="twitter:card" content="summary">
   <meta name="twitter:site" content="@khxaiyan">
   <meta name="twitter:title" content="khxaiyan">
   <meta name="twitter:description"
     content="khxaiyan | Developer in active building mode. Crafting clean web tools & interfaces.">
-  <meta name="twitter:image" content="https://khxaiyan.vercel.app/Diluc.svg">
+  <meta name="twitter:image" content="https://khxaiyan.vercel.app/profile_icon.svg">
   <link rel="icon" href="favicon.png" type="image/png">
   <link rel="shortcut icon" href="favicon.ico" type="image/x-icon">
   <link rel="apple-touch-icon" href="favicon.png">
@@ -42,9 +42,9 @@
           customCfg.favicon_url = 'favicon.png';
           needsUpdate = true;
         }
-        if (customCfg.avatar_url === 'avatar.svg' || customCfg.logo === 'avatar.svg') {
-          customCfg.avatar_url = 'Diluc.svg';
-          customCfg.logo = 'Diluc.svg';
+        if (customCfg.avatar_url === 'avatar.svg' || customCfg.avatar_url === 'Diluc.svg' || customCfg.logo === 'avatar.svg' || customCfg.logo === 'Diluc.svg') {
+          customCfg.avatar_url = 'profile_icon.svg';
+          customCfg.logo = 'profile_icon.svg';
           needsUpdate = true;
         }
         if (customCfg.accent_color === '#00f0ff' || customCfg.accent_color === '#a855f7') {
@@ -134,7 +134,7 @@
       <div class="content-col id-col">
         <div class="id-block">
           <button class="avatar-wrap" id="avatar-wrap" aria-label="Toggle theme">
-            <img class="avatar-img" src="Diluc.svg" alt="khxaiyan" width="88" height="88" loading="eager" draggable="false">
+            <img class="avatar-img" src="profile_icon.svg" alt="khxaiyan" width="88" height="88" loading="eager" draggable="false">
             <span class="theme-badge" id="theme-badge" aria-hidden="true">
               <!-- Sun icon: visible in dark mode -->
               <svg class="badge-sun" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor"
@@ -354,7 +354,7 @@
         <!-- Instagram-style profile picture upload -->
         <div style="display:flex; flex-direction:column; align-items:center; gap:10px; padding:18px 0 14px; border-bottom:1px solid var(--line); margin-bottom:16px;">
           <div style="position:relative; width:88px; height:88px; cursor:pointer;" id="m-avatar-upload-wrap" title="Change profile picture">
-            <img id="m-avatar-preview" src="Diluc.svg" alt="Profile picture" draggable="false"
+            <img id="m-avatar-preview" src="profile_icon.svg" alt="Profile picture" draggable="false"
               style="width:88px; height:88px; border-radius:50%; object-fit:cover; border:2.5px solid var(--line); display:block; transition:filter 0.2s; pointer-events:none; -webkit-user-drag:none; user-select:none;">
             <!-- Camera overlay -->
             <div id="m-avatar-overlay"
@@ -371,7 +371,15 @@
           </div>
           <div style="text-align:center;">
             <p style="font-size:0.78rem; font-weight:600; color:var(--ink); margin:0 0 2px;">Profile Picture</p>
-            <p style="font-size:0.68rem; color:var(--ink-faint); margin:0 0 8px;">Click the avatar to upload from your device</p>
+            <p style="font-size:0.68rem; color:var(--ink-faint); margin:0 0 6px;">Click the avatar to upload from your device</p>
+            <div style="display:flex; align-items:center; justify-content:center; gap:6px; margin-bottom:8px;">
+              <button type="button" id="m-avatar-reset-btn"
+                style="font-size:0.67rem; padding:3px 10px; border-radius:14px; display:inline-flex; align-items:center; gap:4px; background:var(--bg); border:1px solid var(--line); color:var(--ink-dim); cursor:pointer; font-family:var(--font-mono); transition:all 0.16s ease;"
+                title="Reset profile picture to default (profile_icon.svg)">
+                <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 12a9 9 0 1 0 9-9 9.75 9.75 0 0 0-6.74 2.74L3 8"/><path d="M3 3v5h5"/></svg>
+                Reset to Default
+              </button>
+            </div>
             <!-- Stylish format & size pills -->
             <div style="display:flex; align-items:center; justify-content:center; gap:6px; flex-wrap:wrap;">
               <span style="display:inline-flex; align-items:center; gap:4px; font-size:0.65rem; font-family:var(--font-mono); color:var(--ink-dim); background:var(--bg); border:1px solid var(--line); padding:2px 7px; border-radius:12px;">
@@ -428,6 +436,12 @@
                   title="Use current profile avatar as favicon">
                   <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
                   Sync from Avatar
+                </button>
+                <button type="button" id="m-favicon-reset-btn"
+                  style="font-size:0.67rem; padding:3px 9px; border-radius:14px; display:inline-flex; align-items:center; gap:4px; background:var(--bg); border:1px solid var(--line); color:var(--ink-dim); cursor:pointer; font-family:var(--font-mono); transition:all 0.16s ease;"
+                  title="Reset favicon to default (favicon.png)">
+                  <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 12a9 9 0 1 0 9-9 9.75 9.75 0 0 0-6.74 2.74L3 8"/><path d="M3 3v5h5"/></svg>
+                  Reset to Default
                 </button>
               </div>
             </div>

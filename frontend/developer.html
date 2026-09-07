@@ -27,9 +27,9 @@
           customCfg.favicon_url = 'favicon.png';
           needsUpdate = true;
         }
-        if (customCfg.avatar_url === 'avatar.svg' || customCfg.logo === 'avatar.svg') {
-          customCfg.avatar_url = 'Diluc.svg';
-          customCfg.logo = 'Diluc.svg';
+        if (customCfg.avatar_url === 'avatar.svg' || customCfg.avatar_url === 'Diluc.svg' || customCfg.logo === 'avatar.svg' || customCfg.logo === 'Diluc.svg') {
+          customCfg.avatar_url = 'profile_icon.svg';
+          customCfg.logo = 'profile_icon.svg';
           needsUpdate = true;
         }
         if (customCfg.accent_color === '#00f0ff' || customCfg.accent_color === '#a855f7') {
@@ -524,7 +524,7 @@
           <div
             style="position:relative; width:84px; height:84px; border-radius:50%; overflow:hidden; border:2.5px solid var(--line); flex-shrink:0; cursor:pointer;"
             id="cust-avatar-upload-wrap" title="Click to upload profile photo">
-            <img id="cust-avatar-preview" src="Diluc.svg" alt="Profile avatar" draggable="false"
+            <img id="cust-avatar-preview" src="profile_icon.svg" alt="Profile avatar" draggable="false"
               style="width:100%; height:100%; object-fit:cover; display:block; pointer-events:none; -webkit-user-drag:none; user-select:none;">
             <div id="cust-avatar-overlay"
               style="position:absolute; inset:0; background:rgba(0,0,0,0.55); display:flex; flex-direction:column; align-items:center; justify-content:center; opacity:0; transition:opacity 0.2s; gap:2px; pointer-events:none;">
@@ -542,8 +542,15 @@
           </div>
           <div>
             <p style="font-size:0.88rem; font-weight:600; color:var(--ink); margin:0 0 3px 0;">Profile Avatar</p>
-            <p style="font-size:0.73rem; color:var(--ink-faint); margin:0 0 10px 0;">Click the avatar to upload from
-              your device</p>
+            <p style="font-size:0.73rem; color:var(--ink-faint); margin:0 0 8px 0;">Click the avatar to upload from your device</p>
+            <div style="display:flex; align-items:center; justify-content:center; gap:8px; margin-bottom:10px;">
+              <button type="button" id="cust-avatar-reset-btn" class="toolbar-btn"
+                style="border-radius:20px; padding:4px 14px; font-size:0.72rem; display:inline-flex; align-items:center; gap:5px;"
+                title="Reset profile picture to default (profile_icon.svg)">
+                <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 12a9 9 0 1 0 9-9 9.75 9.75 0 0 0-6.74 2.74L3 8"/><path d="M3 3v5h5"/></svg>
+                Reset to Default
+              </button>
+            </div>
             <!-- Stylish format & size pills -->
             <div style="display:flex; align-items:center; justify-content:center; gap:6px; flex-wrap:wrap;">
               <span
@@ -576,6 +583,7 @@
                 Max 2 MB
               </span>
             </div>
+            <div id="cust-avatar-status" style="display:none; margin-top:8px; font-size:0.72rem; font-family:var(--font-mono);"></div>
           </div>
         </div>
       </div>
@@ -628,6 +636,12 @@
                   <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
                   Sync from Avatar
                 </button>
+                <button type="button" id="cust-favicon-reset-btn" class="toolbar-btn"
+                  style="border-radius:20px; padding:4px 14px; font-size:0.72rem; display:inline-flex; align-items:center; gap:5px;"
+                  title="Reset favicon to default (favicon.png)">
+                  <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 12a9 9 0 1 0 9-9 9.75 9.75 0 0 0-6.74 2.74L3 8"/><path d="M3 3v5h5"/></svg>
+                  Reset to Default
+                </button>
               </div>
             </div>
           </div>
@@ -647,7 +661,7 @@
               Max 1 MB
             </span>
           </div>
-
+          <div id="cust-favicon-status" style="display:none; margin-top:8px; font-size:0.72rem; font-family:var(--font-mono);"></div>
 
         </div>
       </div>
@@ -996,6 +1010,38 @@
                 placeholder="50b2fe65-b00b-4b9e-ad62-3ba471098be2">
             </div>
           </div>
+        </div>
+      </div>
+
+      <!-- 5.1 // media cloud storage (cloudinary) -->
+      <div class="cust-section">
+        <p class="eyebrow">// media cloud storage (cloudinary)</p>
+        <div class="surface-card cust-card" style="padding:18px 20px;">
+          <div style="display:flex; align-items:center; justify-content:space-between; margin-bottom:12px; flex-wrap:wrap; gap:8px;">
+            <div style="display:flex; align-items:center; gap:8px;">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="color:var(--accent);"><path d="M17.5 19H9a7 7 0 1 1 6.71-9h1.79a4.5 4.5 0 1 1 0 9Z"/></svg>
+              <span style="font-size:0.88rem; font-weight:600; color:var(--ink);">Cloudinary Direct Upload</span>
+            </div>
+            <span id="cust-cloudinary-badge" style="font-size:0.68rem; font-family:var(--font-mono); padding:3px 9px; border-radius:10px; background:var(--bg); border:1px solid var(--line); color:var(--ink-faint);">
+              Not Configured (Local Base64 Fallback)
+            </span>
+          </div>
+          <p style="font-size:0.73rem; color:var(--ink-faint); margin:0 0 14px 0; line-height:1.45;">
+            Upload avatar and favicon directly to your free Cloudinary account for lightning-fast global CDN delivery and automatic optimization.
+          </p>
+          <div class="field-grid-2">
+            <div class="field-group">
+              <label class="field-label" for="cust-cloudinary-cloud">Cloud Name</label>
+              <input type="text" class="field-input" id="cust-cloudinary-cloud" placeholder="e.g. your_cloud_name">
+            </div>
+            <div class="field-group">
+              <label class="field-label" for="cust-cloudinary-preset">Upload Preset (Unsigned)</label>
+              <input type="text" class="field-input" id="cust-cloudinary-preset" placeholder="e.g. portfolio_preset or ml_default">
+            </div>
+          </div>
+          <p style="font-size:0.68rem; color:var(--ink-dim); margin:10px 0 0 0; font-family:var(--font-mono);">
+            💡 Cloudinary Console: Settings ➔ Upload ➔ Upload presets ➔ Add preset with Signing Mode set to <strong>Unsigned</strong>.
+          </p>
         </div>
       </div>
 
@@ -1396,12 +1442,12 @@
           }
         } else {
           if (thumb && thumb.tagName.toLowerCase() === 'img') {
-            thumb.src = url || 'Diluc.svg';
+            thumb.src = url || 'profile_icon.svg';
             thumb.setAttribute('draggable', 'false');
           } else {
             var img = document.createElement('img');
             img.id = 'cust-avatar-preview';
-            img.src = url || 'Diluc.svg';
+            img.src = url || 'profile_icon.svg';
             img.alt = 'Profile avatar';
             img.setAttribute('draggable', 'false');
             img.style.cssText = 'width:100%; height:100%; object-fit:cover; display:block; pointer-events:none; -webkit-user-drag:none; user-select:none;';
@@ -1473,13 +1519,103 @@
         reader.readAsDataURL(file);
       }
 
+      /* ── Cloudinary Direct Upload Integration ── */
+      function getCloudinaryCredentials() {
+        var cInput = document.getElementById('cust-cloudinary-cloud');
+        var pInput = document.getElementById('cust-cloudinary-preset');
+        var cloud = (cInput && cInput.value.trim()) || (typeof CONFIG !== 'undefined' && CONFIG.cloudinary_cloud_name) || '';
+        var preset = (pInput && pInput.value.trim()) || (typeof CONFIG !== 'undefined' && CONFIG.cloudinary_upload_preset) || '';
+        return { cloudName: cloud, preset: preset };
+      }
+
+      function updateCloudinaryStatusUI() {
+        var badge = document.getElementById('cust-cloudinary-badge');
+        if (!badge) return;
+        var creds = getCloudinaryCredentials();
+        if (creds.cloudName && creds.preset) {
+          badge.textContent = '✓ Cloudinary Active (' + creds.cloudName + ')';
+          badge.style.color = '#10b981';
+          badge.style.borderColor = 'rgba(16, 185, 129, 0.35)';
+          badge.style.background = 'rgba(16, 185, 129, 0.08)';
+        } else {
+          badge.textContent = 'Not Configured (Local Base64 Fallback)';
+          badge.style.color = 'var(--ink-faint)';
+          badge.style.borderColor = 'var(--line)';
+          badge.style.background = 'var(--bg)';
+        }
+      }
+
+      async function uploadToCloudinary(file, folder) {
+        var creds = getCloudinaryCredentials();
+        if (!creds.cloudName || !creds.preset) return null;
+
+        var formData = new FormData();
+        formData.append('file', file);
+        formData.append('upload_preset', creds.preset);
+        if (folder) formData.append('folder', folder);
+
+        var endpoint = 'https://api.cloudinary.com/v1_1/' + encodeURIComponent(creds.cloudName) + '/auto/upload';
+        var res = await fetch(endpoint, {
+          method: 'POST',
+          body: formData
+        });
+
+        if (!res.ok) {
+          var errData = {};
+          try { errData = await res.json(); } catch (_) {}
+          var msg = (errData && errData.error && errData.error.message) ? errData.error.message : ('HTTP ' + res.status);
+          throw new Error(msg);
+        }
+
+        var data = await res.json();
+        return data.secure_url;
+      }
+
+      var cloudInpEl = document.getElementById('cust-cloudinary-cloud');
+      var presetInpEl = document.getElementById('cust-cloudinary-preset');
+      if (cloudInpEl) cloudInpEl.addEventListener('input', updateCloudinaryStatusUI);
+      if (presetInpEl) presetInpEl.addEventListener('input', updateCloudinaryStatusUI);
+
       if (avatarFileInput) {
-        avatarFileInput.addEventListener('change', function () {
+        avatarFileInput.addEventListener('change', async function () {
           var file = avatarFileInput.files && avatarFileInput.files[0];
           if (!file) return;
+          var statusEl = document.getElementById('cust-avatar-status');
+          var creds = getCloudinaryCredentials();
+
+          if (creds.cloudName && creds.preset) {
+            if (statusEl) {
+              statusEl.style.display = 'block';
+              statusEl.style.color = 'var(--accent)';
+              statusEl.textContent = '☁️ Uploading to Cloudinary CDN...';
+            }
+            try {
+              var secureUrl = await uploadToCloudinary(file, 'MyPortfolioA');
+              pendingAvatarData = secureUrl;
+              setCustPreviewAvatar(pendingAvatarData);
+              if (statusEl) {
+                statusEl.style.color = '#10b981';
+                statusEl.textContent = '✓ Uploaded to Cloudinary CDN!';
+              }
+              avatarFileInput.value = '';
+              return;
+            } catch (err) {
+              console.warn('[Cloudinary] Upload failed, falling back to local storage:', err);
+              if (statusEl) {
+                statusEl.style.color = '#f59e0b';
+                statusEl.textContent = '⚠️ Cloudinary error (' + err.message + ') - Saved locally';
+              }
+            }
+          }
+
           processAvatarFile(file, function (dataUrl) {
             pendingAvatarData = dataUrl;
             setCustPreviewAvatar(pendingAvatarData);
+            if (statusEl && !creds.cloudName) {
+              statusEl.style.display = 'block';
+              statusEl.style.color = 'var(--ink-faint)';
+              statusEl.textContent = '✓ Saved locally';
+            }
           });
           avatarFileInput.value = '';
         });
@@ -1587,12 +1723,45 @@
       }
 
       if (faviconFileInput) {
-        faviconFileInput.addEventListener('change', function () {
+        faviconFileInput.addEventListener('change', async function () {
           var file = faviconFileInput.files && faviconFileInput.files[0];
           if (!file) return;
+          var statusEl = document.getElementById('cust-favicon-status');
+          var creds = getCloudinaryCredentials();
+
+          if (creds.cloudName && creds.preset) {
+            if (statusEl) {
+              statusEl.style.display = 'block';
+              statusEl.style.color = 'var(--accent)';
+              statusEl.textContent = '☁️ Uploading favicon to Cloudinary...';
+            }
+            try {
+              var secureUrl = await uploadToCloudinary(file, 'MyPortfolioA/favicons');
+              pendingFaviconData = secureUrl;
+              setCustPreviewFavicon(pendingFaviconData);
+              if (statusEl) {
+                statusEl.style.color = '#10b981';
+                statusEl.textContent = '✓ Favicon uploaded to Cloudinary CDN!';
+              }
+              faviconFileInput.value = '';
+              return;
+            } catch (err) {
+              console.warn('[Cloudinary] Favicon upload failed, falling back to local storage:', err);
+              if (statusEl) {
+                statusEl.style.color = '#f59e0b';
+                statusEl.textContent = '⚠️ Cloudinary error (' + err.message + ') - Saved locally';
+              }
+            }
+          }
+
           processFaviconFile(file, function (dataUrl) {
             pendingFaviconData = dataUrl;
             setCustPreviewFavicon(pendingFaviconData);
+            if (statusEl && !creds.cloudName) {
+              statusEl.style.display = 'block';
+              statusEl.style.color = 'var(--ink-faint)';
+              statusEl.textContent = '✓ Saved locally';
+            }
           });
           faviconFileInput.value = '';
         });
@@ -1603,11 +1772,39 @@
           var avatarSrc = pendingAvatarData;
           if (!avatarSrc) {
             var currentAvatarImg = document.getElementById('cust-avatar-preview');
-            avatarSrc = currentAvatarImg ? currentAvatarImg.src : 'Diluc.svg';
+            avatarSrc = currentAvatarImg ? currentAvatarImg.src : 'profile_icon.svg';
           }
           if (avatarSrc) {
             pendingFaviconData = avatarSrc;
             setCustPreviewFavicon(pendingFaviconData);
+          }
+        });
+      }
+
+      var avatarResetBtn = document.getElementById('cust-avatar-reset-btn');
+      if (avatarResetBtn) {
+        avatarResetBtn.addEventListener('click', function () {
+          pendingAvatarData = 'profile_icon.svg';
+          setCustPreviewAvatar(pendingAvatarData);
+          var statusEl = document.getElementById('cust-avatar-status');
+          if (statusEl) {
+            statusEl.style.display = 'block';
+            statusEl.style.color = '#38bdf8';
+            statusEl.textContent = '↺ Reset to profile_icon.svg (Click Save & Apply to persist)';
+          }
+        });
+      }
+
+      var faviconResetBtn = document.getElementById('cust-favicon-reset-btn');
+      if (faviconResetBtn) {
+        faviconResetBtn.addEventListener('click', function () {
+          pendingFaviconData = 'favicon.png';
+          setCustPreviewFavicon(pendingFaviconData);
+          var statusEl = document.getElementById('cust-favicon-status');
+          if (statusEl) {
+            statusEl.style.display = 'block';
+            statusEl.style.color = '#38bdf8';
+            statusEl.textContent = '↺ Reset to favicon.png (Click Save & Apply to persist)';
           }
         });
       }
@@ -2256,6 +2453,11 @@
         document.getElementById('cust-email').value = cfg.email || '';
         document.getElementById('cust-web3forms').value = cfg.web3forms_access_key || '';
         document.getElementById('cust-hcaptcha').value = cfg.hcaptcha_sitekey || '50b2fe65-b00b-4b9e-ad62-3ba471098be2';
+        var cloudInp = document.getElementById('cust-cloudinary-cloud');
+        if (cloudInp) cloudInp.value = cfg.cloudinary_cloud_name || '';
+        var presetInp = document.getElementById('cust-cloudinary-preset');
+        if (presetInp) presetInp.value = cfg.cloudinary_upload_preset || '';
+        updateCloudinaryStatusUI();
 
         /* Render projects in visual manager */
         var activeProjs = [];
@@ -2277,7 +2479,7 @@
 
         /* Restore saved avatar */
         pendingAvatarData = null;
-        setCustPreviewAvatar((cfg.avatar_url && cfg.avatar_url.trim()) ? cfg.avatar_url.trim() : 'Diluc.svg');
+        setCustPreviewAvatar((cfg.avatar_url && cfg.avatar_url.trim()) ? cfg.avatar_url.trim() : 'profile_icon.svg');
 
         /* Restore saved favicon */
         pendingFaviconData = null;
@@ -2374,7 +2576,7 @@
         } catch (_) { }
 
         /* Resolve avatar: newly chosen base64, or existing saved, or CONFIG */
-        var existingAvatarUrl = existingCustom.avatar_url || ((typeof CONFIG !== 'undefined' && CONFIG.avatar_url) ? CONFIG.avatar_url : 'Diluc.svg');
+        var existingAvatarUrl = existingCustom.avatar_url || ((typeof CONFIG !== 'undefined' && CONFIG.avatar_url) ? CONFIG.avatar_url : 'profile_icon.svg');
         var resolvedAvatar = (pendingAvatarData !== null) ? pendingAvatarData : existingAvatarUrl;
 
         /* Resolve favicon: newly chosen base64, or existing saved, or CONFIG */
@@ -2387,7 +2589,7 @@
           telegram: document.getElementById('cust-telegram').value.trim(),
           email: document.getElementById('cust-email').value.trim(),
           social_links: socialLinks,
-          logo: 'Diluc.svg',
+          logo: 'profile_icon.svg',
           avatar_url: resolvedAvatar,
           favicon_url: resolvedFavicon,
           site_name: document.getElementById('cust-sitename').value.trim(),
@@ -2407,6 +2609,8 @@
           cf_analytics: (typeof CONFIG !== 'undefined' && CONFIG.cf_analytics) ? CONFIG.cf_analytics : false,
           web3forms_access_key: document.getElementById('cust-web3forms').value.trim() || 'd36ee933-00cb-453e-aa38-b18ee60ce5d1',
           hcaptcha_sitekey: document.getElementById('cust-hcaptcha').value.trim() || '50b2fe65-b00b-4b9e-ad62-3ba471098be2',
+          cloudinary_cloud_name: (document.getElementById('cust-cloudinary-cloud') || {}).value.trim(),
+          cloudinary_upload_preset: (document.getElementById('cust-cloudinary-preset') || {}).value.trim(),
           clerk_publishable_key: (typeof CONFIG !== 'undefined' && CONFIG.clerk_publishable_key) ? CONFIG.clerk_publishable_key : 'pk_test_c2hpbmluZy10dXJrZXktMTMyNS5jbGVyay5hY2NvdW50cy5kZXYk',
           clerk_frontend_api: 'https://shining-turkey-1325.clerk.accounts.dev'
         };

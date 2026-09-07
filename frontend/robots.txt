@@ -10,7 +10,6 @@ Disallow: /backend/
 Allow: /
 Allow: /favicon.png
 Allow: /favicon.ico
-Allow: /Diluc.svg
-Allow: /Diluc.png
+Allow: /profile_icon.svg
 Allow: /style.css
 Allow: /app.js
