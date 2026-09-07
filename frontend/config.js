@@ -1,6 +1,6 @@
 const CONFIG = {
   "github": "khxaiyan",
-  "x": "khxaiyan",
+  "x": "khxaiyann",
   "telegram": "khxaiyan",
   "email": "[EMAIL_ADDRESS]",
   "social_links": [
