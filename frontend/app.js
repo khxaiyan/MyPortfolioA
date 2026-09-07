@@ -249,15 +249,59 @@
     if (/\{([^}]+)\}/.test(name)) {
       return name.replace(/\{([^}]+)\}/g, '<span class="glyph-5">$1</span>');
     }
-    var target = accent !== undefined && accent !== null ? accent : ((typeof CONFIG !== 'undefined' && CONFIG.accent_letter) ? CONFIG.accent_letter : 'x');
-    if (target && target.trim()) {
-      var letter = target.trim();
-      var escaped = letter.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
-      var regex = new RegExp('(' + escaped + ')', 'i');
-      if (regex.test(name)) {
-        return name.replace(regex, '<span class="glyph-5">$1</span>');
+    var target = (accent !== undefined && accent !== null)
+      ? String(accent).trim()
+      : ((typeof CONFIG !== 'undefined' && CONFIG.accent_letter) ? String(CONFIG.accent_letter).trim() : 'x');
+    if (!target) {
+      return highlightCapitals(name);
+    }
+
+    // Support inverted syntax: e.g. "!x", "^x", "-x", "not x", "except x"
+    var invertMatch = target.match(/^(!|\^|-|not\s+|except\s+)(.+)$/i);
+    if (invertMatch) {
+      var excludedLetters = invertMatch[2].toLowerCase();
+      var outInvert = '';
+      for (var i = 0; i < name.length; i++) {
+        var ch = name[i];
+        if (excludedLetters.indexOf(ch.toLowerCase()) === -1 && /[a-zA-Z0-9]/.test(ch)) {
+          outInvert += '<span class="glyph-5">' + ch + '</span>';
+        } else {
+          outInvert += ch;
+        }
+      }
+      return outInvert;
+    }
+
+    // Exact contiguous match (e.g. single letter "x" or exact substring)
+    var escaped = target.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+    var exactRegex = new RegExp('(' + escaped + ')', 'i');
+    if (exactRegex.test(name)) {
+      return name.replace(exactRegex, '<span class="glyph-5">$1</span>');
+    }
+
+    // Character set matching (e.g. user typed "khaiyan" to color all letters in khaiyan while leaving x white)
+    var cleanTarget = target.replace(/[^a-zA-Z0-9]/g, '').toLowerCase();
+    if (cleanTarget.length > 0) {
+      var targetSet = {};
+      for (var t = 0; t < cleanTarget.length; t++) {
+        targetSet[cleanTarget[t]] = true;
+      }
+      var outSet = '';
+      var hasAnyMatch = false;
+      for (var k = 0; k < name.length; k++) {
+        var c = name[k];
+        if (targetSet[c.toLowerCase()]) {
+          outSet += '<span class="glyph-5">' + c + '</span>';
+          hasAnyMatch = true;
+        } else {
+          outSet += c;
+        }
+      }
+      if (hasAnyMatch) {
+        return outSet;
       }
     }
+
     return highlightCapitals(name);
   }
 

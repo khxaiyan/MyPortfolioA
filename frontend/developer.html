@@ -988,8 +988,8 @@
               <input type="text" class="field-input" id="cust-sitename" placeholder="khxaiyan">
             </div>
             <div class="field-group">
-              <label class="field-label" for="cust-accent">Accent Letter (e.g. x)</label>
-              <input type="text" class="field-input" id="cust-accent" maxlength="8" placeholder="x">
+              <label class="field-label" for="cust-accent">Accent Letter / Target (e.g. x, khaiyan, or !x)</label>
+              <input type="text" class="field-input" id="cust-accent" maxlength="32" placeholder="x (or khaiyan / !x)">
             </div>
           </div>
           <div class="field-group"
@@ -999,6 +999,9 @@
               style="font-family:var(--font-display); font-weight:700; font-size:1.15rem; color:var(--ink); letter-spacing:-0.02em;">kh<span
                 class="glyph-5">x</span>aiyan</span>
           </div>
+          <p style="font-size:0.72rem; color:var(--ink-faint); margin-top:-6px; margin-bottom:12px; line-height:1.4;">
+            💡 <b>Tip:</b> Enter <code>khaiyan</code> or <code>!x</code> to color all letters except <code>x</code>. You can also wrap letters in braces in Site Name like <code>{kh}x{aiyan}</code>.
+          </p>
 
           <div class="field-group" style="margin-top:6px;">
             <label class="field-label" for="cust-bio">Headline Bio</label>
@@ -1411,15 +1414,57 @@
         if (/\{([^}]+)\}/.test(name)) {
           return name.replace(/\{([^}]+)\}/g, '<span class="glyph-5">$1</span>');
         }
-        var target = accent !== undefined && accent !== null ? accent : 'x';
-        if (target && target.trim()) {
-          var letter = target.trim();
-          var escaped = letter.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
-          var regex = new RegExp('(' + escaped + ')', 'i');
-          if (regex.test(name)) {
-            return name.replace(regex, '<span class="glyph-5">$1</span>');
+        var target = (accent !== undefined && accent !== null) ? String(accent).trim() : 'x';
+        if (!target) {
+          return name.replace(/([A-Z])/g, '<span class="glyph-5">$1</span>');
+        }
+
+        // Support inverted syntax: e.g. "!x", "^x", "-x", "not x", "except x"
+        var invertMatch = target.match(/^(!|\^|-|not\s+|except\s+)(.+)$/i);
+        if (invertMatch) {
+          var excludedLetters = invertMatch[2].toLowerCase();
+          var outInvert = '';
+          for (var i = 0; i < name.length; i++) {
+            var ch = name[i];
+            if (excludedLetters.indexOf(ch.toLowerCase()) === -1 && /[a-zA-Z0-9]/.test(ch)) {
+              outInvert += '<span class="glyph-5">' + ch + '</span>';
+            } else {
+              outInvert += ch;
+            }
+          }
+          return outInvert;
+        }
+
+        // Exact contiguous match (e.g. single letter "x")
+        var escaped = target.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+        var exactRegex = new RegExp('(' + escaped + ')', 'i');
+        if (exactRegex.test(name)) {
+          return name.replace(exactRegex, '<span class="glyph-5">$1</span>');
+        }
+
+        // Character set matching (e.g. user typed "khaiyan" to color all letters in khaiyan)
+        var cleanTarget = target.replace(/[^a-zA-Z0-9]/g, '').toLowerCase();
+        if (cleanTarget.length > 0) {
+          var targetSet = {};
+          for (var t = 0; t < cleanTarget.length; t++) {
+            targetSet[cleanTarget[t]] = true;
+          }
+          var outSet = '';
+          var hasAnyMatch = false;
+          for (var k = 0; k < name.length; k++) {
+            var c = name[k];
+            if (targetSet[c.toLowerCase()]) {
+              outSet += '<span class="glyph-5">' + c + '</span>';
+              hasAnyMatch = true;
+            } else {
+              outSet += c;
+            }
+          }
+          if (hasAnyMatch) {
+            return outSet;
           }
         }
+
         return name.replace(/([A-Z])/g, '<span class="glyph-5">$1</span>');
       }
 
