@@ -1126,9 +1126,21 @@
 
       <!-- 0.5 // typography & font -->
       <div class="cust-section">
-        <div style="display:flex; align-items:center; justify-content:space-between; margin-bottom:8px;">
-          <p class="eyebrow" style="margin:0;">// typography & font</p>
-          <div style="display:flex; align-items:center; gap:8px;">
+        <div id="cust-font-toggle" class="accordion-eyebrow-toggle" role="button" tabindex="0" aria-expanded="false"
+          aria-controls="cust-font-card"
+          style="display:inline-flex; align-items:center; gap:7px; cursor:pointer; user-select:none; margin-bottom:8px;">
+          <p class="eyebrow" style="margin:0; cursor:pointer; color:var(--ink-dim); transition:color 0.15s;">// typography &amp; font</p>
+          <svg id="cust-font-chevron" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+            stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"
+            style="color:var(--ink-faint); transition:transform 0.22s cubic-bezier(0.4, 0, 0.2, 1), color 0.15s; transform:rotate(-90deg);">
+            <path d="m6 9 6 6 6-6" />
+          </svg>
+        </div>
+
+        <div id="cust-font-card" class="surface-card cust-card" style="display:none; margin-top:2px;">
+          <!-- Top bar with Reset Font button -->
+          <div style="display:flex; align-items:center; justify-content:space-between; padding-bottom:10px; border-bottom:1px solid var(--line); flex-wrap:wrap; gap:8px;">
+            <span style="font-size:0.73rem; color:var(--ink-faint);">Customize portfolio typeface and typography across headings and body text.</span>
             <button type="button" id="btn-reset-font" class="toolbar-btn"
               style="white-space:nowrap; padding:4px 10px; font-size:0.7rem;"
               title="Reset back to default Space Grotesk">
@@ -1140,9 +1152,6 @@
               <span>Reset Font</span>
             </button>
           </div>
-        </div>
-
-        <div class="surface-card cust-card">
           <!-- Active Font Status Pill & Scope -->
           <div
             style="display:flex; align-items:center; justify-content:space-between; flex-wrap:wrap; gap:8px; padding-bottom:12px; border-bottom:1px solid var(--line);">
@@ -2950,6 +2959,41 @@
           if (e.key === 'Enter' || e.key === ' ') {
             e.preventDefault();
             toggleMsgDropdown();
+          }
+        });
+      }
+
+      /* Typography & Font Accordion Dropdown Handler */
+      var fToggle = document.getElementById('cust-font-toggle');
+      var fCard = document.getElementById('cust-font-card');
+      var fChevron = document.getElementById('cust-font-chevron');
+      if (fToggle && fCard) {
+        function toggleFontDropdown() {
+          var isHidden = (fCard.style.display === 'none' || !fCard.style.display);
+          var eb = fToggle.querySelector('.eyebrow');
+          if (isHidden) {
+            fCard.style.display = 'block';
+            if (fChevron) {
+              fChevron.style.transform = 'rotate(0deg)';
+              fChevron.style.color = 'var(--red)';
+            }
+            fToggle.setAttribute('aria-expanded', 'true');
+            if (eb) eb.style.color = 'var(--ink)';
+          } else {
+            fCard.style.display = 'none';
+            if (fChevron) {
+              fChevron.style.transform = 'rotate(-90deg)';
+              fChevron.style.color = 'var(--ink-faint)';
+            }
+            fToggle.setAttribute('aria-expanded', 'false');
+            if (eb) eb.style.color = 'var(--ink-dim)';
+          }
+        }
+        fToggle.addEventListener('click', toggleFontDropdown);
+        fToggle.addEventListener('keydown', function (e) {
+          if (e.key === 'Enter' || e.key === ' ') {
+            e.preventDefault();
+            toggleFontDropdown();
           }
         });
       }
