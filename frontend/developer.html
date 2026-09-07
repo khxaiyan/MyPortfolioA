@@ -16,7 +16,7 @@
     rel="stylesheet">
   <link rel="stylesheet" href="style.css?v=2">
   <script src="https://code.iconify.design/iconify-icon/2.1.0/iconify-icon.min.js"></script>
-  <script src="config.js?v=25"></script>
+  <script src="config.js?v=27"></script>
   <script>
     (function () {
       var customCfg = null;
@@ -38,7 +38,7 @@
           needsUpdate = true;
         }
         if (needsUpdate) {
-          try { localStorage.setItem('portfolio_custom_config', JSON.stringify(customCfg)); } catch (_) {}
+          try { localStorage.setItem('portfolio_custom_config', JSON.stringify(customCfg)); } catch (_) { }
         }
       }
       var cfg = Object.assign({}, typeof CONFIG !== 'undefined' ? CONFIG : {}, customCfg || {});
@@ -446,12 +446,15 @@
       border-color: var(--border-accent, rgba(255, 42, 95, 0.45));
       box-shadow: 0 0 12px var(--border-accent-glow, rgba(255, 42, 95, 0.12));
     }
+
     .accordion-eyebrow-toggle {
       transition: opacity 0.15s ease;
     }
+
     .accordion-eyebrow-toggle:hover .eyebrow {
       color: var(--ink) !important;
     }
+
     .accordion-eyebrow-toggle:hover svg {
       color: var(--red) !important;
     }
@@ -532,7 +535,9 @@
           <div
             style="position:relative; width:84px; height:84px; border-radius:50%; overflow:hidden; border:2.5px solid var(--line); flex-shrink:0; cursor:pointer;"
             id="cust-avatar-upload-wrap" title="Click to upload profile photo">
-            <img id="cust-avatar-preview" src="https://res.cloudinary.com/dqxccz5bn/image/upload/profile_icon_wf7thb.svg" alt="Profile avatar" draggable="false"
+            <img id="cust-avatar-preview"
+              src="https://res.cloudinary.com/dqxccz5bn/image/upload/profile_icon_wf7thb.svg" alt="Profile avatar"
+              draggable="false"
               style="width:100%; height:100%; object-fit:cover; display:block; pointer-events:none; -webkit-user-drag:none; user-select:none;">
             <div id="cust-avatar-overlay"
               style="position:absolute; inset:0; background:rgba(0,0,0,0.55); display:flex; flex-direction:column; align-items:center; justify-content:center; opacity:0; transition:opacity 0.2s; gap:2px; pointer-events:none;">
@@ -550,12 +555,17 @@
           </div>
           <div>
             <p style="font-size:0.88rem; font-weight:600; color:var(--ink); margin:0 0 3px 0;">Profile Avatar</p>
-            <p style="font-size:0.73rem; color:var(--ink-faint); margin:0 0 8px 0;">Click the avatar to upload from your device</p>
+            <p style="font-size:0.73rem; color:var(--ink-faint); margin:0 0 8px 0;">Click the avatar to upload from your
+              device</p>
             <div style="display:flex; align-items:center; justify-content:center; gap:8px; margin-bottom:10px;">
               <button type="button" id="cust-avatar-reset-btn" class="toolbar-btn"
                 style="border-radius:20px; padding:4px 14px; font-size:0.72rem; display:inline-flex; align-items:center; gap:5px;"
                 title="Reset profile picture to default">
-                <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 12a9 9 0 1 0 9-9 9.75 9.75 0 0 0-6.74 2.74L3 8"/><path d="M3 3v5h5"/></svg>
+                <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                  stroke-linecap="round" stroke-linejoin="round">
+                  <path d="M3 12a9 9 0 1 0 9-9 9.75 9.75 0 0 0-6.74 2.74L3 8" />
+                  <path d="M3 3v5h5" />
+                </svg>
                 Reset to Default
               </button>
             </div>
@@ -591,7 +601,8 @@
                 Max 2 MB
               </span>
             </div>
-            <div id="cust-avatar-status" style="display:none; margin-top:8px; font-size:0.72rem; font-family:var(--font-mono);"></div>
+            <div id="cust-avatar-status"
+              style="display:none; margin-top:8px; font-size:0.72rem; font-family:var(--font-mono);"></div>
           </div>
         </div>
       </div>
@@ -603,10 +614,14 @@
           style="display:flex; flex-direction:column; align-items:center; text-align:center; padding:22px 16px; gap:14px;">
           <!-- Browser Tab Live Preview Mockup -->
           <div style="display:flex; flex-direction:column; align-items:center; gap:6px;">
-            <span style="font-size:0.7rem; color:var(--ink-faint); font-family:var(--font-mono); letter-spacing:0.04em;">// BROWSER TAB PREVIEW</span>
+            <span
+              style="font-size:0.7rem; color:var(--ink-faint); font-family:var(--font-mono); letter-spacing:0.04em;">//
+              BROWSER TAB PREVIEW</span>
             <div class="favicon-tab-preview" id="cust-favicon-tab-preview" title="Live browser tab preview">
               <div class="tab-icon" id="cust-favicon-tab-icon">
-                <img id="cust-favicon-tab-img" src="https://res.cloudinary.com/dqxccz5bn/image/upload/favicon_jzygcw.png" alt="Favicon" style="width:16px; height:16px; border-radius:3px; object-fit:cover; display:block;">
+                <img id="cust-favicon-tab-img"
+                  src="https://res.cloudinary.com/dqxccz5bn/image/upload/favicon_jzygcw.png" alt="Favicon"
+                  style="width:16px; height:16px; border-radius:3px; object-fit:cover; display:block;">
               </div>
               <span class="tab-title" id="cust-favicon-tab-title">khxaiyan</span>
               <span class="tab-close">✕</span>
@@ -617,15 +632,16 @@
             <div
               style="position:relative; width:64px; height:64px; border-radius:14px; overflow:hidden; border:2px solid var(--line); flex-shrink:0; cursor:pointer;"
               id="cust-favicon-upload-wrap" title="Click to upload custom favicon">
-              <img id="cust-favicon-preview" src="https://res.cloudinary.com/dqxccz5bn/image/upload/favicon_jzygcw.png" alt="Favicon preview" draggable="false"
+              <img id="cust-favicon-preview" src="https://res.cloudinary.com/dqxccz5bn/image/upload/favicon_jzygcw.png"
+                alt="Favicon preview" draggable="false"
                 style="width:100%; height:100%; object-fit:cover; display:block; pointer-events:none; -webkit-user-drag:none; user-select:none;">
               <div id="cust-favicon-overlay"
                 style="position:absolute; inset:0; background:rgba(0,0,0,0.55); display:flex; flex-direction:column; align-items:center; justify-content:center; opacity:0; transition:opacity 0.2s; gap:2px; pointer-events:none;">
                 <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#ffffff" stroke-width="2"
                   stroke-linecap="round" stroke-linejoin="round">
-                  <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/>
-                  <polyline points="17 8 12 3 7 8"/>
-                  <line x1="12" y1="3" x2="12" y2="15"/>
+                  <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4" />
+                  <polyline points="17 8 12 3 7 8" />
+                  <line x1="12" y1="3" x2="12" y2="15" />
                 </svg>
                 <span
                   style="font-size:0.6rem; color:#fff; font-weight:600; text-transform:uppercase; letter-spacing:0.04em;">Edit</span>
@@ -636,18 +652,27 @@
             </div>
             <div style="text-align:left;">
               <p style="font-size:0.88rem; font-weight:600; color:var(--ink); margin:0 0 3px 0;">Website Favicon</p>
-              <p style="font-size:0.73rem; color:var(--ink-faint); margin:0 0 8px 0;">Upload from device or sync from avatar</p>
+              <p style="font-size:0.73rem; color:var(--ink-faint); margin:0 0 8px 0;">Upload from device or sync from
+                avatar</p>
               <div style="display:flex; align-items:center; gap:8px; flex-wrap:wrap;">
                 <button type="button" id="cust-favicon-sync-avatar-btn" class="toolbar-btn"
                   style="border-radius:20px; padding:4px 14px; font-size:0.72rem; display:inline-flex; align-items:center; gap:5px;"
                   title="Copy current profile picture as website favicon">
-                  <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+                  <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                    stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2" />
+                    <circle cx="12" cy="7" r="4" />
+                  </svg>
                   Sync from Avatar
                 </button>
                 <button type="button" id="cust-favicon-reset-btn" class="toolbar-btn"
                   style="border-radius:20px; padding:4px 14px; font-size:0.72rem; display:inline-flex; align-items:center; gap:5px;"
                   title="Reset favicon to default">
-                  <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 12a9 9 0 1 0 9-9 9.75 9.75 0 0 0-6.74 2.74L3 8"/><path d="M3 3v5h5"/></svg>
+                  <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                    stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M3 12a9 9 0 1 0 9-9 9.75 9.75 0 0 0-6.74 2.74L3 8" />
+                    <path d="M3 3v5h5" />
+                  </svg>
                   Reset to Default
                 </button>
               </div>
@@ -669,7 +694,8 @@
               Max 1 MB
             </span>
           </div>
-          <div id="cust-favicon-status" style="display:none; margin-top:8px; font-size:0.72rem; font-family:var(--font-mono);"></div>
+          <div id="cust-favicon-status"
+            style="display:none; margin-top:8px; font-size:0.72rem; font-family:var(--font-mono);"></div>
 
         </div>
       </div>
@@ -935,13 +961,18 @@
 
       <!-- 3. // projects (Matches Main Page Row 3) -->
       <div class="cust-section">
-        <div style="display:flex; align-items:center; justify-content:space-between; margin-bottom:6px; flex-wrap:wrap; gap:6px;">
-          <p class="eyebrow" style="margin:0;">// projects</p>
+        <div
+          style="display:flex; align-items:center; justify-content:space-between; margin-bottom:6px; flex-wrap:wrap; gap:6px;">
+          <div style="display:inline-flex; align-items:center; gap:8px;">
+            <p class="eyebrow" style="margin:0;">// projects</p>
+            <span id="cust-projects-sync-status" style="font-size:0.7rem; display:none; font-family:var(--font-mono, monospace);"></span>
+          </div>
           <button type="button" id="btn-sync-projects-github" class="toolbar-btn"
             style="font-size:0.67rem; padding:3px 9px; border-radius:12px; display:inline-flex; align-items:center; gap:5px; color:var(--ink); border-color:var(--red); background:rgba(255,42,95,0.08); font-weight:600; cursor:pointer;"
             title="Auto-fetch pinned repositories from GitHub">
-            <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
-              <path d="M21.5 2v6h-6M21.34 15.57a10 10 0 1 1-.57-8.38l5.67-5.67"/>
+            <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"
+              stroke-linecap="round" stroke-linejoin="round">
+              <path d="M21.5 2v6h-6M21.34 15.57a10 10 0 1 1-.57-8.38l5.67-5.67" />
             </svg>
             <span>Sync Pinned Repos</span>
           </button>
@@ -958,16 +989,21 @@
 
       <!-- 4. // reach (Matches Main Page Row 4) -->
       <div class="cust-section">
-        <div id="cust-reach-toggle" class="accordion-eyebrow-toggle" role="button" tabindex="0" aria-expanded="false" aria-controls="cust-reach-card"
+        <div id="cust-reach-toggle" class="accordion-eyebrow-toggle" role="button" tabindex="0" aria-expanded="false"
+          aria-controls="cust-reach-card"
           style="display:inline-flex; align-items:center; gap:7px; cursor:pointer; user-select:none; margin-bottom:8px;">
-          <p class="eyebrow" style="margin:0; cursor:pointer; color:var(--ink-dim); transition:color 0.15s;">// reach</p>
-          <svg id="cust-reach-chevron" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" style="color:var(--ink-faint); transition:transform 0.22s cubic-bezier(0.4, 0, 0.2, 1), color 0.15s; transform:rotate(-90deg);">
-            <path d="m6 9 6 6 6-6"/>
+          <p class="eyebrow" style="margin:0; cursor:pointer; color:var(--ink-dim); transition:color 0.15s;">// reach
+          </p>
+          <svg id="cust-reach-chevron" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+            stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"
+            style="color:var(--ink-faint); transition:transform 0.22s cubic-bezier(0.4, 0, 0.2, 1), color 0.15s; transform:rotate(-90deg);">
+            <path d="m6 9 6 6 6-6" />
           </svg>
         </div>
 
         <div id="cust-reach-card" class="surface-card cust-card" style="display:none; margin-top:2px;">
-          <p style="font-size:0.72rem; color:var(--ink-faint); margin:0 0 14px 0; line-height:1.45;">Primary profiles and additional social
+          <p style="font-size:0.72rem; color:var(--ink-faint); margin:0 0 14px 0; line-height:1.45;">Primary profiles
+            and additional social
             media links displayed in your reach section.</p>
           <div class="field-grid-2">
             <div class="field-group">
@@ -976,14 +1012,18 @@
                 <button type="button" id="btn-sync-github" class="toolbar-btn"
                   style="font-size:0.67rem; padding:2px 8px; border-radius:10px; display:inline-flex; align-items:center; gap:4px; color:var(--ink); border-color:var(--red); background:rgba(255,42,95,0.08); font-weight:600; cursor:pointer;"
                   title="Auto-fetch avatar, wordmark, bio, and pinned projects from GitHub">
-                  <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
-                    <path d="M21.5 2v6h-6M21.34 15.57a10 10 0 1 1-.57-8.38l5.67-5.67"/>
+                  <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"
+                    stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M21.5 2v6h-6M21.34 15.57a10 10 0 1 1-.57-8.38l5.67-5.67" />
                   </svg>
                   <span>Sync from GitHub</span>
                 </button>
               </div>
-              <input type="text" class="field-input" id="cust-github" placeholder="khxaiyan or https://github.com/khxaiyan">
-              <p id="cust-github-sync-status" style="font-size:0.68rem; margin:4px 0 0 0; display:none; font-family:var(--font-mono); line-height:1.4;"></p>
+              <input type="text" class="field-input" id="cust-github"
+                placeholder="khxaiyan or https://github.com/khxaiyan">
+              <p id="cust-github-sync-status"
+                style="font-size:0.68rem; margin:4px 0 0 0; display:none; font-family:var(--font-mono); line-height:1.4;">
+              </p>
             </div>
             <div class="field-group">
               <label class="field-label" for="cust-telegram">Telegram Username</label>
@@ -1033,11 +1073,15 @@
 
       <!-- 5. // message (Matches Main Page Row 5) -->
       <div class="cust-section">
-        <div id="cust-msg-toggle" class="accordion-eyebrow-toggle" role="button" tabindex="0" aria-expanded="false" aria-controls="cust-msg-card"
+        <div id="cust-msg-toggle" class="accordion-eyebrow-toggle" role="button" tabindex="0" aria-expanded="false"
+          aria-controls="cust-msg-card"
           style="display:inline-flex; align-items:center; gap:7px; cursor:pointer; user-select:none; margin-bottom:8px;">
-          <p class="eyebrow" style="margin:0; cursor:pointer; color:var(--ink-dim); transition:color 0.15s;">// message &amp; security</p>
-          <svg id="cust-msg-chevron" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" style="color:var(--ink-faint); transition:transform 0.22s cubic-bezier(0.4, 0, 0.2, 1), color 0.15s; transform:rotate(-90deg);">
-            <path d="m6 9 6 6 6-6"/>
+          <p class="eyebrow" style="margin:0; cursor:pointer; color:var(--ink-dim); transition:color 0.15s;">// message
+            &amp; security</p>
+          <svg id="cust-msg-chevron" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+            stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"
+            style="color:var(--ink-faint); transition:transform 0.22s cubic-bezier(0.4, 0, 0.2, 1), color 0.15s; transform:rotate(-90deg);">
+            <path d="m6 9 6 6 6-6" />
           </svg>
         </div>
 
@@ -1061,26 +1105,37 @@
 
       <!-- 5.1 // media cloud storage (cloudinary) -->
       <div class="cust-section">
-        <div id="cust-cloudinary-toggle" class="accordion-eyebrow-toggle" role="button" tabindex="0" aria-expanded="false" aria-controls="cust-cloudinary-card"
+        <div id="cust-cloudinary-toggle" class="accordion-eyebrow-toggle" role="button" tabindex="0"
+          aria-expanded="false" aria-controls="cust-cloudinary-card"
           style="display:inline-flex; align-items:center; gap:7px; cursor:pointer; user-select:none; margin-bottom:8px;">
-          <p class="eyebrow" style="margin:0; cursor:pointer; color:var(--ink-dim); transition:color 0.15s;">// media cloud storage (cloudinary)</p>
-          <svg id="cust-cloudinary-chevron" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" style="color:var(--ink-faint); transition:transform 0.22s cubic-bezier(0.4, 0, 0.2, 1), color 0.15s; transform:rotate(-90deg);">
-            <path d="m6 9 6 6 6-6"/>
+          <p class="eyebrow" style="margin:0; cursor:pointer; color:var(--ink-dim); transition:color 0.15s;">// media
+            cloud storage (cloudinary)</p>
+          <svg id="cust-cloudinary-chevron" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+            stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"
+            style="color:var(--ink-faint); transition:transform 0.22s cubic-bezier(0.4, 0, 0.2, 1), color 0.15s; transform:rotate(-90deg);">
+            <path d="m6 9 6 6 6-6" />
           </svg>
         </div>
 
-        <div id="cust-cloudinary-card" class="surface-card cust-card" style="padding:18px 20px; display:none; margin-top:2px;">
-          <div style="display:flex; align-items:center; justify-content:space-between; margin-bottom:12px; flex-wrap:wrap; gap:8px;">
+        <div id="cust-cloudinary-card" class="surface-card cust-card"
+          style="padding:18px 20px; display:none; margin-top:2px;">
+          <div
+            style="display:flex; align-items:center; justify-content:space-between; margin-bottom:12px; flex-wrap:wrap; gap:8px;">
             <div style="display:flex; align-items:center; gap:8px;">
-              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="color:var(--accent);"><path d="M17.5 19H9a7 7 0 1 1 6.71-9h1.79a4.5 4.5 0 1 1 0 9Z"/></svg>
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                stroke-linecap="round" stroke-linejoin="round" style="color:var(--accent);">
+                <path d="M17.5 19H9a7 7 0 1 1 6.71-9h1.79a4.5 4.5 0 1 1 0 9Z" />
+              </svg>
               <span style="font-size:0.88rem; font-weight:600; color:var(--ink);">Cloudinary Direct Upload</span>
             </div>
-            <span id="cust-cloudinary-badge" style="font-size:0.68rem; font-family:var(--font-mono); padding:3px 9px; border-radius:10px; background:var(--bg); border:1px solid var(--line); color:var(--ink-faint);">
+            <span id="cust-cloudinary-badge"
+              style="font-size:0.68rem; font-family:var(--font-mono); padding:3px 9px; border-radius:10px; background:var(--bg); border:1px solid var(--line); color:var(--ink-faint);">
               Not Configured (Local Base64 Fallback)
             </span>
           </div>
           <p style="font-size:0.73rem; color:var(--ink-faint); margin:0 0 14px 0; line-height:1.45;">
-            Upload avatar and favicon directly to your free Cloudinary account for lightning-fast global CDN delivery and automatic optimization.
+            Upload avatar and favicon directly to your free Cloudinary account for lightning-fast global CDN delivery
+            and automatic optimization.
           </p>
           <div class="field-grid-2">
             <div class="field-group">
@@ -1089,11 +1144,13 @@
             </div>
             <div class="field-group">
               <label class="field-label" for="cust-cloudinary-preset">Upload Preset (Unsigned)</label>
-              <input type="text" class="field-input" id="cust-cloudinary-preset" placeholder="e.g. portfolio_preset or ml_default">
+              <input type="text" class="field-input" id="cust-cloudinary-preset"
+                placeholder="e.g. portfolio_preset or ml_default">
             </div>
           </div>
           <p style="font-size:0.68rem; color:var(--ink-dim); margin:10px 0 0 0; font-family:var(--font-mono);">
-            💡 Cloudinary Console: Settings ➔ Upload ➔ Upload presets ➔ Add preset with Signing Mode set to <strong>Unsigned</strong>.
+            💡 Cloudinary Console: Settings ➔ Upload ➔ Upload presets ➔ Add preset with Signing Mode set to
+            <strong>Unsigned</strong>.
           </p>
         </div>
       </div>
@@ -1741,7 +1798,7 @@
 
         if (!res.ok) {
           var errData = {};
-          try { errData = await res.json(); } catch (_) {}
+          try { errData = await res.json(); } catch (_) { }
           var msg = (errData && errData.error && errData.error.message) ? errData.error.message : ('HTTP ' + res.status);
           throw new Error(msg);
         }
@@ -1870,10 +1927,10 @@
         var name = (file.name || '').toLowerCase();
 
         var isDirect = type === 'image/svg+xml' ||
-                       type === 'image/x-icon' ||
-                       type === 'image/vnd.microsoft.icon' ||
-                       type === 'image/gif' ||
-                       /\.(svg|ico|gif)$/i.test(name);
+          type === 'image/x-icon' ||
+          type === 'image/vnd.microsoft.icon' ||
+          type === 'image/gif' ||
+          /\.(svg|ico|gif)$/i.test(name);
 
         if (isDirect) {
           var directReader = new FileReader();
@@ -2207,6 +2264,129 @@
         });
       }
 
+      /* ── Dedicated Pinned Projects Sync ── */
+      async function syncPinnedProjectsOnly(rawUsername, isAuto) {
+        var ghInput = document.getElementById('cust-github');
+        var inputVal = (typeof rawUsername === 'string' && rawUsername.trim()) ? rawUsername : (ghInput ? ghInput.value : '');
+        var username = cleanGitHubUsername(inputVal) || 'khxaiyan';
+
+        var statusEl = document.getElementById('cust-projects-sync-status');
+        var btn = document.getElementById('btn-sync-projects-github');
+
+        if (btn && !isAuto) {
+          btn.disabled = true;
+          btn.style.opacity = '0.7';
+          var span = btn.querySelector('span');
+          if (span) span.textContent = 'Syncing...';
+        }
+
+        if (statusEl) {
+          statusEl.style.display = 'inline';
+          statusEl.style.color = '#38bdf8';
+          statusEl.textContent = '⏳ Fetching pinned repos...';
+        }
+
+        try {
+          var cacheBuster = '?_t=' + Date.now();
+          var pinsPromise = fetch('https://pinned.berrysauce.dev/get/' + encodeURIComponent(username) + cacheBuster, { cache: 'no-store' })
+            .then(function (r) { return r.ok ? r.json() : null; })
+            .catch(function () {
+              return fetch('https://pinned.berrysauce.me/get/' + encodeURIComponent(username) + cacheBuster, { cache: 'no-store' })
+                .then(function (r) { return r.ok ? r.json() : null; })
+                .catch(function () { return null; });
+            });
+
+          var reposPromise = fetch('https://api.github.com/users/' + encodeURIComponent(username) + '/repos?sort=pushed&per_page=30' + cacheBuster, { cache: 'no-store' })
+            .then(function (r) { return r.ok ? r.json() : null; })
+            .catch(function () { return null; });
+
+          var results = await Promise.all([pinsPromise, reposPromise]);
+          var pinnedData = results[0];
+          var reposData = results[1];
+
+          var repoMap = {};
+          if (Array.isArray(reposData)) {
+            reposData.forEach(function (r) {
+              if (r && r.name) {
+                repoMap[r.name.toLowerCase()] = r;
+                if (r.full_name) repoMap[r.full_name.toLowerCase()] = r;
+              }
+            });
+          }
+
+          var targetProjects = [];
+          var projLinks = (typeof CONFIG !== 'undefined' && CONFIG.project_links) || {};
+
+          if (Array.isArray(pinnedData) && pinnedData.length > 0) {
+            targetProjects = pinnedData.map(function (p) {
+              var author = p.author || username;
+              var key = (author + '/' + p.name).toLowerCase();
+              var r = repoMap[key] || repoMap[p.name.toLowerCase()] || {};
+              var ghUrl = 'https://github.com/' + author + '/' + p.name;
+              var formatted = formatProjectName(p.name);
+              var liveUrl = (r.homepage && r.homepage.trim()) ? r.homepage.trim() : (projLinks[p.name] || projLinks[formatted] || ghUrl);
+              return {
+                title: formatted,
+                name: p.name,
+                tag: p.language || r.language || 'Project',
+                url: liveUrl,
+                github_url: ghUrl,
+                description: p.description || r.description || ''
+              };
+            });
+          } else if (Array.isArray(reposData) && reposData.length > 0) {
+            targetProjects = reposData.slice(0, 6).map(function (r) {
+              var formatted = formatProjectName(r.name);
+              return {
+                title: formatted,
+                name: r.name,
+                tag: r.language || 'Project',
+                url: (r.homepage && r.homepage.trim()) ? r.homepage.trim() : (projLinks[r.name] || projLinks[formatted] || r.html_url),
+                github_url: r.html_url,
+                description: r.description || ''
+              };
+            });
+          } else if (typeof CONFIG !== 'undefined' && Array.isArray(CONFIG.projects) && CONFIG.projects.length > 0) {
+            targetProjects = CONFIG.projects;
+          }
+
+          if (targetProjects.length > 0) {
+            renderProjectList(targetProjects);
+            updateLivePreview();
+            if (statusEl) {
+              statusEl.style.display = 'inline';
+              statusEl.style.color = '#10b981';
+              statusEl.textContent = '✓ ' + targetProjects.length + ' projects loaded';
+              setTimeout(function () { statusEl.style.display = 'none'; }, 4000);
+            }
+          } else {
+            if (statusEl) {
+              statusEl.style.display = 'inline';
+              statusEl.style.color = 'var(--red)';
+              statusEl.textContent = 'No pinned projects found for @' + username;
+            }
+          }
+        } catch (err) {
+          console.warn('syncPinnedProjectsOnly error:', err);
+          if (typeof CONFIG !== 'undefined' && Array.isArray(CONFIG.projects) && CONFIG.projects.length > 0) {
+            renderProjectList(CONFIG.projects);
+            updateLivePreview();
+          }
+          if (statusEl) {
+            statusEl.style.display = 'inline';
+            statusEl.style.color = 'var(--red)';
+            statusEl.textContent = '✗ ' + (err.message || 'Failed to sync');
+          }
+        } finally {
+          if (btn) {
+            btn.disabled = false;
+            btn.style.opacity = '1';
+            var span = btn.querySelector('span');
+            if (span) span.textContent = 'Sync Pinned Repos';
+          }
+        }
+      }
+
       /* ── Universal GitHub Profile & Pinned Projects Sync ── */
       function cleanGitHubUsername(val) {
         if (!val) return '';
@@ -2271,7 +2451,7 @@
           var pinnedData = results[1];
           var reposData = results[2];
 
-          if (!userData && (!reposData || !reposData.length)) {
+          if (!userData && (!reposData || !reposData.length) && (!pinnedData || !pinnedData.length)) {
             throw new Error('GitHub user @' + username + ' not found or rate-limited.');
           }
 
@@ -2317,15 +2497,17 @@
           }
 
           var targetProjects = [];
+          var projLinks = (typeof CONFIG !== 'undefined' && CONFIG.project_links) || {};
           if (Array.isArray(pinnedData) && pinnedData.length > 0) {
             targetProjects = pinnedData.map(function (p) {
               var author = p.author || username;
               var key = (author + '/' + p.name).toLowerCase();
               var r = repoMap[key] || repoMap[p.name.toLowerCase()] || {};
               var ghUrl = 'https://github.com/' + author + '/' + p.name;
-              var liveUrl = r.homepage ? r.homepage.trim() : ghUrl;
+              var formatted = formatProjectName(p.name);
+              var liveUrl = (r.homepage && r.homepage.trim()) ? r.homepage.trim() : (projLinks[p.name] || projLinks[formatted] || ghUrl);
               return {
-                title: formatProjectName(p.name),
+                title: formatted,
                 name: p.name,
                 tag: p.language || r.language || 'Project',
                 url: liveUrl,
@@ -2335,11 +2517,12 @@
             });
           } else if (Array.isArray(reposData) && reposData.length > 0) {
             targetProjects = reposData.slice(0, 6).map(function (r) {
+              var formatted = formatProjectName(r.name);
               return {
-                title: formatProjectName(r.name),
+                title: formatted,
                 name: r.name,
                 tag: r.language || 'Project',
-                url: r.homepage ? r.homepage.trim() : r.html_url,
+                url: (r.homepage && r.homepage.trim()) ? r.homepage.trim() : (projLinks[r.name] || projLinks[formatted] || r.html_url),
                 github_url: r.html_url,
                 description: r.description || ''
               };
@@ -2385,7 +2568,7 @@
       var btnSyncProjectsGh = document.getElementById('btn-sync-projects-github');
       if (btnSyncProjectsGh) {
         btnSyncProjectsGh.addEventListener('click', function () {
-          syncAllFromGitHub();
+          syncPinnedProjectsOnly();
         });
       }
 
@@ -2856,10 +3039,21 @@
         var activeProjs = [];
         if (cfg.projects && Array.isArray(cfg.projects) && cfg.projects.length > 0) {
           activeProjs = cfg.projects;
+        } else if (overrideCfg && Array.isArray(overrideCfg.projects) && overrideCfg.projects.length > 0) {
+          activeProjs = overrideCfg.projects;
         } else if (typeof CONFIG !== 'undefined' && Array.isArray(CONFIG.projects) && CONFIG.projects.length > 0) {
           activeProjs = CONFIG.projects;
         }
-        renderProjectList(activeProjs);
+
+        if (activeProjs.length > 0) {
+          renderProjectList(activeProjs);
+        } else {
+          var projContainer = document.getElementById('cust-projects-list');
+          if (projContainer) {
+            projContainer.innerHTML = '<div style="font-size:0.73rem; color:var(--ink-faint); padding:10px 4px; font-family:var(--font-mono, monospace);">⏳ Auto-loading pinned projects from GitHub...</div>';
+          }
+          syncPinnedProjectsOnly(cfg.github || 'khxaiyan', true);
+        }
 
         /* Render additional social links */
         var activeSocial = [];
@@ -3026,31 +3220,31 @@
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify(updated)
         })
-        .then(async function (r) {
-          return r.json().catch(function() { return { success: true }; });
-        })
-        .then(function (res) {
-          if (!saveStatusMsg) return;
-          saveStatusMsg.style.color = '#10b981';
-          if (res && res.mongodb) {
-            saveStatusMsg.textContent = '✓ Changes saved to MongoDB! (Live instantly without git push)';
-          } else if (res && res.message) {
-            saveStatusMsg.textContent = res.message;
-          } else {
+          .then(async function (r) {
+            return r.json().catch(function () { return { success: true }; });
+          })
+          .then(function (res) {
+            if (!saveStatusMsg) return;
+            saveStatusMsg.style.color = '#10b981';
+            if (res && res.mongodb) {
+              saveStatusMsg.textContent = '✓ Changes saved to MongoDB!';
+            } else if (res && res.message) {
+              saveStatusMsg.textContent = res.message;
+            } else {
+              saveStatusMsg.textContent = '✓ Theme & settings saved and applied!';
+            }
+            setTimeout(function () {
+              if (saveStatusMsg) saveStatusMsg.style.display = 'none';
+            }, 4000);
+          })
+          .catch(function () {
+            if (!saveStatusMsg) return;
+            saveStatusMsg.style.color = '#10b981';
             saveStatusMsg.textContent = '✓ Theme & settings saved and applied!';
-          }
-          setTimeout(function () {
-            if (saveStatusMsg) saveStatusMsg.style.display = 'none';
-          }, 4000);
-        })
-        .catch(function () {
-          if (!saveStatusMsg) return;
-          saveStatusMsg.style.color = '#10b981';
-          saveStatusMsg.textContent = '✓ Theme & settings saved and applied!';
-          setTimeout(function () {
-            if (saveStatusMsg) saveStatusMsg.style.display = 'none';
-          }, 4000);
-        });
+            setTimeout(function () {
+              if (saveStatusMsg) saveStatusMsg.style.display = 'none';
+            }, 4000);
+          });
       });
 
       var deniedBox = document.getElementById('denied-box');
@@ -3125,15 +3319,15 @@
             if (isFormLoadedForUserId !== user.id) {
               loadConfigIntoForm();
               // Also sync latest live config from MongoDB
-              fetch('/api/get-config')
+              fetch('/api/get-config?_t=' + Date.now(), { cache: 'no-store' })
                 .then(function (r) { return r.json(); })
                 .then(function (res) {
                   if (res && res.success && res.config) {
                     loadConfigIntoForm(res.config);
-                    try { localStorage.setItem('portfolio_custom_config', JSON.stringify(res.config)); } catch (_) {}
+                    try { localStorage.setItem('portfolio_custom_config', JSON.stringify(res.config)); } catch (_) { }
                   }
                 })
-                .catch(function () {});
+                .catch(function () { });
               isFormLoadedForUserId = user.id;
             }
           } else {

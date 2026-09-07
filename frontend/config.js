@@ -36,7 +36,16 @@ const CONFIG = {
       "name": "MyPortfolio",
       "url": "https://khxaiyan.github.io/MyPortfolio/",
       "github_url": "https://github.com/khxaiyan/MyPortfolio",
-      "description": "",
+      "description": "Personal developer portfolio website",
+      "tag": "HTML",
+      "stars": 1
+    },
+    {
+      "title": "hotel m",
+      "name": "hotel-m",
+      "url": "https://github.com/Blue-SkyStar/hotel_m",
+      "github_url": "https://github.com/Blue-SkyStar/hotel_m",
+      "description": "Open-source project on GitHub",
       "tag": "HTML",
       "stars": 1
     }
@@ -44,9 +53,14 @@ const CONFIG = {
   "project_links": {
     "CarryOn-E-Commerce": "https://carryon-five.vercel.app/",
     "CarryOn E Commerce": "https://carryon-five.vercel.app/",
+    "CarryOn-E-Commerce-Website": "https://carryon-five.vercel.app/",
     "GetWeb-Screenshot": "https://getweb-screenshot.vercel.app",
     "GetWeb Screenshot": "https://getweb-screenshot.vercel.app",
-    "MyPortfolio": "https://khxaiyan.github.io/MyPortfolio/"
+    "GetWeb_Screenshot": "https://getweb-screenshot.vercel.app",
+    "MyPortfolio": "https://khxaiyan.github.io/MyPortfolio/",
+    "hotel-m": "https://github.com/Blue-SkyStar/hotel_m",
+    "hotel m": "https://github.com/Blue-SkyStar/hotel_m",
+    "hotel_m": "https://github.com/Blue-SkyStar/hotel_m"
   },
   "default_theme": "dark",
   "accent_color": "#ff2a5f",
