@@ -39,15 +39,6 @@ const CONFIG = {
       "description": "",
       "tag": "HTML",
       "stars": 1
-    },
-    {
-      "title": "hotel m",
-      "name": "hotel-m",
-      "url": "https://github.com/Blue-SkyStar/hotel_m",
-      "github_url": "https://github.com/Blue-SkyStar/hotel_m",
-      "description": "",
-      "tag": "HTML",
-      "stars": 1
     }
   ],
   "project_links": {
@@ -55,9 +46,7 @@ const CONFIG = {
     "CarryOn E Commerce": "https://carryon-five.vercel.app/",
     "GetWeb-Screenshot": "https://getweb-screenshot.vercel.app",
     "GetWeb Screenshot": "https://getweb-screenshot.vercel.app",
-    "MyPortfolio": "https://khxaiyan.github.io/MyPortfolio/",
-    "hotel-m": "https://github.com/Blue-SkyStar/hotel_m",
-    "hotel m": "https://github.com/Blue-SkyStar/hotel_m"
+    "MyPortfolio": "https://khxaiyan.github.io/MyPortfolio/"
   },
   "default_theme": "dark",
   "accent_color": "#ff2a5f",
