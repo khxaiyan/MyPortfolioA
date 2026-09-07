@@ -56,10 +56,10 @@ const CONFIG = {
     "MyPortfolio": "https://khxaiyan.vercel.app"
   },
   "default_theme": "dark",
-  "accent_color": "#10b981",
+  "accent_color": "#e2e8f0",
   "theme_config": {
     "mode": "dark",
-    "accent_color": "#10b981",
+    "accent_color": "#e2e8f0",
     "bg_preset": "midnight"
   },
   "cf_analytics": false,
