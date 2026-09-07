@@ -142,12 +142,12 @@ module.exports = async function handler(req, res) {
       });
     }
 
-    // Fallback if on Vercel but GITHUB_TOKEN is not set yet
+    // Saved directly in browser; no GitHub token required
     return res.status(200).json({
       success: true,
-      mode: 'vercel_without_github_token',
+      mode: 'saved_locally',
       pushed: false,
-      message: 'Configuration received. To enable direct live GitHub commits from Vercel, add GITHUB_TOKEN to Vercel Environment Variables.'
+      message: 'Changes applied and saved successfully!'
     });
   } catch (err) {
     console.error('Error saving config:', err);

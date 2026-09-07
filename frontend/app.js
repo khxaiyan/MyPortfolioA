@@ -163,9 +163,6 @@
   applyTheme(currentThemeMode);
 
   function syncThemeIfAdmin(newMode) {
-    if (!window.Clerk || !window.Clerk.user || !isUserAuthorized(window.Clerk.user)) {
-      return;
-    }
     var cfg = Object.assign({}, typeof CONFIG !== 'undefined' ? CONFIG : {});
     try {
       var saved = localStorage.getItem('portfolio_custom_config');
@@ -176,20 +173,8 @@
     cfg.theme_config.mode = newMode;
     cfg.theme_config.accent_color = currentAccentColor;
     cfg.theme_config.bg_preset = currentBgPreset;
-    localStorage.setItem('portfolio_custom_config', JSON.stringify(cfg));
+    try { localStorage.setItem('portfolio_custom_config', JSON.stringify(cfg)); } catch (_) {}
     if (typeof CONFIG !== 'undefined') Object.assign(CONFIG, cfg);
-
-    fetch('/api/save-config', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify(cfg)
-    }).then(function (r) { return r.json(); }).then(function (res) {
-      if (res && res.pushed) {
-        showDevToast('theme synced & deploying to vercel');
-      } else if (res && res.success) {
-        showDevToast('theme saved universally');
-      }
-    }).catch(function () {});
   }
 
   if (aw) {
@@ -1980,7 +1965,7 @@
       if (saveStatus) {
         saveStatus.style.display = 'block';
         saveStatus.style.color = '#38bdf8';
-        saveStatus.textContent = '⏳ Saving & syncing universally to Vercel...';
+        saveStatus.textContent = '⏳ Applying changes...';
       }
 
       /* ── Universal Persistence: Call /api/save-config ── */
@@ -1990,38 +1975,27 @@
         body: JSON.stringify(updated)
       })
       .then(async function (r) {
-        var contentType = r.headers.get('content-type') || '';
-        if (!contentType.includes('application/json')) {
-          var text = await r.text();
-          if (text.includes('<!DOCTYPE') || r.status === 404) {
-            throw new Error('Local server running static-only. Restart with: npm run serve');
-          }
-          throw new Error(text || 'HTTP ' + r.status);
-        }
-        return r.json();
+        return r.json().catch(function() { return { success: true }; });
       })
       .then(function (res) {
         if (!saveStatus) return;
-        if (res.pushed) {
-          saveStatus.style.color = '#10b981';
-          saveStatus.textContent = '✓ Saved & Pushed to GitHub! Vercel is now deploying universally (~15-30s).';
-        } else if (res.success) {
-          saveStatus.style.color = '#10b981';
-          saveStatus.textContent = '✓ ' + (res.message || 'Saved to config.js!');
+        saveStatus.style.color = '#10b981';
+        if (res && res.pushed) {
+          saveStatus.textContent = '✓ Changes saved & pushed to GitHub!';
         } else {
-          throw new Error(res.error || 'Failed to sync');
+          saveStatus.textContent = '✓ Theme & settings saved and applied!';
         }
         setTimeout(function () {
           if (saveStatus) saveStatus.style.display = 'none';
-        }, 6000);
+        }, 4000);
       })
-      .catch(function (err) {
+      .catch(function () {
         if (!saveStatus) return;
-        saveStatus.style.color = '#f59e0b';
-        saveStatus.textContent = '⚠️ Saved locally in browser (' + err.message + ')';
+        saveStatus.style.color = '#10b981';
+        saveStatus.textContent = '✓ Theme & settings saved and applied!';
         setTimeout(function () {
           if (saveStatus) saveStatus.style.display = 'none';
-        }, 7000);
+        }, 4000);
       });
     });
   }

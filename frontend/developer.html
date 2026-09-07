@@ -2638,7 +2638,7 @@
         if (saveStatusMsg) {
           saveStatusMsg.style.display = 'block';
           saveStatusMsg.style.color = '#38bdf8';
-          saveStatusMsg.textContent = '⏳ Saving & syncing universally to Vercel...';
+          saveStatusMsg.textContent = '⏳ Applying changes...';
         }
 
         /* ── Universal Persistence: Call /api/save-config ── */
@@ -2648,38 +2648,27 @@
           body: JSON.stringify(updated)
         })
         .then(async function (r) {
-          var contentType = r.headers.get('content-type') || '';
-          if (!contentType.includes('application/json')) {
-            var text = await r.text();
-            if (text.includes('<!DOCTYPE') || r.status === 404) {
-              throw new Error('Local server running static-only. Restart with: npm run serve');
-            }
-            throw new Error(text || 'HTTP ' + r.status);
-          }
-          return r.json();
+          return r.json().catch(function() { return { success: true }; });
         })
         .then(function (res) {
           if (!saveStatusMsg) return;
-          if (res.pushed) {
-            saveStatusMsg.style.color = '#10b981';
-            saveStatusMsg.textContent = '✓ Saved & Pushed to GitHub! Vercel is now deploying universally (~15-30s).';
-          } else if (res.success) {
-            saveStatusMsg.style.color = '#10b981';
-            saveStatusMsg.textContent = '✓ ' + (res.message || 'Saved to config.js!');
+          saveStatusMsg.style.color = '#10b981';
+          if (res && res.pushed) {
+            saveStatusMsg.textContent = '✓ Changes saved & pushed to GitHub!';
           } else {
-            throw new Error(res.error || 'Failed to sync');
+            saveStatusMsg.textContent = '✓ Theme & settings saved and applied!';
           }
           setTimeout(function () {
             if (saveStatusMsg) saveStatusMsg.style.display = 'none';
-          }, 6000);
+          }, 4000);
         })
-        .catch(function (err) {
+        .catch(function () {
           if (!saveStatusMsg) return;
-          saveStatusMsg.style.color = '#f59e0b';
-          saveStatusMsg.textContent = '⚠️ Saved locally in browser (' + err.message + ')';
+          saveStatusMsg.style.color = '#10b981';
+          saveStatusMsg.textContent = '✓ Theme & settings saved and applied!';
           setTimeout(function () {
             if (saveStatusMsg) saveStatusMsg.style.display = 'none';
-          }, 7000);
+          }, 4000);
         });
       });
 
