@@ -1572,6 +1572,83 @@ select, option, optgroup {
   text-shadow: 0 1px 2px rgba(0, 0, 0, 0.85);
 }
 
+.swatch-wrapper {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.swatch-delete-btn {
+  position: absolute;
+  top: -5px;
+  right: -5px;
+  width: 17px;
+  height: 17px;
+  border-radius: 50%;
+  background: #0d0e15;
+  border: 1.5px solid #ff2a5f;
+  color: #ffffff;
+  font-size: 13px;
+  line-height: 1;
+  font-weight: 700;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  opacity: 0;
+  transform: scale(0.6);
+  pointer-events: none;
+  transition: opacity 0.16s ease, transform 0.16s cubic-bezier(0.4, 0, 0.2, 1), background 0.16s ease;
+  z-index: 10;
+  padding: 0;
+}
+
+.swatch-wrapper:hover .swatch-delete-btn,
+.accent-swatches-wrap.is-delete-mode .swatch-delete-btn {
+  opacity: 1;
+  transform: scale(1);
+  pointer-events: auto;
+}
+
+.swatch-delete-btn:hover {
+  background: #ff2a5f;
+  color: #ffffff;
+  transform: scale(1.15);
+}
+
+.swatch-add-btn {
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  border: 1.5px dashed var(--line);
+  background: var(--bg);
+  color: var(--ink-dim);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: transform 0.16s ease, border-color 0.16s ease, color 0.16s ease, background 0.16s ease;
+  padding: 0;
+  flex-shrink: 0;
+}
+
+.swatch-add-btn:hover {
+  border-color: var(--accent, var(--red));
+  color: var(--ink);
+  transform: scale(1.15);
+  background: var(--bg-hover, rgba(255, 255, 255, 0.06));
+}
+
+.accent-swatches-wrap.is-delete-mode .accent-swatch-btn {
+  animation: swatch-jiggle 0.22s infinite alternate ease-in-out;
+}
+
+@keyframes swatch-jiggle {
+  0% { transform: rotate(-3deg) scale(1.02); }
+  100% { transform: rotate(3deg) scale(1.02); }
+}
+
 .bg-preset-btn {
   display: flex;
   align-items: center;

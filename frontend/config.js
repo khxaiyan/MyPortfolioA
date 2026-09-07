@@ -7,7 +7,7 @@ const CONFIG = {
   "logo": "https://avatars.githubusercontent.com/u/225553218?v=4",
   "avatar_url": "https://avatars.githubusercontent.com/u/225553218?v=4",
   "favicon_url": "https://res.cloudinary.com/dqxccz5bn/image/upload/favicon_jzygcw.png",
-  "site_name": "khxaiyan",
+  "site_name": "{kh}x{aiyan}",
   "accent_letter": "x",
   "site_desc": "khxaiyan | developer in active building mode. crafting clean web tools & digital experiences.",
   "seo_desc": "khxaiyan | developer in active building mode. crafting clean web tools & digital experiences.",
@@ -53,20 +53,39 @@ const CONFIG = {
   "project_links": {
     "CarryOn-E-Commerce": "https://carryon-five.vercel.app/",
     "CarryOn E Commerce": "https://carryon-five.vercel.app/",
-    "CarryOn-E-Commerce-Website": "https://carryon-five.vercel.app/",
     "GetWeb-Screenshot": "https://getweb-screenshot.vercel.app",
     "GetWeb Screenshot": "https://getweb-screenshot.vercel.app",
-    "GetWeb_Screenshot": "https://getweb-screenshot.vercel.app",
     "MyPortfolio": "https://khxaiyan.github.io/MyPortfolio/",
     "hotel-m": "https://github.com/Blue-SkyStar/hotel_m",
-    "hotel m": "https://github.com/Blue-SkyStar/hotel_m",
-    "hotel_m": "https://github.com/Blue-SkyStar/hotel_m"
+    "hotel m": "https://github.com/Blue-SkyStar/hotel_m"
   },
   "default_theme": "dark",
   "accent_color": "#ff2a5f",
+  "accent_palette": [
+    "#ff2a5f",
+    "#00f0ff",
+    "#10b981",
+    "#a855f7",
+    "#f59e0b",
+    "#ff5722",
+    "#3b82f6",
+    "#ec4899",
+    "#e2e8f0"
+  ],
   "theme_config": {
     "mode": "dark",
     "accent_color": "#ff2a5f",
+    "accent_palette": [
+      "#ff2a5f",
+      "#00f0ff",
+      "#10b981",
+      "#a855f7",
+      "#f59e0b",
+      "#ff5722",
+      "#3b82f6",
+      "#ec4899",
+      "#e2e8f0"
+    ],
     "bg_preset": "midnight"
   },
   "cf_analytics": false,

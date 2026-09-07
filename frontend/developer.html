@@ -834,40 +834,28 @@
 
           <!-- Accent Highlight Color -->
           <div class="field-group" style="margin-top:12px; border-top:1px solid var(--line); padding-top:14px;">
-            <div style="display:flex; align-items:center; justify-content:space-between; margin-bottom:4px;">
-              <label class="field-label" style="font-weight:600; color:var(--ink);">Highlight Accent Color</label>
-              <span id="accent-hex-indicator"
-                style="font-family:var(--font-mono); font-size:0.74rem; color:var(--ink-dim); background:var(--bg); padding:2px 8px; border-radius:10px; border:1px solid var(--line);">#ff2a5f</span>
+            <div style="display:flex; align-items:center; justify-content:space-between; margin-bottom:4px; flex-wrap:wrap; gap:6px;">
+              <label class="field-label" style="font-weight:600; color:var(--ink); margin:0;">Highlight Accent Color</label>
+              <div style="display:flex; align-items:center; gap:8px;">
+                <button type="button" id="btn-toggle-delete-mode" class="toolbar-btn" style="font-size:0.7rem; padding:3px 9px;" title="Toggle delete mode to remove colors">
+                  🗑️ Delete Mode
+                </button>
+                <span id="accent-hex-indicator"
+                  style="font-family:var(--font-mono); font-size:0.74rem; color:var(--ink-dim); background:var(--bg); padding:2px 8px; border-radius:10px; border:1px solid var(--line);">#ff2a5f</span>
+              </div>
             </div>
             <p style="font-size:0.72rem; color:var(--ink-faint); margin-bottom:10px;">
-              Colors project letter highlights, icons, circular timeline rail nodes, badges, and buttons.
+              Colors project highlights, icons, rail nodes, badges, and buttons. <b>Hover any color</b> to delete, or click <b>+</b> to add a new color.
             </p>
 
             <div class="accent-swatches-wrap" id="accent-swatches-container">
-              <button type="button" class="accent-swatch-btn active" data-color="#ff2a5f"
-                title="Crimson Red (Default Theme)" style="background:#ff2a5f;"></button>
-              <button type="button" class="accent-swatch-btn" data-color="#00f0ff" title="Cyber Cyan"
-                style="background:#00f0ff;"></button>
-              <button type="button" class="accent-swatch-btn" data-color="#10b981" title="Matrix Emerald"
-                style="background:#10b981;"></button>
-              <button type="button" class="accent-swatch-btn" data-color="#a855f7" title="Neon Violet"
-                style="background:#a855f7;"></button>
-              <button type="button" class="accent-swatch-btn" data-color="#f59e0b" title="Solar Amber"
-                style="background:#f59e0b;"></button>
-              <button type="button" class="accent-swatch-btn" data-color="#ff5722" title="Sunset Flame"
-                style="background:#ff5722;"></button>
-              <button type="button" class="accent-swatch-btn" data-color="#3b82f6" title="Electric Blue"
-                style="background:#3b82f6;"></button>
-              <button type="button" class="accent-swatch-btn" data-color="#ec4899" title="Sakura Pink"
-                style="background:#ec4899;"></button>
-              <button type="button" class="accent-swatch-btn" data-color="#e2e8f0" title="Arctic White"
-                style="background:#e2e8f0;"></button>
+              <!-- Dynamically populated with .swatch-wrapper, + button, and delete buttons -->
             </div>
 
             <div style="display:flex; align-items:center; gap:8px; margin-top:10px; flex-wrap:wrap;">
               <div id="accent-color-picker-wrap"
                 style="position:relative; width:34px; height:34px; border-radius:50%; overflow:hidden; border:2px solid var(--line); flex-shrink:0; cursor:pointer;"
-                title="Click to pick color from profile picture or custom palette">
+                title="Click to pick custom color">
                 <input type="color" id="accent-color-picker" value="#ff2a5f"
                   style="position:absolute; inset:-8px; width:52px; height:52px; cursor:pointer; border:none; background:transparent;">
               </div>
@@ -878,6 +866,12 @@
                 <input type="text" id="accent-hex-input" value="#ff2a5f" maxlength="7" placeholder="#ff2a5f"
                   style="background:transparent; border:none; outline:none; font-family:var(--font-mono); font-size:0.78rem; color:var(--ink); width:100%;">
               </div>
+              <button type="button" id="btn-add-current-color" class="toolbar-btn"
+                style="white-space:nowrap; padding:6px 12px; font-size:0.75rem; display:inline-flex; align-items:center; gap:6px; color:var(--ink); border-color:var(--line); cursor:pointer;"
+                title="Add current color to palette swatches">
+                <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+                <span>Add to Swatches</span>
+              </button>
               <button type="button" id="btn-pick-avatar-color" class="toolbar-btn"
                 style="white-space:nowrap; padding:6px 12px; font-size:0.75rem; display:inline-flex; align-items:center; gap:6px; color:var(--ink); border-color:var(--accent, var(--red)); background:rgba(255,42,95,0.1); font-weight:600; cursor:pointer;"
                 title="Pick color directly from your profile picture">
@@ -888,9 +882,12 @@
                 </svg>
                 <span>Pick from Profile Pic</span>
               </button>
+              <button type="button" id="btn-reset-palette" class="toolbar-btn"
+                style="white-space:nowrap; padding:6px 10px; font-size:0.72rem;"
+                title="Reset palette back to 9 default colors">Reset Swatches</button>
               <button type="button" id="btn-reset-theme" class="toolbar-btn"
                 style="white-space:nowrap; padding:6px 12px; font-size:0.72rem;"
-                title="Reset to default Crimson theme">Reset</button>
+                title="Reset to default Crimson theme">Reset Theme</button>
             </div>
           </div>
 
@@ -1516,6 +1513,140 @@
       var currentAccentColor = '#ff2a5f';
       var currentBgPreset = 'midnight';
 
+      var DEFAULT_ACCENT_PALETTE = [
+        '#ff2a5f', '#00f0ff', '#10b981', '#a855f7', '#f59e0b', '#ff5722', '#3b82f6', '#ec4899', '#e2e8f0'
+      ];
+
+      var currentPalette = (function () {
+        try {
+          var saved = localStorage.getItem('portfolio_accent_palette');
+          if (saved) {
+            var parsed = JSON.parse(saved);
+            if (Array.isArray(parsed) && parsed.length > 0) return parsed;
+          }
+          var cust = localStorage.getItem('portfolio_custom_config');
+          if (cust) {
+            var parsedCust = JSON.parse(cust);
+            if (Array.isArray(parsedCust.accent_palette) && parsedCust.accent_palette.length > 0) {
+              return parsedCust.accent_palette;
+            }
+          }
+        } catch (_) {}
+        if (typeof CONFIG !== 'undefined' && Array.isArray(CONFIG.accent_palette) && CONFIG.accent_palette.length > 0) {
+          return CONFIG.accent_palette.slice();
+        }
+        return DEFAULT_ACCENT_PALETTE.slice();
+      })();
+
+      function savePalette() {
+        try {
+          localStorage.setItem('portfolio_accent_palette', JSON.stringify(currentPalette));
+          var cust = localStorage.getItem('portfolio_custom_config');
+          if (cust) {
+            var parsed = JSON.parse(cust);
+            parsed.accent_palette = currentPalette;
+            if (parsed.theme_config) parsed.theme_config.accent_palette = currentPalette;
+            localStorage.setItem('portfolio_custom_config', JSON.stringify(parsed));
+          }
+        } catch (_) {}
+      }
+
+      function renderAccentSwatches() {
+        var container = document.getElementById('accent-swatches-container');
+        if (!container) return;
+        container.innerHTML = '';
+
+        currentPalette.forEach(function (colorHex) {
+          var normColor = String(colorHex).trim().toLowerCase();
+          var isActive = (currentAccentColor || '').toLowerCase() === normColor;
+
+          var wrap = document.createElement('div');
+          wrap.className = 'swatch-wrapper';
+          wrap.setAttribute('data-color', normColor);
+
+          var btn = document.createElement('button');
+          btn.type = 'button';
+          btn.className = 'accent-swatch-btn' + (isActive ? ' active' : '');
+          btn.setAttribute('data-color', normColor);
+          btn.style.background = normColor;
+          btn.title = normColor;
+
+          var delBtn = document.createElement('button');
+          delBtn.type = 'button';
+          delBtn.className = 'swatch-delete-btn';
+          delBtn.setAttribute('data-color', normColor);
+          delBtn.title = 'Delete ' + normColor;
+          delBtn.setAttribute('aria-label', 'Delete ' + normColor);
+          delBtn.innerHTML = '&times;';
+
+          wrap.appendChild(btn);
+          wrap.appendChild(delBtn);
+          container.appendChild(wrap);
+        });
+
+        // Add Button (+)
+        var addWrap = document.createElement('div');
+        addWrap.style.position = 'relative';
+        addWrap.style.display = 'inline-flex';
+
+        var addBtn = document.createElement('button');
+        addBtn.type = 'button';
+        addBtn.className = 'swatch-add-btn';
+        addBtn.id = 'btn-add-palette-swatch';
+        addBtn.title = 'Add new color to palette';
+        addBtn.setAttribute('aria-label', 'Add new color to palette');
+        addBtn.innerHTML = '<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>';
+
+        var hiddenPicker = document.createElement('input');
+        hiddenPicker.type = 'color';
+        hiddenPicker.id = 'hidden-palette-color-picker';
+        hiddenPicker.value = currentAccentColor || '#ff2a5f';
+        hiddenPicker.style.position = 'absolute';
+        hiddenPicker.style.opacity = '0';
+        hiddenPicker.style.width = '1px';
+        hiddenPicker.style.height = '1px';
+        hiddenPicker.style.pointerEvents = 'none';
+
+        addWrap.appendChild(addBtn);
+        addWrap.appendChild(hiddenPicker);
+        container.appendChild(addWrap);
+      }
+
+      function addPaletteColor(hex) {
+        if (!hex) return;
+        var norm = String(hex).trim().toLowerCase();
+        if (!norm.startsWith('#')) norm = '#' + norm;
+        if (!/^#([0-9a-f]{3}|[0-9a-f]{6})$/i.test(norm)) return;
+        if (norm.length === 4) {
+          norm = '#' + norm[1] + norm[1] + norm[2] + norm[2] + norm[3] + norm[3];
+        }
+        if (currentPalette.indexOf(norm) === -1) {
+          currentPalette.push(norm);
+          savePalette();
+        }
+        setAccentColor(norm);
+        renderAccentSwatches();
+      }
+
+      function deletePaletteColor(hex) {
+        if (!hex) return;
+        var norm = String(hex).trim().toLowerCase();
+        if (currentPalette.length <= 1) {
+          alert('You must keep at least one color in your palette.');
+          return;
+        }
+        var idx = currentPalette.indexOf(norm);
+        if (idx !== -1) {
+          currentPalette.splice(idx, 1);
+          savePalette();
+          if ((currentAccentColor || '').toLowerCase() === norm) {
+            setAccentColor(currentPalette[0]);
+          } else {
+            renderAccentSwatches();
+          }
+        }
+      }
+
       var BG_PRESETS = {
         midnight: { bg: '#0a0a0e', surface: '#131319', surfaceHover: '#191a22', rail: '#363a63' },
         oled: { bg: '#000000', surface: '#0a0a0a', surfaceHover: '#141414', rail: '#262630' },
@@ -1671,10 +1802,79 @@
       var swatchesContainer = document.getElementById('accent-swatches-container');
       if (swatchesContainer) {
         swatchesContainer.addEventListener('click', function (e) {
+          var delBtn = e.target.closest('.swatch-delete-btn');
+          if (delBtn) {
+            e.stopPropagation();
+            var delColor = delBtn.getAttribute('data-color');
+            if (delColor) deletePaletteColor(delColor);
+            return;
+          }
+
+          var addBtn = e.target.closest('#btn-add-palette-swatch');
+          if (addBtn) {
+            e.stopPropagation();
+            var picker = document.getElementById('hidden-palette-color-picker');
+            if (picker) {
+              if (typeof picker.showPicker === 'function') {
+                try {
+                  picker.showPicker();
+                } catch (_) {
+                  picker.click();
+                }
+              } else {
+                picker.click();
+              }
+            }
+            return;
+          }
+
           var btn = e.target.closest('.accent-swatch-btn');
-          if (!btn) return;
-          var color = btn.getAttribute('data-color');
-          if (color) setAccentColor(color);
+          if (btn) {
+            var color = btn.getAttribute('data-color');
+            if (color) setAccentColor(color);
+          }
+        });
+      }
+
+      // Hidden picker for + button
+      document.addEventListener('change', function (e) {
+        if (e.target && e.target.id === 'hidden-palette-color-picker') {
+          if (e.target.value) {
+            addPaletteColor(e.target.value);
+          }
+        }
+      });
+
+      // Add current color to swatches button
+      var btnAddCurrentColor = document.getElementById('btn-add-current-color');
+      if (btnAddCurrentColor) {
+        btnAddCurrentColor.addEventListener('click', function () {
+          var val = (document.getElementById('accent-hex-input') || {}).value || currentAccentColor;
+          if (val) addPaletteColor(val);
+        });
+      }
+
+      // Delete mode toggle button
+      var btnToggleDelete = document.getElementById('btn-toggle-delete-mode');
+      if (btnToggleDelete) {
+        btnToggleDelete.addEventListener('click', function () {
+          var cont = document.getElementById('accent-swatches-container');
+          if (!cont) return;
+          var isDel = cont.classList.toggle('is-delete-mode');
+          btnToggleDelete.textContent = isDel ? '✓ Done' : '🗑️ Delete Mode';
+          btnToggleDelete.style.borderColor = isDel ? 'var(--red)' : '';
+          btnToggleDelete.style.background = isDel ? 'rgba(255,42,95,0.18)' : '';
+        });
+      }
+
+      // Reset palette button
+      var btnResetPalette = document.getElementById('btn-reset-palette');
+      if (btnResetPalette) {
+        btnResetPalette.addEventListener('click', function () {
+          currentPalette = DEFAULT_ACCENT_PALETTE.slice();
+          savePalette();
+          renderAccentSwatches();
+          setAccentColor(currentPalette[0]);
         });
       }
 
@@ -1721,6 +1921,9 @@
           switchSiteTheme('dark');
         });
       }
+
+      // Initial render for swatches
+      renderAccentSwatches();
 
       /* ── Profile Picture Color Eyedropper Modal ── */
       var avatarModal = document.getElementById('avatar-color-modal');
@@ -3524,6 +3727,12 @@
         currentThemeMode = themeCfg.mode || document.documentElement.getAttribute('data-theme') || localStorage.getItem('theme') || (cfg.default_theme || 'dark');
         currentAccentColor = themeCfg.accent_color || cfg.accent_color || (typeof CONFIG !== 'undefined' && CONFIG.accent_color) || '#ff2a5f';
         currentBgPreset = themeCfg.bg_preset || 'midnight';
+        if (cfg.accent_palette && Array.isArray(cfg.accent_palette) && cfg.accent_palette.length > 0) {
+          currentPalette = cfg.accent_palette.slice();
+        } else if (themeCfg.accent_palette && Array.isArray(themeCfg.accent_palette) && themeCfg.accent_palette.length > 0) {
+          currentPalette = themeCfg.accent_palette.slice();
+        }
+        renderAccentSwatches();
         document.documentElement.setAttribute('data-theme', currentThemeMode);
         applyThemeColors(currentAccentColor, currentBgPreset, currentThemeMode);
         updateThemeSelectionUI(currentThemeMode, currentAccentColor, currentBgPreset);
@@ -3635,9 +3844,11 @@
           project_links: projectLinks,
           default_theme: currentThemeMode,
           accent_color: currentAccentColor,
+          accent_palette: currentPalette,
           theme_config: {
             mode: currentThemeMode,
             accent_color: currentAccentColor,
+            accent_palette: currentPalette,
             bg_preset: currentBgPreset
           },
           cf_analytics: (typeof CONFIG !== 'undefined' && CONFIG.cf_analytics) ? CONFIG.cf_analytics : false,
