@@ -4,7 +4,7 @@ const CONFIG = {
   "telegram": "khxaiyan",
   "email": "ayankhan84510@gmail.com",
   "social_links": [],
-  "logo": "Diluc.svg",
+  "logo": "profile_icon.svg",
   "favicon_url": "favicon.png",
   "site_name": "khxaiyan",
   "accent_letter": "x",
@@ -59,5 +59,7 @@ const CONFIG = {
     "mode": "dark",
     "accent_color": "#ff2a5f",
     "bg_preset": "midnight"
-  }
+  },
+  "cloudinary_cloud_name": "dqxccz5bn",
+  "cloudinary_upload_preset": "myportfolioa"
 };
