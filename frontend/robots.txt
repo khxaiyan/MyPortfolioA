@@ -8,8 +8,6 @@ Disallow: /backend/
 
 # Allow root and assets
 Allow: /
-Allow: /favicon.png
-Allow: /favicon.ico
 Allow: /profile_icon.svg
 Allow: /style.css
 Allow: /app.js

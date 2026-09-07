@@ -63,6 +63,7 @@ if (fs.existsSync(configPath)) {
 }
 
 delete currentConfig.developer_pin;
+delete currentConfig.ping;
 
 const updatedConfig = Object.assign({}, currentConfig, {
   github: env.GITHUB_USERNAME || currentConfig.github || 'khxaiyan',
@@ -70,7 +71,7 @@ const updatedConfig = Object.assign({}, currentConfig, {
   telegram: env.TELEGRAM_USERNAME || currentConfig.telegram || 'khxaiyan',
   email: env.CONTACT_EMAIL || currentConfig.email || 'ayankhan84510@gmail.com',
   logo: env.AVATAR_URL || (currentConfig.logo === 'avatar.svg' || currentConfig.logo === 'Diluc.svg' ? 'profile_icon.svg' : currentConfig.logo) || 'profile_icon.svg',
-  favicon_url: env.FAVICON_URL || (currentConfig.favicon_url === 'favicon.svg' ? 'favicon.png' : currentConfig.favicon_url) || 'favicon.png',
+  favicon_url: env.FAVICON_URL || (currentConfig.favicon_url === 'favicon.svg' || currentConfig.favicon_url === 'favicon.png' || currentConfig.favicon_url === 'favicon.ico' ? 'profile_icon.svg' : currentConfig.favicon_url) || 'profile_icon.svg',
   site_name: env.SITE_NAME || currentConfig.site_name || 'khxaiyan',
   accent_letter: env.ACCENT_LETTER || currentConfig.accent_letter || 'x',
   accent_color: env.ACCENT_COLOR || currentConfig.accent_color || '#ff2a5f',

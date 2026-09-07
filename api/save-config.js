@@ -43,7 +43,7 @@ module.exports = async function handler(req, res) {
     if (!newConfig.site_name) newConfig.site_name = 'khxaiyan';
     if (!newConfig.accent_letter) newConfig.accent_letter = 'x';
     if (!newConfig.logo) newConfig.logo = 'profile_icon.svg';
-    if (!newConfig.favicon_url) newConfig.favicon_url = 'favicon.png';
+    if (!newConfig.favicon_url) newConfig.favicon_url = 'profile_icon.svg';
 
     const formattedConfig = `const CONFIG = ${JSON.stringify(newConfig, null, 2)};\n`;
 
