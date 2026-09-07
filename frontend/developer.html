@@ -1076,6 +1076,7 @@
   <!-- Clerk JavaScript Frontend SDK (Loaded directly from your Clerk instance for full UI components support) -->
   <script async crossorigin="anonymous"
     data-clerk-publishable-key="pk_test_c2hpbmluZy10dXJrZXktMTMyNS5jbGVyay5hY2NvdW50cy5kZXYk"
+    data-clerk-after-sign-out-url="/developer"
     src="https://shining-turkey-1325.clerk.accounts.dev/npm/@clerk/clerk-js@latest/dist/clerk.browser.js"
     type="text/javascript"></script>
 
@@ -1545,7 +1546,7 @@
         }
       }
 
-      async function uploadToCloudinary(file, folder) {
+      async function uploadToCloudinary(file, folder, publicId) {
         var creds = getCloudinaryCredentials();
         if (!creds.cloudName || !creds.preset) return null;
 
@@ -1553,6 +1554,11 @@
         formData.append('file', file);
         formData.append('upload_preset', creds.preset);
         if (folder) formData.append('folder', folder);
+        if (publicId) {
+          formData.append('public_id', publicId);
+          formData.append('overwrite', 'true');
+          formData.append('invalidate', 'true');
+        }
 
         var endpoint = 'https://api.cloudinary.com/v1_1/' + encodeURIComponent(creds.cloudName) + '/auto/upload';
         var res = await fetch(endpoint, {
@@ -1590,7 +1596,7 @@
               statusEl.textContent = '☁️ Uploading to Cloudinary CDN...';
             }
             try {
-              var secureUrl = await uploadToCloudinary(file, 'MyPortfolioA');
+              var secureUrl = await uploadToCloudinary(file, 'MyPortfolioA', 'avatar');
               pendingAvatarData = secureUrl;
               setCustPreviewAvatar(pendingAvatarData);
               if (statusEl) {
@@ -1603,7 +1609,11 @@
               console.warn('[Cloudinary] Upload failed, falling back to local storage:', err);
               if (statusEl) {
                 statusEl.style.color = '#f59e0b';
-                statusEl.textContent = '⚠️ Cloudinary error (' + err.message + ') - Saved locally';
+                if (/preset/i.test(err.message)) {
+                  statusEl.textContent = '⚠️ Cloudinary: Preset "' + creds.preset + '" not found. Create an Unsigned preset in Cloudinary Settings ➔ Upload.';
+                } else {
+                  statusEl.textContent = '⚠️ Cloudinary error (' + err.message + ') - Saved locally';
+                }
               }
             }
           }
@@ -1673,9 +1683,11 @@
 
         var finalUrl = url || 'favicon.png';
         if (thumb) {
+          thumb.onerror = function () { this.onerror = null; this.src = 'favicon.ico'; };
           thumb.src = finalUrl;
         }
         if (tabImg) {
+          tabImg.onerror = function () { this.onerror = null; this.src = 'favicon.ico'; };
           tabImg.src = finalUrl;
         }
         applyBrowserFavicon(finalUrl);
@@ -1736,7 +1748,7 @@
               statusEl.textContent = '☁️ Uploading favicon to Cloudinary...';
             }
             try {
-              var secureUrl = await uploadToCloudinary(file, 'MyPortfolioA/favicons');
+              var secureUrl = await uploadToCloudinary(file, 'MyPortfolioA', 'favicon');
               pendingFaviconData = secureUrl;
               setCustPreviewFavicon(pendingFaviconData);
               if (statusEl) {
@@ -1749,7 +1761,11 @@
               console.warn('[Cloudinary] Favicon upload failed, falling back to local storage:', err);
               if (statusEl) {
                 statusEl.style.color = '#f59e0b';
-                statusEl.textContent = '⚠️ Cloudinary error (' + err.message + ') - Saved locally';
+                if (/preset/i.test(err.message)) {
+                  statusEl.textContent = '⚠️ Cloudinary: Preset "' + creds.preset + '" not found. Create an Unsigned preset in Cloudinary Settings ➔ Upload.';
+                } else {
+                  statusEl.textContent = '⚠️ Cloudinary error (' + err.message + ') - Saved locally';
+                }
               }
             }
           }
@@ -2620,10 +2636,53 @@
         pendingFaviconData = null;
         updateCodeSnippet(updated);
 
-        saveStatusMsg.style.display = 'block';
-        setTimeout(function () {
-          saveStatusMsg.style.display = 'none';
-        }, 3000);
+        var saveStatusMsg = document.getElementById('save-status-msg');
+        if (saveStatusMsg) {
+          saveStatusMsg.style.display = 'block';
+          saveStatusMsg.style.color = '#38bdf8';
+          saveStatusMsg.textContent = '⏳ Saving & syncing universally to Vercel...';
+        }
+
+        /* ── Universal Persistence: Call /api/save-config ── */
+        fetch('/api/save-config', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(updated)
+        })
+        .then(async function (r) {
+          var contentType = r.headers.get('content-type') || '';
+          if (!contentType.includes('application/json')) {
+            var text = await r.text();
+            if (text.includes('<!DOCTYPE') || r.status === 404) {
+              throw new Error('Local server running static-only. Restart with: npm run serve');
+            }
+            throw new Error(text || 'HTTP ' + r.status);
+          }
+          return r.json();
+        })
+        .then(function (res) {
+          if (!saveStatusMsg) return;
+          if (res.pushed) {
+            saveStatusMsg.style.color = '#10b981';
+            saveStatusMsg.textContent = '✓ Saved & Pushed to GitHub! Vercel is now deploying universally (~15-30s).';
+          } else if (res.success) {
+            saveStatusMsg.style.color = '#10b981';
+            saveStatusMsg.textContent = '✓ ' + (res.message || 'Saved to config.js!');
+          } else {
+            throw new Error(res.error || 'Failed to sync');
+          }
+          setTimeout(function () {
+            if (saveStatusMsg) saveStatusMsg.style.display = 'none';
+          }, 6000);
+        })
+        .catch(function (err) {
+          if (!saveStatusMsg) return;
+          saveStatusMsg.style.color = '#f59e0b';
+          saveStatusMsg.textContent = '⚠️ Saved locally in browser (' + err.message + ')';
+          setTimeout(function () {
+            if (saveStatusMsg) saveStatusMsg.style.display = 'none';
+          }, 7000);
+        });
       });
 
       var deniedBox = document.getElementById('denied-box');
@@ -2676,7 +2735,11 @@
 
           var userBtnEl = document.getElementById('clerk-user-button');
           if (userBtnEl && !userBtnEl.hasChildNodes()) {
-            window.Clerk.mountUserButton(userBtnEl);
+            window.Clerk.mountUserButton(userBtnEl, {
+              afterSignOutUrl: window.location.origin + '/developer',
+              fallbackRedirectUrl: window.location.origin + '/developer',
+              signInUrl: window.location.origin + '/developer'
+            });
           }
 
           if (isUserAuthorized(user)) {
@@ -2720,7 +2783,7 @@
               if (seconds <= 0) {
                 clearInterval(redirectCountdownTimer);
                 if (window.Clerk) {
-                  window.Clerk.signOut().finally(function () {
+                  window.Clerk.signOut({ redirectUrl: window.location.origin + '/' }).finally(function () {
                     window.location.replace('/');
                   });
                 } else {
@@ -2733,7 +2796,7 @@
               btnLoginSignout.onclick = function () {
                 if (redirectCountdownTimer) clearInterval(redirectCountdownTimer);
                 if (window.Clerk) {
-                  window.Clerk.signOut().finally(function () {
+                  window.Clerk.signOut({ redirectUrl: window.location.origin + '/' }).finally(function () {
                     window.location.replace('/');
                   });
                 } else {
@@ -2758,7 +2821,12 @@
 
           var signInEl = document.getElementById('clerk-sign-in');
           if (signInEl && !signInEl.hasChildNodes()) {
-            window.Clerk.mountSignIn(signInEl);
+            window.Clerk.mountSignIn(signInEl, {
+              afterSignInUrl: window.location.origin + '/developer',
+              fallbackRedirectUrl: window.location.origin + '/developer',
+              afterSignUpUrl: window.location.origin + '/developer',
+              routing: 'hash'
+            });
           }
         }
       }
@@ -2775,6 +2843,9 @@
 
         window.Clerk.load({
           publishableKey: pubKey,
+          afterSignInUrl: window.location.origin + '/developer',
+          afterSignUpUrl: window.location.origin + '/developer',
+          afterSignOutUrl: window.location.origin + '/developer',
           appearance: {
             variables: {
               colorPrimary: currentAccentColor || '#ff2a5f',

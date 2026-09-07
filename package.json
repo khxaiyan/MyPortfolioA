@@ -5,9 +5,9 @@
   "scripts": {
     "sync": "node backend/sync-env.js",
     "build": "node backend/sync-env.js",
-    "dev": "node backend/sync-env.js && npx serve frontend",
-    "start": "node backend/sync-env.js && npx serve frontend",
-    "serve": "npx serve frontend",
+    "dev": "node backend/sync-env.js && node backend/dev-server.js",
+    "start": "node backend/sync-env.js && node backend/dev-server.js",
+    "serve": "node backend/dev-server.js",
     "inngest:dev": "npx inngest-cli@latest dev -u http://localhost:3000/api/inngest"
   },
   "keywords": [

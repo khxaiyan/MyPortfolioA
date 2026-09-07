@@ -640,7 +640,11 @@
         : (user.username || 'User');
 
       if (userBtnTarget && !userBtnTarget.hasChildNodes()) {
-        window.Clerk.mountUserButton(userBtnTarget);
+        window.Clerk.mountUserButton(userBtnTarget, {
+          afterSignOutUrl: window.location.origin + '/',
+          fallbackRedirectUrl: window.location.origin + '/',
+          signInUrl: window.location.origin + '/'
+        });
       }
 
       if (isUserAuthorized(user)) {
@@ -671,7 +675,7 @@
         var signoutBtn = document.getElementById('btn-denied-signout');
         if (signoutBtn) {
           signoutBtn.onclick = function () {
-            window.Clerk.signOut().then(function () {
+            window.Clerk.signOut({ redirectUrl: window.location.origin + '/' }).then(function () {
               refreshClerkAuthState();
             });
           };
@@ -687,7 +691,12 @@
       var signInTarget = document.getElementById('modal-clerk-sign-in');
       if (window.Clerk && signInTarget && !signInTarget.hasChildNodes() && typeof window.Clerk.mountSignIn === 'function') {
         try {
-          window.Clerk.mountSignIn(signInTarget);
+          window.Clerk.mountSignIn(signInTarget, {
+            afterSignInUrl: window.location.origin + '/',
+            fallbackRedirectUrl: window.location.origin + '/',
+            afterSignUpUrl: window.location.origin + '/',
+            routing: 'hash'
+          });
         } catch (_) { }
       }
     }
@@ -1582,7 +1591,7 @@
     reader.readAsDataURL(file);
   }
 
-  async function uploadToCloudinary(file, folder) {
+  async function uploadToCloudinary(file, folder, publicId) {
     var cloudName = (typeof CONFIG !== 'undefined' && CONFIG.cloudinary_cloud_name) ? CONFIG.cloudinary_cloud_name.trim() : '';
     var preset = (typeof CONFIG !== 'undefined' && CONFIG.cloudinary_upload_preset) ? CONFIG.cloudinary_upload_preset.trim() : '';
     if (!cloudName || !preset) return null;
@@ -1591,6 +1600,11 @@
     formData.append('file', file);
     formData.append('upload_preset', preset);
     if (folder) formData.append('folder', folder);
+    if (publicId) {
+      formData.append('public_id', publicId);
+      formData.append('overwrite', 'true');
+      formData.append('invalidate', 'true');
+    }
 
     var endpoint = 'https://api.cloudinary.com/v1_1/' + encodeURIComponent(cloudName) + '/auto/upload';
     var res = await fetch(endpoint, {
@@ -1619,13 +1633,20 @@
 
       if (cloudName && preset) {
         try {
-          var secureUrl = await uploadToCloudinary(file, 'MyPortfolioA');
+          var secureUrl = await uploadToCloudinary(file, 'MyPortfolioA', 'avatar');
           pendingAvatarData = secureUrl;
           setModalAvatarPreview(pendingAvatarData);
           avatarFileInput.value = '';
           return;
         } catch (err) {
           console.warn('[Cloudinary Modal] Avatar upload failed, falling back to local storage:', err);
+          var saveStatus = document.getElementById('m-save-status');
+          if (saveStatus && /preset/i.test(err.message)) {
+            saveStatus.style.display = 'block';
+            saveStatus.style.color = '#f59e0b';
+            saveStatus.textContent = '⚠️ Cloudinary preset "' + preset + '" not found in "' + cloudName + '". In Cloudinary Settings ➔ Upload, create an Unsigned preset.';
+            setTimeout(function () { saveStatus.style.display = 'none'; }, 7000);
+          }
         }
       }
 
@@ -1661,8 +1682,14 @@
     if (tabTitle) tabTitle.textContent = siteNameVal;
 
     var finalUrl = url || 'favicon.png';
-    if (thumb) thumb.src = finalUrl;
-    if (tabImg) tabImg.src = finalUrl;
+    if (thumb) {
+      thumb.onerror = function () { this.onerror = null; this.src = 'favicon.ico'; };
+      thumb.src = finalUrl;
+    }
+    if (tabImg) {
+      tabImg.onerror = function () { this.onerror = null; this.src = 'favicon.ico'; };
+      tabImg.src = finalUrl;
+    }
     applyPageFavicon(finalUrl);
   }
 
@@ -1717,13 +1744,20 @@
 
       if (cloudName && preset) {
         try {
-          var secureUrl = await uploadToCloudinary(file, 'MyPortfolioA/favicons');
+          var secureUrl = await uploadToCloudinary(file, 'MyPortfolioA', 'favicon');
           pendingFaviconData = secureUrl;
           setModalFaviconPreview(pendingFaviconData);
           faviconFileInput.value = '';
           return;
         } catch (err) {
           console.warn('[Cloudinary Modal] Favicon upload failed, falling back to local storage:', err);
+          var saveStatus = document.getElementById('m-save-status');
+          if (saveStatus && /preset/i.test(err.message)) {
+            saveStatus.style.display = 'block';
+            saveStatus.style.color = '#f59e0b';
+            saveStatus.textContent = '⚠️ Cloudinary preset "' + preset + '" not found in "' + cloudName + '". In Cloudinary Settings ➔ Upload, create an Unsigned preset.';
+            setTimeout(function () { saveStatus.style.display = 'none'; }, 7000);
+          }
         }
       }
 
@@ -1906,10 +1940,50 @@
       var saveStatus = document.getElementById('m-save-status');
       if (saveStatus) {
         saveStatus.style.display = 'block';
-        setTimeout(function () {
-          saveStatus.style.display = 'none';
-        }, 3000);
+        saveStatus.style.color = '#38bdf8';
+        saveStatus.textContent = '⏳ Saving & syncing universally to Vercel...';
       }
+
+      /* ── Universal Persistence: Call /api/save-config ── */
+      fetch('/api/save-config', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(updated)
+      })
+      .then(async function (r) {
+        var contentType = r.headers.get('content-type') || '';
+        if (!contentType.includes('application/json')) {
+          var text = await r.text();
+          if (text.includes('<!DOCTYPE') || r.status === 404) {
+            throw new Error('Local server running static-only. Restart with: npm run serve');
+          }
+          throw new Error(text || 'HTTP ' + r.status);
+        }
+        return r.json();
+      })
+      .then(function (res) {
+        if (!saveStatus) return;
+        if (res.pushed) {
+          saveStatus.style.color = '#10b981';
+          saveStatus.textContent = '✓ Saved & Pushed to GitHub! Vercel is now deploying universally (~15-30s).';
+        } else if (res.success) {
+          saveStatus.style.color = '#10b981';
+          saveStatus.textContent = '✓ ' + (res.message || 'Saved to config.js!');
+        } else {
+          throw new Error(res.error || 'Failed to sync');
+        }
+        setTimeout(function () {
+          if (saveStatus) saveStatus.style.display = 'none';
+        }, 6000);
+      })
+      .catch(function (err) {
+        if (!saveStatus) return;
+        saveStatus.style.color = '#f59e0b';
+        saveStatus.textContent = '⚠️ Saved locally in browser (' + err.message + ')';
+        setTimeout(function () {
+          if (saveStatus) saveStatus.style.display = 'none';
+        }, 7000);
+      });
     });
   }
 
@@ -1923,6 +1997,9 @@
       try {
         await window.Clerk.load({
           publishableKey: pubKey,
+          afterSignInUrl: window.location.origin + '/',
+          afterSignUpUrl: window.location.origin + '/',
+          afterSignOutUrl: window.location.origin + '/',
           appearance: {
             variables: {
               colorPrimary: currentAccentColor || '#ff2a5f',

@@ -1,31 +1,53 @@
 # Dependencies
 node_modules/
+.pnpm-store/
 
-# Environment variables & secrets
+# Environment Variables & Secrets
 .env
+.env.*
 .env.local
 .env.*.local
 keys/.env
+keys/.env.*
 keys/.env.local
 *.pem
 *.key
+*.cert
+
+# Never ignore the example environment template
+!keys/.env.example
+!*.env.example
+
+# Vercel & Inngest Deployment Artifacts
+.vercel/
+.inngest/
+
+# Build & Cache Outputs
+dist/
+build/
+.cache/
+.turbo/
+.temp/
+.tmp/
 
 # Logs
+logs/
+*.log
 npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
 pnpm-debug.log*
 lerna-debug.log*
 
-# Editor & OS files
+# Operating System & Editor Files
 .DS_Store
-Thumbs.db
+.DS_Store?
+._*
+[Tt]humbs.db
+[Dd]esktop.ini
 .vscode/
+!.vscode/extensions.json
 .idea/
 *.swp
 *.swo
-
-# Temporary & build outputs
-dist/
-build/
-.cache/
+*~
