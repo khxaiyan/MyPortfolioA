@@ -326,6 +326,12 @@
       box-shadow: 0 0 10px var(--border-accent-glow, rgba(255, 42, 95, 0.12));
     }
 
+    .preview-box:empty::before {
+      content: "Formatting preview will appear here...";
+      color: var(--ink-faint);
+      font-style: italic;
+    }
+
     .field-grid-2 {
       display: grid;
       grid-template-columns: 1fr 1fr;
@@ -1271,29 +1277,41 @@
       }
 
       function updateLivePreview() {
-        var name = document.getElementById('cust-sitename').value.trim() || 'khxaiyan';
-        var accent = document.getElementById('cust-accent').value.trim();
-        if (wordmarkPreview) {
-          wordmarkPreview.innerHTML = formatWordmark(name, accent);
+        var sitenameEl = document.getElementById('cust-sitename');
+        var accentEl = document.getElementById('cust-accent');
+        var name = (sitenameEl ? sitenameEl.value.trim() : '') || 'khxaiyan';
+        var accent = accentEl ? accentEl.value.trim() : 'x';
+        var wordmarkEl = wordmarkPreview || document.getElementById('wordmark-preview');
+        if (wordmarkEl) {
+          wordmarkEl.innerHTML = formatWordmark(name, accent);
         }
 
         var bioEl = document.getElementById('cust-bio');
-        if (bioPreview && bioEl) {
-          bioPreview.innerHTML = parseRichText(bioEl.value || 'developer in active building mode.');
+        var bioPrev = bioPreview || document.getElementById('bio-preview');
+        if (bioPrev && bioEl) {
+          bioPrev.innerHTML = parseRichText(bioEl.value || 'developer in active building mode. crafting clean web tools & digital experiences.');
           autoResize(bioEl);
         }
 
         var introEl = document.getElementById('cust-intro');
-        if (introPreview && introEl) {
-          introPreview.innerHTML = parseRichText(introEl.value || 'Passionate developer specializing in web apps.');
+        var introPrev = introPreview || document.getElementById('intro-preview');
+        if (introPrev && introEl) {
+          introPrev.innerHTML = parseRichText(introEl.value || 'Passionate developer specializing in building modern web applications, clean user interfaces, and dynamic digital tools.');
           autoResize(introEl);
         }
       }
 
-      document.getElementById('cust-sitename').addEventListener('input', updateLivePreview);
-      document.getElementById('cust-accent').addEventListener('input', updateLivePreview);
-      document.getElementById('cust-bio').addEventListener('input', updateLivePreview);
-      document.getElementById('cust-intro').addEventListener('input', updateLivePreview);
+      var siteInp = document.getElementById('cust-sitename');
+      if (siteInp) siteInp.addEventListener('input', updateLivePreview);
+      var accInp = document.getElementById('cust-accent');
+      if (accInp) accInp.addEventListener('input', updateLivePreview);
+      var bInp = document.getElementById('cust-bio');
+      if (bInp) bInp.addEventListener('input', updateLivePreview);
+      var iInp = document.getElementById('cust-intro');
+      if (iInp) iInp.addEventListener('input', updateLivePreview);
+
+      // Initial render for previews
+      updateLivePreview();
 
       /* ── Theme Switching & Customization Logic ── */
       var currentThemeMode = document.documentElement.getAttribute('data-theme') || 'dark';
@@ -3033,7 +3051,7 @@
         var presetInp = document.getElementById('cust-cloudinary-preset');
         if (presetInp) presetInp.value = cfg.cloudinary_upload_preset || '';
         updateCloudinaryStatusUI();
-        updateMsgStatusUI();
+        updateLivePreview();
 
         /* Render projects in visual manager */
         var activeProjs = [];
