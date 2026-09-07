@@ -12,7 +12,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link
-    href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600&display=swap"
+    href="https://fonts.googleapis.com/css2?family=Cinzel:wght@500;600;700&family=Fira+Code:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500;600&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600;700&family=Montserrat:wght@400;500;600;700&family=Outfit:wght@400;500;600;700&family=Playfair+Display:ital,wght@0,500;0,600;0,700;1,400&family=Plus+Jakarta+Sans:wght@400;500;600;700&family=Poppins:wght@400;500;600;700&family=Sora:wght@400;500;600;700&family=Space+Grotesk:wght@400;500;600;700&family=Syne:wght@500;600;700;800&display=swap"
     rel="stylesheet">
   <link rel="stylesheet" href="style.css?v=2">
   <script src="https://code.iconify.design/iconify-icon/2.1.0/iconify-icon.min.js"></script>
@@ -23,7 +23,7 @@
       try { customCfg = JSON.parse(localStorage.getItem('portfolio_custom_config')); } catch (_) { }
       if (customCfg) {
         var needsUpdate = false;
-        if (customCfg.favicon_url === 'favicon.svg' || customCfg.favicon_url === 'favicon.png' || customCfg.favicon_url === 'favicon.ico' || customCfg.favicon_url === 'profile_icon.svg') {
+        if (!customCfg.favicon_url || customCfg.favicon_url === 'favicon.svg' || customCfg.favicon_url === 'favicon.png' || customCfg.favicon_url === 'favicon.ico' || customCfg.favicon_url === 'profile_icon.svg' || customCfg.favicon_url.indexOf('.webm') !== -1 || customCfg.favicon_url.indexOf('undefined') !== -1) {
           customCfg.favicon_url = 'https://res.cloudinary.com/dqxccz5bn/image/upload/favicon_jzygcw.png';
           needsUpdate = true;
         }
@@ -94,13 +94,26 @@
         root.style.setProperty('--border-accent', hexToRgba(accent, 0.45));
         root.style.setProperty('--border-accent-glow', hexToRgba(accent, 0.12));
       }
-      if (t === 'dark' && bgPreset && PRESETS[bgPreset] && bgPreset !== 'midnight') {
+      if (defTheme === 'dark' && bgPreset && PRESETS[bgPreset] && bgPreset !== 'midnight') {
         var p = PRESETS[bgPreset];
         var root = document.documentElement;
         root.style.setProperty('--bg', p.bg);
         root.style.setProperty('--surface', p.surface);
         root.style.setProperty('--surface-hover', p.surfaceHover);
         root.style.setProperty('--rail', p.rail);
+      }
+
+      var fontFam = themeCfg.font_family || (customCfg && customCfg.font_family) || (typeof CONFIG !== 'undefined' && (CONFIG.font_family || (CONFIG.theme_config && CONFIG.theme_config.font_family))) || 'Space Grotesk';
+      var fontScope = themeCfg.font_scope || (customCfg && customCfg.font_scope) || (typeof CONFIG !== 'undefined' && (CONFIG.font_scope || (CONFIG.theme_config && CONFIG.theme_config.font_scope))) || 'display';
+      if (fontFam) {
+        var isMono = fontFam.toLowerCase().indexOf('mono') !== -1 || fontFam.toLowerCase().indexOf('code') !== -1;
+        var isSerif = fontFam.toLowerCase().indexOf('serif') !== -1 || fontFam.toLowerCase().indexOf('playfair') !== -1 || fontFam.toLowerCase().indexOf('cinzel') !== -1;
+        var fallback = isMono ? 'ui-monospace, monospace' : (isSerif ? 'Georgia, serif' : '-apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif');
+        var fontRule = '"' + fontFam + '", ' + fallback;
+        document.documentElement.style.setProperty('--font-display', fontRule);
+        if (fontScope === 'all') {
+          document.documentElement.style.setProperty('--font-mono', fontRule);
+        }
       }
     }());
   </script>
@@ -828,6 +841,7 @@
               <div class="tab-icon" id="cust-favicon-tab-icon">
                 <img id="cust-favicon-tab-img"
                   src="https://res.cloudinary.com/dqxccz5bn/image/upload/favicon_jzygcw.png" alt="Favicon"
+                  onerror="this.onerror=null;this.src='https://res.cloudinary.com/dqxccz5bn/image/upload/favicon_jzygcw.png';"
                   style="width:16px; height:16px; border-radius:3px; object-fit:cover; display:block;">
               </div>
               <span class="tab-title" id="cust-favicon-tab-title">khxaiyan</span>
@@ -841,6 +855,7 @@
               id="cust-favicon-upload-wrap" title="Click to upload custom favicon">
               <img id="cust-favicon-preview" src="https://res.cloudinary.com/dqxccz5bn/image/upload/favicon_jzygcw.png"
                 alt="Favicon preview" draggable="false"
+                onerror="this.onerror=null;this.src='https://res.cloudinary.com/dqxccz5bn/image/upload/favicon_jzygcw.png';"
                 style="width:100%; height:100%; object-fit:cover; display:block; pointer-events:none; -webkit-user-drag:none; user-select:none;">
               <div id="cust-favicon-overlay"
                 style="position:absolute; inset:0; background:rgba(0,0,0,0.55); display:flex; flex-direction:column; align-items:center; justify-content:center; opacity:0; transition:opacity 0.2s; gap:2px; pointer-events:none;">
@@ -1102,6 +1117,151 @@
                     E-Commerce Website fully customizable by Seller
                   </p>
                 </div>
+              </div>
+            </div>
+          </div>
+
+        </div>
+      </div>
+
+      <!-- 0.5 // typography & font -->
+      <div class="cust-section">
+        <div style="display:flex; align-items:center; justify-content:space-between; margin-bottom:8px;">
+          <p class="eyebrow" style="margin:0;">// typography & font</p>
+          <div style="display:flex; align-items:center; gap:8px;">
+            <button type="button" id="btn-reset-font" class="toolbar-btn"
+              style="white-space:nowrap; padding:4px 10px; font-size:0.7rem;"
+              title="Reset back to default Space Grotesk">
+              <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                stroke-linecap="round" stroke-linejoin="round">
+                <path d="M3 12a9 9 0 1 0 9-9 9.75 9.75 0 0 0-6.74 2.74L3 8" />
+                <path d="M3 3v5h5" />
+              </svg>
+              <span>Reset Font</span>
+            </button>
+          </div>
+        </div>
+
+        <div class="surface-card cust-card">
+          <!-- Active Font Status Pill & Scope -->
+          <div
+            style="display:flex; align-items:center; justify-content:space-between; flex-wrap:wrap; gap:8px; padding-bottom:12px; border-bottom:1px solid var(--line);">
+            <div style="display:flex; align-items:center; gap:8px;">
+              <span class="field-label" style="font-weight:600; color:var(--ink); margin:0;">Active Font:</span>
+              <span id="active-font-badge"
+                style="display:inline-flex; align-items:center; gap:6px; padding:4px 10px; border-radius:var(--radius-sm); background:var(--red-dim); border:1px solid var(--red); color:var(--ink); font-size:0.75rem; font-weight:600; font-family:var(--font-display);">
+                <span style="width:7px; height:7px; border-radius:50%; background:var(--red);"></span>
+                <span id="active-font-name">Space Grotesk</span>
+              </span>
+            </div>
+            <div style="display:flex; align-items:center; gap:6px;">
+              <span style="font-size:0.7rem; color:var(--ink-faint);">Scope:</span>
+              <div style="display:flex; gap:4px;" id="font-scope-selector">
+                <button type="button" class="font-scope-btn active" data-scope="display"
+                  title="Applies to headers, wordmark, titles, buttons, cards">
+                  <span>Display & Headings</span>
+                </button>
+                <button type="button" class="font-scope-btn" data-scope="all"
+                  title="Applies to entire site including body text">
+                  <span>Entire Site</span>
+                </button>
+              </div>
+            </div>
+          </div>
+
+          <!-- Curated Typeface Presets Grid -->
+          <div class="field-group">
+            <div style="display:flex; align-items:center; justify-content:space-between;">
+              <label class="field-label" style="font-weight:600; color:var(--ink); margin-bottom:2px;">Curated Typefaces</label>
+              <span style="font-size:0.68rem; color:var(--ink-faint); font-family:var(--font-mono);">12 Google Fonts</span>
+            </div>
+
+            <div class="font-presets-grid" id="font-presets-grid">
+              <!-- Rendered dynamically by JavaScript -->
+            </div>
+          </div>
+
+          <!-- Custom Google Font Input -->
+          <div class="field-group" style="padding-top:10px; border-top:1px solid var(--line);">
+            <div style="display:flex; align-items:center; justify-content:space-between; margin-bottom:4px;">
+              <label class="field-label" for="cust-custom-font" style="font-weight:600; color:var(--ink); margin-bottom:0;">Custom Google Font</label>
+              <a href="https://fonts.google.com" target="_blank" rel="noopener noreferrer"
+                style="font-size:0.68rem; color:var(--red); text-decoration:none; display:flex; align-items:center; gap:3px;">
+                <span>Explore 1,700+ Google Fonts</span>
+                <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                  stroke-linecap="round" stroke-linejoin="round">
+                  <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6" />
+                  <polyline points="15 3 21 3 21 9" />
+                  <line x1="10" y1="14" x2="21" y2="3" />
+                </svg>
+              </a>
+            </div>
+            <p style="font-size:0.72rem; color:var(--ink-faint); margin:0 0 8px;">Type any font name from Google Fonts (e.g. <code style="font-family:var(--font-mono); color:var(--ink);">Urbanist</code>, <code style="font-family:var(--font-mono); color:var(--ink);">Manrope</code>, <code style="font-family:var(--font-mono); color:var(--ink);">Orbitron</code>, <code style="font-family:var(--font-mono); color:var(--ink);">Raleway</code>):</p>
+            <div style="display:flex; gap:8px;">
+              <input type="text" class="field-input" id="cust-custom-font" placeholder="e.g. Urbanist or Orbitron" style="flex:1;">
+              <button type="button" id="btn-apply-custom-font" class="toolbar-btn"
+                style="padding:0 16px; background:var(--red-solid); color:#fff; border:none; font-weight:500; font-size:0.75rem; white-space:nowrap; border-radius:var(--radius-sm); cursor:pointer;">
+                Apply Font
+              </button>
+            </div>
+            <span id="custom-font-status" style="font-size:0.7rem; display:none; margin-top:4px;"></span>
+          </div>
+
+          <!-- Interactive Live Font Preview Showcase -->
+          <div style="padding-top:12px; border-top:1px solid var(--line);">
+            <div style="display:flex; align-items:center; justify-content:space-between; margin-bottom:8px;">
+              <span class="field-label" style="font-weight:600; color:var(--ink); margin-bottom:0;">Live Font Showcase</span>
+              <span style="font-size:0.68rem; color:var(--ink-dim); font-family:var(--font-mono);" id="font-preview-name-tag">Rendered in Space Grotesk</span>
+            </div>
+
+            <div id="font-live-preview-box"
+              style="background:var(--bg); border:1px solid var(--line); border-radius:var(--radius); padding:16px; display:flex; flex-direction:column; gap:12px;">
+              <!-- Wordmark Sample -->
+              <div style="display:flex; align-items:center; justify-content:space-between; padding-bottom:10px; border-bottom:1px dashed var(--line);">
+                <span style="font-size:0.7rem; color:var(--ink-faint); font-family:var(--font-mono);">Wordmark:</span>
+                <span id="font-prev-wordmark"
+                  style="font-family:var(--font-display); font-weight:700; font-size:1.35rem; color:var(--ink); letter-spacing:-0.02em;">
+                  kh<span class="glyph-5">x</span>aiyan
+                </span>
+              </div>
+
+              <!-- Heading Sample -->
+              <div>
+                <span style="font-size:0.68rem; color:var(--ink-faint); font-family:var(--font-mono); display:block; margin-bottom:3px;">Heading (h1 / Title):</span>
+                <h3 id="font-prev-heading"
+                  style="font-family:var(--font-display); font-size:1.1rem; font-weight:700; color:var(--ink); margin:0; line-height:1.3;">
+                  Designing the future with clean code &amp; modern aesthetics.
+                </h3>
+              </div>
+
+              <!-- Project Title & Subtitle Sample -->
+              <div style="background:var(--surface); border:1px solid var(--line); border-radius:var(--radius-sm); padding:10px 12px; display:flex; align-items:center; gap:10px;">
+                <div
+                  style="width:30px; height:30px; border-radius:8px; border:1px solid var(--red); background:var(--red-dim); color:var(--red); display:flex; align-items:center; justify-content:center; flex-shrink:0; font-size:0.9rem;">
+                  ✦
+                </div>
+                <div style="flex:1; min-width:0;">
+                  <div style="display:flex; align-items:center; justify-content:space-between;">
+                    <span id="font-prev-card-title"
+                      style="font-family:var(--font-display); font-weight:600; font-size:0.86rem; color:var(--ink);">
+                      CarryOn E-Commerce Platform
+                    </span>
+                    <span style="font-size:0.65rem; color:var(--success); font-family:var(--font-mono);">Active</span>
+                  </div>
+                  <p id="font-prev-card-desc"
+                    style="font-size:0.72rem; color:var(--ink-dim); margin:2px 0 0; line-height:1.4;">
+                    Full-stack responsive web application with fast real-time synchronization.
+                  </p>
+                </div>
+              </div>
+
+              <!-- Character Set / Glyphs Sample -->
+              <div
+                style="display:flex; align-items:center; justify-content:space-between; flex-wrap:wrap; gap:6px; font-size:0.72rem; color:var(--ink-faint); font-family:var(--font-display);"
+                id="font-prev-charset">
+                <span>ABCDEFGHIJKLMNOPQRSTUVWXYZ</span>
+                <span>0123456789</span>
+                <span>&amp; * # @ ! ?</span>
               </div>
             </div>
           </div>
@@ -1649,6 +1809,10 @@
           introPrev.innerHTML = parseRichText(introEl.value || 'Passionate developer specializing in building modern web applications, clean user interfaces, and dynamic digital tools.');
           autoResize(introEl);
         }
+
+        if (typeof updateLiveFontShowcase === 'function' && typeof currentFontFamily !== 'undefined') {
+          updateLiveFontShowcase(currentFontFamily);
+        }
       }
 
       var siteInp = document.getElementById('cust-sitename');
@@ -2104,6 +2268,225 @@
 
       // Initial render for swatches
       renderAccentSwatches();
+
+      /* ── Typography & Font Customization ── */
+      var DEFAULT_FONT = 'Space Grotesk';
+      var currentFontFamily = DEFAULT_FONT;
+      var currentFontScope = 'display'; // 'display' or 'all'
+
+      var CURATED_FONTS = [
+        { name: 'Space Grotesk', category: 'Grotesk', sample: 'Aa Bb Cc 123', fallback: 'sans-serif' },
+        { name: 'Inter', category: 'Modern Sans', sample: 'Aa Bb Cc 123', fallback: 'sans-serif' },
+        { name: 'Outfit', category: 'Geometric', sample: 'Aa Bb Cc 123', fallback: 'sans-serif' },
+        { name: 'Plus Jakarta Sans', category: 'Clean Sans', sample: 'Aa Bb Cc 123', fallback: 'sans-serif' },
+        { name: 'Poppins', category: 'Friendly', sample: 'Aa Bb Cc 123', fallback: 'sans-serif' },
+        { name: 'Syne', category: 'Brutalist', sample: 'Aa Bb Cc 123', fallback: 'sans-serif' },
+        { name: 'Sora', category: 'Cyber Sans', sample: 'Aa Bb Cc 123', fallback: 'sans-serif' },
+        { name: 'JetBrains Mono', category: 'Monospace', sample: 'Aa Bb Cc 123', fallback: 'monospace' },
+        { name: 'Playfair Display', category: 'Luxury Serif', sample: 'Aa Bb Cc 123', fallback: 'serif' },
+        { name: 'Montserrat', category: 'Classic', sample: 'Aa Bb Cc 123', fallback: 'sans-serif' },
+        { name: 'Cinzel', category: 'Epic Serif', sample: 'Aa Bb Cc 123', fallback: 'serif' },
+        { name: 'Fira Code', category: 'Dev Mono', sample: 'Aa Bb Cc 123', fallback: 'monospace' }
+      ];
+
+      function loadGoogleFont(fontName) {
+        if (!fontName || fontName === 'IBM Plex Mono') return;
+        var slug = fontName.replace(/[^a-zA-Z0-9]/g, '-').toLowerCase();
+        var linkId = 'dyn-font-' + slug;
+        if (document.getElementById(linkId)) return;
+        var l = document.createElement('link');
+        l.id = linkId;
+        l.rel = 'stylesheet';
+        l.href = 'https://fonts.googleapis.com/css2?family=' + encodeURIComponent(fontName).replace(/%20/g, '+') + ':wght@400;500;600;700&display=swap';
+        document.head.appendChild(l);
+      }
+
+      function setSiteFont(fontName, scope, skipStatus) {
+        if (!fontName) fontName = DEFAULT_FONT;
+        fontName = fontName.trim();
+        loadGoogleFont(fontName);
+
+        currentFontFamily = fontName;
+        if (scope) currentFontScope = scope;
+
+        var isMono = fontName.toLowerCase().indexOf('mono') !== -1 || fontName.toLowerCase().indexOf('code') !== -1;
+        var isSerif = fontName.toLowerCase().indexOf('serif') !== -1 || fontName.toLowerCase().indexOf('playfair') !== -1 || fontName.toLowerCase().indexOf('cinzel') !== -1;
+        var fallback = isMono ? 'ui-monospace, monospace' : (isSerif ? 'Georgia, serif' : '-apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif');
+        var fontRule = '"' + fontName + '", ' + fallback;
+
+        var root = document.documentElement;
+        root.style.setProperty('--font-display', fontRule);
+        if (currentFontScope === 'all') {
+          root.style.setProperty('--font-mono', fontRule);
+        } else {
+          root.style.setProperty('--font-mono', "'IBM Plex Mono', ui-monospace, monospace");
+        }
+
+        updateFontUI(fontName, currentFontScope);
+        updateLiveFontShowcase(fontName);
+
+        // Update wordmark previews across the page
+        var wmPrev = document.getElementById('wordmark-preview');
+        if (wmPrev) wmPrev.style.fontFamily = fontRule;
+        var themePrevTitle = document.getElementById('theme-prev-title');
+        if (themePrevTitle) themePrevTitle.style.fontFamily = fontRule;
+
+        if (!skipStatus) {
+          var statusEl = document.getElementById('custom-font-status');
+          if (statusEl) {
+            statusEl.style.display = 'block';
+            statusEl.style.color = 'var(--success)';
+            statusEl.textContent = '✓ Font "' + fontName + '" loaded & applied!';
+            setTimeout(function () {
+              if (statusEl) statusEl.style.display = 'none';
+            }, 3500);
+          }
+        }
+      }
+
+      function renderFontPresets() {
+        var container = document.getElementById('font-presets-grid');
+        if (!container) return;
+        container.innerHTML = '';
+
+        CURATED_FONTS.forEach(function (f) {
+          var btn = document.createElement('button');
+          btn.type = 'button';
+          btn.className = 'font-card-preset' + (f.name.toLowerCase() === currentFontFamily.toLowerCase() ? ' active' : '');
+          btn.setAttribute('data-font', f.name);
+          btn.style.fontFamily = '"' + f.name + '", ' + f.fallback;
+
+          var hdr = document.createElement('div');
+          hdr.className = 'fcp-header';
+          var nameSpan = document.createElement('span');
+          nameSpan.className = 'fcp-name';
+          nameSpan.textContent = f.name;
+          var tagSpan = document.createElement('span');
+          tagSpan.className = 'fcp-tag';
+          tagSpan.textContent = f.category;
+          hdr.appendChild(nameSpan);
+          hdr.appendChild(tagSpan);
+
+          var sampleDiv = document.createElement('div');
+          sampleDiv.className = 'fcp-sample';
+          sampleDiv.textContent = f.sample;
+
+          btn.appendChild(hdr);
+          btn.appendChild(sampleDiv);
+          container.appendChild(btn);
+        });
+      }
+
+      function updateFontUI(fontName, scope) {
+        var nameSpan = document.getElementById('active-font-name');
+        var badge = document.getElementById('active-font-badge');
+        if (nameSpan) nameSpan.textContent = fontName;
+        if (badge) badge.style.fontFamily = '"' + fontName + '", sans-serif';
+
+        var cards = document.querySelectorAll('#font-presets-grid .font-card-preset');
+        var isCurated = false;
+        cards.forEach(function (card) {
+          var f = card.getAttribute('data-font');
+          if (f && f.toLowerCase() === fontName.toLowerCase()) {
+            card.classList.add('active');
+            isCurated = true;
+          } else {
+            card.classList.remove('active');
+          }
+        });
+
+        var customInp = document.getElementById('cust-custom-font');
+        if (customInp && !isCurated) {
+          customInp.value = fontName;
+        }
+
+        var scopeBtns = document.querySelectorAll('#font-scope-selector .font-scope-btn');
+        scopeBtns.forEach(function (btn) {
+          if (btn.getAttribute('data-scope') === scope) {
+            btn.classList.add('active');
+          } else {
+            btn.classList.remove('active');
+          }
+        });
+      }
+
+      function updateLiveFontShowcase(fontName) {
+        var isMono = fontName.toLowerCase().indexOf('mono') !== -1 || fontName.toLowerCase().indexOf('code') !== -1;
+        var isSerif = fontName.toLowerCase().indexOf('serif') !== -1 || fontName.toLowerCase().indexOf('playfair') !== -1 || fontName.toLowerCase().indexOf('cinzel') !== -1;
+        var fallback = isMono ? 'ui-monospace, monospace' : (isSerif ? 'Georgia, serif' : '-apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif');
+        var fontRule = '"' + fontName + '", ' + fallback;
+
+        var nameTag = document.getElementById('font-preview-name-tag');
+        if (nameTag) nameTag.textContent = 'Rendered in ' + fontName;
+
+        var prevBox = document.getElementById('font-live-preview-box');
+        if (prevBox) {
+          var els = prevBox.querySelectorAll('#font-prev-wordmark, #font-prev-heading, #font-prev-card-title, #font-prev-charset');
+          els.forEach(function (el) {
+            el.style.fontFamily = fontRule;
+          });
+        }
+
+        var sitenameInp = document.getElementById('cust-sitename');
+        var accentInp = document.getElementById('cust-accent');
+        var name = (sitenameInp ? sitenameInp.value.trim() : '') || 'khxaiyan';
+        var accent = (accentInp ? accentInp.value.trim() : '') || 'x';
+        var fontPrevWordmark = document.getElementById('font-prev-wordmark');
+        if (fontPrevWordmark) {
+          fontPrevWordmark.innerHTML = formatWordmark(name, accent);
+        }
+      }
+
+      // Font presets click delegation
+      var fontPresetsGrid = document.getElementById('font-presets-grid');
+      if (fontPresetsGrid) {
+        fontPresetsGrid.addEventListener('click', function (e) {
+          var btn = e.target.closest('.font-card-preset');
+          if (!btn) return;
+          var f = btn.getAttribute('data-font');
+          if (f) setSiteFont(f, currentFontScope);
+        });
+      }
+
+      // Font scope selector
+      var fontScopeSelector = document.getElementById('font-scope-selector');
+      if (fontScopeSelector) {
+        fontScopeSelector.addEventListener('click', function (e) {
+          var btn = e.target.closest('.font-scope-btn');
+          if (!btn) return;
+          var s = btn.getAttribute('data-scope');
+          if (s) setSiteFont(currentFontFamily, s);
+        });
+      }
+
+      // Apply custom font input & enter key
+      var btnApplyCustomFont = document.getElementById('btn-apply-custom-font');
+      var custCustomFontInput = document.getElementById('cust-custom-font');
+      if (btnApplyCustomFont && custCustomFontInput) {
+        var handleCustomFont = function () {
+          var val = custCustomFontInput.value.trim();
+          if (!val) return;
+          setSiteFont(val, currentFontScope);
+        };
+        btnApplyCustomFont.addEventListener('click', handleCustomFont);
+        custCustomFontInput.addEventListener('keydown', function (e) {
+          if (e.key === 'Enter') {
+            e.preventDefault();
+            handleCustomFont();
+          }
+        });
+      }
+
+      // Reset font button
+      var btnResetFont = document.getElementById('btn-reset-font');
+      if (btnResetFont) {
+        btnResetFont.addEventListener('click', function () {
+          if (custCustomFontInput) custCustomFontInput.value = '';
+          setSiteFont(DEFAULT_FONT, 'display');
+        });
+      }
+
+      renderFontPresets();
 
       /* ── Profile Picture Color Eyedropper Modal ── */
       var avatarModal = document.getElementById('avatar-color-modal');
@@ -2741,11 +3124,24 @@
         var siteNameVal = (document.getElementById('cust-sitename') || {}).value || 'khxaiyan';
         if (tabTitle) tabTitle.textContent = siteNameVal;
 
-        var finalUrl = (url && url !== 'profile_icon.svg') ? url : 'https://res.cloudinary.com/dqxccz5bn/image/upload/favicon_jzygcw.png';
+        var defaultFavicon = 'https://res.cloudinary.com/dqxccz5bn/image/upload/favicon_jzygcw.png';
+        var finalUrl = (url && typeof url === 'string' && url.trim() && url !== 'profile_icon.svg' && url !== 'favicon.svg' && url !== 'favicon.png' && url !== 'favicon.ico') ? url.trim() : defaultFavicon;
+        if (typeof isWebmSource === 'function' && isWebmSource(finalUrl)) {
+          finalUrl = defaultFavicon;
+        }
+
         if (thumb) {
+          thumb.onerror = function () {
+            this.onerror = null;
+            this.src = defaultFavicon;
+          };
           thumb.src = finalUrl;
         }
         if (tabImg) {
+          tabImg.onerror = function () {
+            this.onerror = null;
+            this.src = defaultFavicon;
+          };
           tabImg.src = finalUrl;
         }
         applyBrowserFavicon(finalUrl);
@@ -2843,13 +3239,30 @@
 
       if (faviconSyncAvatarBtn) {
         faviconSyncAvatarBtn.addEventListener('click', function () {
+          var defaultFavicon = 'https://res.cloudinary.com/dqxccz5bn/image/upload/favicon_jzygcw.png';
+          var avatarVideo = document.querySelector('#cust-avatar-upload-wrap video');
+          if (avatarVideo) {
+            try {
+              var c = document.createElement('canvas');
+              c.width = 128;
+              c.height = 128;
+              var ctx = c.getContext('2d');
+              ctx.drawImage(avatarVideo, 0, 0, 128, 128);
+              pendingFaviconData = c.toDataURL('image/png');
+              setCustPreviewFavicon(pendingFaviconData);
+              return;
+            } catch (_) { }
+          }
           var avatarSrc = pendingAvatarData;
           if (!avatarSrc) {
             var currentAvatarImg = document.getElementById('cust-avatar-preview');
             avatarSrc = (currentAvatarImg && currentAvatarImg.src && !currentAvatarImg.src.includes('profile_icon.svg')) ? currentAvatarImg.src : 'https://res.cloudinary.com/dqxccz5bn/image/upload/profile_icon_wf7thb.svg';
           }
-          if (avatarSrc) {
+          if (avatarSrc && !(typeof isWebmSource === 'function' && isWebmSource(avatarSrc))) {
             pendingFaviconData = avatarSrc;
+            setCustPreviewFavicon(pendingFaviconData);
+          } else {
+            pendingFaviconData = defaultFavicon;
             setCustPreviewFavicon(pendingFaviconData);
           }
         });
@@ -3907,12 +4320,16 @@
         currentThemeMode = themeCfg.mode || document.documentElement.getAttribute('data-theme') || localStorage.getItem('theme') || (cfg.default_theme || 'dark');
         currentAccentColor = themeCfg.accent_color || cfg.accent_color || (typeof CONFIG !== 'undefined' && CONFIG.accent_color) || '#ff2a5f';
         currentBgPreset = themeCfg.bg_preset || 'midnight';
+        currentFontFamily = themeCfg.font_family || cfg.font_family || (typeof CONFIG !== 'undefined' && (CONFIG.font_family || (CONFIG.theme_config && CONFIG.theme_config.font_family))) || DEFAULT_FONT;
+        currentFontScope = themeCfg.font_scope || cfg.font_scope || (typeof CONFIG !== 'undefined' && (CONFIG.font_scope || (CONFIG.theme_config && CONFIG.theme_config.font_scope))) || 'display';
         if (cfg.accent_palette && Array.isArray(cfg.accent_palette) && cfg.accent_palette.length > 0) {
           currentPalette = cfg.accent_palette.slice();
         } else if (themeCfg.accent_palette && Array.isArray(themeCfg.accent_palette) && themeCfg.accent_palette.length > 0) {
           currentPalette = themeCfg.accent_palette.slice();
         }
         renderAccentSwatches();
+        renderFontPresets();
+        setSiteFont(currentFontFamily, currentFontScope, true);
         document.documentElement.setAttribute('data-theme', currentThemeMode);
         applyThemeColors(currentAccentColor, currentBgPreset, currentThemeMode);
         updateThemeSelectionUI(currentThemeMode, currentAccentColor, currentBgPreset);
@@ -4025,11 +4442,15 @@
           default_theme: currentThemeMode,
           accent_color: currentAccentColor,
           accent_palette: currentPalette,
+          font_family: currentFontFamily,
+          font_scope: currentFontScope,
           theme_config: {
             mode: currentThemeMode,
             accent_color: currentAccentColor,
             accent_palette: currentPalette,
-            bg_preset: currentBgPreset
+            bg_preset: currentBgPreset,
+            font_family: currentFontFamily,
+            font_scope: currentFontScope
           },
           cf_analytics: (typeof CONFIG !== 'undefined' && CONFIG.cf_analytics) ? CONFIG.cf_analytics : false,
           web3forms_access_key: document.getElementById('cust-web3forms').value.trim() || 'd36ee933-00cb-453e-aa38-b18ee60ce5d1',

@@ -169,7 +169,36 @@
   currentAccentColor = themeCfg.accent_color || (customCfg && customCfg.accent_color) || (typeof CONFIG !== 'undefined' && CONFIG.accent_color) || '#ff2a5f';
   currentBgPreset = themeCfg.bg_preset || (typeof CONFIG !== 'undefined' && CONFIG.theme_config && CONFIG.theme_config.bg_preset) || 'midnight';
 
+  var currentFontFamily = themeCfg.font_family || (customCfg && customCfg.font_family) || (typeof CONFIG !== 'undefined' && (CONFIG.font_family || (CONFIG.theme_config && CONFIG.theme_config.font_family))) || 'Space Grotesk';
+  var currentFontScope = themeCfg.font_scope || (customCfg && customCfg.font_scope) || (typeof CONFIG !== 'undefined' && (CONFIG.font_scope || (CONFIG.theme_config && CONFIG.theme_config.font_scope))) || 'display';
+
+  function applySiteFont(fontName, scope) {
+    if (!fontName) fontName = 'Space Grotesk';
+    fontName = fontName.trim();
+    var slug = fontName.replace(/[^a-zA-Z0-9]/g, '-').toLowerCase();
+    var linkId = 'dyn-font-' + slug;
+    if (!document.getElementById(linkId)) {
+      var l = document.createElement('link');
+      l.id = linkId;
+      l.rel = 'stylesheet';
+      l.href = 'https://fonts.googleapis.com/css2?family=' + encodeURIComponent(fontName).replace(/%20/g, '+') + ':wght@400;500;600;700&display=swap';
+      document.head.appendChild(l);
+    }
+    var isMono = fontName.toLowerCase().indexOf('mono') !== -1 || fontName.toLowerCase().indexOf('code') !== -1;
+    var isSerif = fontName.toLowerCase().indexOf('serif') !== -1 || fontName.toLowerCase().indexOf('playfair') !== -1 || fontName.toLowerCase().indexOf('cinzel') !== -1;
+    var fallback = isMono ? 'ui-monospace, monospace' : (isSerif ? 'Georgia, serif' : '-apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif');
+    var fontRule = '"' + fontName + '", ' + fallback;
+    var rootEl = document.documentElement;
+    rootEl.style.setProperty('--font-display', fontRule);
+    if (scope === 'all') {
+      rootEl.style.setProperty('--font-mono', fontRule);
+    } else {
+      rootEl.style.setProperty('--font-mono', "'IBM Plex Mono', ui-monospace, monospace");
+    }
+  }
+
   applyTheme(currentThemeMode);
+  applySiteFont(currentFontFamily, currentFontScope);
 
   function syncThemeIfAdmin(newMode) {
     var cfg = Object.assign({}, typeof CONFIG !== 'undefined' ? CONFIG : {});
@@ -182,6 +211,10 @@
     cfg.theme_config.mode = newMode;
     cfg.theme_config.accent_color = currentAccentColor;
     cfg.theme_config.bg_preset = currentBgPreset;
+    cfg.font_family = currentFontFamily;
+    cfg.font_scope = currentFontScope;
+    cfg.theme_config.font_family = currentFontFamily;
+    cfg.theme_config.font_scope = currentFontScope;
     try { localStorage.setItem('portfolio_custom_config', JSON.stringify(cfg)); } catch (_) {}
     if (typeof CONFIG !== 'undefined') Object.assign(CONFIG, cfg);
   }
@@ -1981,10 +2014,14 @@
         project_links: projectLinks,
         default_theme: currentThemeMode,
         accent_color: currentAccentColor,
+        font_family: currentFontFamily,
+        font_scope: currentFontScope,
         theme_config: {
           mode: currentThemeMode,
           accent_color: currentAccentColor,
-          bg_preset: currentBgPreset
+          bg_preset: currentBgPreset,
+          font_family: currentFontFamily,
+          font_scope: currentFontScope
         },
         cf_analytics: (typeof CONFIG !== 'undefined' && CONFIG.cf_analytics) ? CONFIG.cf_analytics : false,
         web3forms_access_key: (typeof CONFIG !== 'undefined' && CONFIG.web3forms_access_key) ? CONFIG.web3forms_access_key : 'd36ee933-00cb-453e-aa38-b18ee60ce5d1',

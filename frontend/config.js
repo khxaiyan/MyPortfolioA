@@ -61,6 +61,8 @@ const CONFIG = {
   },
   "default_theme": "dark",
   "accent_color": "#ff2a5f",
+  "font_family": "Space Grotesk",
+  "font_scope": "display",
   "accent_palette": [
     "#ff2a5f",
     "#00f0ff",
@@ -86,7 +88,9 @@ const CONFIG = {
       "#ec4899",
       "#e2e8f0"
     ],
-    "bg_preset": "midnight"
+    "bg_preset": "midnight",
+    "font_family": "Space Grotesk",
+    "font_scope": "display"
   },
   "cf_analytics": false,
   "web3forms_access_key": "d36ee933-00cb-453e-aa38-b18ee60ce5d1",

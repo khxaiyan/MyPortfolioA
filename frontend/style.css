@@ -1718,6 +1718,105 @@ select, option, optgroup {
   font-family: sans-serif;
 }
 
+/* ── Typography & Font Customizer ── */
+.font-presets-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(138px, 1fr));
+  gap: 8px;
+  width: 100%;
+}
+
+.font-card-preset {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  padding: 9px 12px;
+  background: var(--bg);
+  border: 1px solid var(--line);
+  border-radius: var(--radius-sm);
+  cursor: pointer;
+  text-align: left;
+  transition: all 0.18s cubic-bezier(0.16, 1, 0.3, 1);
+  position: relative;
+  outline: none;
+  width: 100%;
+}
+
+.font-card-preset:hover {
+  border-color: var(--border-accent, var(--red));
+  background: var(--surface-hover);
+  transform: translateY(-1px);
+}
+
+.font-card-preset.active {
+  border-color: var(--red);
+  background: var(--red-dim);
+  box-shadow: 0 0 12px var(--border-accent-glow, rgba(255, 42, 95, 0.2));
+}
+
+.font-card-preset .fcp-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+  margin-bottom: 3px;
+}
+
+.font-card-preset .fcp-name {
+  font-size: 0.78rem;
+  font-weight: 600;
+  color: var(--ink);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.font-card-preset .fcp-tag {
+  font-size: 0.6rem;
+  color: var(--ink-faint);
+  font-family: var(--font-mono);
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+}
+
+.font-card-preset.active .fcp-tag {
+  color: var(--red);
+  font-weight: 700;
+}
+
+.font-card-preset .fcp-sample {
+  font-size: 0.72rem;
+  color: var(--ink-dim);
+  line-height: 1.25;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  width: 100%;
+}
+
+.font-scope-btn {
+  padding: 4px 10px;
+  font-size: 0.68rem;
+  font-family: var(--font-mono);
+  background: var(--bg);
+  border: 1px solid var(--line);
+  border-radius: var(--radius-sm);
+  color: var(--ink-faint);
+  cursor: pointer;
+  transition: all 0.15s ease;
+}
+
+.font-scope-btn:hover {
+  color: var(--ink);
+  border-color: var(--line-strong);
+}
+
+.font-scope-btn.active {
+  background: var(--red-dim);
+  border-color: var(--red);
+  color: var(--ink);
+  font-weight: 600;
+}
 
 /* ── Utility ── */
 .sr-only {
