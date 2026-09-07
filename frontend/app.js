@@ -69,22 +69,13 @@
   }
 
   function applyTheme(t) {
-    var nextMode = t === 'light' ? 'light' : 'dark';
-    var switchTheme = function () {
-      currentThemeMode = nextMode;
-      root.setAttribute('data-theme', currentThemeMode);
-      localStorage.setItem('theme', currentThemeMode);
-      if (metaClr) metaClr.content = currentThemeMode === 'dark' ? (BG_PRESETS[currentBgPreset] ? BG_PRESETS[currentBgPreset].bg : '#0a0a0e') : '#f7f5f1';
-      renderHcaptcha(currentThemeMode);
-      applyThemeColors(currentAccentColor, currentBgPreset, currentThemeMode);
-      updateModalThemeUI();
-    };
-
-    if (document.startViewTransition) {
-      document.startViewTransition(switchTheme);
-    } else {
-      switchTheme();
-    }
+    currentThemeMode = t === 'light' ? 'light' : 'dark';
+    root.setAttribute('data-theme', currentThemeMode);
+    localStorage.setItem('theme', currentThemeMode);
+    if (metaClr) metaClr.content = currentThemeMode === 'dark' ? (BG_PRESETS[currentBgPreset] ? BG_PRESETS[currentBgPreset].bg : '#0a0a0e') : '#f7f5f1';
+    renderHcaptcha(currentThemeMode);
+    applyThemeColors(currentAccentColor, currentBgPreset, currentThemeMode);
+    updateModalThemeUI();
   }
 
   /* ─── Dynamic Themeable hCaptcha ─── */
@@ -236,15 +227,6 @@
     });
     aw.addEventListener('keydown', function (e) {
       if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); aw.click(); }
-    });
-  }
-
-  var themeToggleBtn = document.getElementById('theme-toggle');
-  if (themeToggleBtn) {
-    themeToggleBtn.addEventListener('click', function () {
-      var nextTheme = root.getAttribute('data-theme') === 'dark' ? 'light' : 'dark';
-      applyTheme(nextTheme);
-      syncThemeIfAdmin(nextTheme);
     });
   }
 

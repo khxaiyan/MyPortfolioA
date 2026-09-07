@@ -14,7 +14,7 @@
   <link
     href="https://fonts.googleapis.com/css2?family=Cinzel:wght@500;600;700&family=Fira+Code:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500;600&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600;700&family=Montserrat:wght@400;500;600;700&family=Outfit:wght@400;500;600;700&family=Playfair+Display:ital,wght@0,500;0,600;0,700;1,400&family=Plus+Jakarta+Sans:wght@400;500;600;700&family=Poppins:wght@400;500;600;700&family=Sora:wght@400;500;600;700&family=Space+Grotesk:wght@400;500;600;700&family=Syne:wght@500;600;700;800&display=swap"
     rel="stylesheet">
-  <link rel="stylesheet" href="style.css?v=31">
+  <link rel="stylesheet" href="style.css?v=2">
   <script src="https://code.iconify.design/iconify-icon/2.1.0/iconify-icon.min.js"></script>
   <script src="config.js?v=27"></script>
   <script>
@@ -118,29 +118,6 @@
     }());
   </script>
   <style>
-    /* ── Smooth Light/Dark Mode Transitions ── */
-    body,
-    .cust-container,
-    .cust-card,
-    .cust-header,
-    .back-btn,
-    .theme-choice-card,
-    .field-input,
-    .field-textarea,
-    .accent-swatch-btn {
-      transition: background-color 0.35s cubic-bezier(0.4, 0, 0.2, 1),
-                  background 0.35s cubic-bezier(0.4, 0, 0.2, 1),
-                  border-color 0.35s cubic-bezier(0.4, 0, 0.2, 1),
-                  color 0.35s cubic-bezier(0.4, 0, 0.2, 1),
-                  box-shadow 0.35s cubic-bezier(0.4, 0, 0.2, 1);
-    }
-
-    ::view-transition-old(root),
-    ::view-transition-new(root) {
-      animation-duration: 0.35s;
-      animation-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
-    }
-
     img,
     video {
       -webkit-user-drag: none;
@@ -717,16 +694,8 @@
       <div style="display:flex; align-items:center; gap:10px;">
         <div id="clerk-user-button"></div>
         <button type="button" class="back-btn" id="btn-theme-toggle" title="Toggle dark / light theme"
-          style="cursor:pointer; display:inline-flex; align-items:center; gap:8px;">
-          <span class="theme-badge" id="theme-toggle-icon-wrap" style="position:relative; width:18px; height:18px; display:inline-flex; align-items:center; justify-content:center; overflow:hidden; border:none; background:transparent;">
-            <svg class="badge-sun" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-              <circle cx="12" cy="12" r="4" />
-              <path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M6.34 17.66l-1.41 1.41M19.07 4.93l-1.41 1.41" />
-            </svg>
-            <svg class="badge-moon" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-              <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z" />
-            </svg>
-          </span>
+          style="cursor:pointer;">
+          <span id="theme-toggle-icon">🌙</span>
           <span id="theme-toggle-label" style="font-size:0.75rem;">Theme</span>
         </button>
         <a href="index.html" class="back-btn">
@@ -2091,6 +2060,9 @@
           statusPill.textContent = isDark ? '🌙 Dark Mode Active' : '☀️ Light Mode Active';
           statusPill.style.borderColor = 'var(--red)';
         }
+        if (toggleIcon) {
+          toggleIcon.textContent = isDark ? '🌙' : '☀️';
+        }
 
         // Swatches
         var swatches = document.querySelectorAll('#accent-swatches-container .accent-swatch-btn');
@@ -2132,20 +2104,11 @@
       }
 
       function switchSiteTheme(newTheme) {
-        var nextMode = newTheme === 'light' ? 'light' : 'dark';
-        var update = function () {
-          currentThemeMode = nextMode;
-          document.documentElement.setAttribute('data-theme', currentThemeMode);
-          localStorage.setItem('theme', currentThemeMode);
-          applyThemeColors(currentAccentColor, currentBgPreset, currentThemeMode);
-          updateThemeSelectionUI(currentThemeMode, currentAccentColor, currentBgPreset);
-        };
-
-        if (document.startViewTransition) {
-          document.startViewTransition(update);
-        } else {
-          update();
-        }
+        currentThemeMode = newTheme === 'light' ? 'light' : 'dark';
+        document.documentElement.setAttribute('data-theme', currentThemeMode);
+        localStorage.setItem('theme', currentThemeMode);
+        applyThemeColors(currentAccentColor, currentBgPreset, currentThemeMode);
+        updateThemeSelectionUI(currentThemeMode, currentAccentColor, currentBgPreset);
       }
 
       function setAccentColor(hex) {

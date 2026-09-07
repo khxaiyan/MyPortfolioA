@@ -75,37 +75,8 @@ body {
   justify-content: center;
   padding: 48px 16px 64px;
   -webkit-font-smoothing: antialiased;
-  transition: background-color 0.35s cubic-bezier(0.4, 0, 0.2, 1), color 0.35s cubic-bezier(0.4, 0, 0.2, 1);
+  transition: background 0.25s, color 0.25s;
   overflow-x: hidden;
-}
-
-/* ── Smooth Theme Transitions on Surfaces & Cards ── */
-.sheet,
-.surface-card,
-.project-card,
-.project-row,
-.cust-card,
-.badge,
-.modal-window,
-.channel-list,
-.rich-quote,
-.rich-code,
-.rail-line,
-.rail-item,
-.field-input,
-.field-textarea {
-  transition: background-color 0.35s cubic-bezier(0.4, 0, 0.2, 1),
-              background 0.35s cubic-bezier(0.4, 0, 0.2, 1),
-              border-color 0.35s cubic-bezier(0.4, 0, 0.2, 1),
-              color 0.35s cubic-bezier(0.4, 0, 0.2, 1),
-              box-shadow 0.35s cubic-bezier(0.4, 0, 0.2, 1);
-}
-
-/* Modern View Transitions API animation support */
-::view-transition-old(root),
-::view-transition-new(root) {
-  animation-duration: 0.35s;
-  animation-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
 }
 
 /* ── Slim Theme-Based Scroll Progress Bar ── */
@@ -256,13 +227,13 @@ video.avatar-img {
   pointer-events: none;
 }
 
-/* Theme badge with smooth rotational morph animation */
+/* Theme badge */
 .theme-badge {
   position: absolute;
   right: -2px;
   bottom: -2px;
-  width: 26px;
-  height: 26px;
+  width: 24px;
+  height: 24px;
   border-radius: 50%;
   background: var(--surface);
   border: 1.5px solid var(--line-strong);
@@ -271,99 +242,16 @@ video.avatar-img {
   justify-content: center;
   color: var(--ink-dim);
   pointer-events: none;
-  transition: transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1),
-              border-color 0.25s ease,
-              background-color 0.25s ease,
-              color 0.25s ease;
-  overflow: hidden;
+  transition: border-color 0.2s;
 }
 
-.avatar-wrap {
-  cursor: pointer;
-  outline: none;
-  transition: transform 0.25s cubic-bezier(0.34, 1.56, 0.64, 1);
-}
+.avatar-wrap:hover .theme-badge { border-color: var(--red); color: var(--red); }
 
-.avatar-wrap:active {
-  transform: scale(0.95);
-}
-
-.avatar-wrap:hover .theme-badge {
-  border-color: var(--red);
-  color: var(--red);
-  transform: scale(1.15) rotate(12deg);
-}
-
-.theme-badge svg {
-  position: absolute;
-  width: 13px;
-  height: 13px;
-  transition: transform 0.45s cubic-bezier(0.34, 1.56, 0.64, 1),
-              opacity 0.28s cubic-bezier(0.4, 0, 0.2, 1);
-  transform-origin: center center;
-}
-
-/* Dark mode: Moon active (0deg, 1.0 scale), Sun hidden (-90deg, 0.35 scale) */
-.badge-moon {
-  opacity: 1;
-  transform: rotate(0deg) scale(1);
-}
-.badge-sun {
-  opacity: 0;
-  transform: rotate(-90deg) scale(0.35);
-  pointer-events: none;
-}
-
-/* Light mode: Sun active (0deg, 1.0 scale), Moon hidden (90deg, 0.35 scale) */
-[data-theme="light"] .badge-sun {
-  opacity: 1;
-  transform: rotate(0deg) scale(1);
-}
-[data-theme="light"] .badge-moon {
-  opacity: 0;
-  transform: rotate(90deg) scale(0.35);
-  pointer-events: none;
-}
-
-/* ── Floating Theme Toggle (top right) ── */
-.floating-theme-toggle {
-  position: fixed;
-  top: 18px;
-  right: 18px;
-  z-index: 9999;
-  width: 40px;
-  height: 40px;
-  border-radius: 12px;
-  background: var(--surface);
-  border: 1px solid var(--line);
-  color: var(--ink);
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  cursor: pointer;
-  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.15);
-  transition: transform 0.25s cubic-bezier(0.34, 1.56, 0.64, 1),
-              background-color 0.35s cubic-bezier(0.4, 0, 0.2, 1),
-              border-color 0.35s cubic-bezier(0.4, 0, 0.2, 1),
-              box-shadow 0.25s ease;
-}
-
-.floating-theme-toggle:hover {
-  border-color: var(--red);
-  transform: scale(1.08);
-  box-shadow: 0 6px 20px var(--border-accent-glow, rgba(255, 42, 95, 0.25));
-}
-
-.floating-theme-toggle:active {
-  transform: scale(0.94);
-}
-
-.floating-theme-toggle .badge-sun,
-.floating-theme-toggle .badge-moon {
-  width: 18px;
-  height: 18px;
-}
-
+/* Dark mode → show moon; Light mode → show sun */
+.badge-sun  { display: none; }
+.badge-moon { display: block; }
+[data-theme="light"] .badge-sun  { display: block; }
+[data-theme="light"] .badge-moon { display: none; }
 
 /* ── Wordmark ── */
 .id-text {
