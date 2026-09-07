@@ -1015,8 +1015,26 @@
 
       <!-- 5.1 // media cloud storage (cloudinary) -->
       <div class="cust-section">
-        <p class="eyebrow">// media cloud storage (cloudinary)</p>
-        <div class="surface-card cust-card" style="padding:18px 20px;">
+        <div id="cust-cloudinary-toggle" role="button" tabindex="0" aria-expanded="false" aria-controls="cust-cloudinary-card"
+          style="display:flex; align-items:center; justify-content:space-between; cursor:pointer; padding:8px 12px; background:var(--surface); border:1px solid var(--line); border-radius:var(--radius); user-select:none; transition:all 0.2s ease;">
+          <div style="display:flex; align-items:center; gap:10px;">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="color:var(--ink-dim); flex-shrink:0;">
+              <path d="M17.5 19H9a7 7 0 1 1 6.71-9h1.79a4.5 4.5 0 1 1 0 9Z"/>
+            </svg>
+            <p class="eyebrow" style="margin:0; cursor:pointer; color:var(--ink); font-weight:600; font-size:0.76rem;">// media cloud storage (cloudinary)</p>
+            <span id="cust-cloudinary-status-indicator" style="display:inline-flex; align-items:center; gap:5px; font-size:0.65rem; font-family:var(--font-mono); padding:2px 8px; border-radius:10px; background:var(--bg); border:1px solid var(--line); color:var(--ink-faint);">
+              <span style="display:inline-block; width:6px; height:6px; border-radius:50%; background:var(--ink-faint);" id="cust-cloudinary-dot"></span>
+              <span id="cust-cloudinary-indicator-text">click to open</span>
+            </span>
+          </div>
+          <div style="display:flex; align-items:center; gap:6px; color:var(--ink-faint);">
+            <svg id="cust-cloudinary-chevron" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="transition:transform 0.25s cubic-bezier(0.4, 0, 0.2, 1); transform:rotate(-90deg);">
+              <path d="m6 9 6 6 6-6"/>
+            </svg>
+          </div>
+        </div>
+
+        <div id="cust-cloudinary-card" class="surface-card cust-card" style="padding:18px 20px; display:none; margin-top:8px; border-top:1px solid var(--line);">
           <div style="display:flex; align-items:center; justify-content:space-between; margin-bottom:12px; flex-wrap:wrap; gap:8px;">
             <div style="display:flex; align-items:center; gap:8px;">
               <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="color:var(--accent);"><path d="M17.5 19H9a7 7 0 1 1 6.71-9h1.79a4.5 4.5 0 1 1 0 9Z"/></svg>
@@ -1531,19 +1549,64 @@
 
       function updateCloudinaryStatusUI() {
         var badge = document.getElementById('cust-cloudinary-badge');
-        if (!badge) return;
+        var dot = document.getElementById('cust-cloudinary-dot');
+        var indText = document.getElementById('cust-cloudinary-indicator-text');
         var creds = getCloudinaryCredentials();
         if (creds.cloudName && creds.preset) {
-          badge.textContent = '✓ Cloudinary Active (' + creds.cloudName + ')';
-          badge.style.color = '#10b981';
-          badge.style.borderColor = 'rgba(16, 185, 129, 0.35)';
-          badge.style.background = 'rgba(16, 185, 129, 0.08)';
+          if (badge) {
+            badge.textContent = '✓ Cloudinary Active (' + creds.cloudName + ')';
+            badge.style.color = '#10b981';
+            badge.style.borderColor = 'rgba(16, 185, 129, 0.35)';
+            badge.style.background = 'rgba(16, 185, 129, 0.08)';
+          }
+          if (dot) dot.style.background = '#10b981';
+          if (indText) {
+            indText.textContent = 'active (' + creds.cloudName + ')';
+            indText.style.color = '#10b981';
+          }
         } else {
-          badge.textContent = 'Not Configured (Local Base64 Fallback)';
-          badge.style.color = 'var(--ink-faint)';
-          badge.style.borderColor = 'var(--line)';
-          badge.style.background = 'var(--bg)';
+          if (badge) {
+            badge.textContent = 'Not Configured (Local Base64 Fallback)';
+            badge.style.color = 'var(--ink-faint)';
+            badge.style.borderColor = 'var(--line)';
+            badge.style.background = 'var(--bg)';
+          }
+          if (dot) dot.style.background = 'var(--ink-faint)';
+          if (indText) {
+            indText.textContent = 'click to open';
+            indText.style.color = 'var(--ink-faint)';
+          }
         }
+      }
+
+      /* Cloudinary Accordion Dropdown Handler */
+      var cToggle = document.getElementById('cust-cloudinary-toggle');
+      var cCard = document.getElementById('cust-cloudinary-card');
+      var cChevron = document.getElementById('cust-cloudinary-chevron');
+      if (cToggle && cCard) {
+        function toggleCloudinaryDropdown() {
+          var isHidden = (cCard.style.display === 'none' || !cCard.style.display);
+          if (isHidden) {
+            cCard.style.display = 'block';
+            if (cChevron) cChevron.style.transform = 'rotate(0deg)';
+            cToggle.setAttribute('aria-expanded', 'true');
+            cToggle.style.borderColor = 'var(--red)';
+            cToggle.style.background = 'rgba(255, 42, 95, 0.06)';
+          } else {
+            cCard.style.display = 'none';
+            if (cChevron) cChevron.style.transform = 'rotate(-90deg)';
+            cToggle.setAttribute('aria-expanded', 'false');
+            cToggle.style.borderColor = 'var(--line)';
+            cToggle.style.background = 'var(--surface)';
+          }
+        }
+        cToggle.addEventListener('click', toggleCloudinaryDropdown);
+        cToggle.addEventListener('keydown', function (e) {
+          if (e.key === 'Enter' || e.key === ' ') {
+            e.preventDefault();
+            toggleCloudinaryDropdown();
+          }
+        });
       }
 
       async function uploadToCloudinary(file, folder, publicId) {
