@@ -2104,11 +2104,20 @@
       }
 
       function switchSiteTheme(newTheme) {
-        currentThemeMode = newTheme === 'light' ? 'light' : 'dark';
-        document.documentElement.setAttribute('data-theme', currentThemeMode);
-        localStorage.setItem('theme', currentThemeMode);
-        applyThemeColors(currentAccentColor, currentBgPreset, currentThemeMode);
-        updateThemeSelectionUI(currentThemeMode, currentAccentColor, currentBgPreset);
+        var nextMode = newTheme === 'light' ? 'light' : 'dark';
+        var update = function () {
+          currentThemeMode = nextMode;
+          document.documentElement.setAttribute('data-theme', currentThemeMode);
+          localStorage.setItem('theme', currentThemeMode);
+          applyThemeColors(currentAccentColor, currentBgPreset, currentThemeMode);
+          updateThemeSelectionUI(currentThemeMode, currentAccentColor, currentBgPreset);
+        };
+
+        if (document.startViewTransition) {
+          document.startViewTransition(update);
+        } else {
+          update();
+        }
       }
 
       function setAccentColor(hex) {

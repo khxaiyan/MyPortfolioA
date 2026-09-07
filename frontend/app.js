@@ -69,13 +69,22 @@
   }
 
   function applyTheme(t) {
-    currentThemeMode = t === 'light' ? 'light' : 'dark';
-    root.setAttribute('data-theme', currentThemeMode);
-    localStorage.setItem('theme', currentThemeMode);
-    if (metaClr) metaClr.content = currentThemeMode === 'dark' ? (BG_PRESETS[currentBgPreset] ? BG_PRESETS[currentBgPreset].bg : '#0a0a0e') : '#f7f5f1';
-    renderHcaptcha(currentThemeMode);
-    applyThemeColors(currentAccentColor, currentBgPreset, currentThemeMode);
-    updateModalThemeUI();
+    var nextMode = t === 'light' ? 'light' : 'dark';
+    var switchTheme = function () {
+      currentThemeMode = nextMode;
+      root.setAttribute('data-theme', currentThemeMode);
+      localStorage.setItem('theme', currentThemeMode);
+      if (metaClr) metaClr.content = currentThemeMode === 'dark' ? (BG_PRESETS[currentBgPreset] ? BG_PRESETS[currentBgPreset].bg : '#0a0a0e') : '#f7f5f1';
+      renderHcaptcha(currentThemeMode);
+      applyThemeColors(currentAccentColor, currentBgPreset, currentThemeMode);
+      updateModalThemeUI();
+    };
+
+    if (document.startViewTransition) {
+      document.startViewTransition(switchTheme);
+    } else {
+      switchTheme();
+    }
   }
 
   /* ─── Dynamic Themeable hCaptcha ─── */
