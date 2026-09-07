@@ -65,7 +65,7 @@ const CONFIG = {
   "cf_analytics": false,
   "web3forms_access_key": "d36ee933-00cb-453e-aa38-b18ee60ce5d1",
   "hcaptcha_sitekey": "50b2fe65-b00b-4b9e-ad62-3ba471098be2",
-  "cloudinary_cloud_name": "dqxccz5bn",
+  "cloudinary_cloud_name": "dqxccz5bnn",
   "cloudinary_upload_preset": "myportfolioa",
   "clerk_publishable_key": "pk_test_c2hpbmluZy10dXJrZXktMTMyNS5jbGVyay5hY2NvdW50cy5kZXYk",
   "clerk_frontend_api": "https://shining-turkey-1325.clerk.accounts.dev"
