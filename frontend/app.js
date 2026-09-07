@@ -182,8 +182,8 @@
         parsedCustom.logo = 'profile_icon.svg';
         needsSave = true;
       }
-      if (parsedCustom.favicon_url === 'favicon.svg') {
-        parsedCustom.favicon_url = 'favicon.png';
+      if (parsedCustom.favicon_url === 'favicon.svg' || parsedCustom.favicon_url === 'favicon.png' || parsedCustom.favicon_url === 'favicon.ico') {
+        parsedCustom.favicon_url = 'profile_icon.svg';
         needsSave = true;
       }
       if (parsedCustom.accent_color === '#00f0ff' || parsedCustom.accent_color === '#a855f7') {
@@ -1252,7 +1252,7 @@
 
     /* Restore saved favicon into modal preview */
     pendingFaviconData = null;
-    setModalFaviconPreview((cfg.favicon_url && cfg.favicon_url.trim()) ? cfg.favicon_url.trim() : 'favicon.png');
+    setModalFaviconPreview((cfg.favicon_url && cfg.favicon_url.trim()) ? cfg.favicon_url.trim() : 'profile_icon.svg');
 
     updateModalPreviews();
 
@@ -1388,7 +1388,7 @@
 
   /* ── Avatar helpers & format handling ── */
   function applyPageFavicon(url) {
-    if (!url || url === 'favicon.svg') url = 'favicon.png';
+    if (!url || url === 'favicon.svg' || url === 'favicon.png' || url === 'favicon.ico') url = 'profile_icon.svg';
     var links = document.querySelectorAll("link[rel*='icon']");
     if (!links || links.length === 0) {
       var link = document.createElement('link');
@@ -1681,13 +1681,11 @@
     var siteNameVal = (document.getElementById('m-cust-sitename') || {}).value || 'khxaiyan';
     if (tabTitle) tabTitle.textContent = siteNameVal;
 
-    var finalUrl = url || 'favicon.png';
+    var finalUrl = url || 'profile_icon.svg';
     if (thumb) {
-      thumb.onerror = function () { this.onerror = null; this.src = 'favicon.ico'; };
       thumb.src = finalUrl;
     }
     if (tabImg) {
-      tabImg.onerror = function () { this.onerror = null; this.src = 'favicon.ico'; };
       tabImg.src = finalUrl;
     }
     applyPageFavicon(finalUrl);
@@ -1794,7 +1792,7 @@
   var modalFaviconResetBtn = document.getElementById('m-favicon-reset-btn');
   if (modalFaviconResetBtn) {
     modalFaviconResetBtn.addEventListener('click', function () {
-      pendingFaviconData = 'favicon.png';
+      pendingFaviconData = 'profile_icon.svg';
       setModalFaviconPreview(pendingFaviconData);
     });
   }
@@ -1866,8 +1864,8 @@
       var resolvedAvatar = (pendingAvatarData !== null) ? pendingAvatarData : existingAvatarUrl;
 
       /* Resolve favicon: newly picked file, or existing saved one */
-      var existingFaviconUrl = (typeof CONFIG !== 'undefined' && CONFIG.favicon_url) ? CONFIG.favicon_url : 'favicon.png';
-      var resolvedFavicon = (pendingFaviconData !== null) ? (pendingFaviconData || 'favicon.png') : existingFaviconUrl;
+      var existingFaviconUrl = (typeof CONFIG !== 'undefined' && CONFIG.favicon_url) ? CONFIG.favicon_url : 'profile_icon.svg';
+      var resolvedFavicon = (pendingFaviconData !== null) ? (pendingFaviconData || 'profile_icon.svg') : existingFaviconUrl;
 
       var updated = {
         github: (document.getElementById('m-cust-github') || {}).value.trim(),
