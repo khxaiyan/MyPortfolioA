@@ -12,8 +12,8 @@
 
   var BG_PRESETS = {
     midnight: { bg: '#0a0a0e', surface: '#131319', surfaceHover: '#191a22', rail: '#363a63' },
-    oled:     { bg: '#000000', surface: '#0a0a0a', surfaceHover: '#141414', rail: '#262630' },
-    navy:     { bg: '#070a13', surface: '#0d1322', surfaceHover: '#141d33', rail: '#223252' },
+    oled: { bg: '#000000', surface: '#0a0a0a', surfaceHover: '#141414', rail: '#262630' },
+    navy: { bg: '#070a13', surface: '#0d1322', surfaceHover: '#141d33', rail: '#223252' },
     charcoal: { bg: '#101114', surface: '#17181d', surfaceHover: '#1f2027', rail: '#383947' }
   };
 
@@ -30,7 +30,7 @@
     var num = parseInt(c, 16);
     var amt = Math.round(2.55 * percent);
     var R = (num >> 16) + amt, G = ((num >> 8) & 255) + amt, B = (num & 255) + amt;
-    return '#' + (0x1000000 + (R<255?(R<0?0:R):255)*0x10000 + (G<255?(G<0?0:G):255)*0x100 + (B<255?(B<0?0:B):255)).toString(16).slice(1);
+    return '#' + (0x1000000 + (R < 255 ? (R < 0 ? 0 : R) : 255) * 0x10000 + (G < 255 ? (G < 0 ? 0 : G) : 255) * 0x100 + (B < 255 ? (B < 0 ? 0 : B) : 255)).toString(16).slice(1);
   }
 
   function applyThemeColors(accent, bgPreset, mode) {
@@ -154,7 +154,7 @@
   }
 
   var customCfg = null;
-  try { customCfg = JSON.parse(localStorage.getItem('portfolio_custom_config')); } catch (_) {}
+  try { customCfg = JSON.parse(localStorage.getItem('portfolio_custom_config')); } catch (_) { }
   var themeCfg = (customCfg && customCfg.theme_config) || {};
   currentThemeMode = themeCfg.mode || (customCfg && customCfg.default_theme) || localStorage.getItem('theme') || 'dark';
   currentAccentColor = themeCfg.accent_color || (customCfg && customCfg.accent_color) || (typeof CONFIG !== 'undefined' && CONFIG.accent_color) || '#ff2a5f';
@@ -192,7 +192,7 @@
         needsSave = true;
       }
       if (needsSave) {
-        try { localStorage.setItem('portfolio_custom_config', JSON.stringify(parsedCustom)); } catch (_) {}
+        try { localStorage.setItem('portfolio_custom_config', JSON.stringify(parsedCustom)); } catch (_) { }
       }
       if (typeof CONFIG !== 'undefined') {
         Object.assign(CONFIG, parsedCustom);
@@ -261,61 +261,61 @@
   /* ─── Comprehensive Platform Presets (Simple Icons + Lucide Icons) ─── */
   var SOCIAL_PRESETS = [
     // Popular Simple Icons (Brands)
-    { id: 'LinkedIn',   label: 'LinkedIn',   icon: 'simple-icons:linkedin',   url: 'https://linkedin.com/in/username' },
-    { id: 'Instagram',  label: 'Instagram',  icon: 'simple-icons:instagram',  url: 'https://instagram.com/username' },
-    { id: 'YouTube',    label: 'YouTube',    icon: 'simple-icons:youtube',    url: 'https://youtube.com/@channel' },
-    { id: 'Discord',    label: 'Discord',    icon: 'simple-icons:discord',    url: 'https://discord.gg/invitecode' },
-    { id: 'Spotify',    label: 'Spotify',    icon: 'simple-icons:spotify',    url: 'https://open.spotify.com/user/username' },
-    { id: 'Steam',      label: 'Steam',      icon: 'simple-icons:steam',      url: 'https://steamcommunity.com/id/username' },
-    { id: 'TikTok',     label: 'TikTok',     icon: 'simple-icons:tiktok',     url: 'https://tiktok.com/@username' },
-    { id: 'Twitch',     label: 'Twitch',     icon: 'simple-icons:twitch',     url: 'https://twitch.tv/username' },
-    { id: 'Reddit',     label: 'Reddit',     icon: 'simple-icons:reddit',     url: 'https://reddit.com/user/username' },
-    { id: 'Bluesky',    label: 'Bluesky',    icon: 'simple-icons:bluesky',    url: 'https://bsky.app/profile/username.bsky.social' },
-    { id: 'Medium',     label: 'Medium',     icon: 'simple-icons:medium',     url: 'https://medium.com/@username' },
-    { id: 'Substack',   label: 'Substack',   icon: 'simple-icons:substack',   url: 'https://username.substack.com' },
-    { id: 'WhatsApp',   label: 'WhatsApp',   icon: 'simple-icons:whatsapp',   url: 'https://wa.me/phonenumber' },
-    { id: 'Facebook',   label: 'Facebook',   icon: 'simple-icons:facebook',   url: 'https://facebook.com/username' },
-    { id: 'Threads',    label: 'Threads',    icon: 'simple-icons:threads',    url: 'https://threads.net/@username' },
-    { id: 'Pinterest',  label: 'Pinterest',  icon: 'simple-icons:pinterest',  url: 'https://pinterest.com/username' },
-    { id: 'Kick',       label: 'Kick',       icon: 'simple-icons:kick',       url: 'https://kick.com/username' },
-    { id: 'Patreon',    label: 'Patreon',    icon: 'simple-icons:patreon',    url: 'https://patreon.com/username' },
-    { id: 'Snapchat',   label: 'Snapchat',   icon: 'simple-icons:snapchat',   url: 'https://snapchat.com/add/username' },
+    { id: 'LinkedIn', label: 'LinkedIn', icon: 'simple-icons:linkedin', url: 'https://linkedin.com/in/username' },
+    { id: 'Instagram', label: 'Instagram', icon: 'simple-icons:instagram', url: 'https://instagram.com/username' },
+    { id: 'YouTube', label: 'YouTube', icon: 'simple-icons:youtube', url: 'https://youtube.com/@channel' },
+    { id: 'Discord', label: 'Discord', icon: 'simple-icons:discord', url: 'https://discord.gg/invitecode' },
+    { id: 'Spotify', label: 'Spotify', icon: 'simple-icons:spotify', url: 'https://open.spotify.com/user/username' },
+    { id: 'Steam', label: 'Steam', icon: 'simple-icons:steam', url: 'https://steamcommunity.com/id/username' },
+    { id: 'TikTok', label: 'TikTok', icon: 'simple-icons:tiktok', url: 'https://tiktok.com/@username' },
+    { id: 'Twitch', label: 'Twitch', icon: 'simple-icons:twitch', url: 'https://twitch.tv/username' },
+    { id: 'Reddit', label: 'Reddit', icon: 'simple-icons:reddit', url: 'https://reddit.com/user/username' },
+    { id: 'Bluesky', label: 'Bluesky', icon: 'simple-icons:bluesky', url: 'https://bsky.app/profile/username.bsky.social' },
+    { id: 'Medium', label: 'Medium', icon: 'simple-icons:medium', url: 'https://medium.com/@username' },
+    { id: 'Substack', label: 'Substack', icon: 'simple-icons:substack', url: 'https://username.substack.com' },
+    { id: 'WhatsApp', label: 'WhatsApp', icon: 'simple-icons:whatsapp', url: 'https://wa.me/phonenumber' },
+    { id: 'Facebook', label: 'Facebook', icon: 'simple-icons:facebook', url: 'https://facebook.com/username' },
+    { id: 'Threads', label: 'Threads', icon: 'simple-icons:threads', url: 'https://threads.net/@username' },
+    { id: 'Pinterest', label: 'Pinterest', icon: 'simple-icons:pinterest', url: 'https://pinterest.com/username' },
+    { id: 'Kick', label: 'Kick', icon: 'simple-icons:kick', url: 'https://kick.com/username' },
+    { id: 'Patreon', label: 'Patreon', icon: 'simple-icons:patreon', url: 'https://patreon.com/username' },
+    { id: 'Snapchat', label: 'Snapchat', icon: 'simple-icons:snapchat', url: 'https://snapchat.com/add/username' },
     // Lucide Icons (Web, Tools & General)
-    { id: 'Website',    label: 'Website',    icon: 'lucide:globe',           url: 'https://yourwebsite.com' },
-    { id: 'Portfolio',  label: 'Portfolio',  icon: 'lucide:briefcase',       url: 'https://yourportfolio.com' },
-    { id: 'Blog',       label: 'Blog / RSS', icon: 'lucide:rss',             url: 'https://yourblog.com' },
-    { id: 'Code',       label: 'Code / Dev', icon: 'lucide:code-2',          url: 'https://...' },
+    { id: 'Website', label: 'Website', icon: 'lucide:globe', url: 'https://yourwebsite.com' },
+    { id: 'Portfolio', label: 'Portfolio', icon: 'lucide:briefcase', url: 'https://yourportfolio.com' },
+    { id: 'Blog', label: 'Blog / RSS', icon: 'lucide:rss', url: 'https://yourblog.com' },
+    { id: 'Code', label: 'Code / Dev', icon: 'lucide:code-2', url: 'https://...' },
     // Custom Option (Any Simple Icon or Lucide Icon)
-    { id: 'Custom',     label: 'Custom',                             icon: 'lucide:link', url: 'https://...' }
+    { id: 'Custom', label: 'Custom', icon: 'lucide:link', url: 'https://...' }
   ];
 
   var ICON_SWITCH_MAP = {
-    'instagram':  { simple: 'simple-icons:instagram',   lucide: 'lucide:instagram' },
-    'youtube':    { simple: 'simple-icons:youtube',     lucide: 'lucide:youtube' },
-    'linkedin':   { simple: 'simple-icons:linkedin',    lucide: 'lucide:linkedin' },
-    'facebook':   { simple: 'simple-icons:facebook',    lucide: 'lucide:facebook' },
-    'twitch':     { simple: 'simple-icons:twitch',      lucide: 'lucide:twitch' },
-    'github':     { simple: 'simple-icons:github',      lucide: 'lucide:github' },
-    'twitter':    { simple: 'simple-icons:x',           lucide: 'lucide:twitter' },
-    'x':          { simple: 'simple-icons:x',           lucide: 'lucide:twitter' },
-    'discord':    { simple: 'simple-icons:discord',     lucide: 'lucide:message-square' },
-    'spotify':    { simple: 'simple-icons:spotify',     lucide: 'lucide:music' },
-    'steam':      { simple: 'simple-icons:steam',       lucide: 'lucide:gamepad-2' },
-    'tiktok':     { simple: 'simple-icons:tiktok',      lucide: 'lucide:video' },
-    'reddit':     { simple: 'simple-icons:reddit',      lucide: 'lucide:bot' },
-    'bluesky':    { simple: 'simple-icons:bluesky',     lucide: 'lucide:cloud' },
-    'medium':     { simple: 'simple-icons:medium',      lucide: 'lucide:book-open' },
-    'substack':   { simple: 'simple-icons:substack',    lucide: 'lucide:mail' },
-    'whatsapp':   { simple: 'simple-icons:whatsapp',    lucide: 'lucide:phone' },
-    'threads':    { simple: 'simple-icons:threads',     lucide: 'lucide:at-sign' },
-    'pinterest':  { simple: 'simple-icons:pinterest',   lucide: 'lucide:pin' },
-    'kick':       { simple: 'simple-icons:kick',        lucide: 'lucide:play' },
-    'patreon':    { simple: 'simple-icons:patreon',     lucide: 'lucide:heart' },
-    'snapchat':   { simple: 'simple-icons:snapchat',    lucide: 'lucide:ghost' },
-    'website':    { simple: 'simple-icons:googlechrome',lucide: 'lucide:globe' },
-    'portfolio':  { simple: 'simple-icons:notion',      lucide: 'lucide:briefcase' },
-    'blog':       { simple: 'simple-icons:rss',         lucide: 'lucide:rss' },
-    'code':       { simple: 'simple-icons:visualstudiocode', lucide: 'lucide:code-2' }
+    'instagram': { simple: 'simple-icons:instagram', lucide: 'lucide:instagram' },
+    'youtube': { simple: 'simple-icons:youtube', lucide: 'lucide:youtube' },
+    'linkedin': { simple: 'simple-icons:linkedin', lucide: 'lucide:linkedin' },
+    'facebook': { simple: 'simple-icons:facebook', lucide: 'lucide:facebook' },
+    'twitch': { simple: 'simple-icons:twitch', lucide: 'lucide:twitch' },
+    'github': { simple: 'simple-icons:github', lucide: 'lucide:github' },
+    'twitter': { simple: 'simple-icons:x', lucide: 'lucide:twitter' },
+    'x': { simple: 'simple-icons:x', lucide: 'lucide:twitter' },
+    'discord': { simple: 'simple-icons:discord', lucide: 'lucide:message-square' },
+    'spotify': { simple: 'simple-icons:spotify', lucide: 'lucide:music' },
+    'steam': { simple: 'simple-icons:steam', lucide: 'lucide:gamepad-2' },
+    'tiktok': { simple: 'simple-icons:tiktok', lucide: 'lucide:video' },
+    'reddit': { simple: 'simple-icons:reddit', lucide: 'lucide:bot' },
+    'bluesky': { simple: 'simple-icons:bluesky', lucide: 'lucide:cloud' },
+    'medium': { simple: 'simple-icons:medium', lucide: 'lucide:book-open' },
+    'substack': { simple: 'simple-icons:substack', lucide: 'lucide:mail' },
+    'whatsapp': { simple: 'simple-icons:whatsapp', lucide: 'lucide:phone' },
+    'threads': { simple: 'simple-icons:threads', lucide: 'lucide:at-sign' },
+    'pinterest': { simple: 'simple-icons:pinterest', lucide: 'lucide:pin' },
+    'kick': { simple: 'simple-icons:kick', lucide: 'lucide:play' },
+    'patreon': { simple: 'simple-icons:patreon', lucide: 'lucide:heart' },
+    'snapchat': { simple: 'simple-icons:snapchat', lucide: 'lucide:ghost' },
+    'website': { simple: 'simple-icons:googlechrome', lucide: 'lucide:globe' },
+    'portfolio': { simple: 'simple-icons:notion', lucide: 'lucide:briefcase' },
+    'blog': { simple: 'simple-icons:rss', lucide: 'lucide:rss' },
+    'code': { simple: 'simple-icons:visualstudiocode', lucide: 'lucide:code-2' }
   };
 
   function switchIconLibrary(currentIcon, targetLib, currentPlatform) {
@@ -348,7 +348,7 @@
     if (customIcon && customIcon.trim()) {
       var val = customIcon.trim().toLowerCase();
       if (val.indexOf(':') !== -1) return val;
-      var lucideNames = ['globe','link','code','code-2','rss','terminal','briefcase','mail','heart','sparkles','coffee','zap','music','camera','cpu','shield','compass','at-sign','book','layers','external-link'];
+      var lucideNames = ['globe', 'link', 'code', 'code-2', 'rss', 'terminal', 'briefcase', 'mail', 'heart', 'sparkles', 'coffee', 'zap', 'music', 'camera', 'cpu', 'shield', 'compass', 'at-sign', 'book', 'layers', 'external-link'];
       if (lucideNames.indexOf(val) !== -1) return 'lucide:' + val;
       return 'simple-icons:' + val;
     }
@@ -372,7 +372,7 @@
     if (customIcon) {
       var ic = customIcon.toLowerCase();
       if (ic.indexOf(':') === -1) {
-        var lucideList = ['globe','link','code','code-2','rss','terminal','briefcase','mail','heart','sparkles','coffee','zap','music','camera','cpu','shield','compass','at-sign','book','layers','external-link'];
+        var lucideList = ['globe', 'link', 'code', 'code-2', 'rss', 'terminal', 'briefcase', 'mail', 'heart', 'sparkles', 'coffee', 'zap', 'music', 'camera', 'cpu', 'shield', 'compass', 'at-sign', 'book', 'layers', 'external-link'];
         ic = (lucideList.indexOf(ic) !== -1) ? ('lucide:' + ic) : ('simple-icons:' + ic);
       }
       return '<iconify-icon icon="' + escapeHtml(ic) + '" class="channel-icon" width="18" height="18"></iconify-icon>';
@@ -792,36 +792,36 @@
     card.className = 'm-proj-card';
     card.innerHTML =
       '<div class="m-proj-card-header">' +
-        '<span class="m-proj-card-title">PROJECT #' + (index + 1) + '</span>' +
-        '<button type="button" class="m-proj-del-btn" title="Remove this project">✕ Remove</button>' +
+      '<span class="m-proj-card-title">PROJECT #' + (index + 1) + '</span>' +
+      '<button type="button" class="m-proj-del-btn" title="Remove this project">✕ Remove</button>' +
       '</div>' +
       '<div class="m-field-group" style="margin-bottom:8px;">' +
-        '<div style="display:flex; align-items:center; justify-content:space-between;">' +
-          '<label class="m-field-label">GitHub Repo URL (Paste to auto-fill ✨)</label>' +
-          '<span class="m-gh-status" style="font-size:0.72rem; display:none;"></span>' +
-        '</div>' +
-        '<div style="display:flex; gap:6px;">' +
-          '<input type="text" class="m-field-input m-proj-input-github" placeholder="https://github.com/owner/repository" style="flex:1;">' +
-          '<button type="button" class="m-toolbar-btn m-btn-fetch-gh" style="white-space:nowrap; padding:0 10px; font-size:0.75rem; border-color:var(--red); color:var(--ink);">Fetch</button>' +
-        '</div>' +
+      '<div style="display:flex; align-items:center; justify-content:space-between;">' +
+      '<label class="m-field-label">GitHub Repo URL (Paste to auto-fill ✨)</label>' +
+      '<span class="m-gh-status" style="font-size:0.72rem; display:none;"></span>' +
+      '</div>' +
+      '<div style="display:flex; gap:6px;">' +
+      '<input type="text" class="m-field-input m-proj-input-github" placeholder="https://github.com/owner/repository" style="flex:1;">' +
+      '<button type="button" class="m-toolbar-btn m-btn-fetch-gh" style="white-space:nowrap; padding:0 10px; font-size:0.75rem; border-color:var(--red); color:var(--ink);">Fetch</button>' +
+      '</div>' +
       '</div>' +
       '<div class="m-grid-2">' +
-        '<div class="m-field-group" style="margin-bottom:6px;">' +
-          '<label class="m-field-label">Title / Name</label>' +
-          '<input type="text" class="m-field-input m-proj-input-title" placeholder="Project Name">' +
-        '</div>' +
-        '<div class="m-field-group" style="margin-bottom:6px;">' +
-          '<label class="m-field-label">Tag / Tech</label>' +
-          '<input type="text" class="m-field-input m-proj-input-tag" placeholder="e.g. React, Next.js, CSS">' +
-        '</div>' +
+      '<div class="m-field-group" style="margin-bottom:6px;">' +
+      '<label class="m-field-label">Title / Name</label>' +
+      '<input type="text" class="m-field-input m-proj-input-title" placeholder="Project Name">' +
       '</div>' +
       '<div class="m-field-group" style="margin-bottom:6px;">' +
-        '<label class="m-field-label">Live Website / Demo URL</label>' +
-        '<input type="text" class="m-field-input m-proj-input-url" placeholder="https://your-site.vercel.app">' +
+      '<label class="m-field-label">Tag / Tech</label>' +
+      '<input type="text" class="m-field-input m-proj-input-tag" placeholder="e.g. React, Next.js, CSS">' +
+      '</div>' +
+      '</div>' +
+      '<div class="m-field-group" style="margin-bottom:6px;">' +
+      '<label class="m-field-label">Live Website / Demo URL</label>' +
+      '<input type="text" class="m-field-input m-proj-input-url" placeholder="https://your-site.vercel.app">' +
       '</div>' +
       '<div class="m-field-group" style="margin-bottom:0;">' +
-        '<label class="m-field-label">Description</label>' +
-        '<input type="text" class="m-field-input m-proj-input-desc" placeholder="Short description of your project">' +
+      '<label class="m-field-label">Description</label>' +
+      '<input type="text" class="m-field-input m-proj-input-desc" placeholder="Short description of your project">' +
       '</div>';
 
     var ghInp = card.querySelector('.m-proj-input-github');
@@ -909,11 +909,11 @@
       optionsHtml += '<option value="' + p.id + '"' + (isSel ? ' selected' : '') + '>' + p.label + '</option>';
       customOptionsHtml +=
         '<div class="custom-select-option ' + (isSel ? 'selected' : '') + '" data-val="' + p.id + '">' +
-          '<div class="opt-left">' +
-            '<iconify-icon icon="' + p.icon + '" width="14" height="14"></iconify-icon>' +
-            '<span>' + p.label + '</span>' +
-          '</div>' +
-          '<span class="opt-check">' + (isSel ? '✓' : '') + '</span>' +
+        '<div class="opt-left">' +
+        '<iconify-icon icon="' + p.icon + '" width="14" height="14"></iconify-icon>' +
+        '<span>' + p.label + '</span>' +
+        '</div>' +
+        '<span class="opt-check">' + (isSel ? '✓' : '') + '</span>' +
         '</div>';
     });
     if (!found) {
@@ -922,11 +922,11 @@
       selectedIcon = 'lucide:link';
       customOptionsHtml +=
         '<div class="custom-select-option selected" data-val="Custom">' +
-          '<div class="opt-left">' +
-            '<iconify-icon icon="lucide:link" width="14" height="14"></iconify-icon>' +
-            '<span>Custom</span>' +
-          '</div>' +
-          '<span class="opt-check">✓</span>' +
+        '<div class="opt-left">' +
+        '<iconify-icon icon="lucide:link" width="14" height="14"></iconify-icon>' +
+        '<span>Custom</span>' +
+        '</div>' +
+        '<span class="opt-check">✓</span>' +
         '</div>';
     }
 
@@ -939,49 +939,49 @@
 
     card.innerHTML =
       '<div style="display:flex; align-items:center; justify-content:space-between; gap:8px;">' +
-        '<div style="display:flex; align-items:center; gap:8px; flex:1;">' +
-          '<div class="m-social-icon-badge" title="Live Icon Preview">' +
-            '<iconify-icon icon="' + icon + '" width="18" height="18"></iconify-icon>' +
-          '</div>' +
-          '<div class="custom-select-wrap">' +
-            '<select class="m-field-input m-social-select-platform" style="display:none;" tabindex="-1">' +
-              optionsHtml +
-            '</select>' +
-            '<button type="button" class="custom-select-trigger" aria-haspopup="listbox" aria-expanded="false" title="Choose platform">' +
-              '<span class="custom-select-label">' +
-                '<iconify-icon icon="' + selectedIcon + '" width="14" height="14" class="custom-select-icon"></iconify-icon>' +
-                '<span class="custom-select-text">' + escapeHtml(selectedLabel) + '</span>' +
-              '</span>' +
-              '<svg class="custom-select-chevron" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">' +
-                '<path d="m6 9 6 6 6-6"/>' +
-              '</svg>' +
-            '</button>' +
-            '<div class="custom-select-dropdown" role="listbox" style="display:none;">' +
-              customOptionsHtml +
-            '</div>' +
-          '</div>' +
-          '<input type="text" class="m-field-input m-social-input-title" placeholder="Display Title" value="' + escapeHtml(title) + '" style="padding:6px 10px; font-size:0.78rem; flex:1;">' +
-        '</div>' +
-        '<button type="button" class="m-social-del-btn m-toolbar-btn" style="color:var(--red); border-color:rgba(255,42,95,0.3); padding:4px 8px; font-size:0.72rem; cursor:pointer;" title="Remove this link">✕ Remove</button>' +
+      '<div style="display:flex; align-items:center; gap:8px; flex:1;">' +
+      '<div class="m-social-icon-badge" title="Live Icon Preview">' +
+      '<iconify-icon icon="' + icon + '" width="18" height="18"></iconify-icon>' +
+      '</div>' +
+      '<div class="custom-select-wrap">' +
+      '<select class="m-field-input m-social-select-platform" style="display:none;" tabindex="-1">' +
+      optionsHtml +
+      '</select>' +
+      '<button type="button" class="custom-select-trigger" aria-haspopup="listbox" aria-expanded="false" title="Choose platform">' +
+      '<span class="custom-select-label">' +
+      '<iconify-icon icon="' + selectedIcon + '" width="14" height="14" class="custom-select-icon"></iconify-icon>' +
+      '<span class="custom-select-text">' + escapeHtml(selectedLabel) + '</span>' +
+      '</span>' +
+      '<svg class="custom-select-chevron" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">' +
+      '<path d="m6 9 6 6 6-6"/>' +
+      '</svg>' +
+      '</button>' +
+      '<div class="custom-select-dropdown" role="listbox" style="display:none;">' +
+      customOptionsHtml +
+      '</div>' +
+      '</div>' +
+      '<input type="text" class="m-field-input m-social-input-title" placeholder="Display Title" value="' + escapeHtml(title) + '" style="padding:6px 10px; font-size:0.78rem; flex:1;">' +
+      '</div>' +
+      '<button type="button" class="m-social-del-btn m-toolbar-btn" style="color:var(--red); border-color:rgba(255,42,95,0.3); padding:4px 8px; font-size:0.72rem; cursor:pointer;" title="Remove this link">✕ Remove</button>' +
       '</div>' +
       '<div style="display:flex; align-items:center; gap:8px; flex-wrap:wrap;">' +
-        '<input type="text" class="m-field-input m-social-input-url" placeholder="https://..." value="' + escapeHtml(url) + '" style="padding:6px 10px; font-size:0.78rem; flex:2; min-width:180px;">' +
-        '<div style="display:flex; align-items:center; gap:6px; flex:1.2; min-width:260px;">' +
-          '<input type="text" class="m-field-input m-social-input-icon" placeholder="Icon ID" value="' + escapeHtml(icon) + '" style="padding:6px 10px; font-size:0.75rem; flex:1; font-family:var(--font-mono);" title="Simple Icons or Lucide icon identifier">' +
-          '<div class="icon-pack-switch" title="Switch icon style: Simple Icons (official glyph) vs Lucide Icons (clean stroke)">' +
-            '<button type="button" class="pack-switch-btn btn-pack-simple ' + (isSimple ? 'active' : '') + '" title="Switch to Simple Icons official brand glyph (https://simpleicons.org)">' +
-              '<iconify-icon icon="simple-icons:simpleicons" width="11" height="11"></iconify-icon>' +
-              '<span>Simple</span>' +
-            '</button>' +
-            '<button type="button" class="pack-switch-btn btn-pack-lucide ' + (isLucide ? 'active' : '') + '" title="Switch to Lucide modern outline icon (https://lucide.dev/icons/)">' +
-              '<iconify-icon icon="lucide:feather" width="11" height="11"></iconify-icon>' +
-              '<span>Lucide</span>' +
-            '</button>' +
-          '</div>' +
-          '<a href="' + browseUrl + '" target="_blank" rel="noopener noreferrer" class="pack-browse-link" title="Open icon catalog in new tab">' +
-            '<span>↗</span>' +
-          '</a>' +
-        '</div>' +
+      '<input type="text" class="m-field-input m-social-input-url" placeholder="https://..." value="' + escapeHtml(url) + '" style="padding:6px 10px; font-size:0.78rem; flex:2; min-width:180px;">' +
+      '<div style="display:flex; align-items:center; gap:6px; flex:1.2; min-width:260px;">' +
+      '<input type="text" class="m-field-input m-social-input-icon" placeholder="Icon ID" value="' + escapeHtml(icon) + '" style="padding:6px 10px; font-size:0.75rem; flex:1; font-family:var(--font-mono);" title="Simple Icons or Lucide icon identifier">' +
+      '<div class="icon-pack-switch" title="Switch icon style: Simple Icons (official glyph) vs Lucide Icons (clean stroke)">' +
+      '<button type="button" class="pack-switch-btn btn-pack-simple ' + (isSimple ? 'active' : '') + '" title="Switch to Simple Icons official brand glyph (https://simpleicons.org)">' +
+      '<iconify-icon icon="simple-icons:simpleicons" width="11" height="11"></iconify-icon>' +
+      '<span>Simple</span>' +
+      '</button>' +
+      '<button type="button" class="pack-switch-btn btn-pack-lucide ' + (isLucide ? 'active' : '') + '" title="Switch to Lucide modern outline icon (https://lucide.dev/icons/)">' +
+      '<iconify-icon icon="lucide:feather" width="11" height="11"></iconify-icon>' +
+      '<span>Lucide</span>' +
+      '</button>' +
+      '</div>' +
+      '<a href="' + browseUrl + '" target="_blank" rel="noopener noreferrer" class="pack-browse-link" title="Open icon catalog in new tab">' +
+      '<span>↗</span>' +
+      '</a>' +
+      '</div>' +
       '</div>';
 
     var badge = card.querySelector('.m-social-icon-badge');
@@ -1530,9 +1530,9 @@
 
     // 1. Vector (SVG), Animated (GIF), Video (WEBM): preserve directly without canvas flattening
     var isDirect = type === 'image/svg+xml' ||
-                   type === 'image/gif' ||
-                   type === 'video/webm' ||
-                   /\.(svg|gif|webm)$/i.test(name);
+      type === 'image/gif' ||
+      type === 'video/webm' ||
+      /\.(svg|gif|webm)$/i.test(name);
 
     if (isDirect) {
       var directReader = new FileReader();
@@ -1629,10 +1629,10 @@
     var name = (file.name || '').toLowerCase();
 
     var isDirect = type === 'image/svg+xml' ||
-                   type === 'image/x-icon' ||
-                   type === 'image/vnd.microsoft.icon' ||
-                   type === 'image/gif' ||
-                   /\.(svg|ico|gif)$/i.test(name);
+      type === 'image/x-icon' ||
+      type === 'image/vnd.microsoft.icon' ||
+      type === 'image/gif' ||
+      /\.(svg|ico|gif)$/i.test(name);
 
     if (isDirect) {
       var directReader = new FileReader();
