@@ -997,8 +997,29 @@
 
       <!-- 5. // message (Matches Main Page Row 5) -->
       <div class="cust-section">
-        <p class="eyebrow">// message & security</p>
-        <div class="surface-card cust-card">
+        <div id="cust-msg-toggle" role="button" tabindex="0" aria-expanded="false" aria-controls="cust-msg-card"
+          style="display:flex; align-items:center; justify-content:space-between; cursor:pointer; padding:8px 12px; background:var(--surface); border:1px solid var(--line); border-radius:var(--radius); user-select:none; transition:all 0.2s ease;">
+          <div style="display:flex; align-items:center; gap:10px;">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="color:var(--ink-dim); flex-shrink:0;">
+              <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/>
+            </svg>
+            <p class="eyebrow" style="margin:0; cursor:pointer; color:var(--ink); font-weight:600; font-size:0.76rem;">// message & security</p>
+            <span id="cust-msg-status-indicator" style="display:inline-flex; align-items:center; gap:5px; font-size:0.65rem; font-family:var(--font-mono); padding:2px 8px; border-radius:10px; background:var(--bg); border:1px solid var(--line); color:var(--ink-faint);">
+              <span style="display:inline-block; width:6px; height:6px; border-radius:50%; background:var(--ink-faint);" id="cust-msg-dot"></span>
+              <span id="cust-msg-indicator-text">click to open</span>
+            </span>
+          </div>
+          <div style="display:flex; align-items:center; gap:6px; color:var(--ink-faint);">
+            <svg id="cust-msg-chevron" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="transition:transform 0.25s cubic-bezier(0.4, 0, 0.2, 1); transform:rotate(-90deg);">
+              <path d="m6 9 6 6 6-6"/>
+            </svg>
+          </div>
+        </div>
+
+        <div id="cust-msg-card" class="surface-card cust-card" style="padding:18px 20px; display:none; margin-top:8px; border-top:1px solid var(--line);">
+          <p style="font-size:0.73rem; color:var(--ink-faint); margin:0 0 14px 0; line-height:1.45;">
+            Configure your contact form destination and spam prevention keys (Web3Forms &amp; hCaptcha).
+          </p>
           <div class="field-grid-2">
             <div class="field-group">
               <label class="field-label" for="cust-web3forms">Web3Forms Access Key</label>
@@ -1605,6 +1626,58 @@
           if (e.key === 'Enter' || e.key === ' ') {
             e.preventDefault();
             toggleCloudinaryDropdown();
+          }
+        });
+      }
+
+      /* Message & Security Accordion Dropdown Handler */
+      var mToggle = document.getElementById('cust-msg-toggle');
+      var mCard = document.getElementById('cust-msg-card');
+      var mChevron = document.getElementById('cust-msg-chevron');
+      var mDot = document.getElementById('cust-msg-dot');
+      var mIndText = document.getElementById('cust-msg-indicator-text');
+      var w3Inp = document.getElementById('cust-web3forms');
+
+      function updateMsgStatusUI() {
+        if (!mDot || !mIndText) return;
+        var hasKey = w3Inp && w3Inp.value.trim().length > 0;
+        if (hasKey) {
+          mDot.style.background = '#10b981';
+          mIndText.textContent = 'configured';
+          mIndText.style.color = '#10b981';
+        } else {
+          mDot.style.background = 'var(--ink-faint)';
+          mIndText.textContent = 'click to open';
+          mIndText.style.color = 'var(--ink-faint)';
+        }
+      }
+
+      if (w3Inp) {
+        w3Inp.addEventListener('input', updateMsgStatusUI);
+      }
+
+      if (mToggle && mCard) {
+        function toggleMsgDropdown() {
+          var isHidden = (mCard.style.display === 'none' || !mCard.style.display);
+          if (isHidden) {
+            mCard.style.display = 'block';
+            if (mChevron) mChevron.style.transform = 'rotate(0deg)';
+            mToggle.setAttribute('aria-expanded', 'true');
+            mToggle.style.borderColor = 'var(--red)';
+            mToggle.style.background = 'rgba(255, 42, 95, 0.06)';
+          } else {
+            mCard.style.display = 'none';
+            if (mChevron) mChevron.style.transform = 'rotate(-90deg)';
+            mToggle.setAttribute('aria-expanded', 'false');
+            mToggle.style.borderColor = 'var(--line)';
+            mToggle.style.background = 'var(--surface)';
+          }
+        }
+        mToggle.addEventListener('click', toggleMsgDropdown);
+        mToggle.addEventListener('keydown', function (e) {
+          if (e.key === 'Enter' || e.key === ' ') {
+            e.preventDefault();
+            toggleMsgDropdown();
           }
         });
       }
@@ -2535,6 +2608,7 @@
         var presetInp = document.getElementById('cust-cloudinary-preset');
         if (presetInp) presetInp.value = cfg.cloudinary_upload_preset || '';
         updateCloudinaryStatusUI();
+        updateMsgStatusUI();
 
         /* Render projects in visual manager */
         var activeProjs = [];
