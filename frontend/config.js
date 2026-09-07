@@ -1,8 +1,8 @@
 const CONFIG = {
   "site_name": "khxaiyan",
   "accent_letter": "x",
-  "logo": "profile_icon.svg",
-  "favicon_url": "profile_icon.svg",
+  "logo": "https://res.cloudinary.com/dqxccz5bn/image/upload/profile_icon_wf7thb.svg",
+  "favicon_url": "https://res.cloudinary.com/dqxccz5bn/image/upload/favicon_jzygcw.png",
   "github": "khxaiyan",
   "x": "khxaiyan",
   "telegram": "khxaiyan",
@@ -28,5 +28,6 @@ const CONFIG = {
     "ayankhan84510@gmail.com"
   ],
   "cloudinary_cloud_name": "dqxccz5bn",
-  "cloudinary_upload_preset": "myportfolioa"
+  "cloudinary_upload_preset": "myportfolioa",
+  "avatar_url": "https://res.cloudinary.com/dqxccz5bn/image/upload/profile_icon_wf7thb.svg"
 };

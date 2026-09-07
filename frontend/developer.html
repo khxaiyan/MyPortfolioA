@@ -8,7 +8,7 @@
   <meta name="robots" content="noindex, nofollow, noarchive, nosnippet">
   <meta name="googlebot" content="noindex, nofollow, noarchive, nosnippet">
   <meta name="referrer" content="no-referrer">
-  <link rel="icon" href="profile_icon.svg" type="image/svg+xml">
+  <link rel="icon" href="https://res.cloudinary.com/dqxccz5bn/image/upload/favicon_jzygcw.png" type="image/png">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link
@@ -22,13 +22,13 @@
       try { customCfg = JSON.parse(localStorage.getItem('portfolio_custom_config')); } catch (_) { }
       if (customCfg) {
         var needsUpdate = false;
-        if (customCfg.favicon_url === 'favicon.svg' || customCfg.favicon_url === 'favicon.png' || customCfg.favicon_url === 'favicon.ico') {
-          customCfg.favicon_url = 'profile_icon.svg';
+        if (customCfg.favicon_url === 'favicon.svg' || customCfg.favicon_url === 'favicon.png' || customCfg.favicon_url === 'favicon.ico' || customCfg.favicon_url === 'profile_icon.svg') {
+          customCfg.favicon_url = 'https://res.cloudinary.com/dqxccz5bn/image/upload/favicon_jzygcw.png';
           needsUpdate = true;
         }
-        if (customCfg.avatar_url === 'avatar.svg' || customCfg.avatar_url === 'Diluc.svg' || customCfg.logo === 'avatar.svg' || customCfg.logo === 'Diluc.svg') {
-          customCfg.avatar_url = 'profile_icon.svg';
-          customCfg.logo = 'profile_icon.svg';
+        if (customCfg.avatar_url === 'avatar.svg' || customCfg.avatar_url === 'Diluc.svg' || customCfg.logo === 'avatar.svg' || customCfg.logo === 'Diluc.svg' || customCfg.avatar_url === 'profile_icon.svg' || customCfg.logo === 'profile_icon.svg') {
+          customCfg.avatar_url = 'https://res.cloudinary.com/dqxccz5bn/image/upload/profile_icon_wf7thb.svg';
+          customCfg.logo = 'https://res.cloudinary.com/dqxccz5bn/image/upload/profile_icon_wf7thb.svg';
           needsUpdate = true;
         }
         if (customCfg.accent_color === '#00f0ff' || customCfg.accent_color === '#a855f7') {
@@ -45,8 +45,8 @@
       var t = localStorage.getItem('theme') || defTheme;
       document.documentElement.setAttribute('data-theme', t);
 
-      var fav = (customCfg && customCfg.favicon_url) || 'profile_icon.svg';
-      if (fav === 'favicon.svg' || fav === 'favicon.png' || fav === 'favicon.ico') fav = 'profile_icon.svg';
+      var fav = (customCfg && customCfg.favicon_url) || 'https://res.cloudinary.com/dqxccz5bn/image/upload/favicon_jzygcw.png';
+      if (fav === 'favicon.svg' || fav === 'favicon.png' || fav === 'favicon.ico' || fav === 'profile_icon.svg') fav = 'https://res.cloudinary.com/dqxccz5bn/image/upload/favicon_jzygcw.png';
       if (fav) {
         var fi = document.querySelector("link[rel~='icon']");
         if (fi) {
@@ -523,7 +523,7 @@
           <div
             style="position:relative; width:84px; height:84px; border-radius:50%; overflow:hidden; border:2.5px solid var(--line); flex-shrink:0; cursor:pointer;"
             id="cust-avatar-upload-wrap" title="Click to upload profile photo">
-            <img id="cust-avatar-preview" src="profile_icon.svg" alt="Profile avatar" draggable="false"
+            <img id="cust-avatar-preview" src="https://res.cloudinary.com/dqxccz5bn/image/upload/profile_icon_wf7thb.svg" alt="Profile avatar" draggable="false"
               style="width:100%; height:100%; object-fit:cover; display:block; pointer-events:none; -webkit-user-drag:none; user-select:none;">
             <div id="cust-avatar-overlay"
               style="position:absolute; inset:0; background:rgba(0,0,0,0.55); display:flex; flex-direction:column; align-items:center; justify-content:center; opacity:0; transition:opacity 0.2s; gap:2px; pointer-events:none;">
@@ -545,7 +545,7 @@
             <div style="display:flex; align-items:center; justify-content:center; gap:8px; margin-bottom:10px;">
               <button type="button" id="cust-avatar-reset-btn" class="toolbar-btn"
                 style="border-radius:20px; padding:4px 14px; font-size:0.72rem; display:inline-flex; align-items:center; gap:5px;"
-                title="Reset profile picture to default (profile_icon.svg)">
+                title="Reset profile picture to default">
                 <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 12a9 9 0 1 0 9-9 9.75 9.75 0 0 0-6.74 2.74L3 8"/><path d="M3 3v5h5"/></svg>
                 Reset to Default
               </button>
@@ -597,7 +597,7 @@
             <span style="font-size:0.7rem; color:var(--ink-faint); font-family:var(--font-mono); letter-spacing:0.04em;">// BROWSER TAB PREVIEW</span>
             <div class="favicon-tab-preview" id="cust-favicon-tab-preview" title="Live browser tab preview">
               <div class="tab-icon" id="cust-favicon-tab-icon">
-                <img id="cust-favicon-tab-img" src="profile_icon.svg" alt="Favicon" style="width:16px; height:16px; border-radius:3px; object-fit:cover; display:block;">
+                <img id="cust-favicon-tab-img" src="https://res.cloudinary.com/dqxccz5bn/image/upload/favicon_jzygcw.png" alt="Favicon" style="width:16px; height:16px; border-radius:3px; object-fit:cover; display:block;">
               </div>
               <span class="tab-title" id="cust-favicon-tab-title">khxaiyan</span>
               <span class="tab-close">✕</span>
@@ -608,7 +608,7 @@
             <div
               style="position:relative; width:64px; height:64px; border-radius:14px; overflow:hidden; border:2px solid var(--line); flex-shrink:0; cursor:pointer;"
               id="cust-favicon-upload-wrap" title="Click to upload custom favicon">
-              <img id="cust-favicon-preview" src="profile_icon.svg" alt="Favicon preview" draggable="false"
+              <img id="cust-favicon-preview" src="https://res.cloudinary.com/dqxccz5bn/image/upload/favicon_jzygcw.png" alt="Favicon preview" draggable="false"
                 style="width:100%; height:100%; object-fit:cover; display:block; pointer-events:none; -webkit-user-drag:none; user-select:none;">
               <div id="cust-favicon-overlay"
                 style="position:absolute; inset:0; background:rgba(0,0,0,0.55); display:flex; flex-direction:column; align-items:center; justify-content:center; opacity:0; transition:opacity 0.2s; gap:2px; pointer-events:none;">
@@ -637,7 +637,7 @@
                 </button>
                 <button type="button" id="cust-favicon-reset-btn" class="toolbar-btn"
                   style="border-radius:20px; padding:4px 14px; font-size:0.72rem; display:inline-flex; align-items:center; gap:5px;"
-                  title="Reset favicon to default (profile_icon.svg)">
+                  title="Reset favicon to default">
                   <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 12a9 9 0 1 0 9-9 9.75 9.75 0 0 0-6.74 2.74L3 8"/><path d="M3 3v5h5"/></svg>
                   Reset to Default
                 </button>
@@ -1442,12 +1442,12 @@
           }
         } else {
           if (thumb && thumb.tagName.toLowerCase() === 'img') {
-            thumb.src = url || 'profile_icon.svg';
+            thumb.src = (url && url !== 'profile_icon.svg') ? url : 'https://res.cloudinary.com/dqxccz5bn/image/upload/profile_icon_wf7thb.svg';
             thumb.setAttribute('draggable', 'false');
           } else {
             var img = document.createElement('img');
             img.id = 'cust-avatar-preview';
-            img.src = url || 'profile_icon.svg';
+            img.src = (url && url !== 'profile_icon.svg') ? url : 'https://res.cloudinary.com/dqxccz5bn/image/upload/profile_icon_wf7thb.svg';
             img.alt = 'Profile avatar';
             img.setAttribute('draggable', 'false');
             img.style.cssText = 'width:100%; height:100%; object-fit:cover; display:block; pointer-events:none; -webkit-user-drag:none; user-select:none;';
@@ -1647,7 +1647,7 @@
       }
 
       function applyBrowserFavicon(url) {
-        if (!url) url = 'profile_icon.svg';
+        if (!url || url === 'profile_icon.svg') url = 'https://res.cloudinary.com/dqxccz5bn/image/upload/favicon_jzygcw.png';
         var links = document.querySelectorAll("link[rel*='icon']");
         if (!links || links.length === 0) {
           var link = document.createElement('link');
@@ -1680,7 +1680,7 @@
         var siteNameVal = (document.getElementById('cust-sitename') || {}).value || 'khxaiyan';
         if (tabTitle) tabTitle.textContent = siteNameVal;
 
-        var finalUrl = url || 'profile_icon.svg';
+        var finalUrl = (url && url !== 'profile_icon.svg') ? url : 'https://res.cloudinary.com/dqxccz5bn/image/upload/favicon_jzygcw.png';
         if (thumb) {
           thumb.src = finalUrl;
         }
@@ -1785,7 +1785,7 @@
           var avatarSrc = pendingAvatarData;
           if (!avatarSrc) {
             var currentAvatarImg = document.getElementById('cust-avatar-preview');
-            avatarSrc = currentAvatarImg ? currentAvatarImg.src : 'profile_icon.svg';
+            avatarSrc = (currentAvatarImg && currentAvatarImg.src && !currentAvatarImg.src.includes('profile_icon.svg')) ? currentAvatarImg.src : 'https://res.cloudinary.com/dqxccz5bn/image/upload/profile_icon_wf7thb.svg';
           }
           if (avatarSrc) {
             pendingFaviconData = avatarSrc;
@@ -1797,13 +1797,13 @@
       var avatarResetBtn = document.getElementById('cust-avatar-reset-btn');
       if (avatarResetBtn) {
         avatarResetBtn.addEventListener('click', function () {
-          pendingAvatarData = 'profile_icon.svg';
+          pendingAvatarData = 'https://res.cloudinary.com/dqxccz5bn/image/upload/profile_icon_wf7thb.svg';
           setCustPreviewAvatar(pendingAvatarData);
           var statusEl = document.getElementById('cust-avatar-status');
           if (statusEl) {
             statusEl.style.display = 'block';
             statusEl.style.color = '#38bdf8';
-            statusEl.textContent = '↺ Reset to profile_icon.svg (Click Save & Apply to persist)';
+            statusEl.textContent = '↺ Reset to default profile image (Click Save & Apply to persist)';
           }
         });
       }
@@ -1811,13 +1811,13 @@
       var faviconResetBtn = document.getElementById('cust-favicon-reset-btn');
       if (faviconResetBtn) {
         faviconResetBtn.addEventListener('click', function () {
-          pendingFaviconData = 'profile_icon.svg';
+          pendingFaviconData = 'https://res.cloudinary.com/dqxccz5bn/image/upload/favicon_jzygcw.png';
           setCustPreviewFavicon(pendingFaviconData);
           var statusEl = document.getElementById('cust-favicon-status');
           if (statusEl) {
             statusEl.style.display = 'block';
             statusEl.style.color = '#38bdf8';
-            statusEl.textContent = '↺ Reset to profile_icon.svg (Click Save & Apply to persist)';
+            statusEl.textContent = '↺ Reset to default favicon (Click Save & Apply to persist)';
           }
         });
       }
@@ -2492,11 +2492,11 @@
 
         /* Restore saved avatar */
         pendingAvatarData = null;
-        setCustPreviewAvatar((cfg.avatar_url && cfg.avatar_url.trim()) ? cfg.avatar_url.trim() : 'profile_icon.svg');
+        setCustPreviewAvatar((cfg.avatar_url && cfg.avatar_url.trim() && cfg.avatar_url.trim() !== 'profile_icon.svg') ? cfg.avatar_url.trim() : 'https://res.cloudinary.com/dqxccz5bn/image/upload/profile_icon_wf7thb.svg');
 
         /* Restore saved favicon */
         pendingFaviconData = null;
-        setCustPreviewFavicon((cfg.favicon_url && cfg.favicon_url.trim()) ? cfg.favicon_url.trim() : 'profile_icon.svg');
+        setCustPreviewFavicon((cfg.favicon_url && cfg.favicon_url.trim() && cfg.favicon_url.trim() !== 'profile_icon.svg') ? cfg.favicon_url.trim() : 'https://res.cloudinary.com/dqxccz5bn/image/upload/favicon_jzygcw.png');
 
         /* Apply and sync theme option (default is current theme) */
         var themeCfg = cfg.theme_config || {};
@@ -2589,12 +2589,12 @@
         } catch (_) { }
 
         /* Resolve avatar: newly chosen base64, or existing saved, or CONFIG */
-        var existingAvatarUrl = existingCustom.avatar_url || ((typeof CONFIG !== 'undefined' && CONFIG.avatar_url) ? CONFIG.avatar_url : 'profile_icon.svg');
+        var existingAvatarUrl = (existingCustom.avatar_url && existingCustom.avatar_url !== 'profile_icon.svg') ? existingCustom.avatar_url : (((typeof CONFIG !== 'undefined' && CONFIG.avatar_url && CONFIG.avatar_url !== 'profile_icon.svg') ? CONFIG.avatar_url : 'https://res.cloudinary.com/dqxccz5bn/image/upload/profile_icon_wf7thb.svg'));
         var resolvedAvatar = (pendingAvatarData !== null) ? pendingAvatarData : existingAvatarUrl;
 
         /* Resolve favicon: newly chosen base64, or existing saved, or CONFIG */
-        var existingFaviconUrl = existingCustom.favicon_url || ((typeof CONFIG !== 'undefined' && CONFIG.favicon_url) ? CONFIG.favicon_url : 'profile_icon.svg');
-        var resolvedFavicon = (pendingFaviconData !== null) ? (pendingFaviconData || 'profile_icon.svg') : existingFaviconUrl;
+        var existingFaviconUrl = (existingCustom.favicon_url && existingCustom.favicon_url !== 'profile_icon.svg') ? existingCustom.favicon_url : (((typeof CONFIG !== 'undefined' && CONFIG.favicon_url && CONFIG.favicon_url !== 'profile_icon.svg') ? CONFIG.favicon_url : 'https://res.cloudinary.com/dqxccz5bn/image/upload/favicon_jzygcw.png'));
+        var resolvedFavicon = (pendingFaviconData !== null) ? (pendingFaviconData || 'https://res.cloudinary.com/dqxccz5bn/image/upload/favicon_jzygcw.png') : existingFaviconUrl;
 
         var updated = {
           github: document.getElementById('cust-github').value.trim(),
@@ -2602,7 +2602,7 @@
           telegram: document.getElementById('cust-telegram').value.trim(),
           email: document.getElementById('cust-email').value.trim(),
           social_links: socialLinks,
-          logo: 'profile_icon.svg',
+          logo: resolvedAvatar || 'https://res.cloudinary.com/dqxccz5bn/image/upload/profile_icon_wf7thb.svg',
           avatar_url: resolvedAvatar,
           favicon_url: resolvedFavicon,
           site_name: document.getElementById('cust-sitename').value.trim(),

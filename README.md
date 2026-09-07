@@ -67,7 +67,6 @@ MyPortfolioA/
 │   ├── 404.html                     # Themed 404 error page
 │   ├── style.css                    # Core stylesheet, tokens & skeleton shimmer
 │   ├── app.js                       # Main application logic & GitHub pins loader
-│   ├── profile_icon.svg             # Default profile avatar and site favicon
 │   └── config.js                    # Auto-generated config (synced from keys/.env)
 │
 ├── backend/                         ← Node / server-side scripts

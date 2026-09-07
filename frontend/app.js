@@ -177,13 +177,13 @@
     if (savedCustom) {
       var parsedCustom = JSON.parse(savedCustom);
       var needsSave = false;
-      if (parsedCustom.avatar_url === 'avatar.svg' || parsedCustom.avatar_url === 'Diluc.svg' || parsedCustom.logo === 'avatar.svg' || parsedCustom.logo === 'Diluc.svg') {
-        parsedCustom.avatar_url = 'profile_icon.svg';
-        parsedCustom.logo = 'profile_icon.svg';
+      if (parsedCustom.avatar_url === 'avatar.svg' || parsedCustom.avatar_url === 'Diluc.svg' || parsedCustom.logo === 'avatar.svg' || parsedCustom.logo === 'Diluc.svg' || parsedCustom.avatar_url === 'profile_icon.svg' || parsedCustom.logo === 'profile_icon.svg') {
+        parsedCustom.avatar_url = 'https://res.cloudinary.com/dqxccz5bn/image/upload/profile_icon_wf7thb.svg';
+        parsedCustom.logo = 'https://res.cloudinary.com/dqxccz5bn/image/upload/profile_icon_wf7thb.svg';
         needsSave = true;
       }
-      if (parsedCustom.favicon_url === 'favicon.svg' || parsedCustom.favicon_url === 'favicon.png' || parsedCustom.favicon_url === 'favicon.ico') {
-        parsedCustom.favicon_url = 'profile_icon.svg';
+      if (parsedCustom.favicon_url === 'favicon.svg' || parsedCustom.favicon_url === 'favicon.png' || parsedCustom.favicon_url === 'favicon.ico' || parsedCustom.favicon_url === 'profile_icon.svg') {
+        parsedCustom.favicon_url = 'https://res.cloudinary.com/dqxccz5bn/image/upload/favicon_jzygcw.png';
         needsSave = true;
       }
       if (parsedCustom.accent_color === '#00f0ff' || parsedCustom.accent_color === '#a855f7') {
@@ -1248,11 +1248,11 @@
 
     /* Restore saved avatar into modal preview */
     pendingAvatarData = null;
-    setModalAvatarPreview((cfg.avatar_url && cfg.avatar_url.trim()) ? cfg.avatar_url.trim() : 'profile_icon.svg');
+    setModalAvatarPreview((cfg.avatar_url && cfg.avatar_url.trim() && cfg.avatar_url.trim() !== 'profile_icon.svg') ? cfg.avatar_url.trim() : 'https://res.cloudinary.com/dqxccz5bn/image/upload/profile_icon_wf7thb.svg');
 
     /* Restore saved favicon into modal preview */
     pendingFaviconData = null;
-    setModalFaviconPreview((cfg.favicon_url && cfg.favicon_url.trim()) ? cfg.favicon_url.trim() : 'profile_icon.svg');
+    setModalFaviconPreview((cfg.favicon_url && cfg.favicon_url.trim() && cfg.favicon_url.trim() !== 'profile_icon.svg') ? cfg.favicon_url.trim() : 'https://res.cloudinary.com/dqxccz5bn/image/upload/favicon_jzygcw.png');
 
     updateModalPreviews();
 
@@ -1388,7 +1388,7 @@
 
   /* ── Avatar helpers & format handling ── */
   function applyPageFavicon(url) {
-    if (!url || url === 'favicon.svg' || url === 'favicon.png' || url === 'favicon.ico') url = 'profile_icon.svg';
+    if (!url || url === 'favicon.svg' || url === 'favicon.png' || url === 'favicon.ico' || url === 'profile_icon.svg') url = 'https://res.cloudinary.com/dqxccz5bn/image/upload/favicon_jzygcw.png';
     var links = document.querySelectorAll("link[rel*='icon']");
     if (!links || links.length === 0) {
       var link = document.createElement('link');
@@ -1449,7 +1449,7 @@
         }
       }
     } else {
-      var finalImgSrc = (url && url !== 'avatar.svg' && url !== 'Diluc.svg') ? url : 'profile_icon.svg';
+      var finalImgSrc = (url && url !== 'avatar.svg' && url !== 'Diluc.svg' && url !== 'profile_icon.svg') ? url : 'https://res.cloudinary.com/dqxccz5bn/image/upload/profile_icon_wf7thb.svg';
       if (currentEl && currentEl.tagName.toLowerCase() === 'img') {
         currentEl.src = finalImgSrc;
         currentEl.setAttribute('draggable', 'false');
@@ -1499,12 +1499,12 @@
       }
     } else {
       if (currentEl && currentEl.tagName.toLowerCase() === 'img') {
-        currentEl.src = url || 'profile_icon.svg';
+        currentEl.src = (url && url !== 'profile_icon.svg') ? url : 'https://res.cloudinary.com/dqxccz5bn/image/upload/profile_icon_wf7thb.svg';
         currentEl.setAttribute('draggable', 'false');
       } else {
         var img = document.createElement('img');
         img.id = 'm-avatar-preview';
-        img.src = url || 'profile_icon.svg';
+        img.src = (url && url !== 'profile_icon.svg') ? url : 'https://res.cloudinary.com/dqxccz5bn/image/upload/profile_icon_wf7thb.svg';
         img.alt = 'Profile picture';
         img.setAttribute('draggable', 'false');
         img.style.cssText = 'width:88px; height:88px; border-radius:50%; object-fit:cover; border:2.5px solid var(--line); display:block; pointer-events:none; -webkit-user-drag:none; user-select:none;';
@@ -1681,7 +1681,7 @@
     var siteNameVal = (document.getElementById('m-cust-sitename') || {}).value || 'khxaiyan';
     if (tabTitle) tabTitle.textContent = siteNameVal;
 
-    var finalUrl = url || 'profile_icon.svg';
+    var finalUrl = (url && url !== 'profile_icon.svg') ? url : 'https://res.cloudinary.com/dqxccz5bn/image/upload/favicon_jzygcw.png';
     if (thumb) {
       thumb.src = finalUrl;
     }
@@ -1772,7 +1772,7 @@
       var avatarSrc = pendingAvatarData;
       if (!avatarSrc) {
         var currentAvatarImg = document.getElementById('m-avatar-preview');
-        avatarSrc = currentAvatarImg ? currentAvatarImg.src : 'profile_icon.svg';
+        avatarSrc = (currentAvatarImg && currentAvatarImg.src && !currentAvatarImg.src.includes('profile_icon.svg')) ? currentAvatarImg.src : 'https://res.cloudinary.com/dqxccz5bn/image/upload/profile_icon_wf7thb.svg';
       }
       if (avatarSrc) {
         pendingFaviconData = avatarSrc;
@@ -1784,7 +1784,7 @@
   var modalAvatarResetBtn = document.getElementById('m-avatar-reset-btn');
   if (modalAvatarResetBtn) {
     modalAvatarResetBtn.addEventListener('click', function () {
-      pendingAvatarData = 'profile_icon.svg';
+      pendingAvatarData = 'https://res.cloudinary.com/dqxccz5bn/image/upload/profile_icon_wf7thb.svg';
       setModalAvatarPreview(pendingAvatarData);
     });
   }
@@ -1792,7 +1792,7 @@
   var modalFaviconResetBtn = document.getElementById('m-favicon-reset-btn');
   if (modalFaviconResetBtn) {
     modalFaviconResetBtn.addEventListener('click', function () {
-      pendingFaviconData = 'profile_icon.svg';
+      pendingFaviconData = 'https://res.cloudinary.com/dqxccz5bn/image/upload/favicon_jzygcw.png';
       setModalFaviconPreview(pendingFaviconData);
     });
   }
@@ -1860,12 +1860,12 @@
       });
 
       /* Resolve avatar: use newly picked file data, or keep existing saved one */
-      var existingAvatarUrl = (typeof CONFIG !== 'undefined' && CONFIG.avatar_url) ? CONFIG.avatar_url : 'profile_icon.svg';
+      var existingAvatarUrl = (typeof CONFIG !== 'undefined' && CONFIG.avatar_url && CONFIG.avatar_url !== 'profile_icon.svg') ? CONFIG.avatar_url : 'https://res.cloudinary.com/dqxccz5bn/image/upload/profile_icon_wf7thb.svg';
       var resolvedAvatar = (pendingAvatarData !== null) ? pendingAvatarData : existingAvatarUrl;
 
       /* Resolve favicon: newly picked file, or existing saved one */
-      var existingFaviconUrl = (typeof CONFIG !== 'undefined' && CONFIG.favicon_url) ? CONFIG.favicon_url : 'profile_icon.svg';
-      var resolvedFavicon = (pendingFaviconData !== null) ? (pendingFaviconData || 'profile_icon.svg') : existingFaviconUrl;
+      var existingFaviconUrl = (typeof CONFIG !== 'undefined' && CONFIG.favicon_url && CONFIG.favicon_url !== 'profile_icon.svg') ? CONFIG.favicon_url : 'https://res.cloudinary.com/dqxccz5bn/image/upload/favicon_jzygcw.png';
+      var resolvedFavicon = (pendingFaviconData !== null) ? (pendingFaviconData || 'https://res.cloudinary.com/dqxccz5bn/image/upload/favicon_jzygcw.png') : existingFaviconUrl;
 
       var updated = {
         github: (document.getElementById('m-cust-github') || {}).value.trim(),
@@ -1873,7 +1873,7 @@
         telegram: (document.getElementById('m-cust-telegram') || {}).value.trim(),
         email: (document.getElementById('m-cust-email') || {}).value.trim(),
         social_links: socialLinks,
-        logo: 'profile_icon.svg',
+        logo: resolvedAvatar || 'https://res.cloudinary.com/dqxccz5bn/image/upload/profile_icon_wf7thb.svg',
         avatar_url: resolvedAvatar,
         favicon_url: resolvedFavicon,
         site_name: (document.getElementById('m-cust-sitename') || {}).value.trim(),
@@ -1933,7 +1933,7 @@
       }
 
       /* Live apply avatar to page */
-      setPageAvatar(updated.avatar_url || 'profile_icon.svg');
+      setPageAvatar(updated.avatar_url || 'https://res.cloudinary.com/dqxccz5bn/image/upload/profile_icon_wf7thb.svg');
 
       var saveStatus = document.getElementById('m-save-status');
       if (saveStatus) {

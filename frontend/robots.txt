@@ -8,6 +8,5 @@ Disallow: /backend/
 
 # Allow root and assets
 Allow: /
-Allow: /profile_icon.svg
 Allow: /style.css
 Allow: /app.js

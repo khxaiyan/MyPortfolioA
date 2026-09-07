@@ -13,14 +13,14 @@
   <meta property="og:title" content="khxaiyan">
   <meta property="og:description"
     content="khxaiyan | Developer in active building mode. Crafting clean web tools & interfaces.">
-  <meta property="og:image" content="https://khxaiyan.vercel.app/profile_icon.svg">
+  <meta property="og:image" content="https://res.cloudinary.com/dqxccz5bn/image/upload/profile_icon_wf7thb.svg">
   <meta name="twitter:card" content="summary">
   <meta name="twitter:site" content="@khxaiyan">
   <meta name="twitter:title" content="khxaiyan">
   <meta name="twitter:description"
     content="khxaiyan | Developer in active building mode. Crafting clean web tools & interfaces.">
-  <meta name="twitter:image" content="https://khxaiyan.vercel.app/profile_icon.svg">
-  <link rel="icon" href="profile_icon.svg" type="image/svg+xml">
+  <meta name="twitter:image" content="https://res.cloudinary.com/dqxccz5bn/image/upload/profile_icon_wf7thb.svg">
+  <link rel="icon" href="https://res.cloudinary.com/dqxccz5bn/image/upload/favicon_jzygcw.png" type="image/png">
   <link rel="canonical" href="https://khxaiyan.github.io/">
   <meta name="theme-color" id="meta-theme-color" content="#0a0a0e">
   <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -36,13 +36,13 @@
       try { customCfg = JSON.parse(localStorage.getItem('portfolio_custom_config')); } catch (_) {}
       if (customCfg) {
         var needsUpdate = false;
-        if (customCfg.favicon_url === 'favicon.svg' || customCfg.favicon_url === 'favicon.png' || customCfg.favicon_url === 'favicon.ico') {
-          customCfg.favicon_url = 'profile_icon.svg';
+        if (customCfg.favicon_url === 'favicon.svg' || customCfg.favicon_url === 'favicon.png' || customCfg.favicon_url === 'favicon.ico' || customCfg.favicon_url === 'profile_icon.svg') {
+          customCfg.favicon_url = 'https://res.cloudinary.com/dqxccz5bn/image/upload/favicon_jzygcw.png';
           needsUpdate = true;
         }
-        if (customCfg.avatar_url === 'avatar.svg' || customCfg.avatar_url === 'Diluc.svg' || customCfg.logo === 'avatar.svg' || customCfg.logo === 'Diluc.svg') {
-          customCfg.avatar_url = 'profile_icon.svg';
-          customCfg.logo = 'profile_icon.svg';
+        if (customCfg.avatar_url === 'avatar.svg' || customCfg.avatar_url === 'Diluc.svg' || customCfg.logo === 'avatar.svg' || customCfg.logo === 'Diluc.svg' || customCfg.avatar_url === 'profile_icon.svg' || customCfg.logo === 'profile_icon.svg') {
+          customCfg.avatar_url = 'https://res.cloudinary.com/dqxccz5bn/image/upload/profile_icon_wf7thb.svg';
+          customCfg.logo = 'https://res.cloudinary.com/dqxccz5bn/image/upload/profile_icon_wf7thb.svg';
           needsUpdate = true;
         }
         if (customCfg.accent_color === '#00f0ff' || customCfg.accent_color === '#a855f7') {
@@ -59,8 +59,8 @@
       var t = localStorage.getItem('theme') || defTheme;
       document.documentElement.setAttribute('data-theme', t);
 
-      var fav = (customCfg && customCfg.favicon_url) || 'profile_icon.svg';
-      if (fav === 'favicon.svg' || fav === 'favicon.png' || fav === 'favicon.ico') fav = 'profile_icon.svg';
+      var fav = (customCfg && customCfg.favicon_url) || 'https://res.cloudinary.com/dqxccz5bn/image/upload/favicon_jzygcw.png';
+      if (fav === 'favicon.svg' || fav === 'favicon.png' || fav === 'favicon.ico' || fav === 'profile_icon.svg') fav = 'https://res.cloudinary.com/dqxccz5bn/image/upload/favicon_jzygcw.png';
       if (fav) {
         var fi = document.querySelector("link[rel~='icon']");
         if (fi) {
@@ -132,7 +132,7 @@
       <div class="content-col id-col">
         <div class="id-block">
           <button class="avatar-wrap" id="avatar-wrap" aria-label="Toggle theme">
-            <img class="avatar-img" src="profile_icon.svg" alt="khxaiyan" width="88" height="88" loading="eager" draggable="false">
+            <img class="avatar-img" src="https://res.cloudinary.com/dqxccz5bn/image/upload/profile_icon_wf7thb.svg" alt="khxaiyan" width="88" height="88" loading="eager" draggable="false">
             <span class="theme-badge" id="theme-badge" aria-hidden="true">
               <!-- Sun icon: visible in dark mode -->
               <svg class="badge-sun" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor"
@@ -352,7 +352,7 @@
         <!-- Instagram-style profile picture upload -->
         <div style="display:flex; flex-direction:column; align-items:center; gap:10px; padding:18px 0 14px; border-bottom:1px solid var(--line); margin-bottom:16px;">
           <div style="position:relative; width:88px; height:88px; cursor:pointer;" id="m-avatar-upload-wrap" title="Change profile picture">
-            <img id="m-avatar-preview" src="profile_icon.svg" alt="Profile picture" draggable="false"
+            <img id="m-avatar-preview" src="https://res.cloudinary.com/dqxccz5bn/image/upload/profile_icon_wf7thb.svg" alt="Profile picture" draggable="false"
               style="width:88px; height:88px; border-radius:50%; object-fit:cover; border:2.5px solid var(--line); display:block; transition:filter 0.2s; pointer-events:none; -webkit-user-drag:none; user-select:none;">
             <!-- Camera overlay -->
             <div id="m-avatar-overlay"
@@ -373,7 +373,7 @@
             <div style="display:flex; align-items:center; justify-content:center; gap:6px; margin-bottom:8px;">
               <button type="button" id="m-avatar-reset-btn"
                 style="font-size:0.67rem; padding:3px 10px; border-radius:14px; display:inline-flex; align-items:center; gap:4px; background:var(--bg); border:1px solid var(--line); color:var(--ink-dim); cursor:pointer; font-family:var(--font-mono); transition:all 0.16s ease;"
-                title="Reset profile picture to default (profile_icon.svg)">
+                title="Reset profile picture to default">
                 <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 12a9 9 0 1 0 9-9 9.75 9.75 0 0 0-6.74 2.74L3 8"/><path d="M3 3v5h5"/></svg>
                 Reset to Default
               </button>
@@ -400,7 +400,7 @@
             <span style="font-size:0.63rem; color:var(--ink-faint); font-family:var(--font-mono); letter-spacing:0.04em;">// BROWSER TAB PREVIEW</span>
             <div class="favicon-tab-preview" id="m-favicon-tab-preview" title="Live browser tab preview">
               <div class="tab-icon" id="m-favicon-tab-icon">
-                <img id="m-favicon-tab-img" src="profile_icon.svg" alt="Favicon" style="width:16px; height:16px; border-radius:3px; object-fit:cover; display:block;">
+                <img id="m-favicon-tab-img" src="https://res.cloudinary.com/dqxccz5bn/image/upload/favicon_jzygcw.png" alt="Favicon" style="width:16px; height:16px; border-radius:3px; object-fit:cover; display:block;">
               </div>
               <span class="tab-title" id="m-favicon-tab-title">khxaiyan</span>
               <span class="tab-close">✕</span>
@@ -410,7 +410,7 @@
           <div style="display:flex; align-items:center; justify-content:center; gap:12px; margin-top:4px;">
             <!-- Upload custom favicon button -->
             <div style="position:relative; width:48px; height:48px; cursor:pointer;" id="m-favicon-upload-wrap" title="Upload custom favicon">
-              <img id="m-favicon-preview" src="profile_icon.svg" alt="Favicon"
+              <img id="m-favicon-preview" src="https://res.cloudinary.com/dqxccz5bn/image/upload/favicon_jzygcw.png" alt="Favicon"
                 style="width:48px; height:48px; border-radius:10px; object-fit:cover; border:2px solid var(--line); display:block; transition:border-color 0.2s; pointer-events:none; -webkit-user-drag:none; user-select:none;">
               <div id="m-favicon-overlay"
                 style="position:absolute; inset:0; border-radius:10px; background:rgba(0,0,0,0.55); display:flex; flex-direction:column; align-items:center; justify-content:center; opacity:0; transition:opacity 0.2s; pointer-events:none;">
@@ -437,7 +437,7 @@
                 </button>
                 <button type="button" id="m-favicon-reset-btn"
                   style="font-size:0.67rem; padding:3px 9px; border-radius:14px; display:inline-flex; align-items:center; gap:4px; background:var(--bg); border:1px solid var(--line); color:var(--ink-dim); cursor:pointer; font-family:var(--font-mono); transition:all 0.16s ease;"
-                  title="Reset favicon to default (profile_icon.svg)">
+                  title="Reset favicon to default">
                   <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 12a9 9 0 1 0 9-9 9.75 9.75 0 0 0-6.74 2.74L3 8"/><path d="M3 3v5h5"/></svg>
                   Reset to Default
                 </button>

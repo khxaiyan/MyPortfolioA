@@ -42,8 +42,9 @@ module.exports = async function handler(req, res) {
     // Safety: ensure sensible defaults
     if (!newConfig.site_name) newConfig.site_name = 'khxaiyan';
     if (!newConfig.accent_letter) newConfig.accent_letter = 'x';
-    if (!newConfig.logo) newConfig.logo = 'profile_icon.svg';
-    if (!newConfig.favicon_url) newConfig.favicon_url = 'profile_icon.svg';
+    if (!newConfig.logo || newConfig.logo === 'avatar.svg' || newConfig.logo === 'Diluc.svg' || newConfig.logo === 'profile_icon.svg') newConfig.logo = 'https://res.cloudinary.com/dqxccz5bn/image/upload/profile_icon_wf7thb.svg';
+    if (!newConfig.avatar_url || newConfig.avatar_url === 'avatar.svg' || newConfig.avatar_url === 'Diluc.svg' || newConfig.avatar_url === 'profile_icon.svg') newConfig.avatar_url = 'https://res.cloudinary.com/dqxccz5bn/image/upload/profile_icon_wf7thb.svg';
+    if (!newConfig.favicon_url || newConfig.favicon_url === 'favicon.svg' || newConfig.favicon_url === 'favicon.png' || newConfig.favicon_url === 'favicon.ico' || newConfig.favicon_url === 'profile_icon.svg') newConfig.favicon_url = 'https://res.cloudinary.com/dqxccz5bn/image/upload/favicon_jzygcw.png';
 
     const formattedConfig = `const CONFIG = ${JSON.stringify(newConfig, null, 2)};\n`;
 
