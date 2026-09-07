@@ -3,6 +3,11 @@
   "cleanUrls": true,
   "outputDirectory": "frontend",
   "buildCommand": "node backend/sync-env.js",
+  "functions": {
+    "api/inngest.js": {
+      "maxDuration": 60
+    }
+  },
   "redirects": [
     {
       "source": "/frontend",
