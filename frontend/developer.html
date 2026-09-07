@@ -14,8 +14,9 @@
   <link
     href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600&display=swap"
     rel="stylesheet">
-  <link rel="stylesheet" href="style.css">
+  <link rel="stylesheet" href="style.css?v=2">
   <script src="https://code.iconify.design/iconify-icon/2.1.0/iconify-icon.min.js"></script>
+  <script src="config.js?v=25"></script>
   <script>
     (function () {
       var customCfg = null;
@@ -40,10 +41,10 @@
           try { localStorage.setItem('portfolio_custom_config', JSON.stringify(customCfg)); } catch (_) {}
         }
       }
-      var themeCfg = (customCfg && customCfg.theme_config) || {};
-      var defTheme = themeCfg.mode || (customCfg && customCfg.default_theme) || 'dark';
-      var t = localStorage.getItem('theme') || defTheme;
-      document.documentElement.setAttribute('data-theme', t);
+      var cfg = Object.assign({}, typeof CONFIG !== 'undefined' ? CONFIG : {}, customCfg || {});
+      var themeCfg = cfg.theme_config || {};
+      var defTheme = themeCfg.mode || cfg.default_theme || 'dark';
+      document.documentElement.setAttribute('data-theme', defTheme);
 
       var fav = (customCfg && customCfg.favicon_url) || 'https://res.cloudinary.com/dqxccz5bn/image/upload/favicon_jzygcw.png';
       if (fav === 'favicon.svg' || fav === 'favicon.png' || fav === 'favicon.ico' || fav === 'profile_icon.svg') fav = 'https://res.cloudinary.com/dqxccz5bn/image/upload/favicon_jzygcw.png';

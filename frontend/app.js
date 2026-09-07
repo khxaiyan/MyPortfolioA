@@ -155,16 +155,48 @@
 
   var customCfg = null;
   try { customCfg = JSON.parse(localStorage.getItem('portfolio_custom_config')); } catch (_) { }
-  var themeCfg = (customCfg && customCfg.theme_config) || {};
-  currentThemeMode = themeCfg.mode || (customCfg && customCfg.default_theme) || localStorage.getItem('theme') || 'dark';
+  var themeCfg = (customCfg && customCfg.theme_config) || (typeof CONFIG !== 'undefined' && CONFIG.theme_config) || {};
+  currentThemeMode = themeCfg.mode || (customCfg && customCfg.default_theme) || (typeof CONFIG !== 'undefined' && CONFIG.default_theme) || 'dark';
   currentAccentColor = themeCfg.accent_color || (customCfg && customCfg.accent_color) || (typeof CONFIG !== 'undefined' && CONFIG.accent_color) || '#ff2a5f';
-  currentBgPreset = themeCfg.bg_preset || 'midnight';
+  currentBgPreset = themeCfg.bg_preset || (typeof CONFIG !== 'undefined' && CONFIG.theme_config && CONFIG.theme_config.bg_preset) || 'midnight';
 
   applyTheme(currentThemeMode);
 
+  function syncThemeIfAdmin(newMode) {
+    if (!window.Clerk || !window.Clerk.user || !isUserAuthorized(window.Clerk.user)) {
+      return;
+    }
+    var cfg = Object.assign({}, typeof CONFIG !== 'undefined' ? CONFIG : {});
+    try {
+      var saved = localStorage.getItem('portfolio_custom_config');
+      if (saved) Object.assign(cfg, JSON.parse(saved));
+    } catch (_) {}
+    cfg.default_theme = newMode;
+    if (!cfg.theme_config) cfg.theme_config = {};
+    cfg.theme_config.mode = newMode;
+    cfg.theme_config.accent_color = currentAccentColor;
+    cfg.theme_config.bg_preset = currentBgPreset;
+    localStorage.setItem('portfolio_custom_config', JSON.stringify(cfg));
+    if (typeof CONFIG !== 'undefined') Object.assign(CONFIG, cfg);
+
+    fetch('/api/save-config', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(cfg)
+    }).then(function (r) { return r.json(); }).then(function (res) {
+      if (res && res.pushed) {
+        showDevToast('theme synced & deploying to vercel');
+      } else if (res && res.success) {
+        showDevToast('theme saved universally');
+      }
+    }).catch(function () {});
+  }
+
   if (aw) {
     aw.addEventListener('click', function () {
-      applyTheme(root.getAttribute('data-theme') === 'dark' ? 'light' : 'dark');
+      var nextTheme = root.getAttribute('data-theme') === 'dark' ? 'light' : 'dark';
+      applyTheme(nextTheme);
+      syncThemeIfAdmin(nextTheme);
     });
     aw.addEventListener('keydown', function (e) {
       if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); aw.click(); }

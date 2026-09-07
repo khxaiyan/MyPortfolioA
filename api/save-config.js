@@ -68,7 +68,7 @@ module.exports = async function handler(req, res) {
         // Check if there are changes to commit
         const diff = execSync('git status --porcelain frontend/config.js', { stdio: 'pipe' }).toString().trim();
         if (diff) {
-          execSync('git commit -m "chore: update portfolio configuration [skip ci]"', { stdio: 'pipe' });
+          execSync('git commit -m "chore: update portfolio configuration"', { stdio: 'pipe' });
           try {
             execSync('git push origin main', { stdio: 'pipe' });
             gitPushed = true;
@@ -120,7 +120,7 @@ module.exports = async function handler(req, res) {
           'User-Agent': 'Portfolio-Config-Updater'
         },
         body: JSON.stringify({
-          message: 'chore: update portfolio configuration via web customizer [skip ci]',
+          message: 'chore: update portfolio configuration via web customizer',
           content: Buffer.from(formattedConfig).toString('base64'),
           sha: fileSha,
           branch: 'main'
