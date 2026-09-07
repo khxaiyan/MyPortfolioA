@@ -662,6 +662,7 @@
     var userBtnTarget = document.getElementById('modal-clerk-user-btn');
     var deniedUserName = document.getElementById('denied-user-name');
     var sessionText = document.getElementById('modal-session-text');
+    var headerAdvBtn = document.getElementById('m-btn-header-adv');
 
     if (!authView || !deniedView || !customizerView) return;
 
@@ -680,10 +681,11 @@
       }
 
       if (isUserAuthorized(user)) {
-        // Authorized: Unlock full customizer
+        // Authorized: Unlock full customizer and show advance settings button
         authView.style.display = 'none';
         deniedView.style.display = 'none';
         customizerView.style.display = 'block';
+        if (headerAdvBtn) headerAdvBtn.style.display = 'inline-flex';
         if (sessionText) sessionText.textContent = 'Authorized: ' + identifier;
 
         // Only populate the modal fields once when the admin logs in.
@@ -694,6 +696,7 @@
         }
       } else {
         isModalFormLoadedForUserId = null;
+        if (headerAdvBtn) headerAdvBtn.style.display = 'none';
         // Unauthorized: Deny access completely
         authView.style.display = 'none';
         customizerView.style.display = 'none';
@@ -715,6 +718,7 @@
       }
     } else {
       isModalFormLoadedForUserId = null;
+      if (headerAdvBtn) headerAdvBtn.style.display = 'none';
       // Signed Out: Render Clerk sign in popup
       customizerView.style.display = 'none';
       deniedView.style.display = 'none';
