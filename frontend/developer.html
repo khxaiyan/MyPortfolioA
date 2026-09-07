@@ -949,10 +949,17 @@
 
       <!-- 4. // reach (Matches Main Page Row 4) -->
       <div class="cust-section">
-        <p class="eyebrow" style="margin-bottom:6px;">// reach</p>
-        <p style="font-size:0.72rem; color:var(--ink-faint); margin-bottom:10px;">Primary profiles and additional social
-          media links displayed in your reach section.</p>
-        <div class="surface-card cust-card">
+        <div id="cust-reach-toggle" class="accordion-eyebrow-toggle" role="button" tabindex="0" aria-expanded="false" aria-controls="cust-reach-card"
+          style="display:inline-flex; align-items:center; gap:7px; cursor:pointer; user-select:none; margin-bottom:8px;">
+          <p class="eyebrow" style="margin:0; cursor:pointer; color:var(--ink-dim); transition:color 0.15s;">// reach</p>
+          <svg id="cust-reach-chevron" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" style="color:var(--ink-faint); transition:transform 0.22s cubic-bezier(0.4, 0, 0.2, 1), color 0.15s; transform:rotate(-90deg);">
+            <path d="m6 9 6 6 6-6"/>
+          </svg>
+        </div>
+
+        <div id="cust-reach-card" class="surface-card cust-card" style="display:none; margin-top:2px;">
+          <p style="font-size:0.72rem; color:var(--ink-faint); margin:0 0 14px 0; line-height:1.45;">Primary profiles and additional social
+            media links displayed in your reach section.</p>
           <div class="field-grid-2">
             <div class="field-group">
               <label class="field-label" for="cust-github">GitHub Username</label>
@@ -1653,6 +1660,41 @@
           if (e.key === 'Enter' || e.key === ' ') {
             e.preventDefault();
             toggleMsgDropdown();
+          }
+        });
+      }
+
+      /* Reach Accordion Dropdown Handler */
+      var rToggle = document.getElementById('cust-reach-toggle');
+      var rCard = document.getElementById('cust-reach-card');
+      var rChevron = document.getElementById('cust-reach-chevron');
+      if (rToggle && rCard) {
+        function toggleReachDropdown() {
+          var isHidden = (rCard.style.display === 'none' || !rCard.style.display);
+          var eb = rToggle.querySelector('.eyebrow');
+          if (isHidden) {
+            rCard.style.display = 'block';
+            if (rChevron) {
+              rChevron.style.transform = 'rotate(0deg)';
+              rChevron.style.color = 'var(--red)';
+            }
+            rToggle.setAttribute('aria-expanded', 'true');
+            if (eb) eb.style.color = 'var(--ink)';
+          } else {
+            rCard.style.display = 'none';
+            if (rChevron) {
+              rChevron.style.transform = 'rotate(-90deg)';
+              rChevron.style.color = 'var(--ink-faint)';
+            }
+            rToggle.setAttribute('aria-expanded', 'false');
+            if (eb) eb.style.color = 'var(--ink-dim)';
+          }
+        }
+        rToggle.addEventListener('click', toggleReachDropdown);
+        rToggle.addEventListener('keydown', function (e) {
+          if (e.key === 'Enter' || e.key === ' ') {
+            e.preventDefault();
+            toggleReachDropdown();
           }
         });
       }
