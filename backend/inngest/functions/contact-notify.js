@@ -35,6 +35,25 @@ const handleContactSubmission = inngest.createFunction(
       return { logged: true, id: event.id };
     });
 
+    // Step 3: Archive to MongoDB (if configured)
+    await step.run("archive-to-mongodb", async () => {
+      try {
+        const { connectToDatabase } = require("../../../api/lib/mongodb");
+        const { db } = await connectToDatabase();
+        await db.collection("contact_submissions").insertOne({
+          name: submission.sender,
+          email: submission.senderEmail,
+          message: submission.content,
+          receivedAt: new Date(submission.receivedAt),
+          eventId: event.id,
+        });
+        return { archived: true };
+      } catch (err) {
+        console.warn("[Inngest] MongoDB contact archive skipped:", err.message);
+        return { archived: false, reason: err.message };
+      }
+    });
+
     return {
       status: "processed",
       sender: submission.sender,

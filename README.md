@@ -34,9 +34,12 @@
 - **⚡ Pixel-Perfect Skeleton Shimmer Loading**: Zero layout-shift skeleton shimmer loader mirroring the exact card dimensions during initial data resolution.
 - **🎨 Signature Tech Branding**: Sleek rail-node timeline layout, modern typography with *Space Grotesk* and *IBM Plex Mono*, and automatic red accent highlighting (`glyph-5`) on all project capital letters.
 - **🌓 Dual Theme Support (Dark & Light)**: Smooth theme toggling with immediate `localStorage` state persistence and system color-scheme detection.
+- **🍃 MongoDB Atlas Cloud Persistence**: Instant configuration saving without git-push clutter or Vercel redeployment delays.
+- **☁️ Cloudinary Direct Media Uploads**: Fast CDN delivery for avatars and favicons with base64 local fallback.
+- **⚡ Inngest Event-Driven Workflows**: Background pipelines for automated GitHub stars synchronization and contact message archiving.
 - **📬 Working Contact Form**: Web3Forms integration with hCaptcha bot verification for spam protection.
 - **🔒 Privacy & Security First**: Complete `.gitignore` setup, sanitized credentials, and isolated `keys/` folder — secrets are never served to the browser.
-- **🔐 Clerk Authentication & Secret Customizer**: Secret 10-click trigger on the bottom-right `@khxaiyan` tag opens the Clerk-authenticated admin customizer, allowing you to edit profile picture, bio, links, and custom project settings with live instant preview.
+- **🔐 Clerk Authentication & Developer Customizer**: Role-protected developer settings (`/developer` & quick modal) for updating profiles, social links, projects, and themes with live instant previews.
 - **📱 Fully Responsive**: Flawless experience across mobile, tablet, and widescreen desktop monitors.
 
 ---
@@ -48,11 +51,13 @@
 | **HTML5** | Semantic, accessible document structure |
 | **Vanilla CSS** | Design tokens, custom CSS variables, responsive grid, animations |
 | **Vanilla JavaScript (ES6+)** | Dynamic GitHub API fetching, theme toggling, form handling |
-| **Google Fonts** | `Space Grotesk` (Headings/Display) & `IBM Plex Mono` (Body/Code) |
+| **MongoDB Atlas** | Instant cloud configuration storage (`/api/save-config` & `/api/get-config`) |
+| **Cloudinary** | Global CDN media storage & direct unsigned uploads |
+| **Inngest** | Background serverless workflows (`/api/inngest`), cron GitHub sync, and contact pipeline |
+| **Clerk** | Authentication & RBAC for the developer admin dashboard |
 | **Web3Forms API** | Serverless contact form submission endpoint |
 | **hCaptcha** | Privacy-friendly CAPTCHA protection |
-| **Clerk** | Authentication for the developer admin customizer |
-| **GitHub Actions** | Automated CI/CD deployment trigger |
+| **Vercel** | Serverless functions hosting and continuous deployment |
 
 ---
 
@@ -61,64 +66,67 @@
 ```text
 MyPortfolioA/
 │
-├── frontend/                        ← Everything the browser loads
+├── api/                             ← Vercel serverless endpoints
+│   ├── get-config.js                # GET /api/get-config (MongoDB configuration loader)
+│   ├── save-config.js               # POST /api/save-config (MongoDB configuration writer)
+│   ├── inngest.js                   # Inngest endpoint serving background workflows
+│   └── lib/
+│       └── mongodb.js               # Shared MongoDB Atlas connection pooling
+│
+├── frontend/                        ← Static portfolio files
 │   ├── index.html                   # Main portfolio homepage
-│   ├── developer.html               # Clerk-authenticated admin customizer (/developer)
+│   ├── developer.html               # Developer admin dashboard (/developer)
 │   ├── 404.html                     # Themed 404 error page
-│   ├── style.css                    # Core stylesheet, tokens & skeleton shimmer
-│   ├── app.js                       # Main application logic & GitHub pins loader
-│   └── config.js                    # Auto-generated config (synced from keys/.env)
+│   ├── style.css                    # Design tokens, themes & skeleton shimmer
+│   ├── app.js                       # Main application & GitHub pins loader
+│   └── config.js                    # Local configuration fallback
 │
-├── backend/                         ← Node / server-side scripts
+├── backend/                         ← Node.js server & workflow routines
+│   ├── dev-server.js                # Local dev server with API routing & static serving
 │   ├── sync-env.js                  # Reads keys/.env → writes frontend/config.js
-│   └── dev-server.js                # Local dev server with Cloudinary & GitHub sync
+│   └── inngest/                     # Inngest workflows (GitHub sync & contact pipeline)
 │
-├── keys/                            ← API keys & secrets (never served to browser)
+├── keys/                            ← API keys & secrets (never committed to git)
 │   ├── .env                         # Real secrets (gitignored ✓)
 │   └── .env.example                 # Safe template (committed to git ✓)
 │
-├── .github/
-│   └── workflows/
-│       └── notify-deploy.yml        # Auto-triggers deployment on push
-├── .gitignore
 ├── package.json                     # Project manifest & npm scripts
+├── vercel.json                      # Vercel deployment configuration
 └── README.md
 ```
-
-> **Security note:** `npm run serve` only serves the `frontend/` folder.
-> The `keys/` and `backend/` folders are completely unreachable from the browser.
 
 ---
 
 ## ⚙️ Configuration
 
 All personal information and API keys live in `keys/.env`.
-Run `npm run sync` to write them into `frontend/config.js`.
+Run `npm run sync` to write initial defaults into `frontend/config.js`.
 
 **`keys/.env` structure:**
 ```bash
 # Clerk Authentication
 CLERK_PUBLISHABLE_KEY=pk_test_...
 CLERK_SECRET_KEY=sk_test_...
-CLERK_FRONTEND_API=https://your-app.clerk.accounts.dev
 
 # Contact Form & Security
 WEB3FORMS_ACCESS_KEY=your_web3forms_access_key
 HCAPTCHA_SITEKEY=50b2fe65-b00b-4b9e-ad62-3ba471098be2
 
-# Socials & Profile Identity
-GITHUB_USERNAME=khxaiyan
-TELEGRAM_USERNAME=khxaiyan
-X_USERNAME=khxaiyan
-CONTACT_EMAIL=your@email.com
-SITE_NAME=khxaiyan
-ACCENT_LETTER=x
+# Cloudinary Media Storage (Unsigned Direct Uploads)
+CLOUDINARY_CLOUD_NAME=your_cloud_name
+CLOUDINARY_UPLOAD_PRESET=your_preset
+AVATAR_URL=https://res.cloudinary.com/...
+FAVICON_URL=https://res.cloudinary.com/...
+
+# MongoDB Atlas (Cloud Persistence)
+MONGODB_URI=mongodb+srv://<user>:<password>@cluster0.xxxxx.mongodb.net/myportfolio?retryWrites=true&w=majority
+
+# Inngest Background Workflows (Optional)
+INNGEST_EVENT_KEY=your_inngest_event_key
+INNGEST_SIGNING_KEY=your_inngest_signing_key
 
 # Whitelist of Authorized Admins (comma-separated)
 AUTHORIZED_USERS=your@email.com
-
-# Optional Cloudflare Analytics Token
-CF_ANALYTICS=false
 ```
 
 > Copy `keys/.env.example` → `keys/.env` and fill in your values, then run `npm run sync`.
