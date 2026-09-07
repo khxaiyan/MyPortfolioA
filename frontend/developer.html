@@ -423,6 +423,115 @@
       z-index: 2;
     }
 
+    /* ── Accent Swatches & Custom Palette ── */
+    .accent-swatches-wrap {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      flex-wrap: wrap;
+      padding: 4px 0;
+    }
+
+    .swatch-wrapper {
+      position: relative;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .accent-swatch-btn {
+      width: 32px;
+      height: 32px;
+      border-radius: 50%;
+      border: 2px solid var(--line);
+      cursor: pointer;
+      position: relative;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      padding: 0;
+      outline: none;
+      transition: transform 0.16s cubic-bezier(0.4, 0, 0.2, 1), border-color 0.16s ease, box-shadow 0.16s ease;
+      flex-shrink: 0;
+    }
+
+    .accent-swatch-btn:hover {
+      transform: scale(1.18);
+      border-color: #ffffff;
+      z-index: 2;
+    }
+
+    .accent-swatch-btn.active {
+      transform: scale(1.18);
+      border-color: #ffffff;
+      box-shadow: 0 0 10px rgba(255, 255, 255, 0.4);
+      z-index: 3;
+    }
+
+    .accent-swatch-btn.active::after {
+      content: '✓';
+      color: #ffffff;
+      font-size: 0.72rem;
+      font-weight: 800;
+      text-shadow: 0 1px 2px rgba(0, 0, 0, 0.85);
+    }
+
+    .swatch-delete-btn {
+      position: absolute;
+      top: -4px;
+      right: -4px;
+      width: 15px;
+      height: 15px;
+      border-radius: 50%;
+      background: #ff2a5f;
+      border: 1.5px solid var(--surface, #131319);
+      color: #ffffff;
+      font-size: 11px;
+      line-height: 1;
+      font-weight: 800;
+      display: none;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      z-index: 10;
+      padding: 0;
+      box-shadow: 0 2px 5px rgba(0, 0, 0, 0.6);
+      transition: transform 0.15s ease, background 0.15s ease;
+    }
+
+    .swatch-wrapper:hover .swatch-delete-btn {
+      display: flex;
+    }
+
+    .swatch-delete-btn:hover {
+      background: #e0003b;
+      transform: scale(1.2);
+    }
+
+    .swatch-add-btn {
+      width: 32px;
+      height: 32px;
+      border-radius: 50%;
+      border: 1.5px dashed var(--line);
+      background: var(--bg);
+      color: var(--ink-dim);
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      transition: transform 0.16s ease, border-color 0.16s ease, color 0.16s ease;
+      padding: 0;
+      flex-shrink: 0;
+      outline: none;
+    }
+
+    .swatch-add-btn:hover {
+      border-color: var(--red);
+      color: var(--ink);
+      transform: scale(1.15);
+      background: var(--bg-hover, rgba(255, 255, 255, 0.06));
+    }
+
     .field-grid-2 {
       display: grid;
       grid-template-columns: 1fr 1fr;
@@ -849,24 +958,18 @@
           <div class="field-group" style="margin-top:12px; border-top:1px solid var(--line); padding-top:14px;">
             <div
               style="display:flex; align-items:center; justify-content:space-between; margin-bottom:4px; flex-wrap:wrap; gap:6px;">
-              <label class="field-label" style="font-weight:600; color:var(--ink); margin:0;">Highlight Accent
-                Color</label>
+              <label class="field-label" style="font-weight:600; color:var(--ink); margin:0;">Highlight Accent Color</label>
               <div style="display:flex; align-items:center; gap:8px;">
-                <button type="button" id="btn-toggle-delete-mode" class="toolbar-btn"
-                  style="font-size:0.7rem; padding:3px 9px;" title="Toggle delete mode to remove colors">
-                  🗑️ Delete Mode
-                </button>
                 <span id="accent-hex-indicator"
                   style="font-family:var(--font-mono); font-size:0.74rem; color:var(--ink-dim); background:var(--bg); padding:2px 8px; border-radius:10px; border:1px solid var(--line);">#ff2a5f</span>
               </div>
             </div>
             <p style="font-size:0.72rem; color:var(--ink-faint); margin-bottom:10px;">
-              Colors project highlights, icons, rail nodes, badges, and buttons. <b>Hover any color</b> to delete, or
-              click <b>+</b> to add a new color.
+              Colors project highlights, icons, rail nodes, badges, and buttons. Click <b>+</b> to add a new color, or select a color and click <b>Delete Color</b> to remove.
             </p>
 
             <div class="accent-swatches-wrap" id="accent-swatches-container">
-              <!-- Dynamically populated with .swatch-wrapper, + button, and delete buttons -->
+              <!-- Dynamically populated with pure circular swatches and circular + button -->
             </div>
 
             <div style="display:flex; align-items:center; gap:8px; margin-top:10px; flex-wrap:wrap;">
@@ -891,6 +994,15 @@
                   <line x1="5" y1="12" x2="19" y2="12" />
                 </svg>
                 <span>Add to Swatches</span>
+              </button>
+              <button type="button" id="btn-delete-current-color" class="toolbar-btn"
+                style="white-space:nowrap; padding:6px 12px; font-size:0.75rem; display:inline-flex; align-items:center; gap:6px; color:#ff4d6d; border-color:rgba(255,77,109,0.3); background:rgba(255,42,95,0.06); cursor:pointer;"
+                title="Delete selected color from swatches">
+                <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <polyline points="3 6 5 6 21 6" />
+                  <path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2" />
+                </svg>
+                <span>Delete Color</span>
               </button>
               <button type="button" id="btn-pick-avatar-color" class="toolbar-btn"
                 style="white-space:nowrap; padding:6px 12px; font-size:0.75rem; display:inline-flex; align-items:center; gap:6px; color:var(--ink); border-color:var(--accent, var(--red)); background:rgba(255,42,95,0.1); font-weight:600; cursor:pointer;"
@@ -1606,31 +1718,43 @@
           var wrap = document.createElement('div');
           wrap.className = 'swatch-wrapper';
           wrap.setAttribute('data-color', normColor);
+          wrap.style.cssText = 'position:relative; display:inline-flex; align-items:center; justify-content:center;';
 
           var btn = document.createElement('button');
           btn.type = 'button';
           btn.className = 'accent-swatch-btn' + (isActive ? ' active' : '');
           btn.setAttribute('data-color', normColor);
-          btn.style.background = normColor;
-          btn.title = normColor;
+          btn.style.cssText = 'width:32px; height:32px; min-width:32px; border-radius:50%; border:2px solid ' + (isActive ? '#ffffff' : 'var(--line)') + '; background:' + normColor + '; cursor:pointer; position:relative; display:inline-flex; align-items:center; justify-content:center; padding:0; outline:none; transition:transform 0.16s ease, border-color 0.16s ease, box-shadow 0.16s ease; flex-shrink:0;' + (isActive ? ' transform:scale(1.15); box-shadow:0 0 10px rgba(255,255,255,0.4); z-index:3;' : '');
+          btn.title = normColor + ' (Right-click to delete)';
 
-          var delBtn = document.createElement('button');
-          delBtn.type = 'button';
-          delBtn.className = 'swatch-delete-btn';
-          delBtn.setAttribute('data-color', normColor);
-          delBtn.title = 'Delete ' + normColor;
-          delBtn.setAttribute('aria-label', 'Delete ' + normColor);
-          delBtn.innerHTML = '&times;';
+          // Subtle floating delete badge (15px circle, hidden by default, only on hover)
+          var delBadge = document.createElement('span');
+          delBadge.className = 'swatch-delete-btn';
+          delBadge.setAttribute('data-color', normColor);
+          delBadge.title = 'Delete ' + normColor;
+          delBadge.setAttribute('aria-label', 'Delete ' + normColor);
+          delBadge.style.cssText = 'position:absolute; top:-4px; right:-4px; width:15px; height:15px; border-radius:50%; background:#ff2a5f; color:#ffffff; font-size:11px; font-weight:800; line-height:1; display:none; align-items:center; justify-content:center; cursor:pointer; box-shadow:0 2px 5px rgba(0,0,0,0.6); z-index:10; border:1.5px solid var(--surface, #131319);';
+          delBadge.innerHTML = '&times;';
+
+          wrap.onmouseenter = function () {
+            delBadge.style.display = 'flex';
+          };
+          wrap.onmouseleave = function () {
+            delBadge.style.display = 'none';
+          };
+          wrap.oncontextmenu = function (e) {
+            e.preventDefault();
+            deletePaletteColor(normColor);
+          };
 
           wrap.appendChild(btn);
-          wrap.appendChild(delBtn);
+          wrap.appendChild(delBadge);
           container.appendChild(wrap);
         });
 
         // Add Button (+)
         var addWrap = document.createElement('div');
-        addWrap.style.position = 'relative';
-        addWrap.style.display = 'inline-flex';
+        addWrap.style.cssText = 'position:relative; display:inline-flex; align-items:center; justify-content:center;';
 
         var addBtn = document.createElement('button');
         addBtn.type = 'button';
@@ -1638,17 +1762,25 @@
         addBtn.id = 'btn-add-palette-swatch';
         addBtn.title = 'Add new color to palette';
         addBtn.setAttribute('aria-label', 'Add new color to palette');
-        addBtn.innerHTML = '<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>';
+        addBtn.style.cssText = 'width:32px; height:32px; min-width:32px; border-radius:50%; border:1.5px dashed var(--line); background:var(--bg); color:var(--ink-dim); display:inline-flex; align-items:center; justify-content:center; cursor:pointer; padding:0; flex-shrink:0; outline:none; transition:all 0.16s ease;';
+        addBtn.innerHTML = '<svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>';
+
+        addBtn.onmouseenter = function () {
+          this.style.borderColor = 'var(--red)';
+          this.style.color = 'var(--ink)';
+          this.style.transform = 'scale(1.12)';
+        };
+        addBtn.onmouseleave = function () {
+          this.style.borderColor = 'var(--line)';
+          this.style.color = 'var(--ink-dim)';
+          this.style.transform = 'scale(1)';
+        };
 
         var hiddenPicker = document.createElement('input');
         hiddenPicker.type = 'color';
         hiddenPicker.id = 'hidden-palette-color-picker';
         hiddenPicker.value = currentAccentColor || '#ff2a5f';
-        hiddenPicker.style.position = 'absolute';
-        hiddenPicker.style.opacity = '0';
-        hiddenPicker.style.width = '1px';
-        hiddenPicker.style.height = '1px';
-        hiddenPicker.style.pointerEvents = 'none';
+        hiddenPicker.style.cssText = 'position:absolute; opacity:0; width:1px; height:1px; pointer-events:none;';
 
         addWrap.appendChild(addBtn);
         addWrap.appendChild(hiddenPicker);
@@ -1774,8 +1906,16 @@
           var c = (btn.getAttribute('data-color') || '').toLowerCase();
           if (c === (accent || '').toLowerCase()) {
             btn.classList.add('active');
+            btn.style.borderColor = '#ffffff';
+            btn.style.boxShadow = '0 0 10px rgba(255,255,255,0.4)';
+            btn.style.transform = 'scale(1.15)';
+            btn.style.zIndex = '3';
           } else {
             btn.classList.remove('active');
+            btn.style.borderColor = 'var(--line)';
+            btn.style.boxShadow = 'none';
+            btn.style.transform = 'scale(1)';
+            btn.style.zIndex = '';
           }
         });
 
@@ -1897,16 +2037,13 @@
         });
       }
 
-      // Delete mode toggle button
-      var btnToggleDelete = document.getElementById('btn-toggle-delete-mode');
-      if (btnToggleDelete) {
-        btnToggleDelete.addEventListener('click', function () {
-          var cont = document.getElementById('accent-swatches-container');
-          if (!cont) return;
-          var isDel = cont.classList.toggle('is-delete-mode');
-          btnToggleDelete.textContent = isDel ? '✓ Done' : '🗑️ Delete Mode';
-          btnToggleDelete.style.borderColor = isDel ? 'var(--red)' : '';
-          btnToggleDelete.style.background = isDel ? 'rgba(255,42,95,0.18)' : '';
+      // Delete currently selected color button
+      var btnDeleteCurrentColor = document.getElementById('btn-delete-current-color');
+      if (btnDeleteCurrentColor) {
+        btnDeleteCurrentColor.addEventListener('click', function () {
+          if (currentAccentColor) {
+            deletePaletteColor(currentAccentColor);
+          }
         });
       }
 
