@@ -935,7 +935,17 @@
 
       <!-- 3. // projects (Matches Main Page Row 3) -->
       <div class="cust-section">
-        <p class="eyebrow" style="margin-bottom:6px;">// projects</p>
+        <div style="display:flex; align-items:center; justify-content:space-between; margin-bottom:6px; flex-wrap:wrap; gap:6px;">
+          <p class="eyebrow" style="margin:0;">// projects</p>
+          <button type="button" id="btn-sync-projects-github" class="toolbar-btn"
+            style="font-size:0.67rem; padding:3px 9px; border-radius:12px; display:inline-flex; align-items:center; gap:5px; color:var(--ink); border-color:var(--red); background:rgba(255,42,95,0.08); font-weight:600; cursor:pointer;"
+            title="Auto-fetch pinned repositories from GitHub">
+            <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M21.5 2v6h-6M21.34 15.57a10 10 0 1 1-.57-8.38l5.67-5.67"/>
+            </svg>
+            <span>Sync Pinned Repos</span>
+          </button>
+        </div>
         <p style="font-size:0.72rem; color:var(--ink-faint); margin-bottom:10px;">Manage projects displayed on your
           portfolio. Add, edit, or remove anytime.</p>
         <div id="cust-projects-list" style="display:flex; flex-direction:column; gap:10px; margin-bottom:10px;"></div>
@@ -961,8 +971,19 @@
             media links displayed in your reach section.</p>
           <div class="field-grid-2">
             <div class="field-group">
-              <label class="field-label" for="cust-github">GitHub Username</label>
-              <input type="text" class="field-input" id="cust-github" placeholder="khxaiyan">
+              <div style="display:flex; align-items:center; justify-content:space-between; margin-bottom:4px;">
+                <label class="field-label" for="cust-github" style="margin:0;">GitHub Username / Link</label>
+                <button type="button" id="btn-sync-github" class="toolbar-btn"
+                  style="font-size:0.67rem; padding:2px 8px; border-radius:10px; display:inline-flex; align-items:center; gap:4px; color:var(--ink); border-color:var(--red); background:rgba(255,42,95,0.08); font-weight:600; cursor:pointer;"
+                  title="Auto-fetch avatar, wordmark, bio, and pinned projects from GitHub">
+                  <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M21.5 2v6h-6M21.34 15.57a10 10 0 1 1-.57-8.38l5.67-5.67"/>
+                  </svg>
+                  <span>Sync from GitHub</span>
+                </button>
+              </div>
+              <input type="text" class="field-input" id="cust-github" placeholder="khxaiyan or https://github.com/khxaiyan">
+              <p id="cust-github-sync-status" style="font-size:0.68rem; margin:4px 0 0 0; display:none; font-family:var(--font-mono); line-height:1.4;"></p>
             </div>
             <div class="field-group">
               <label class="field-label" for="cust-telegram">Telegram Username</label>
@@ -2186,6 +2207,210 @@
         });
       }
 
+      /* ── Universal GitHub Profile & Pinned Projects Sync ── */
+      function cleanGitHubUsername(val) {
+        if (!val) return '';
+        var clean = String(val).trim();
+        clean = clean.replace(/^https?:\/\/(www\.)?github\.com\//i, '');
+        clean = clean.replace(/^@/, '');
+        clean = clean.replace(/[\/\?#].*$/, '');
+        return clean.trim();
+      }
+
+      async function syncAllFromGitHub(rawInput) {
+        var ghInput = document.getElementById('cust-github');
+        var inputVal = (typeof rawInput === 'string' && rawInput.trim()) ? rawInput : (ghInput ? ghInput.value : '');
+        var username = cleanGitHubUsername(inputVal);
+
+        var statusEl = document.getElementById('cust-github-sync-status');
+        var syncBtns = document.querySelectorAll('#btn-sync-github, #btn-sync-projects-github');
+
+        if (!username) {
+          if (statusEl) {
+            statusEl.style.display = 'block';
+            statusEl.style.color = 'var(--red)';
+            statusEl.textContent = 'Please enter a GitHub username or profile link.';
+          }
+          return;
+        }
+
+        if (ghInput && ghInput.value !== username) {
+          ghInput.value = username;
+        }
+
+        syncBtns.forEach(function (btn) {
+          btn.disabled = true;
+          btn.style.opacity = '0.7';
+        });
+
+        if (statusEl) {
+          statusEl.style.display = 'block';
+          statusEl.style.color = '#38bdf8';
+          statusEl.textContent = '⏳ Fetching profile, avatar, bio & projects for @' + username + '...';
+        }
+
+        try {
+          var userPromise = fetch('https://api.github.com/users/' + encodeURIComponent(username) + '?_t=' + Date.now(), { cache: 'no-store' })
+            .then(function (r) { return r.ok ? r.json() : null; })
+            .catch(function () { return null; });
+
+          var pinsPromise = fetch('https://pinned.berrysauce.dev/get/' + encodeURIComponent(username) + '?_t=' + Date.now(), { cache: 'no-store' })
+            .then(function (r) { return r.ok ? r.json() : null; })
+            .catch(function () {
+              return fetch('https://pinned.berrysauce.me/get/' + encodeURIComponent(username) + '?_t=' + Date.now(), { cache: 'no-store' })
+                .then(function (r) { return r.ok ? r.json() : null; })
+                .catch(function () { return null; });
+            });
+
+          var reposPromise = fetch('https://api.github.com/users/' + encodeURIComponent(username) + '/repos?sort=pushed&per_page=12&_t=' + Date.now(), { cache: 'no-store' })
+            .then(function (r) { return r.ok ? r.json() : null; })
+            .catch(function () { return null; });
+
+          var results = await Promise.all([userPromise, pinsPromise, reposPromise]);
+          var userData = results[0];
+          var pinnedData = results[1];
+          var reposData = results[2];
+
+          if (!userData && (!reposData || !reposData.length)) {
+            throw new Error('GitHub user @' + username + ' not found or rate-limited.');
+          }
+
+          var updatedSummary = [];
+
+          // 1. Site Wordmark / Name
+          var siteNameInp = document.getElementById('cust-sitename');
+          if (siteNameInp && userData && userData.login) {
+            siteNameInp.value = userData.login;
+            updatedSummary.push('wordmark');
+          }
+
+          // 2. Profile Avatar Image
+          if (userData && userData.avatar_url) {
+            pendingAvatarData = userData.avatar_url;
+            setCustPreviewAvatar(userData.avatar_url);
+            applyBrowserFavicon(userData.avatar_url);
+            updatedSummary.push('avatar');
+          }
+
+          // 3. Bio & Description
+          var bioInp = document.getElementById('cust-bio');
+          if (bioInp) {
+            if (userData && userData.bio && userData.bio.trim()) {
+              bioInp.value = userData.bio.trim();
+              updatedSummary.push('bio');
+            } else if (userData && userData.name) {
+              bioInp.value = (userData.login || username) + ' | developer in active building mode. crafting clean web tools & digital experiences.';
+              updatedSummary.push('bio');
+            }
+            autoResize(bioInp);
+          }
+
+          // 4. Projects: pinned repos prioritized, fallback to public repos
+          var repoMap = {};
+          if (Array.isArray(reposData)) {
+            reposData.forEach(function (r) {
+              if (r && r.name) {
+                repoMap[r.name.toLowerCase()] = r;
+                if (r.full_name) repoMap[r.full_name.toLowerCase()] = r;
+              }
+            });
+          }
+
+          var targetProjects = [];
+          if (Array.isArray(pinnedData) && pinnedData.length > 0) {
+            targetProjects = pinnedData.map(function (p) {
+              var author = p.author || username;
+              var key = (author + '/' + p.name).toLowerCase();
+              var r = repoMap[key] || repoMap[p.name.toLowerCase()] || {};
+              var ghUrl = 'https://github.com/' + author + '/' + p.name;
+              var liveUrl = r.homepage ? r.homepage.trim() : ghUrl;
+              return {
+                title: formatProjectName(p.name),
+                name: p.name,
+                tag: p.language || r.language || 'Project',
+                url: liveUrl,
+                github_url: ghUrl,
+                description: p.description || r.description || ''
+              };
+            });
+          } else if (Array.isArray(reposData) && reposData.length > 0) {
+            targetProjects = reposData.slice(0, 6).map(function (r) {
+              return {
+                title: formatProjectName(r.name),
+                name: r.name,
+                tag: r.language || 'Project',
+                url: r.homepage ? r.homepage.trim() : r.html_url,
+                github_url: r.html_url,
+                description: r.description || ''
+              };
+            });
+          }
+
+          if (targetProjects.length > 0) {
+            renderProjectList(targetProjects);
+            updatedSummary.push(targetProjects.length + ' pinned projects');
+          }
+
+          updateLivePreview();
+
+          if (statusEl) {
+            statusEl.style.display = 'block';
+            statusEl.style.color = '#10b981';
+            statusEl.textContent = '✓ Synced from @' + username + '! Updated ' + updatedSummary.join(', ') + '.';
+            setTimeout(function () {
+              statusEl.style.display = 'none';
+            }, 6000);
+          }
+        } catch (err) {
+          if (statusEl) {
+            statusEl.style.display = 'block';
+            statusEl.style.color = 'var(--red)';
+            statusEl.textContent = '✗ ' + (err.message || 'Could not sync with GitHub');
+          }
+        } finally {
+          syncBtns.forEach(function (btn) {
+            btn.disabled = false;
+            btn.style.opacity = '1';
+          });
+        }
+      }
+
+      var btnSyncGh = document.getElementById('btn-sync-github');
+      if (btnSyncGh) {
+        btnSyncGh.addEventListener('click', function () {
+          syncAllFromGitHub();
+        });
+      }
+
+      var btnSyncProjectsGh = document.getElementById('btn-sync-projects-github');
+      if (btnSyncProjectsGh) {
+        btnSyncProjectsGh.addEventListener('click', function () {
+          syncAllFromGitHub();
+        });
+      }
+
+      var custGithubInp = document.getElementById('cust-github');
+      if (custGithubInp) {
+        custGithubInp.addEventListener('paste', function () {
+          setTimeout(function () {
+            var raw = custGithubInp.value;
+            var clean = cleanGitHubUsername(raw);
+            if (clean) {
+              custGithubInp.value = clean;
+              syncAllFromGitHub(clean);
+            }
+          }, 80);
+        });
+        custGithubInp.addEventListener('change', function () {
+          var raw = custGithubInp.value;
+          var clean = cleanGitHubUsername(raw);
+          if (clean) {
+            custGithubInp.value = clean;
+            syncAllFromGitHub(clean);
+          }
+        });
+      }
+
       function escapeHtml(str) {
         if (!str) return '';
         return String(str)
@@ -2752,7 +2977,7 @@
         var resolvedFavicon = (pendingFaviconData !== null) ? (pendingFaviconData || 'https://res.cloudinary.com/dqxccz5bn/image/upload/favicon_jzygcw.png') : existingFaviconUrl;
 
         var updated = {
-          github: document.getElementById('cust-github').value.trim(),
+          github: cleanGitHubUsername(document.getElementById('cust-github').value),
           x: document.getElementById('cust-x').value.trim(),
           telegram: document.getElementById('cust-telegram').value.trim(),
           email: document.getElementById('cust-email').value.trim(),
