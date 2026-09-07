@@ -34,7 +34,7 @@
   <script>
     (function () {
       var customCfg = null;
-      try { customCfg = JSON.parse(localStorage.getItem('portfolio_custom_config')); } catch (_) {}
+      try { customCfg = JSON.parse(localStorage.getItem('portfolio_custom_config')); } catch (_) { }
       if (customCfg) {
         var needsUpdate = false;
         if (customCfg.favicon_url === 'favicon.svg' || customCfg.favicon_url === 'favicon.png' || customCfg.favicon_url === 'favicon.ico' || customCfg.favicon_url === 'profile_icon.svg') {
@@ -52,7 +52,7 @@
           needsUpdate = true;
         }
         if (needsUpdate) {
-          try { localStorage.setItem('portfolio_custom_config', JSON.stringify(customCfg)); } catch (_) {}
+          try { localStorage.setItem('portfolio_custom_config', JSON.stringify(customCfg)); } catch (_) { }
         }
       }
       var cfg = Object.assign({}, typeof CONFIG !== 'undefined' ? CONFIG : {}, customCfg || {});
@@ -90,12 +90,12 @@
         var num = parseInt(c, 16);
         var amt = Math.round(2.55 * percent);
         var R = (num >> 16) + amt, G = ((num >> 8) & 255) + amt, B = (num & 255) + amt;
-        return '#' + (0x1000000 + (R<255?(R<0?0:R):255)*0x10000 + (G<255?(G<0?0:G):255)*0x100 + (B<255?(B<0?0:B):255)).toString(16).slice(1);
+        return '#' + (0x1000000 + (R < 255 ? (R < 0 ? 0 : R) : 255) * 0x10000 + (G < 255 ? (G < 0 ? 0 : G) : 255) * 0x100 + (B < 255 ? (B < 0 ? 0 : B) : 255)).toString(16).slice(1);
       }
       var PRESETS = {
         midnight: { bg: '#0a0a0e', surface: '#131319', surfaceHover: '#191a22', rail: '#363a63' },
-        oled:     { bg: '#000000', surface: '#0a0a0a', surfaceHover: '#141414', rail: '#262630' },
-        navy:     { bg: '#070a13', surface: '#0d1322', surfaceHover: '#141d33', rail: '#223252' },
+        oled: { bg: '#000000', surface: '#0a0a0a', surfaceHover: '#141414', rail: '#262630' },
+        navy: { bg: '#070a13', surface: '#0d1322', surfaceHover: '#141d33', rail: '#223252' },
         charcoal: { bg: '#101114', surface: '#17181d', surfaceHover: '#1f2027', rail: '#383947' }
       };
 
@@ -133,7 +133,8 @@
       <div class="content-col id-col">
         <div class="id-block">
           <button class="avatar-wrap" id="avatar-wrap" aria-label="Toggle theme">
-            <img class="avatar-img" src="https://res.cloudinary.com/dqxccz5bn/image/upload/profile_icon_wf7thb.svg" alt="khxaiyan" width="88" height="88" loading="eager" draggable="false">
+            <img class="avatar-img" src="https://res.cloudinary.com/dqxccz5bn/image/upload/profile_icon_wf7thb.svg"
+              alt="khxaiyan" width="88" height="88" loading="eager" draggable="false">
             <span class="theme-badge" id="theme-badge" aria-hidden="true">
               <!-- Sun icon: visible in dark mode -->
               <svg class="badge-sun" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor"
@@ -167,7 +168,8 @@
         <p class="eyebrow">// intro</p>
         <div class="surface-card intro-card">
           <p class="intro-text" id="intro-text">
-            Passionate developer specializing in building modern web applications, clean user interfaces, and dynamic digital tools. Focused on performance, aesthetics, and crafting clean, scalable code.
+            Passionate developer specializing in building modern web applications, clean user interfaces, and dynamic
+            digital tools. Focused on performance, aesthetics, and crafting clean, scalable code.
           </p>
         </div>
       </div>
@@ -295,7 +297,8 @@
         </div>
         <p class="msg-hint">leave an email if you want a reply</p>
         <input type="checkbox" name="botcheck" id="botcheck" style="display:none;" tabindex="-1" aria-hidden="true">
-        <div id="hcaptcha-container" class="h-captcha" data-sitekey="50b2fe65-b00b-4b9e-ad62-3ba471098be2" data-captcha="true"></div>
+        <div id="hcaptcha-container" class="h-captcha" data-sitekey="50b2fe65-b00b-4b9e-ad62-3ba471098be2"
+          data-captcha="true"></div>
         <button class="send-btn" id="cf-submit" type="button">
           <span>Send message</span>
           <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
@@ -315,265 +318,339 @@
       </button>
     </footer>
 
-  <!-- ── Developer Settings & Customizer Modal Popup ── -->
-  <div id="dev-modal-overlay" class="modal-overlay" role="dialog" aria-modal="true" aria-hidden="true">
-    <div class="modal-dialog">
-      <div class="modal-header">
-        <div class="modal-title">
-          <span>kh<span class="glyph-5">x</span>aiyan</span>
-          <span style="font-size:0.75rem; color:var(--ink-faint); font-weight:400;">// developer settings</span>
-        </div>
-        <div style="display:flex; align-items:center; gap:8px;">
-          <a href="developer.html" class="m-header-adv-btn" id="m-btn-header-adv" title="Open full developer settings page" style="display:none;">
-            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-              <circle cx="12" cy="12" r="3"/>
-              <path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"/>
-            </svg>
-            <span>Advance Settings</span>
-            <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-              <path d="M7 17L17 7M17 7H7M17 7v10"/>
-            </svg>
-          </a>
-          <div id="modal-clerk-user-btn"></div>
-          <button type="button" class="modal-close-btn" id="btn-modal-close" aria-label="Close dialog">&times;</button>
-        </div>
-      </div>
-
-      <!-- State 1: Clerk Sign-In -->
-      <div id="modal-auth-view" style="display:flex; flex-direction:column; align-items:center; justify-content:center; padding:12px 0;">
-        <div id="modal-clerk-sign-in" style="width:100%; display:flex; justify-content:center;"></div>
-      </div>
-
-      <div id="modal-denied-view" class="auth-denied" style="display:none;">
-        <div class="auth-denied-icon">🔒</div>
-        <h2 class="auth-denied-title">Access Restricted</h2>
-        <p class="auth-denied-desc">Signed in as <strong id="denied-user-name" style="color:var(--ink);">user</strong>.<br>This account does not have developer privileges to customize this website.</p>
-        <button type="button" class="btn-signout" id="btn-denied-signout">Sign Out</button>
-      </div>
-
-      <!-- State 3: Customizer Form (when signed in AND authorized) -->
-      <div id="modal-customizer-view" style="display:none;">
-
-        <!-- Session bar — very top -->
-        <div style="display:flex; align-items:center; justify-content:space-between; margin-bottom:16px; padding:8px 12px; background:var(--bg); border:1px solid var(--line); border-radius:var(--radius-sm); gap:8px; flex-wrap:wrap;">
-          <span id="modal-session-text" style="font-size:0.78rem; color:var(--ink);">Authorized Developer</span>
+    <!-- ── Developer Settings & Customizer Modal Popup ── -->
+    <div id="dev-modal-overlay" class="modal-overlay" role="dialog" aria-modal="true" aria-hidden="true">
+      <div class="modal-dialog">
+        <div class="modal-header">
+          <div class="modal-title">
+            <span>kh<span class="glyph-5">x</span>aiyan</span>
+            <span style="font-size:0.75rem; color:var(--ink-faint); font-weight:400;">// developer settings</span>
+          </div>
           <div style="display:flex; align-items:center; gap:8px;">
-            <a href="developer.html" class="m-session-adv-btn" title="Open full developer settings page">
-              <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                <circle cx="12" cy="12" r="3"/>
-                <path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"/>
+            <a href="developer.html" class="m-header-adv-btn" id="m-btn-header-adv"
+              title="Open full developer settings page" style="display:none;">
+              <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                stroke-linecap="round" stroke-linejoin="round">
+                <circle cx="12" cy="12" r="3" />
+                <path
+                  d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z" />
               </svg>
               <span>Advance Settings</span>
-              <svg width="9" height="9" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M7 17L17 7M17 7H7M17 7v10"/></svg>
-            </a>
-            <span style="font-size:0.72rem; color:var(--success); font-weight:600;">● Access Granted</span>
-          </div>
-        </div>
-
-        <!-- Instagram-style profile picture upload -->
-        <div style="display:flex; flex-direction:column; align-items:center; gap:10px; padding:18px 0 14px; border-bottom:1px solid var(--line); margin-bottom:16px;">
-          <div style="position:relative; width:88px; height:88px; cursor:pointer;" id="m-avatar-upload-wrap" title="Change profile picture">
-            <img id="m-avatar-preview" src="https://res.cloudinary.com/dqxccz5bn/image/upload/profile_icon_wf7thb.svg" alt="Profile picture" draggable="false"
-              style="width:88px; height:88px; border-radius:50%; object-fit:cover; border:2.5px solid var(--line); display:block; transition:filter 0.2s; pointer-events:none; -webkit-user-drag:none; user-select:none;">
-            <!-- Camera overlay -->
-            <div id="m-avatar-overlay"
-              style="position:absolute; inset:0; border-radius:50%; background:rgba(0,0,0,0.45); display:flex; flex-direction:column; align-items:center; justify-content:center; opacity:0; transition:opacity 0.2s; pointer-events:none;">
-              <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                <path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"/>
-                <circle cx="12" cy="13" r="4"/>
+              <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                stroke-linecap="round" stroke-linejoin="round">
+                <path d="M7 17L17 7M17 7H7M17 7v10" />
               </svg>
-              <span style="font-size:0.6rem; color:#fff; margin-top:3px; font-weight:600; letter-spacing:0.04em;">CHANGE</span>
-            </div>
-            <!-- Hidden file input -->
-            <input type="file" id="m-cust-avatar-file" accept="image/jpeg, image/png, image/webp, image/avif, image/gif, image/svg+xml, video/webm, .jpg, .jpeg, .png, .webp, .avif, .gif, .svg, .webm"
-              style="position:absolute; inset:0; opacity:0; cursor:pointer; border-radius:50%; width:100%; height:100%;">
-          </div>
-          <div style="text-align:center;">
-            <p style="font-size:0.78rem; font-weight:600; color:var(--ink); margin:0 0 2px;">Profile Picture</p>
-            <p style="font-size:0.68rem; color:var(--ink-faint); margin:0 0 6px;">Click the avatar to upload from your device</p>
-            <div style="display:flex; align-items:center; justify-content:center; gap:6px; margin-bottom:8px;">
-              <button type="button" id="m-avatar-reset-btn"
-                style="font-size:0.67rem; padding:3px 10px; border-radius:14px; display:inline-flex; align-items:center; gap:4px; background:var(--bg); border:1px solid var(--line); color:var(--ink-dim); cursor:pointer; font-family:var(--font-mono); transition:all 0.16s ease;"
-                title="Reset profile picture to default">
-                <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 12a9 9 0 1 0 9-9 9.75 9.75 0 0 0-6.74 2.74L3 8"/><path d="M3 3v5h5"/></svg>
-                Reset to Default
-              </button>
-            </div>
-            <!-- Stylish format & size pills -->
-            <div style="display:flex; align-items:center; justify-content:center; gap:6px; flex-wrap:wrap;">
-              <span style="display:inline-flex; align-items:center; gap:4px; font-size:0.65rem; font-family:var(--font-mono); color:var(--ink-dim); background:var(--bg); border:1px solid var(--line); padding:2px 7px; border-radius:12px;">
-                JPG, PNG, WEBP, AVIF, GIF, SVG, WEBM
-              </span>
-              <span style="display:inline-flex; align-items:center; gap:4px; font-size:0.65rem; font-family:var(--font-mono); color:var(--ink-dim); background:var(--bg); border:1px solid var(--line); padding:2px 7px; border-radius:12px;">
-                1:1 Square (512×512)
-              </span>
-              <span style="display:inline-flex; align-items:center; gap:4px; font-size:0.65rem; font-family:var(--font-mono); color:var(--ink-dim); background:var(--bg); border:1px solid var(--line); padding:2px 7px; border-radius:12px;">
-                Max 2 MB
-              </span>
-            </div>
+            </a>
+            <div id="modal-clerk-user-btn"></div>
+            <button type="button" class="modal-close-btn" id="btn-modal-close"
+              aria-label="Close dialog">&times;</button>
           </div>
         </div>
 
-        <!-- Favicon Customization Section in Modal -->
-        <div style="display:flex; flex-direction:column; align-items:center; gap:10px; padding:12px 0 14px; border-bottom:1px solid var(--line); margin-bottom:16px;">
-          <!-- Browser Tab Live Preview Mockup -->
-          <div style="display:flex; flex-direction:column; align-items:center; gap:5px;">
-            <span style="font-size:0.63rem; color:var(--ink-faint); font-family:var(--font-mono); letter-spacing:0.04em;">// BROWSER TAB PREVIEW</span>
-            <div class="favicon-tab-preview" id="m-favicon-tab-preview" title="Live browser tab preview">
-              <div class="tab-icon" id="m-favicon-tab-icon">
-                <img id="m-favicon-tab-img" src="https://res.cloudinary.com/dqxccz5bn/image/upload/favicon_jzygcw.png" alt="Favicon" style="width:16px; height:16px; border-radius:3px; object-fit:cover; display:block;">
-              </div>
-              <span class="tab-title" id="m-favicon-tab-title">khxaiyan</span>
-              <span class="tab-close">✕</span>
+        <!-- State 1: Clerk Sign-In -->
+        <div id="modal-auth-view"
+          style="display:flex; flex-direction:column; align-items:center; justify-content:center; padding:12px 0;">
+          <div id="modal-clerk-sign-in" style="width:100%; display:flex; justify-content:center;"></div>
+        </div>
+
+        <div id="modal-denied-view" class="auth-denied" style="display:none;">
+          <div class="auth-denied-icon">🔒</div>
+          <h2 class="auth-denied-title">Access Restricted</h2>
+          <p class="auth-denied-desc">Signed in as <strong id="denied-user-name"
+              style="color:var(--ink);">user</strong>.<br>This account does not have developer privileges to customize
+            this website.</p>
+          <button type="button" class="btn-signout" id="btn-denied-signout">Sign Out</button>
+        </div>
+
+        <!-- State 3: Customizer Form (when signed in AND authorized) -->
+        <div id="modal-customizer-view" style="display:none;">
+
+          <!-- Session bar — very top -->
+          <div
+            style="display:flex; align-items:center; justify-content:space-between; margin-bottom:16px; padding:8px 12px; background:var(--bg); border:1px solid var(--line); border-radius:var(--radius-sm); gap:8px; flex-wrap:wrap;">
+            <span id="modal-session-text" style="font-size:0.78rem; color:var(--ink);">Authorized Developer</span>
+            <div style="display:flex; align-items:center; gap:8px;">
+              <a href="developer.html" class="m-session-adv-btn" title="Open full developer settings page">
+                <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                  stroke-linecap="round" stroke-linejoin="round">
+                  <circle cx="12" cy="12" r="3" />
+                  <path
+                    d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z" />
+                </svg>
+                <span>Advance Settings</span>
+                <svg width="9" height="9" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                  stroke-linecap="round" stroke-linejoin="round">
+                  <path d="M7 17L17 7M17 7H7M17 7v10" />
+                </svg>
+              </a>
+              <span style="font-size:0.72rem; color:var(--success); font-weight:600;">● Access Granted</span>
             </div>
           </div>
 
-          <div style="display:flex; align-items:center; justify-content:center; gap:12px; margin-top:4px;">
-            <!-- Upload custom favicon button -->
-            <div style="position:relative; width:48px; height:48px; cursor:pointer;" id="m-favicon-upload-wrap" title="Upload custom favicon">
-              <img id="m-favicon-preview" src="https://res.cloudinary.com/dqxccz5bn/image/upload/favicon_jzygcw.png" alt="Favicon"
-                style="width:48px; height:48px; border-radius:10px; object-fit:cover; border:2px solid var(--line); display:block; transition:border-color 0.2s; pointer-events:none; -webkit-user-drag:none; user-select:none;">
-              <div id="m-favicon-overlay"
-                style="position:absolute; inset:0; border-radius:10px; background:rgba(0,0,0,0.55); display:flex; flex-direction:column; align-items:center; justify-content:center; opacity:0; transition:opacity 0.2s; pointer-events:none;">
-                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                  <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/>
-                  <polyline points="17 8 12 3 7 8"/>
-                  <line x1="12" y1="3" x2="12" y2="15"/>
+          <!-- Instagram-style profile picture upload -->
+          <div
+            style="display:flex; flex-direction:column; align-items:center; gap:10px; padding:18px 0 14px; border-bottom:1px solid var(--line); margin-bottom:16px;">
+            <div style="position:relative; width:88px; height:88px; cursor:pointer;" id="m-avatar-upload-wrap"
+              title="Change profile picture">
+              <img id="m-avatar-preview" src="https://res.cloudinary.com/dqxccz5bn/image/upload/profile_icon_wf7thb.svg"
+                alt="Profile picture" draggable="false"
+                style="width:88px; height:88px; border-radius:50%; object-fit:cover; border:2.5px solid var(--line); display:block; transition:filter 0.2s; pointer-events:none; -webkit-user-drag:none; user-select:none;">
+              <!-- Camera overlay -->
+              <div id="m-avatar-overlay"
+                style="position:absolute; inset:0; border-radius:50%; background:rgba(0,0,0,0.45); display:flex; flex-direction:column; align-items:center; justify-content:center; opacity:0; transition:opacity 0.2s; pointer-events:none;">
+                <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2"
+                  stroke-linecap="round" stroke-linejoin="round">
+                  <path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z" />
+                  <circle cx="12" cy="13" r="4" />
                 </svg>
-                <span style="font-size:0.55rem; color:#fff; font-weight:600; margin-top:2px;">UPLOAD</span>
+                <span
+                  style="font-size:0.6rem; color:#fff; margin-top:3px; font-weight:600; letter-spacing:0.04em;">CHANGE</span>
               </div>
-              <input type="file" id="m-cust-favicon-file" accept="image/x-icon, image/png, image/svg+xml, image/webp, image/jpeg, image/gif, .ico, .png, .svg, .webp, .jpg, .gif"
-                style="position:absolute; inset:0; opacity:0; cursor:pointer; width:100%; height:100%;">
+              <!-- Hidden file input -->
+              <input type="file" id="m-cust-avatar-file"
+                accept="image/jpeg, image/png, image/webp, image/avif, image/gif, image/svg+xml, video/webm, .jpg, .jpeg, .png, .webp, .avif, .gif, .svg, .webm"
+                style="position:absolute; inset:0; opacity:0; cursor:pointer; border-radius:50%; width:100%; height:100%;">
             </div>
-
-            <div style="text-align:left;">
-              <p style="font-size:0.78rem; font-weight:600; color:var(--ink); margin:0 0 2px;">Website Favicon</p>
-              <p style="font-size:0.68rem; color:var(--ink-faint); margin:0 0 6px;">Upload image or sync from avatar</p>
-              <div style="display:flex; gap:6px; flex-wrap:wrap;">
-                <button type="button" id="m-favicon-sync-avatar-btn"
-                  style="font-size:0.67rem; padding:3px 9px; border-radius:14px; display:inline-flex; align-items:center; gap:4px; background:var(--bg); border:1px solid var(--line); color:var(--ink-dim); cursor:pointer; font-family:var(--font-mono); transition:all 0.16s ease;"
-                  title="Use current profile avatar as favicon">
-                  <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
-                  Sync from Avatar
-                </button>
-                <button type="button" id="m-favicon-reset-btn"
-                  style="font-size:0.67rem; padding:3px 9px; border-radius:14px; display:inline-flex; align-items:center; gap:4px; background:var(--bg); border:1px solid var(--line); color:var(--ink-dim); cursor:pointer; font-family:var(--font-mono); transition:all 0.16s ease;"
-                  title="Reset favicon to default">
-                  <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 12a9 9 0 1 0 9-9 9.75 9.75 0 0 0-6.74 2.74L3 8"/><path d="M3 3v5h5"/></svg>
+            <div style="text-align:center;">
+              <p style="font-size:0.78rem; font-weight:600; color:var(--ink); margin:0 0 2px;">Profile Picture</p>
+              <p style="font-size:0.68rem; color:var(--ink-faint); margin:0 0 6px;">Click the avatar to upload from your
+                device</p>
+              <div style="display:flex; align-items:center; justify-content:center; gap:6px; margin-bottom:8px;">
+                <button type="button" id="m-avatar-reset-btn"
+                  style="font-size:0.67rem; padding:3px 10px; border-radius:14px; display:inline-flex; align-items:center; gap:4px; background:var(--bg); border:1px solid var(--line); color:var(--ink-dim); cursor:pointer; font-family:var(--font-mono); transition:all 0.16s ease;"
+                  title="Reset profile picture to default">
+                  <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                    stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M3 12a9 9 0 1 0 9-9 9.75 9.75 0 0 0-6.74 2.74L3 8" />
+                    <path d="M3 3v5h5" />
+                  </svg>
                   Reset to Default
                 </button>
               </div>
+              <!-- Stylish format & size pills -->
+              <div style="display:flex; align-items:center; justify-content:center; gap:6px; flex-wrap:wrap;">
+                <span
+                  style="display:inline-flex; align-items:center; gap:4px; font-size:0.65rem; font-family:var(--font-mono); color:var(--ink-dim); background:var(--bg); border:1px solid var(--line); padding:2px 7px; border-radius:12px;">
+                  JPG, PNG, WEBP, AVIF, GIF, SVG, WEBM
+                </span>
+                <span
+                  style="display:inline-flex; align-items:center; gap:4px; font-size:0.65rem; font-family:var(--font-mono); color:var(--ink-dim); background:var(--bg); border:1px solid var(--line); padding:2px 7px; border-radius:12px;">
+                  1:1 Square (512×512)
+                </span>
+                <span
+                  style="display:inline-flex; align-items:center; gap:4px; font-size:0.65rem; font-family:var(--font-mono); color:var(--ink-dim); background:var(--bg); border:1px solid var(--line); padding:2px 7px; border-radius:12px;">
+                  Max 2 MB
+                </span>
+              </div>
             </div>
           </div>
 
+          <!-- Favicon Customization Section in Modal -->
+          <div
+            style="display:flex; flex-direction:column; align-items:center; gap:10px; padding:12px 0 14px; border-bottom:1px solid var(--line); margin-bottom:16px;">
+            <!-- Browser Tab Live Preview Mockup -->
+            <div style="display:flex; flex-direction:column; align-items:center; gap:5px;">
+              <span
+                style="font-size:0.63rem; color:var(--ink-faint); font-family:var(--font-mono); letter-spacing:0.04em;">//
+                BROWSER TAB PREVIEW</span>
+              <div class="favicon-tab-preview" id="m-favicon-tab-preview" title="Live browser tab preview">
+                <div class="tab-icon" id="m-favicon-tab-icon">
+                  <img id="m-favicon-tab-img" src="https://res.cloudinary.com/dqxccz5bn/image/upload/favicon_jzygcw.png"
+                    alt="Favicon" style="width:16px; height:16px; border-radius:3px; object-fit:cover; display:block;">
+                </div>
+                <span class="tab-title" id="m-favicon-tab-title">khxaiyan</span>
+                <span class="tab-close">✕</span>
+              </div>
+            </div>
 
-        </div>
+            <div style="display:flex; align-items:center; justify-content:center; gap:12px; margin-top:4px;">
+              <!-- Upload custom favicon button -->
+              <div style="position:relative; width:48px; height:48px; cursor:pointer;" id="m-favicon-upload-wrap"
+                title="Upload custom favicon">
+                <img id="m-favicon-preview" src="https://res.cloudinary.com/dqxccz5bn/image/upload/favicon_jzygcw.png"
+                  alt="Favicon"
+                  style="width:48px; height:48px; border-radius:10px; object-fit:cover; border:2px solid var(--line); display:block; transition:border-color 0.2s; pointer-events:none; -webkit-user-drag:none; user-select:none;">
+                <div id="m-favicon-overlay"
+                  style="position:absolute; inset:0; border-radius:10px; background:rgba(0,0,0,0.55); display:flex; flex-direction:column; align-items:center; justify-content:center; opacity:0; transition:opacity 0.2s; pointer-events:none;">
+                  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2"
+                    stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4" />
+                    <polyline points="17 8 12 3 7 8" />
+                    <line x1="12" y1="3" x2="12" y2="15" />
+                  </svg>
+                  <span style="font-size:0.55rem; color:#fff; font-weight:600; margin-top:2px;">UPLOAD</span>
+                </div>
+                <input type="file" id="m-cust-favicon-file"
+                  accept="image/x-icon, image/png, image/svg+xml, image/webp, image/jpeg, image/gif, .ico, .png, .svg, .webp, .jpg, .gif"
+                  style="position:absolute; inset:0; opacity:0; cursor:pointer; width:100%; height:100%;">
+              </div>
+
+              <div style="text-align:left;">
+                <p style="font-size:0.78rem; font-weight:600; color:var(--ink); margin:0 0 2px;">Website Favicon</p>
+                <p style="font-size:0.68rem; color:var(--ink-faint); margin:0 0 6px;">Upload image or sync from avatar
+                </p>
+                <div style="display:flex; gap:6px; flex-wrap:wrap;">
+                  <button type="button" id="m-favicon-sync-avatar-btn"
+                    style="font-size:0.67rem; padding:3px 9px; border-radius:14px; display:inline-flex; align-items:center; gap:4px; background:var(--bg); border:1px solid var(--line); color:var(--ink-dim); cursor:pointer; font-family:var(--font-mono); transition:all 0.16s ease;"
+                    title="Use current profile avatar as favicon">
+                    <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                      stroke-linecap="round" stroke-linejoin="round">
+                      <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2" />
+                      <circle cx="12" cy="7" r="4" />
+                    </svg>
+                    Sync from Avatar
+                  </button>
+                  <button type="button" id="m-favicon-reset-btn"
+                    style="font-size:0.67rem; padding:3px 9px; border-radius:14px; display:inline-flex; align-items:center; gap:4px; background:var(--bg); border:1px solid var(--line); color:var(--ink-dim); cursor:pointer; font-family:var(--font-mono); transition:all 0.16s ease;"
+                    title="Reset favicon to default">
+                    <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                      stroke-linecap="round" stroke-linejoin="round">
+                      <path d="M3 12a9 9 0 1 0 9-9 9.75 9.75 0 0 0-6.74 2.74L3 8" />
+                      <path d="M3 3v5h5" />
+                    </svg>
+                    Reset to Default
+                  </button>
+                </div>
+              </div>
+            </div>
 
 
-        <!-- 1. // identity -->
-        <p class="eyebrow">// identity</p>
-        <div class="m-grid-2">
+          </div>
+
+
+          <!-- 1. // identity -->
+          <p class="eyebrow">// identity</p>
+          <div class="m-grid-2">
+            <div class="m-field-group">
+              <label class="m-field-label" for="m-cust-sitename">Site Wordmark / Name</label>
+              <input type="text" class="m-field-input" id="m-cust-sitename" placeholder="khxaiyan">
+            </div>
+            <div class="m-field-group">
+              <label class="m-field-label" for="m-cust-accent">Accent Letter (e.g. x)</label>
+              <input type="text" class="m-field-input" id="m-cust-accent" maxlength="8" placeholder="x">
+            </div>
+          </div>
+
+          <div class="m-field-group"
+            style="background:var(--bg); border:1px solid var(--line); border-radius:var(--radius-sm); padding:8px 12px; display:flex; align-items:center; justify-content:space-between; margin-bottom:12px;">
+            <span style="font-size:0.73rem; color:var(--ink-faint);">Live Wordmark:</span>
+            <span id="m-wordmark-preview"
+              style="font-family:var(--font-display); font-weight:700; font-size:1.05rem; color:var(--ink);">kh<span
+                class="glyph-5">x</span>aiyan</span>
+          </div>
+
           <div class="m-field-group">
-            <label class="m-field-label" for="m-cust-sitename">Site Wordmark / Name</label>
-            <input type="text" class="m-field-input" id="m-cust-sitename" placeholder="khxaiyan">
+            <label class="m-field-label" for="m-cust-bio">Headline Bio</label>
+            <div class="m-format-toolbar">
+              <button type="button" class="m-toolbar-btn"
+                onclick="applyModalFormat('m-cust-bio', '**', '**')"><b>B</b></button>
+              <button type="button" class="m-toolbar-btn"
+                onclick="applyModalFormat('m-cust-bio', '_', '_')"><i>I</i></button>
+              <button type="button" class="m-toolbar-btn"
+                onclick="applyModalFormat('m-cust-bio', '__', '__')"><u>U</u></button>
+              <button type="button" class="m-toolbar-btn"
+                onclick="applyModalFormat('m-cust-bio', '`', '`')">&lt;&gt;</button>
+              <button type="button" class="m-toolbar-btn"
+                onclick="applyModalFormat('m-cust-bio', '> ', '')">&rdquo;</button>
+              <button type="button" class="m-toolbar-btn"
+                onclick="applyModalFormat('m-cust-bio', '[', '](https://)')">🔗</button>
+              <button type="button" class="m-toolbar-btn" onclick="applyModalFormat('m-cust-bio', '{', '}')"
+                title="Accent Color">{color}</button>
+            </div>
+            <textarea class="m-field-textarea m-textarea-toolbar" id="m-cust-bio" rows="3"
+              placeholder="developer in active building mode. crafting clean web tools..."></textarea>
+            <div class="m-preview-box bio" id="m-bio-preview"></div>
           </div>
+
+          <!-- 2. // intro -->
+          <p class="eyebrow" style="margin-top:14px;">// intro</p>
           <div class="m-field-group">
-            <label class="m-field-label" for="m-cust-accent">Accent Letter (e.g. x)</label>
-            <input type="text" class="m-field-input" id="m-cust-accent" maxlength="8" placeholder="x">
+            <div class="m-format-toolbar">
+              <button type="button" class="m-toolbar-btn"
+                onclick="applyModalFormat('m-cust-intro', '**', '**')"><b>B</b></button>
+              <button type="button" class="m-toolbar-btn"
+                onclick="applyModalFormat('m-cust-intro', '_', '_')"><i>I</i></button>
+              <button type="button" class="m-toolbar-btn"
+                onclick="applyModalFormat('m-cust-intro', '__', '__')"><u>U</u></button>
+              <button type="button" class="m-toolbar-btn"
+                onclick="applyModalFormat('m-cust-intro', '`', '`')">&lt;&gt;</button>
+              <button type="button" class="m-toolbar-btn"
+                onclick="applyModalFormat('m-cust-intro', '> ', '')">&rdquo;</button>
+              <button type="button" class="m-toolbar-btn"
+                onclick="applyModalFormat('m-cust-intro', '[', '](https://)')">🔗</button>
+              <button type="button" class="m-toolbar-btn" onclick="applyModalFormat('m-cust-intro', '{', '}')"
+                title="Accent Color">{color}</button>
+            </div>
+            <textarea class="m-field-textarea m-textarea-toolbar" id="m-cust-intro" rows="4"
+              placeholder="Passionate developer specializing in building modern web applications..."></textarea>
+            <div class="m-preview-box intro-text" id="m-intro-preview"></div>
           </div>
-        </div>
 
-        <div class="m-field-group" style="background:var(--bg); border:1px solid var(--line); border-radius:var(--radius-sm); padding:8px 12px; display:flex; align-items:center; justify-content:space-between; margin-bottom:12px;">
-          <span style="font-size:0.73rem; color:var(--ink-faint);">Live Wordmark:</span>
-          <span id="m-wordmark-preview" style="font-family:var(--font-display); font-weight:700; font-size:1.05rem; color:var(--ink);">kh<span class="glyph-5">x</span>aiyan</span>
-        </div>
-
-        <div class="m-field-group">
-          <label class="m-field-label" for="m-cust-bio">Headline Bio</label>
-          <div class="m-format-toolbar">
-            <button type="button" class="m-toolbar-btn" onclick="applyModalFormat('m-cust-bio', '**', '**')"><b>B</b></button>
-            <button type="button" class="m-toolbar-btn" onclick="applyModalFormat('m-cust-bio', '_', '_')"><i>I</i></button>
-            <button type="button" class="m-toolbar-btn" onclick="applyModalFormat('m-cust-bio', '__', '__')"><u>U</u></button>
-            <button type="button" class="m-toolbar-btn" onclick="applyModalFormat('m-cust-bio', '`', '`')">&lt;&gt;</button>
-            <button type="button" class="m-toolbar-btn" onclick="applyModalFormat('m-cust-bio', '> ', '')">&rdquo;</button>
-            <button type="button" class="m-toolbar-btn" onclick="applyModalFormat('m-cust-bio', '[', '](https://)')">🔗</button>
-            <button type="button" class="m-toolbar-btn" onclick="applyModalFormat('m-cust-bio', '{', '}')" title="Accent Color">{color}</button>
+          <!-- 3. // projects -->
+          <div
+            style="display:flex; align-items:center; justify-content:space-between; margin-top:16px; margin-bottom:6px;">
+            <p class="eyebrow" style="margin:0;">// projects</p>
+            <button type="button" class="m-toolbar-btn" id="m-btn-add-project"
+              style="color:var(--ink); font-weight:600; padding:4px 10px; border-color:var(--red); background:rgba(255,42,95,0.08);">+
+              Add Project</button>
           </div>
-          <textarea class="m-field-textarea m-textarea-toolbar" id="m-cust-bio" rows="3" placeholder="developer in active building mode. crafting clean web tools..."></textarea>
-          <div class="m-preview-box bio" id="m-bio-preview"></div>
-        </div>
+          <p style="font-size:0.72rem; color:var(--ink-faint); margin-bottom:10px;">Manage projects displayed on your
+            portfolio. Add, edit, or remove anytime.</p>
+          <div id="m-projects-list" style="display:flex; flex-direction:column; gap:10px; margin-bottom:14px;"></div>
 
-        <!-- 2. // intro -->
-        <p class="eyebrow" style="margin-top:14px;">// intro</p>
-        <div class="m-field-group">
-          <div class="m-format-toolbar">
-            <button type="button" class="m-toolbar-btn" onclick="applyModalFormat('m-cust-intro', '**', '**')"><b>B</b></button>
-            <button type="button" class="m-toolbar-btn" onclick="applyModalFormat('m-cust-intro', '_', '_')"><i>I</i></button>
-            <button type="button" class="m-toolbar-btn" onclick="applyModalFormat('m-cust-intro', '__', '__')"><u>U</u></button>
-            <button type="button" class="m-toolbar-btn" onclick="applyModalFormat('m-cust-intro', '`', '`')">&lt;&gt;</button>
-            <button type="button" class="m-toolbar-btn" onclick="applyModalFormat('m-cust-intro', '> ', '')">&rdquo;</button>
-            <button type="button" class="m-toolbar-btn" onclick="applyModalFormat('m-cust-intro', '[', '](https://)')">🔗</button>
-            <button type="button" class="m-toolbar-btn" onclick="applyModalFormat('m-cust-intro', '{', '}')" title="Accent Color">{color}</button>
+
+          <!-- 5. // save -->
+          <div style="margin-top:16px;">
+            <button type="button" class="m-save-btn" id="m-btn-save">
+              <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                stroke-linecap="round" stroke-linejoin="round">
+                <path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2z" />
+                <polyline points="17 21 17 13 7 13 7 21" />
+                <polyline points="7 3 7 8 15 8" />
+              </svg>
+              <span>Save & Apply Changes</span>
+            </button>
+            <p id="m-save-status"
+              style="font-size:0.78rem; color:var(--success); text-align:center; margin-top:8px; display:none;">✓
+              Changes applied live to portfolio!</p>
           </div>
-          <textarea class="m-field-textarea m-textarea-toolbar" id="m-cust-intro" rows="4" placeholder="Passionate developer specializing in building modern web applications..."></textarea>
-          <div class="m-preview-box intro-text" id="m-intro-preview"></div>
-        </div>
 
-        <!-- 3. // projects -->
-        <div style="display:flex; align-items:center; justify-content:space-between; margin-top:16px; margin-bottom:6px;">
-          <p class="eyebrow" style="margin:0;">// projects</p>
-          <button type="button" class="m-toolbar-btn" id="m-btn-add-project" style="color:var(--ink); font-weight:600; padding:4px 10px; border-color:var(--red); background:rgba(255,42,95,0.08);">+ Add Project</button>
-        </div>
-        <p style="font-size:0.72rem; color:var(--ink-faint); margin-bottom:10px;">Manage projects displayed on your portfolio. Add, edit, or remove anytime.</p>
-        <div id="m-projects-list" style="display:flex; flex-direction:column; gap:10px; margin-bottom:14px;"></div>
-
-
-        <!-- 5. // save -->
-        <div style="margin-top:16px;">
-          <button type="button" class="m-save-btn" id="m-btn-save">
-            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-              <path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2z"/>
-              <polyline points="17 21 17 13 7 13 7 21"/>
-              <polyline points="7 3 7 8 15 8"/>
-            </svg>
-            <span>Save & Apply Changes</span>
-          </button>
-          <p id="m-save-status" style="font-size:0.78rem; color:var(--success); text-align:center; margin-top:8px; display:none;">✓ Changes applied live to portfolio!</p>
-        </div>
-
-        <!-- 6. // advanced settings -->
-        <div style="margin-top:16px; padding-top:14px; border-top:1px solid var(--line);">
-          <div style="display:flex; align-items:center; justify-content:space-between; margin-bottom:8px;">
-            <p class="eyebrow" style="margin:0;">// advanced settings</p>
-            <span style="font-size:0.7rem; color:var(--ink-faint); font-family:var(--font-mono);">Full Page & API Keys</span>
+          <!-- 6. // advanced settings -->
+          <div style="margin-top:16px; padding-top:14px; border-top:1px solid var(--line);">
+            <div style="display:flex; align-items:center; justify-content:space-between; margin-bottom:8px;">
+              <p class="eyebrow" style="margin:0;">// advanced settings</p>
+              <span style="font-size:0.7rem; color:var(--ink-faint); font-family:var(--font-mono);">Full Page & API
+                Keys</span>
+            </div>
+            <a href="developer.html" class="m-advanced-btn" id="m-btn-advanced"
+              title="Open full-page developer settings">
+              <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                stroke-linecap="round" stroke-linejoin="round">
+                <circle cx="12" cy="12" r="3" />
+                <path
+                  d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z" />
+              </svg>
+              <span>Developer Settings Page</span>
+              <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                stroke-linecap="round" stroke-linejoin="round" style="margin-left:auto;">
+                <path d="M7 17L17 7M17 7H7M17 7v10" />
+              </svg>
+            </a>
           </div>
-          <a href="developer.html" class="m-advanced-btn" id="m-btn-advanced" title="Open full-page developer settings">
-            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-              <circle cx="12" cy="12" r="3"/>
-              <path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"/>
-            </svg>
-            <span>Developer Settings Page</span>
-            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="margin-left:auto;">
-              <path d="M7 17L17 7M17 7H7M17 7v10"/>
-            </svg>
-          </a>
         </div>
       </div>
     </div>
-  </div>
 
-  <div id="dev-toast" class="dev-toast" role="status" aria-live="polite"></div>
-  <div id="sr-alert" role="alert" aria-live="assertive" class="sr-only"></div>
-  <!-- Clerk JavaScript Frontend SDK (Instance bundle with full UI components support) -->
-  <script
-    async
-    crossorigin="anonymous"
-    data-clerk-publishable-key="pk_test_c2hpbmluZy10dXJrZXktMTMyNS5jbGVyay5hY2NvdW50cy5kZXYk"
-    data-clerk-after-sign-out-url="/"
-    src="https://shining-turkey-1325.clerk.accounts.dev/npm/@clerk/clerk-js@latest/dist/clerk.browser.js"
-    type="text/javascript"></script>
-  <script src="app.js?v=26"></script>
-  <script src="https://js.hcaptcha.com/1/api.js?onload=initHcaptcha&render=explicit" async defer></script>
+    <div id="dev-toast" class="dev-toast" role="status" aria-live="polite"></div>
+    <div id="sr-alert" role="alert" aria-live="assertive" class="sr-only"></div>
+    <!-- Clerk JavaScript Frontend SDK (Instance bundle with full UI components support) -->
+    <script async crossorigin="anonymous"
+      data-clerk-publishable-key="pk_test_c2hpbmluZy10dXJrZXktMTMyNS5jbGVyay5hY2NvdW50cy5kZXYk"
+      data-clerk-after-sign-out-url="/"
+      src="https://shining-turkey-1325.clerk.accounts.dev/npm/@clerk/clerk-js@latest/dist/clerk.browser.js"
+      type="text/javascript"></script>
+    <script src="app.js?v=26"></script>
+    <script src="https://js.hcaptcha.com/1/api.js?onload=initHcaptcha&render=explicit" async defer></script>
 </body>
 
 </html>
