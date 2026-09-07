@@ -14,7 +14,7 @@
   <link
     href="https://fonts.googleapis.com/css2?family=Cinzel:wght@500;600;700&family=Fira+Code:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500;600&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600;700&family=Montserrat:wght@400;500;600;700&family=Outfit:wght@400;500;600;700&family=Playfair+Display:ital,wght@0,500;0,600;0,700;1,400&family=Plus+Jakarta+Sans:wght@400;500;600;700&family=Poppins:wght@400;500;600;700&family=Sora:wght@400;500;600;700&family=Space+Grotesk:wght@400;500;600;700&family=Syne:wght@500;600;700;800&display=swap"
     rel="stylesheet">
-  <link rel="stylesheet" href="style.css?v=2">
+  <link rel="stylesheet" href="style.css?v=29">
   <script src="https://code.iconify.design/iconify-icon/2.1.0/iconify-icon.min.js"></script>
   <script src="config.js?v=27"></script>
   <script>
@@ -678,6 +678,128 @@
     .accordion-eyebrow-toggle:hover svg {
       color: var(--red) !important;
     }
+
+    /* ── Typography & Font Customizer Styling ── */
+    .font-presets-grid {
+      display: grid !important;
+      grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)) !important;
+      gap: 10px !important;
+      width: 100% !important;
+    }
+
+    .font-card-preset {
+      display: flex !important;
+      flex-direction: column !important;
+      align-items: flex-start !important;
+      padding: 12px 14px !important;
+      background: var(--bg) !important;
+      border: 1.5px solid var(--line) !important;
+      border-radius: var(--radius) !important;
+      cursor: pointer !important;
+      text-align: left !important;
+      transition: all 0.18s cubic-bezier(0.16, 1, 0.3, 1) !important;
+      position: relative !important;
+      outline: none !important;
+      width: 100% !important;
+      box-sizing: border-box !important;
+      gap: 5px !important;
+      -webkit-appearance: none !important;
+      appearance: none !important;
+    }
+
+    .font-card-preset:hover {
+      border-color: var(--border-accent, var(--red)) !important;
+      background: var(--surface-hover) !important;
+      transform: translateY(-2px) !important;
+      box-shadow: 0 4px 14px rgba(0, 0, 0, 0.25) !important;
+    }
+
+    .font-card-preset.active {
+      border-color: var(--red) !important;
+      background: var(--red-dim) !important;
+      box-shadow: 0 0 14px var(--border-accent-glow, rgba(255, 42, 95, 0.25)) !important;
+    }
+
+    .font-card-preset .fcp-header {
+      display: flex !important;
+      align-items: center !important;
+      justify-content: space-between !important;
+      width: 100% !important;
+      gap: 6px !important;
+    }
+
+    .font-card-preset .fcp-name {
+      font-size: 0.86rem !important;
+      font-weight: 700 !important;
+      color: var(--ink) !important;
+      white-space: nowrap !important;
+      overflow: hidden !important;
+      text-overflow: ellipsis !important;
+      letter-spacing: -0.01em !important;
+    }
+
+    .font-card-preset .fcp-tag {
+      font-size: 0.62rem !important;
+      color: var(--ink-faint) !important;
+      font-family: var(--font-mono) !important;
+      text-transform: uppercase !important;
+      letter-spacing: 0.04em !important;
+      padding: 2px 7px !important;
+      border-radius: 6px !important;
+      background: rgba(255, 255, 255, 0.06) !important;
+      border: 1px solid var(--line) !important;
+      flex-shrink: 0 !important;
+    }
+
+    .font-card-preset.active .fcp-tag {
+      color: #ffffff !important;
+      background: var(--red-solid) !important;
+      border-color: var(--red) !important;
+      font-weight: 700 !important;
+    }
+
+    .font-card-preset .fcp-sample {
+      font-size: 0.78rem !important;
+      color: var(--ink-dim) !important;
+      line-height: 1.35 !important;
+      white-space: nowrap !important;
+      overflow: hidden !important;
+      text-overflow: ellipsis !important;
+      width: 100% !important;
+      margin-top: 2px !important;
+      opacity: 0.88 !important;
+    }
+
+    .font-card-preset.active .fcp-sample {
+      color: var(--ink) !important;
+      opacity: 1 !important;
+    }
+
+    .font-scope-btn {
+      padding: 5px 12px !important;
+      font-size: 0.72rem !important;
+      font-family: var(--font-mono) !important;
+      background: var(--bg) !important;
+      border: 1px solid var(--line) !important;
+      border-radius: var(--radius-sm) !important;
+      color: var(--ink-faint) !important;
+      cursor: pointer !important;
+      transition: all 0.18s ease !important;
+    }
+
+    .font-scope-btn:hover {
+      color: var(--ink) !important;
+      border-color: var(--line-strong) !important;
+      background: var(--surface-hover) !important;
+    }
+
+    .font-scope-btn.active {
+      background: var(--red-dim) !important;
+      border-color: var(--red) !important;
+      color: var(--ink) !important;
+      font-weight: 600 !important;
+      box-shadow: 0 0 8px var(--border-accent-glow) !important;
+    }
   </style>
 </head>
 
@@ -1178,15 +1300,38 @@
             </div>
           </div>
 
-          <!-- Curated Typeface Presets Grid -->
+          <!-- Quick Font Dropdown Menu -->
           <div class="field-group">
+            <div style="display:flex; align-items:center; justify-content:space-between; margin-bottom:2px;">
+              <label class="field-label" for="cust-font-select" style="font-weight:600; color:var(--ink);">Select Typeface Dropdown</label>
+              <span style="font-size:0.68rem; color:var(--ink-faint); font-family:var(--font-mono);">Instant Switch</span>
+            </div>
+            <select id="cust-font-select" class="field-input" style="cursor:pointer; font-weight:600; font-size:0.86rem; padding:10px 14px; background:var(--bg); color:var(--ink); border:1px solid var(--line); border-radius:var(--radius-sm); outline:none;">
+              <option value="Space Grotesk">Space Grotesk (Default / Cyber)</option>
+              <option value="Inter">Inter (Clean Modern Sans)</option>
+              <option value="Outfit">Outfit (Geometric Tech)</option>
+              <option value="Plus Jakarta Sans">Plus Jakarta Sans (Sleek Editorial)</option>
+              <option value="Poppins">Poppins (Friendly Geometric)</option>
+              <option value="Syne">Syne (Bold Brutalist Display)</option>
+              <option value="Sora">Sora (Crisp Cyber Sans)</option>
+              <option value="JetBrains Mono">JetBrains Mono (Developer Terminal)</option>
+              <option value="Playfair Display">Playfair Display (Luxury Serif)</option>
+              <option value="Montserrat">Montserrat (Classic Geometric)</option>
+              <option value="Cinzel">Cinzel (Epic Classical Serif)</option>
+              <option value="Fira Code">Fira Code (Programmer Monospace)</option>
+              <option value="custom">✦ Custom Google Font...</option>
+            </select>
+          </div>
+
+          <!-- Curated Typeface Presets Grid -->
+          <div class="field-group" style="margin-top:6px;">
             <div style="display:flex; align-items:center; justify-content:space-between;">
-              <label class="field-label" style="font-weight:600; color:var(--ink); margin-bottom:2px;">Curated Typefaces</label>
-              <span style="font-size:0.68rem; color:var(--ink-faint); font-family:var(--font-mono);">12 Google Fonts</span>
+              <label class="field-label" style="font-weight:600; color:var(--ink); margin-bottom:2px;">Visual Typeface Cards</label>
+              <span style="font-size:0.68rem; color:var(--ink-faint); font-family:var(--font-mono);">12 Curated Presets</span>
             </div>
 
             <div class="font-presets-grid" id="font-presets-grid">
-              <!-- Rendered dynamically by JavaScript -->
+              <!-- Rendered dynamically by JavaScript with full responsive styling -->
             </div>
           </div>
 
@@ -2357,31 +2502,105 @@
         var container = document.getElementById('font-presets-grid');
         if (!container) return;
         container.innerHTML = '';
+        container.style.display = 'grid';
+        container.style.gridTemplateColumns = 'repeat(auto-fill, minmax(185px, 1fr))';
+        container.style.gap = '10px';
+        container.style.width = '100%';
 
         CURATED_FONTS.forEach(function (f) {
+          var isActive = (f.name.toLowerCase() === currentFontFamily.toLowerCase());
           var btn = document.createElement('button');
           btn.type = 'button';
-          btn.className = 'font-card-preset' + (f.name.toLowerCase() === currentFontFamily.toLowerCase() ? ' active' : '');
+          btn.className = 'font-card-preset' + (isActive ? ' active' : '');
           btn.setAttribute('data-font', f.name);
+          btn.style.display = 'flex';
+          btn.style.flexDirection = 'column';
+          btn.style.alignItems = 'flex-start';
+          btn.style.justifyContent = 'space-between';
+          btn.style.padding = '12px 14px';
+          btn.style.background = isActive ? 'var(--red-dim)' : 'var(--bg)';
+          btn.style.border = isActive ? '1.5px solid var(--red)' : '1.5px solid var(--line)';
+          btn.style.borderRadius = 'var(--radius, 10px)';
+          btn.style.cursor = 'pointer';
+          btn.style.textAlign = 'left';
+          btn.style.width = '100%';
+          btn.style.boxSizing = 'border-box';
+          btn.style.gap = '6px';
+          btn.style.outline = 'none';
           btn.style.fontFamily = '"' + f.name + '", ' + f.fallback;
+          btn.style.boxShadow = isActive ? '0 0 12px var(--border-accent-glow, rgba(255,42,95,0.25))' : 'none';
+          btn.style.transition = 'all 0.18s cubic-bezier(0.16, 1, 0.3, 1)';
 
           var hdr = document.createElement('div');
           hdr.className = 'fcp-header';
+          hdr.style.display = 'flex';
+          hdr.style.alignItems = 'center';
+          hdr.style.justifyContent = 'space-between';
+          hdr.style.width = '100%';
+          hdr.style.gap = '6px';
+
           var nameSpan = document.createElement('span');
           nameSpan.className = 'fcp-name';
           nameSpan.textContent = f.name;
+          nameSpan.style.fontSize = '0.86rem';
+          nameSpan.style.fontWeight = '700';
+          nameSpan.style.color = 'var(--ink)';
+          nameSpan.style.whiteSpace = 'nowrap';
+          nameSpan.style.overflow = 'hidden';
+          nameSpan.style.textOverflow = 'ellipsis';
+          nameSpan.style.letterSpacing = '-0.01em';
+
           var tagSpan = document.createElement('span');
           tagSpan.className = 'fcp-tag';
           tagSpan.textContent = f.category;
+          tagSpan.style.fontSize = '0.62rem';
+          tagSpan.style.fontFamily = 'var(--font-mono, monospace)';
+          tagSpan.style.textTransform = 'uppercase';
+          tagSpan.style.letterSpacing = '0.04em';
+          tagSpan.style.padding = '2px 7px';
+          tagSpan.style.borderRadius = '6px';
+          tagSpan.style.flexShrink = '0';
+          tagSpan.style.background = isActive ? 'var(--red-solid)' : 'rgba(255, 255, 255, 0.06)';
+          tagSpan.style.color = isActive ? '#ffffff' : 'var(--ink-faint)';
+          tagSpan.style.border = isActive ? '1px solid var(--red)' : '1px solid var(--line)';
+          tagSpan.style.fontWeight = isActive ? '700' : '500';
+
           hdr.appendChild(nameSpan);
           hdr.appendChild(tagSpan);
 
           var sampleDiv = document.createElement('div');
           sampleDiv.className = 'fcp-sample';
           sampleDiv.textContent = f.sample;
+          sampleDiv.style.fontSize = '0.78rem';
+          sampleDiv.style.color = isActive ? 'var(--ink)' : 'var(--ink-dim)';
+          sampleDiv.style.lineHeight = '1.35';
+          sampleDiv.style.whiteSpace = 'nowrap';
+          sampleDiv.style.overflow = 'hidden';
+          sampleDiv.style.textOverflow = 'ellipsis';
+          sampleDiv.style.width = '100%';
+          sampleDiv.style.marginTop = '2px';
+          sampleDiv.style.opacity = isActive ? '1' : '0.85';
 
           btn.appendChild(hdr);
           btn.appendChild(sampleDiv);
+
+          btn.addEventListener('mouseenter', function () {
+            if (!btn.classList.contains('active')) {
+              btn.style.borderColor = 'var(--border-accent, var(--red))';
+              btn.style.background = 'var(--surface-hover)';
+              btn.style.transform = 'translateY(-2px)';
+              btn.style.boxShadow = '0 4px 14px rgba(0, 0, 0, 0.25)';
+            }
+          });
+          btn.addEventListener('mouseleave', function () {
+            if (!btn.classList.contains('active')) {
+              btn.style.borderColor = 'var(--line)';
+              btn.style.background = 'var(--bg)';
+              btn.style.transform = 'none';
+              btn.style.boxShadow = 'none';
+            }
+          });
+
           container.appendChild(btn);
         });
       }
@@ -2392,15 +2611,61 @@
         if (nameSpan) nameSpan.textContent = fontName;
         if (badge) badge.style.fontFamily = '"' + fontName + '", sans-serif';
 
+        // Sync dropdown
+        var fontSelect = document.getElementById('cust-font-select');
+        if (fontSelect) {
+          var matched = false;
+          for (var i = 0; i < fontSelect.options.length; i++) {
+            if (fontSelect.options[i].value.toLowerCase() === fontName.toLowerCase()) {
+              fontSelect.selectedIndex = i;
+              matched = true;
+              break;
+            }
+          }
+          if (!matched) {
+            fontSelect.value = 'custom';
+          }
+        }
+
         var cards = document.querySelectorAll('#font-presets-grid .font-card-preset');
         var isCurated = false;
         cards.forEach(function (card) {
           var f = card.getAttribute('data-font');
-          if (f && f.toLowerCase() === fontName.toLowerCase()) {
+          var active = (f && f.toLowerCase() === fontName.toLowerCase());
+          var tag = card.querySelector('.fcp-tag');
+          var sample = card.querySelector('.fcp-sample');
+          if (active) {
             card.classList.add('active');
+            card.style.background = 'var(--red-dim)';
+            card.style.borderColor = 'var(--red)';
+            card.style.boxShadow = '0 0 12px var(--border-accent-glow, rgba(255,42,95,0.25))';
+            if (tag) {
+              tag.style.background = 'var(--red-solid)';
+              tag.style.color = '#ffffff';
+              tag.style.borderColor = 'var(--red)';
+              tag.style.fontWeight = '700';
+            }
+            if (sample) {
+              sample.style.color = 'var(--ink)';
+              sample.style.opacity = '1';
+            }
             isCurated = true;
           } else {
             card.classList.remove('active');
+            card.style.background = 'var(--bg)';
+            card.style.borderColor = 'var(--line)';
+            card.style.boxShadow = 'none';
+            card.style.transform = 'none';
+            if (tag) {
+              tag.style.background = 'rgba(255, 255, 255, 0.06)';
+              tag.style.color = 'var(--ink-faint)';
+              tag.style.borderColor = 'var(--line)';
+              tag.style.fontWeight = '500';
+            }
+            if (sample) {
+              sample.style.color = 'var(--ink-dim)';
+              sample.style.opacity = '0.85';
+            }
           }
         });
 
@@ -2444,6 +2709,23 @@
         if (fontPrevWordmark) {
           fontPrevWordmark.innerHTML = formatWordmark(name, accent);
         }
+      }
+
+      // Font dropdown selector listener
+      var custFontSelect = document.getElementById('cust-font-select');
+      if (custFontSelect) {
+        custFontSelect.addEventListener('change', function () {
+          var val = this.value;
+          if (val === 'custom') {
+            var customInp = document.getElementById('cust-custom-font');
+            if (customInp) {
+              customInp.focus();
+              customInp.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+            }
+          } else if (val) {
+            setSiteFont(val, currentFontScope);
+          }
+        });
       }
 
       // Font presets click delegation
