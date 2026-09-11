@@ -9,22 +9,36 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;700&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="style.css">
+  <script src="/api/config.js"></script>
+  <script>
+    if (typeof CONFIG === 'undefined') {
+      document.write('<script src="config.js?v=28"><\/script>');
+    }
+  </script>
   <script>
     (function(){
-      var t=localStorage.getItem('theme')||(matchMedia('(prefers-color-scheme:light)').matches?'light':'dark');
-      document.documentElement.setAttribute('data-theme',t);
-      try {
-        var cfg = JSON.parse(localStorage.getItem('portfolio_custom_config') || '{}');
-        if (cfg && cfg.favicon_url) {
-          var fi = document.querySelector("link[rel~='icon']");
-          if (fi) {
-            if (cfg.favicon_url.startsWith('data:image/svg')) fi.type = 'image/svg+xml';
-            else if (cfg.favicon_url.startsWith('data:image/x-icon')) fi.type = 'image/x-icon';
-            else if (cfg.favicon_url.endsWith('.png') || cfg.favicon_url.startsWith('data:image/png')) fi.type = 'image/png';
-            fi.href = cfg.favicon_url;
-          }
+      var customCfg = null;
+      try { customCfg = JSON.parse(localStorage.getItem('portfolio_custom_config')); } catch (_) {}
+      var cfg = Object.assign({}, typeof CONFIG !== 'undefined' ? CONFIG : {}, customCfg || {});
+      var themeCfg = cfg.theme_config || {};
+      var t = themeCfg.mode || cfg.default_theme || localStorage.getItem('theme') || (matchMedia('(prefers-color-scheme:light)').matches ? 'light' : 'dark');
+      document.documentElement.setAttribute('data-theme', t);
+
+      var accent = themeCfg.accent_color || cfg.accent_color || '#00ff00';
+      if (accent) {
+        document.documentElement.style.setProperty('--red', accent);
+      }
+
+      var fav = cfg.favicon_url || 'https://res.cloudinary.com/dqxccz5bn/image/upload/favicon_jzygcw.png';
+      if (fav) {
+        var fi = document.querySelector("link[rel~='icon']");
+        if (fi) {
+          if (fav.startsWith('data:image/svg')) fi.type = 'image/svg+xml';
+          else if (fav.startsWith('data:image/x-icon')) fi.type = 'image/x-icon';
+          else if (fav.endsWith('.png') || fav.startsWith('data:image/png')) fi.type = 'image/png';
+          fi.href = fav;
         }
-      } catch (_) {}
+      }
     }());
   </script>
   <style>
