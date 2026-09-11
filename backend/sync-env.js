@@ -43,63 +43,87 @@ supportedKeys.forEach((key) => {
   }
 });
 
-const env = Object.assign({}, envFromProcess, parseEnv(envPath), parseEnv(envLocalPath));
+async function runSync() {
+  const env = Object.assign({}, envFromProcess, parseEnv(envPath), parseEnv(envLocalPath));
 
-if (Object.keys(env).length === 0) {
-  console.log('ℹ️ No .env found. Using existing config.js.');
+  const configPath = path.join(__dirname, '..', 'frontend', 'config.js');
+  let currentConfig = {};
+  if (fs.existsSync(configPath)) {
+    try {
+      const code = fs.readFileSync(configPath, 'utf-8');
+      const match = code.match(/CONFIG\s*=\s*(\{[\s\S]*?\});/);
+      if (match) {
+        currentConfig = eval('(' + match[1] + ')');
+      }
+    } catch (_) {}
+  }
+
+  // 1. Try pulling live config from MongoDB Atlas
+  let mongoConfig = null;
+  try {
+    const { connectToDatabase } = require('../api/lib/mongodb');
+    const { db } = await connectToDatabase();
+    const doc = await db.collection('config').findOne({ _id: 'portfolio_config' });
+    if (doc && doc.config) {
+      mongoConfig = doc.config;
+      console.log('✓ Fetched latest live config from MongoDB Atlas');
+    }
+  } catch (mErr) {
+    console.log('ℹ️ MongoDB build sync notice:', mErr.message);
+  }
+
+  // Base configuration merges: local config -> MongoDB live doc -> env overrides
+  const baseConfig = Object.assign({}, currentConfig, mongoConfig || {});
+
+  delete baseConfig.developer_pin;
+  delete baseConfig.ping;
+
+  const updatedConfig = Object.assign({}, baseConfig, {
+    github: env.GITHUB_USERNAME || baseConfig.github || 'khxaiyan',
+    x: env.X_USERNAME || baseConfig.x || 'khxaiyan',
+    telegram: env.TELEGRAM_USERNAME || baseConfig.telegram || 'khxaiyan',
+    email: env.CONTACT_EMAIL || baseConfig.email || 'ayankhan84510@gmail.com',
+    logo: env.AVATAR_URL || baseConfig.logo || 'https://avatars.githubusercontent.com/u/225553218?v=4',
+    avatar_url: env.AVATAR_URL || baseConfig.avatar_url || 'https://avatars.githubusercontent.com/u/225553218?v=4',
+    favicon_url: env.FAVICON_URL || baseConfig.favicon_url || 'https://res.cloudinary.com/dqxccz5bn/image/upload/favicon_jzygcw.png',
+    site_name: env.SITE_NAME || baseConfig.site_name || 'khxaiyan',
+    accent_letter: env.ACCENT_LETTER || baseConfig.accent_letter || 'x',
+    accent_color: env.ACCENT_COLOR || baseConfig.accent_color || '#00ff00',
+    default_theme: env.DEFAULT_THEME || baseConfig.default_theme || 'dark',
+    theme_config: Object.assign({
+      mode: 'dark',
+      accent_color: '#00ff00',
+      bg_preset: 'midnight'
+    }, baseConfig.theme_config || {}, {
+      mode: env.DEFAULT_THEME || (baseConfig.theme_config && baseConfig.theme_config.mode) || baseConfig.default_theme || 'dark',
+      accent_color: env.ACCENT_COLOR || (baseConfig.theme_config && baseConfig.theme_config.accent_color) || baseConfig.accent_color || '#00ff00',
+      bg_preset: (baseConfig.theme_config && baseConfig.theme_config.bg_preset) || 'midnight'
+    }),
+    site_desc: baseConfig.site_desc || 'khxaiyan | developer in active building mode. crafting clean web tools & digital experiences.',
+    seo_desc: baseConfig.seo_desc || 'khxaiyan | developer in active building mode. crafting clean web tools & digital experiences.',
+    intro: baseConfig.intro || 'Passionate developer specializing in building modern web applications, clean user interfaces, and dynamic digital tools. Focused on performance, aesthetics, and crafting clean, scalable code.',
+    projects: baseConfig.projects || [],
+    project_links: baseConfig.project_links || {},
+    cf_analytics: env.CF_ANALYTICS === 'true' ? true : (env.CF_ANALYTICS && env.CF_ANALYTICS !== 'false' ? env.CF_ANALYTICS : false),
+    web3forms_access_key: env.WEB3FORMS_ACCESS_KEY || baseConfig.web3forms_access_key || 'd36ee933-00cb-453e-aa38-b18ee60ce5d1',
+    hcaptcha_sitekey: env.HCAPTCHA_SITEKEY || baseConfig.hcaptcha_sitekey || '50b2fe65-b00b-4b9e-ad62-3ba471098be2',
+    clerk_publishable_key: env.CLERK_PUBLISHABLE_KEY || baseConfig.clerk_publishable_key || 'pk_test_c2hpbmluZy10dXJrZXktMTMyNS5jbGVyay5hY2NvdW50cy5kZXYk',
+    clerk_frontend_api: env.CLERK_FRONTEND_API || baseConfig.clerk_frontend_api || 'https://shining-turkey-1325.clerk.accounts.dev',
+    authorized_users: (env.AUTHORIZED_USERS || (baseConfig.authorized_users ? baseConfig.authorized_users.join(',') : 'ayankhan84510@gmail.com'))
+      .split(',')
+      .map(s => s.trim().toLowerCase())
+      .filter(Boolean),
+    cloudinary_cloud_name: env.CLOUDINARY_CLOUD_NAME || baseConfig.cloudinary_cloud_name || '',
+    cloudinary_upload_preset: env.CLOUDINARY_UPLOAD_PRESET || baseConfig.cloudinary_upload_preset || ''
+  });
+
+  const outputCode = `if (typeof window !== 'undefined') {\n  window.CONFIG = Object.assign(window.CONFIG || {}, ${JSON.stringify(updatedConfig, null, 2)});\n}\nvar CONFIG = (typeof window !== 'undefined' && window.CONFIG) ? window.CONFIG : ${JSON.stringify(updatedConfig, null, 2)};\n`;
+  fs.writeFileSync(configPath, outputCode, 'utf-8');
+  console.log('✓ Successfully synchronized live config into frontend/config.js!');
   process.exit(0);
 }
 
-const configPath = path.join(__dirname, '..', 'frontend', 'config.js');
-let currentConfig = {};
-if (fs.existsSync(configPath)) {
-  try {
-    const code = fs.readFileSync(configPath, 'utf-8');
-    const match = code.match(/const\s+CONFIG\s*=\s*(\{[\s\S]*?\});/);
-    if (match) {
-      currentConfig = eval('(' + match[1] + ')');
-    }
-  } catch (_) {}
-}
-
-delete currentConfig.developer_pin;
-delete currentConfig.ping;
-
-const updatedConfig = Object.assign({}, currentConfig, {
-  github: env.GITHUB_USERNAME || currentConfig.github || 'khxaiyan',
-  x: env.X_USERNAME || currentConfig.x || 'khxaiyan',
-  telegram: env.TELEGRAM_USERNAME || currentConfig.telegram || 'khxaiyan',
-  email: env.CONTACT_EMAIL || currentConfig.email || 'ayankhan84510@gmail.com',
-  logo: env.AVATAR_URL || (currentConfig.logo === 'avatar.svg' || currentConfig.logo === 'Diluc.svg' || currentConfig.logo === 'profile_icon.svg' ? 'https://res.cloudinary.com/dqxccz5bn/image/upload/profile_icon_wf7thb.svg' : currentConfig.logo) || 'https://res.cloudinary.com/dqxccz5bn/image/upload/profile_icon_wf7thb.svg',
-  avatar_url: env.AVATAR_URL || (currentConfig.avatar_url === 'avatar.svg' || currentConfig.avatar_url === 'Diluc.svg' || currentConfig.avatar_url === 'profile_icon.svg' ? 'https://res.cloudinary.com/dqxccz5bn/image/upload/profile_icon_wf7thb.svg' : currentConfig.avatar_url) || 'https://res.cloudinary.com/dqxccz5bn/image/upload/profile_icon_wf7thb.svg',
-  favicon_url: env.FAVICON_URL || (currentConfig.favicon_url === 'favicon.svg' || currentConfig.favicon_url === 'favicon.png' || currentConfig.favicon_url === 'favicon.ico' || currentConfig.favicon_url === 'profile_icon.svg' ? 'https://res.cloudinary.com/dqxccz5bn/image/upload/favicon_jzygcw.png' : currentConfig.favicon_url) || 'https://res.cloudinary.com/dqxccz5bn/image/upload/favicon_jzygcw.png',
-  site_name: env.SITE_NAME || currentConfig.site_name || 'khxaiyan',
-  accent_letter: env.ACCENT_LETTER || currentConfig.accent_letter || 'x',
-  accent_color: env.ACCENT_COLOR || currentConfig.accent_color || '#ff2a5f',
-  default_theme: env.DEFAULT_THEME || currentConfig.default_theme || 'dark',
-  theme_config: {
-    mode: env.DEFAULT_THEME || (currentConfig.theme_config && currentConfig.theme_config.mode) || 'dark',
-    accent_color: env.ACCENT_COLOR || (currentConfig.theme_config && currentConfig.theme_config.accent_color) || '#ff2a5f',
-    bg_preset: (currentConfig.theme_config && currentConfig.theme_config.bg_preset) || 'midnight'
-  },
-  site_desc: currentConfig.site_desc || 'khxaiyan | developer in active building mode. crafting clean web tools & digital experiences.',
-  seo_desc: currentConfig.seo_desc || 'khxaiyan | Web developer crafting clean tools, interfaces, and digital experiences.',
-  intro: currentConfig.intro || 'Passionate developer specializing in building modern web applications, clean user interfaces, and dynamic digital tools. Focused on performance, aesthetics, and crafting clean, scalable code.',
-  projects: currentConfig.projects || [],
-  project_links: currentConfig.project_links || {},
-  cf_analytics: env.CF_ANALYTICS === 'true' ? true : (env.CF_ANALYTICS && env.CF_ANALYTICS !== 'false' ? env.CF_ANALYTICS : false),
-  web3forms_access_key: env.WEB3FORMS_ACCESS_KEY || currentConfig.web3forms_access_key || 'd36ee933-00cb-453e-aa38-b18ee60ce5d1',
-  hcaptcha_sitekey: env.HCAPTCHA_SITEKEY || currentConfig.hcaptcha_sitekey || '50b2fe65-b00b-4b9e-ad62-3ba471098be2',
-  clerk_publishable_key: env.CLERK_PUBLISHABLE_KEY || currentConfig.clerk_publishable_key || 'pk_test_c2hpbmluZy10dXJrZXktMTMyNS5jbGVyay5hY2NvdW50cy5kZXYk',
-  clerk_frontend_api: env.CLERK_FRONTEND_API || currentConfig.clerk_frontend_api || 'https://shining-turkey-1325.clerk.accounts.dev',
-  authorized_users: (env.AUTHORIZED_USERS || (currentConfig.authorized_users ? currentConfig.authorized_users.join(',') : 'ayankhan84510@gmail.com'))
-    .split(',')
-    .map(s => s.trim().toLowerCase())
-    .filter(Boolean),
-  cloudinary_cloud_name: env.CLOUDINARY_CLOUD_NAME || currentConfig.cloudinary_cloud_name || '',
-  cloudinary_upload_preset: env.CLOUDINARY_UPLOAD_PRESET || currentConfig.cloudinary_upload_preset || ''
+runSync().catch(err => {
+  console.error('sync-env error:', err);
+  process.exit(0);
 });
-
-const outputCode = `const CONFIG = ${JSON.stringify(updatedConfig, null, 2)};\n`;
-fs.writeFileSync(configPath, outputCode, 'utf-8');
-console.log('✓ Successfully synchronized .env keys into config.js!');
