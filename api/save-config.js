@@ -37,16 +37,16 @@ module.exports = async function handler(req, res) {
     if (!newConfig.site_name) newConfig.site_name = 'khxaiyan';
     if (!newConfig.accent_letter) newConfig.accent_letter = 'x';
     if (!newConfig.logo || newConfig.logo === 'avatar.svg' || newConfig.logo === 'Diluc.svg' || newConfig.logo === 'profile_icon.svg') {
-      newConfig.logo = 'https://res.cloudinary.com/dqxccz5bn/image/upload/profile_icon_wf7thb.svg';
+      newConfig.logo = 'https://avatars.githubusercontent.com/u/225553218?v=4';
     }
     if (!newConfig.avatar_url || newConfig.avatar_url === 'avatar.svg' || newConfig.avatar_url === 'Diluc.svg' || newConfig.avatar_url === 'profile_icon.svg') {
-      newConfig.avatar_url = 'https://res.cloudinary.com/dqxccz5bn/image/upload/profile_icon_wf7thb.svg';
+      newConfig.avatar_url = 'https://avatars.githubusercontent.com/u/225553218?v=4';
     }
     if (!newConfig.favicon_url || newConfig.favicon_url === 'favicon.svg' || newConfig.favicon_url === 'favicon.png' || newConfig.favicon_url === 'favicon.ico' || newConfig.favicon_url === 'profile_icon.svg') {
       newConfig.favicon_url = 'https://res.cloudinary.com/dqxccz5bn/image/upload/favicon_jzygcw.png';
     }
 
-    const formattedConfig = `const CONFIG = ${JSON.stringify(newConfig, null, 2)};\n`;
+    const formattedConfig = `if (typeof window !== 'undefined') {\n  window.CONFIG = Object.assign(window.CONFIG || {}, ${JSON.stringify(newConfig, null, 2)});\n}\nvar CONFIG = (typeof window !== 'undefined' && window.CONFIG) ? window.CONFIG : ${JSON.stringify(newConfig, null, 2)};\n`;
 
     // 1. Save to MongoDB
     let savedToMongo = false;
