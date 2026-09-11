@@ -16,7 +16,12 @@
     rel="stylesheet">
   <link rel="stylesheet" href="style.css?v=29">
   <script src="https://code.iconify.design/iconify-icon/2.1.0/iconify-icon.min.js"></script>
-  <script src="config.js?v=27"></script>
+  <script src="/api/config.js"></script>
+  <script>
+    if (typeof CONFIG === 'undefined') {
+      document.write('<script src="config.js?v=28"><\/script>');
+    }
+  </script>
   <script>
     (function () {
       var customCfg = null;
@@ -28,13 +33,8 @@
           needsUpdate = true;
         }
         if (customCfg.avatar_url === 'avatar.svg' || customCfg.avatar_url === 'Diluc.svg' || customCfg.logo === 'avatar.svg' || customCfg.logo === 'Diluc.svg' || customCfg.avatar_url === 'profile_icon.svg' || customCfg.logo === 'profile_icon.svg') {
-          customCfg.avatar_url = 'https://res.cloudinary.com/dqxccz5bn/image/upload/profile_icon_wf7thb.svg';
-          customCfg.logo = 'https://res.cloudinary.com/dqxccz5bn/image/upload/profile_icon_wf7thb.svg';
-          needsUpdate = true;
-        }
-        if (customCfg.accent_color === '#00f0ff' || customCfg.accent_color === '#a855f7') {
-          customCfg.accent_color = '#ff2a5f';
-          if (customCfg.theme_config) customCfg.theme_config.accent_color = '#ff2a5f';
+          customCfg.avatar_url = 'https://avatars.githubusercontent.com/u/225553218?v=4';
+          customCfg.logo = 'https://avatars.githubusercontent.com/u/225553218?v=4';
           needsUpdate = true;
         }
         if (needsUpdate) {
@@ -46,7 +46,7 @@
       var defTheme = themeCfg.mode || cfg.default_theme || 'dark';
       document.documentElement.setAttribute('data-theme', defTheme);
 
-      var fav = (customCfg && customCfg.favicon_url) || 'https://res.cloudinary.com/dqxccz5bn/image/upload/favicon_jzygcw.png';
+      var fav = (customCfg && customCfg.favicon_url) || (typeof CONFIG !== 'undefined' && CONFIG.favicon_url) || 'https://res.cloudinary.com/dqxccz5bn/image/upload/favicon_jzygcw.png';
       if (fav === 'favicon.svg' || fav === 'favicon.png' || fav === 'favicon.ico' || fav === 'profile_icon.svg') fav = 'https://res.cloudinary.com/dqxccz5bn/image/upload/favicon_jzygcw.png';
       if (fav) {
         var fi = document.querySelector("link[rel~='icon']");
@@ -61,8 +61,8 @@
         if (afi) afi.href = fav;
       }
 
-      var accent = themeCfg.accent_color || (customCfg && customCfg.accent_color) || (typeof CONFIG !== 'undefined' && CONFIG.accent_color) || '#ff2a5f';
-      var bgPreset = themeCfg.bg_preset || 'midnight';
+      var accent = themeCfg.accent_color || (customCfg && customCfg.accent_color) || (typeof CONFIG !== 'undefined' && (CONFIG.theme_config ? CONFIG.theme_config.accent_color : CONFIG.accent_color)) || '#00ff00';
+      var bgPreset = themeCfg.bg_preset || (typeof CONFIG !== 'undefined' && CONFIG.theme_config && CONFIG.theme_config.bg_preset) || 'midnight';
 
       function hexToRgba(hex, alpha) {
         var c = hex.replace('#', '');
@@ -85,7 +85,7 @@
         charcoal: { bg: '#101114', surface: '#17181d', surfaceHover: '#1f2027', rail: '#383947' }
       };
 
-      if (accent && accent.toLowerCase() !== '#ff2a5f') {
+      if (accent) {
         var root = document.documentElement;
         root.style.setProperty('--red', accent);
         root.style.setProperty('--red-solid', shadeColor(accent, -18));
@@ -93,6 +93,15 @@
         root.style.setProperty('--red-dim', hexToRgba(accent, 0.16));
         root.style.setProperty('--border-accent', hexToRgba(accent, 0.45));
         root.style.setProperty('--border-accent-glow', hexToRgba(accent, 0.12));
+        try {
+          var c = accent.replace('#', '');
+          if (c.length === 3) c = c[0] + c[0] + c[1] + c[1] + c[2] + c[2];
+          var n = parseInt(c, 16);
+          var lum = 0.299 * ((n >> 16) & 255) + 0.587 * ((n >> 8) & 255) + 0.114 * (n & 255);
+          root.style.setProperty('--btn-text-color', lum > 165 ? '#0a0a0e' : '#ffffff');
+        } catch (_) {
+          root.style.setProperty('--btn-text-color', '#ffffff');
+        }
       }
       if (defTheme === 'dark' && bgPreset && PRESETS[bgPreset] && bgPreset !== 'midnight') {
         var p = PRESETS[bgPreset];

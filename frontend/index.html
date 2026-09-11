@@ -30,7 +30,12 @@
     rel="stylesheet">
   <link rel="stylesheet" href="style.css?v=29">
   <script src="https://code.iconify.design/iconify-icon/2.1.0/iconify-icon.min.js"></script>
-  <script src="config.js?v=27"></script>
+  <script src="/api/config.js"></script>
+  <script>
+    if (typeof CONFIG === 'undefined') {
+      document.write('<script src="config.js?v=28"><\/script>');
+    }
+  </script>
   <script>
     (function () {
       var customCfg = null;
@@ -42,13 +47,8 @@
           needsUpdate = true;
         }
         if (customCfg.avatar_url === 'avatar.svg' || customCfg.avatar_url === 'Diluc.svg' || customCfg.logo === 'avatar.svg' || customCfg.logo === 'Diluc.svg' || customCfg.avatar_url === 'profile_icon.svg' || customCfg.logo === 'profile_icon.svg') {
-          customCfg.avatar_url = 'https://res.cloudinary.com/dqxccz5bn/image/upload/profile_icon_wf7thb.svg';
-          customCfg.logo = 'https://res.cloudinary.com/dqxccz5bn/image/upload/profile_icon_wf7thb.svg';
-          needsUpdate = true;
-        }
-        if (customCfg.accent_color === '#00f0ff' || customCfg.accent_color === '#a855f7') {
-          customCfg.accent_color = '#ff2a5f';
-          if (customCfg.theme_config) customCfg.theme_config.accent_color = '#ff2a5f';
+          customCfg.avatar_url = 'https://avatars.githubusercontent.com/u/225553218?v=4';
+          customCfg.logo = 'https://avatars.githubusercontent.com/u/225553218?v=4';
           needsUpdate = true;
         }
         if (needsUpdate) {
@@ -60,7 +60,7 @@
       var defTheme = themeCfg.mode || cfg.default_theme || 'dark';
       document.documentElement.setAttribute('data-theme', defTheme);
 
-      var fav = (customCfg && customCfg.favicon_url) || 'https://res.cloudinary.com/dqxccz5bn/image/upload/favicon_jzygcw.png';
+      var fav = (customCfg && customCfg.favicon_url) || (typeof CONFIG !== 'undefined' && CONFIG.favicon_url) || 'https://res.cloudinary.com/dqxccz5bn/image/upload/favicon_jzygcw.png';
       if (fav === 'favicon.svg' || fav === 'favicon.png' || fav === 'favicon.ico' || fav === 'profile_icon.svg') fav = 'https://res.cloudinary.com/dqxccz5bn/image/upload/favicon_jzygcw.png';
       if (fav) {
         var fi = document.querySelector("link[rel~='icon']");
@@ -75,8 +75,8 @@
         if (afi) afi.href = fav;
       }
 
-      var accent = themeCfg.accent_color || (customCfg && customCfg.accent_color) || (typeof CONFIG !== 'undefined' && CONFIG.accent_color) || '#ff2a5f';
-      var bgPreset = themeCfg.bg_preset || 'midnight';
+      var accent = themeCfg.accent_color || (customCfg && customCfg.accent_color) || (typeof CONFIG !== 'undefined' && (CONFIG.theme_config ? CONFIG.theme_config.accent_color : CONFIG.accent_color)) || '#00ff00';
+      var bgPreset = themeCfg.bg_preset || (typeof CONFIG !== 'undefined' && CONFIG.theme_config && CONFIG.theme_config.bg_preset) || 'midnight';
 
       function hexToRgba(hex, alpha) {
         var c = hex.replace('#', '');
@@ -99,7 +99,7 @@
         charcoal: { bg: '#101114', surface: '#17181d', surfaceHover: '#1f2027', rail: '#383947' }
       };
 
-      if (accent && accent.toLowerCase() !== '#ff2a5f') {
+      if (accent) {
         var root = document.documentElement;
         root.style.setProperty('--red', accent);
         root.style.setProperty('--red-solid', shadeColor(accent, -18));
@@ -155,7 +155,7 @@
       <div class="content-col id-col">
         <div class="id-block">
           <button class="avatar-wrap" id="avatar-wrap" aria-label="Toggle theme">
-            <img class="avatar-img" src="https://res.cloudinary.com/dqxccz5bn/image/upload/profile_icon_wf7thb.svg"
+            <img class="avatar-img" src="https://avatars.githubusercontent.com/u/225553218?v=4"
               alt="khxaiyan" width="88" height="88" loading="eager" draggable="false">
             <span class="theme-badge" id="theme-badge" aria-hidden="true">
               <!-- Sun icon: visible in dark mode -->
@@ -206,37 +206,68 @@
       <div class="content-col">
         <p class="eyebrow">// projects</p>
         <div class="surface-card" id="projects-container">
-          <div class="org-row bone-row">
-            <div class="project-avatar bone"></div>
+          <div class="org-row" role="link" tabindex="0" data-href="https://carryon-five.vercel.app/" data-repo="CarryOn-E-Commerce">
+            <div class="project-avatar" aria-hidden="true">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 2 3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4Z"/><path d="M3 6h18"/><path d="M16 10a4 4 0 0 1-8 0"/></svg>
+            </div>
             <div class="org-row-text">
-              <div class="bone bone-title"></div>
-              <div class="bone bone-desc"></div>
+              <span class="org-row-name"><span class="glyph-5">C</span>arry<span class="glyph-5">O</span>n <span class="glyph-5">E</span> <span class="glyph-5">C</span>ommerce</span>
+              <span class="org-row-desc">E-Commerce Website fully customizable by Seller</span>
             </div>
             <div class="org-row-stats">
-              <div class="bone bone-stat-top"></div>
-              <div class="bone bone-stat-bot"></div>
+              <span class="org-row-star">★ 1</span>
+              <span class="org-row-repos">Project</span>
+              <a class="org-row-github-btn" href="https://github.com/khxaiyan/CarryOn-E-Commerce-Website" target="_blank" rel="noopener noreferrer" title="View Source on GitHub" aria-label="View Source on GitHub" onclick="event.stopPropagation();">
+                <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 22v-4a4.8 4.8 0 0 0-1-3.5c3 0 6-2 6-5.5.08-1.25-.27-2.48-1-3.5.28-1.15.28-2.35 0-3.5 0 0-1 0-3 1.5-2.64-.5-5.36-.5-8 0C6 2 5 2 5 2c-.3 1.15-.3 2.35 0 3.5A5.403 5.403 0 0 0 4 9c0 3.5 3 5.5 6 5.5-.39.49-.68 1.05-.85 1.65-.17.6-.22 1.23-.15 1.85v4"/><path d="M9 18c-4.51 2-5-2-7-2"/></svg>
+              </a>
             </div>
           </div>
-          <div class="org-row bone-row">
-            <div class="project-avatar bone"></div>
+          <div class="org-row" role="link" tabindex="0" data-href="https://getweb-screenshot.vercel.app" data-repo="GetWeb-Screenshot">
+            <div class="project-avatar" aria-hidden="true">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14.5 4h-5L7 7H4a2 2 0 0 0-2 2v9a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V9a2 2 0 0 0-2-2h-3l-2.5-3z"/><circle cx="12" cy="13" r="3"/></svg>
+            </div>
             <div class="org-row-text">
-              <div class="bone bone-title" style="width: 52%;"></div>
-              <div class="bone bone-desc" style="width: 82%;"></div>
+              <span class="org-row-name"><span class="glyph-5">G</span>et<span class="glyph-5">W</span>eb <span class="glyph-5">S</span>creenshot</span>
+              <span class="org-row-desc">📸 Capture full-page screenshots of any website instantly — supports Desktop, Tablet &amp; Mobile viewports, PNG/JPG/PDF export. Built with React, Vite &amp; Microlink API. ( mini project )</span>
             </div>
             <div class="org-row-stats">
-              <div class="bone bone-stat-top"></div>
-              <div class="bone bone-stat-bot"></div>
+              <span class="org-row-star">★ 1</span>
+              <span class="org-row-repos">CSS</span>
+              <a class="org-row-github-btn" href="https://github.com/khxaiyan/GetWeb_Screenshot" target="_blank" rel="noopener noreferrer" title="View Source on GitHub" aria-label="View Source on GitHub" onclick="event.stopPropagation();">
+                <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 22v-4a4.8 4.8 0 0 0-1-3.5c3 0 6-2 6-5.5.08-1.25-.27-2.48-1-3.5.28-1.15.28-2.35 0-3.5 0 0-1 0-3 1.5-2.64-.5-5.36-.5-8 0C6 2 5 2 5 2c-.3 1.15-.3 2.35 0 3.5A5.403 5.403 0 0 0 4 9c0 3.5 3 5.5 6 5.5-.39.49-.68 1.05-.85 1.65-.17.6-.22 1.23-.15 1.85v4"/><path d="M9 18c-4.51 2-5-2-7-2"/></svg>
+              </a>
             </div>
           </div>
-          <div class="org-row bone-row">
-            <div class="project-avatar bone"></div>
+          <div class="org-row" role="link" tabindex="0" data-href="https://khxaiyan.github.io/MyPortfolio/" data-repo="MyPortfolio">
+            <div class="project-avatar" aria-hidden="true">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m3 9 9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
+            </div>
             <div class="org-row-text">
-              <div class="bone bone-title" style="width: 38%;"></div>
-              <div class="bone bone-desc" style="width: 65%;"></div>
+              <span class="org-row-name"><span class="glyph-5">M</span>y<span class="glyph-5">P</span>ortfolio</span>
+              <span class="org-row-desc">Personal developer portfolio website</span>
             </div>
             <div class="org-row-stats">
-              <div class="bone bone-stat-top"></div>
-              <div class="bone bone-stat-bot"></div>
+              <span class="org-row-star">★ 1</span>
+              <span class="org-row-repos">HTML</span>
+              <a class="org-row-github-btn" href="https://github.com/khxaiyan/MyPortfolio" target="_blank" rel="noopener noreferrer" title="View Source on GitHub" aria-label="View Source on GitHub" onclick="event.stopPropagation();">
+                <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 22v-4a4.8 4.8 0 0 0-1-3.5c3 0 6-2 6-5.5.08-1.25-.27-2.48-1-3.5.28-1.15.28-2.35 0-3.5 0 0-1 0-3 1.5-2.64-.5-5.36-.5-8 0C6 2 5 2 5 2c-.3 1.15-.3 2.35 0 3.5A5.403 5.403 0 0 0 4 9c0 3.5 3 5.5 6 5.5-.39.49-.68 1.05-.85 1.65-.17.6-.22 1.23-.15 1.85v4"/><path d="M9 18c-4.51 2-5-2-7-2"/></svg>
+              </a>
+            </div>
+          </div>
+          <div class="org-row" role="link" tabindex="0" data-href="https://github.com/Blue-SkyStar/hotel_m" data-repo="hotel-m">
+            <div class="project-avatar" aria-hidden="true">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="2" width="16" height="20" rx="2" ry="2"/><path d="M9 22v-4h6v4"/><path d="M8 6h.01"/><path d="M16 6h.01"/><path d="M8 10h.01"/><path d="M16 10h.01"/><path d="M8 14h.01"/><path d="M16 14h.01"/></svg>
+            </div>
+            <div class="org-row-text">
+              <span class="org-row-name">hotel m</span>
+              <span class="org-row-desc">Open-source project on GitHub</span>
+            </div>
+            <div class="org-row-stats">
+              <span class="org-row-star">★ 1</span>
+              <span class="org-row-repos">HTML</span>
+              <a class="org-row-github-btn" href="https://github.com/Blue-SkyStar/hotel_m" target="_blank" rel="noopener noreferrer" title="View Source on GitHub" aria-label="View Source on GitHub" onclick="event.stopPropagation();">
+                <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 22v-4a4.8 4.8 0 0 0-1-3.5c3 0 6-2 6-5.5.08-1.25-.27-2.48-1-3.5.28-1.15.28-2.35 0-3.5 0 0-1 0-3 1.5-2.64-.5-5.36-.5-8 0C6 2 5 2 5 2c-.3 1.15-.3 2.35 0 3.5A5.403 5.403 0 0 0 4 9c0 3.5 3 5.5 6 5.5-.39.49-.68 1.05-.85 1.65-.17.6-.22 1.23-.15 1.85v4"/><path d="M9 18c-4.51 2-5-2-7-2"/></svg>
+              </a>
             </div>
           </div>
         </div>
