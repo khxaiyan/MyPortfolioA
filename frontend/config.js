@@ -5,8 +5,8 @@ if (typeof window !== 'undefined') {
   "telegram": "khxaiyan",
   "email": "[EMAIL_ADDRESS]",
   "social_links": [],
-  "logo": "https://avatars.githubusercontent.com/u/225553218?v=4",
-  "avatar_url": "https://avatars.githubusercontent.com/u/225553218?v=4",
+  "logo": "https://res.cloudinary.com/dqxccz5bn/image/upload/profile_icon_wf7thb.svg",
+  "avatar_url": "https://res.cloudinary.com/dqxccz5bn/image/upload/profile_icon_wf7thb.svg",
   "favicon_url": "https://res.cloudinary.com/dqxccz5bn/image/upload/favicon_jzygcw.png",
   "site_name": "khxaiyan",
   "accent_letter": "x",
@@ -70,14 +70,14 @@ if (typeof window !== 'undefined') {
     "#f59e0b",
     "#ff5722",
     "#3b82f6",
-    "#ec4899",
-    "#e2e8f0"
+    "#ec4899"
   ],
   "font_family": "Space Grotesk",
   "font_scope": "all",
   "theme_config": {
     "mode": "dark",
     "accent_color": "#ff2a5f",
+    "bg_preset": "midnight",
     "accent_palette": [
       "#ff2a5f",
       "#00f0ff",
@@ -86,10 +86,8 @@ if (typeof window !== 'undefined') {
       "#f59e0b",
       "#ff5722",
       "#3b82f6",
-      "#ec4899",
-      "#e2e8f0"
+      "#ec4899"
     ],
-    "bg_preset": "midnight",
     "font_family": "Space Grotesk",
     "font_scope": "all"
   },
@@ -99,7 +97,10 @@ if (typeof window !== 'undefined') {
   "cloudinary_cloud_name": "dqxccz5bn",
   "cloudinary_upload_preset": "myportfolioa",
   "clerk_publishable_key": "pk_test_c2hpbmluZy10dXJrZXktMTMyNS5jbGVyay5hY2NvdW50cy5kZXYk",
-  "clerk_frontend_api": "https://shining-turkey-1325.clerk.accounts.dev"
+  "clerk_frontend_api": "https://shining-turkey-1325.clerk.accounts.dev",
+  "authorized_users": [
+    "ayankhan84510@gmail.com"
+  ]
 });
 }
 var CONFIG = (typeof window !== 'undefined' && window.CONFIG) ? window.CONFIG : {
@@ -108,8 +109,8 @@ var CONFIG = (typeof window !== 'undefined' && window.CONFIG) ? window.CONFIG : 
   "telegram": "khxaiyan",
   "email": "[EMAIL_ADDRESS]",
   "social_links": [],
-  "logo": "https://avatars.githubusercontent.com/u/225553218?v=4",
-  "avatar_url": "https://avatars.githubusercontent.com/u/225553218?v=4",
+  "logo": "https://res.cloudinary.com/dqxccz5bn/image/upload/profile_icon_wf7thb.svg",
+  "avatar_url": "https://res.cloudinary.com/dqxccz5bn/image/upload/profile_icon_wf7thb.svg",
   "favicon_url": "https://res.cloudinary.com/dqxccz5bn/image/upload/favicon_jzygcw.png",
   "site_name": "khxaiyan",
   "accent_letter": "x",
@@ -173,14 +174,14 @@ var CONFIG = (typeof window !== 'undefined' && window.CONFIG) ? window.CONFIG : 
     "#f59e0b",
     "#ff5722",
     "#3b82f6",
-    "#ec4899",
-    "#e2e8f0"
+    "#ec4899"
   ],
   "font_family": "Space Grotesk",
   "font_scope": "all",
   "theme_config": {
     "mode": "dark",
     "accent_color": "#ff2a5f",
+    "bg_preset": "midnight",
     "accent_palette": [
       "#ff2a5f",
       "#00f0ff",
@@ -189,10 +190,8 @@ var CONFIG = (typeof window !== 'undefined' && window.CONFIG) ? window.CONFIG : 
       "#f59e0b",
       "#ff5722",
       "#3b82f6",
-      "#ec4899",
-      "#e2e8f0"
+      "#ec4899"
     ],
-    "bg_preset": "midnight",
     "font_family": "Space Grotesk",
     "font_scope": "all"
   },
@@ -202,5 +201,8 @@ var CONFIG = (typeof window !== 'undefined' && window.CONFIG) ? window.CONFIG : 
   "cloudinary_cloud_name": "dqxccz5bn",
   "cloudinary_upload_preset": "myportfolioa",
   "clerk_publishable_key": "pk_test_c2hpbmluZy10dXJrZXktMTMyNS5jbGVyay5hY2NvdW50cy5kZXYk",
-  "clerk_frontend_api": "https://shining-turkey-1325.clerk.accounts.dev"
+  "clerk_frontend_api": "https://shining-turkey-1325.clerk.accounts.dev",
+  "authorized_users": [
+    "ayankhan84510@gmail.com"
+  ]
 };
