@@ -14,7 +14,7 @@
   <link
     href="https://fonts.googleapis.com/css2?family=Cinzel:wght@500;600;700&family=Fira+Code:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500;600&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600;700&family=Montserrat:wght@400;500;600;700&family=Outfit:wght@400;500;600;700&family=Playfair+Display:ital,wght@0,500;0,600;0,700;1,400&family=Plus+Jakarta+Sans:wght@400;500;600;700&family=Poppins:wght@400;500;600;700&family=Sora:wght@400;500;600;700&family=Space+Grotesk:wght@400;500;600;700&family=Syne:wght@500;600;700;800&display=swap"
     rel="stylesheet">
-  <link rel="stylesheet" href="style.css?v=29">
+  <link rel="stylesheet" href="style.css?v=30">
   <script src="https://code.iconify.design/iconify-icon/2.1.0/iconify-icon.min.js"></script>
   <script src="/api/config.js"></script>
   <script>
@@ -61,7 +61,7 @@
         if (afi) afi.href = fav;
       }
 
-      var accent = themeCfg.accent_color || (customCfg && customCfg.accent_color) || (typeof CONFIG !== 'undefined' && (CONFIG.theme_config ? CONFIG.theme_config.accent_color : CONFIG.accent_color)) || '#00ff00';
+      var accent = themeCfg.accent_color || (customCfg && customCfg.accent_color) || (typeof CONFIG !== 'undefined' && (CONFIG.theme_config ? CONFIG.theme_config.accent_color : CONFIG.accent_color)) || '#ff2a5f';
       var bgPreset = themeCfg.bg_preset || (typeof CONFIG !== 'undefined' && CONFIG.theme_config && CONFIG.theme_config.bg_preset) || 'midnight';
 
       function hexToRgba(hex, alpha) {
@@ -847,9 +847,9 @@
         gap: 8px;
         padding: 6px 16px;
         border-radius: 20px;
-        background: var(--red-dim, rgba(0, 255, 0, 0.12));
-        border: 1px solid var(--border-accent, rgba(0, 255, 0, 0.45));
-        color: var(--red, #00ff00);
+        background: var(--red-dim, rgba(255, 42, 95, 0.12));
+        border: 1px solid var(--border-accent, rgba(255, 42, 95, 0.45));
+        color: var(--red, #ff2a5f);
         font-size: 0.82rem;
         font-weight: 600;
         letter-spacing: 0.04em;
@@ -865,13 +865,13 @@
         margin: 8px 0 0 0;
       }
       .noscript-code .glyph-5 {
-        color: var(--red, #00ff00);
-        text-shadow: 0 0 24px var(--border-accent, rgba(0, 255, 0, 0.45));
+        color: var(--red, #ff2a5f);
+        text-shadow: 0 0 24px var(--border-accent, rgba(255, 42, 95, 0.45));
       }
       .noscript-title {
         font-size: 1.8rem;
         font-weight: 700;
-        color: var(--red, #00ff00);
+        color: var(--red, #ff2a5f);
         letter-spacing: -0.02em;
         margin: 0;
       }
@@ -890,7 +890,7 @@
         <span>scripts blocked</span>
       </div>
       <h1 class="noscript-code">40<span class="glyph-5">4</span></h1>
-      <h2 class="noscript-title">dont do that</h2>
+      <h2 class="noscript-title">Don't Do That</h2>
       <p class="noscript-msg">
         JavaScript is blocked in your browser. Please disable &ldquo;Block scripts&rdquo; in Brave Shields or your ad-blocker to view this page.
       </p>
@@ -1246,9 +1246,6 @@
                 </svg>
                 <span>Pick from Profile Pic</span>
               </button>
-              <button type="button" id="btn-reset-palette" class="toolbar-btn"
-                style="white-space:nowrap; padding:6px 10px; font-size:0.72rem;"
-                title="Reset palette back to 9 default colors">Reset Swatches</button>
               <button type="button" id="btn-reset-theme" class="toolbar-btn"
                 style="white-space:nowrap; padding:6px 12px; font-size:0.72rem;"
                 title="Reset to default Crimson theme">Reset Theme</button>
@@ -2080,7 +2077,7 @@
       var currentBgPreset = 'midnight';
 
       var DEFAULT_ACCENT_PALETTE = [
-        '#ff2a5f', '#00f0ff', '#10b981', '#a855f7', '#f59e0b', '#ff5722', '#3b82f6', '#ec4899', '#e2e8f0'
+        '#ff2a5f', '#00f0ff', '#10b981', '#a855f7', '#f59e0b', '#ff5722', '#3b82f6', '#ec4899'
       ];
 
       var currentPalette = (function () {
@@ -2235,7 +2232,7 @@
           currentPalette.splice(idx, 1);
           savePalette();
           if ((currentAccentColor || '').toLowerCase() === norm) {
-            setAccentColor(currentPalette[0] || '#00ff00');
+            setAccentColor(currentPalette[0] || '#ff2a5f');
           }
           renderAccentSwatches();
         }
@@ -2479,16 +2476,6 @@
         });
       }
 
-      // Reset palette button
-      var btnResetPalette = document.getElementById('btn-reset-palette');
-      if (btnResetPalette) {
-        btnResetPalette.addEventListener('click', function () {
-          currentPalette = DEFAULT_ACCENT_PALETTE.slice();
-          savePalette();
-          renderAccentSwatches();
-          setAccentColor(currentPalette[0]);
-        });
-      }
 
       // Color picker input
       var accentPicker = document.getElementById('accent-color-picker');
