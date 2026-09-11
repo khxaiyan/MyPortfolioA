@@ -7,7 +7,7 @@
   var metaClr = document.getElementById('meta-theme-color');
 
   var currentThemeMode = 'dark';
-  var currentAccentColor = '#ff2a5f';
+  var currentAccentColor = (typeof CONFIG !== 'undefined' && ((CONFIG.theme_config && CONFIG.theme_config.accent_color) || CONFIG.accent_color)) || '#00ff00';
   var currentBgPreset = 'midnight';
 
   var BG_PRESETS = {
@@ -166,7 +166,7 @@
   try { customCfg = JSON.parse(localStorage.getItem('portfolio_custom_config')); } catch (_) { }
   var themeCfg = (customCfg && customCfg.theme_config) || (typeof CONFIG !== 'undefined' && CONFIG.theme_config) || {};
   currentThemeMode = themeCfg.mode || (customCfg && customCfg.default_theme) || (typeof CONFIG !== 'undefined' && CONFIG.default_theme) || 'dark';
-  currentAccentColor = themeCfg.accent_color || (customCfg && customCfg.accent_color) || (typeof CONFIG !== 'undefined' && CONFIG.accent_color) || '#ff2a5f';
+  currentAccentColor = themeCfg.accent_color || (customCfg && customCfg.accent_color) || (typeof CONFIG !== 'undefined' && ((CONFIG.theme_config && CONFIG.theme_config.accent_color) || CONFIG.accent_color)) || '#00ff00';
   currentBgPreset = themeCfg.bg_preset || (typeof CONFIG !== 'undefined' && CONFIG.theme_config && CONFIG.theme_config.bg_preset) || 'midnight';
 
   var currentFontFamily = themeCfg.font_family || (customCfg && customCfg.font_family) || (typeof CONFIG !== 'undefined' && (CONFIG.font_family || (CONFIG.theme_config && CONFIG.theme_config.font_family))) || 'Space Grotesk';
@@ -230,6 +230,95 @@
     });
   }
 
+  /* ─── Universal Live Configuration Hydration ─── */
+  function applyFullConfig(cfg) {
+    if (!cfg || typeof cfg !== 'object') return;
+
+    // 1. Update in-memory objects
+    if (typeof CONFIG !== 'undefined') {
+      Object.assign(CONFIG, cfg);
+    }
+    if (typeof window !== 'undefined') {
+      window.CONFIG = Object.assign(window.CONFIG || {}, cfg);
+    }
+
+    // 2. Persist to localStorage
+    try {
+      localStorage.setItem('portfolio_custom_config', JSON.stringify(cfg));
+    } catch (_) {}
+
+    // 3. Theme mode, Accent color & Background preset
+    var themeCfg = cfg.theme_config || {};
+    var mode = themeCfg.mode || cfg.default_theme || currentThemeMode || 'dark';
+    var accent = themeCfg.accent_color || cfg.accent_color || currentAccentColor || '#00ff00';
+    var bgPreset = themeCfg.bg_preset || (cfg.theme_config && cfg.theme_config.bg_preset) || currentBgPreset || 'midnight';
+
+    currentThemeMode = mode;
+    currentAccentColor = accent;
+    currentBgPreset = bgPreset;
+
+    applyTheme(currentThemeMode);
+    applyThemeColors(currentAccentColor, currentBgPreset, currentThemeMode);
+
+    // 4. Font family & scope
+    var fontFam = themeCfg.font_family || cfg.font_family || (cfg.theme_config && cfg.theme_config.font_family) || 'Space Grotesk';
+    var fontScope = themeCfg.font_scope || cfg.font_scope || (cfg.theme_config && cfg.theme_config.font_scope) || 'display';
+    applySiteFont(fontFam, fontScope);
+
+    // 5. Favicon
+    if (cfg.favicon_url) {
+      applyPageFavicon(cfg.favicon_url);
+    }
+
+    // 6. Avatar / Profile picture
+    var avatarUrl = cfg.avatar_url || cfg.logo;
+    if (avatarUrl) {
+      setPageAvatar(avatarUrl);
+    }
+
+    // 7. Wordmark & Corner Tag
+    var siteName = cfg.site_name || 'khxaiyan';
+    var accentLetter = cfg.accent_letter !== undefined ? cfg.accent_letter : 'x';
+    var wordmark = document.querySelector('.wordmark');
+    if (wordmark) {
+      wordmark.innerHTML = formatWordmark(siteName, accentLetter);
+    }
+    var cornerTag = document.getElementById('corner-tag');
+    if (cornerTag) {
+      cornerTag.innerHTML = '@' + formatWordmark(siteName, accentLetter);
+    }
+
+    // 8. Headline Bio & Intro text
+    var bioEl = document.querySelector('.bio');
+    if (bioEl && cfg.site_desc) {
+      bioEl.innerHTML = parseRichText(cfg.site_desc);
+    }
+    var introEl = document.getElementById('intro-text');
+    if (introEl && cfg.intro) {
+      introEl.innerHTML = parseRichText(cfg.intro);
+    }
+
+    // 9. Document Title & SEO meta
+    if (siteName) {
+      document.title = siteName;
+      var metaTitles = document.querySelectorAll('meta[property="og:title"], meta[name="twitter:title"]');
+      metaTitles.forEach(function (m) { m.content = siteName; });
+    }
+    if (cfg.seo_desc || cfg.site_desc) {
+      var descContent = cfg.seo_desc || cfg.site_desc;
+      var metaDescs = document.querySelectorAll('meta[name="description"], meta[property="og:description"], meta[name="twitter:description"]');
+      metaDescs.forEach(function (m) { m.content = descContent; });
+    }
+
+    // 10. Projects
+    if (Array.isArray(cfg.projects) && cfg.projects.length > 0) {
+      renderProjects(cfg.projects);
+    }
+
+    // 11. Channel / Social links
+    renderChannelList(cfg);
+  }
+
   /* ─── Load Local Customizer Overrides if present ─── */
   try {
     var savedCustom = localStorage.getItem('portfolio_custom_config');
@@ -237,17 +326,12 @@
       var parsedCustom = JSON.parse(savedCustom);
       var needsSave = false;
       if (parsedCustom.avatar_url === 'avatar.svg' || parsedCustom.avatar_url === 'Diluc.svg' || parsedCustom.logo === 'avatar.svg' || parsedCustom.logo === 'Diluc.svg' || parsedCustom.avatar_url === 'profile_icon.svg' || parsedCustom.logo === 'profile_icon.svg') {
-        parsedCustom.avatar_url = 'https://res.cloudinary.com/dqxccz5bn/image/upload/profile_icon_wf7thb.svg';
-        parsedCustom.logo = 'https://res.cloudinary.com/dqxccz5bn/image/upload/profile_icon_wf7thb.svg';
+        parsedCustom.avatar_url = 'https://avatars.githubusercontent.com/u/225553218?v=4';
+        parsedCustom.logo = 'https://avatars.githubusercontent.com/u/225553218?v=4';
         needsSave = true;
       }
       if (parsedCustom.favicon_url === 'favicon.svg' || parsedCustom.favicon_url === 'favicon.png' || parsedCustom.favicon_url === 'favicon.ico' || parsedCustom.favicon_url === 'profile_icon.svg') {
         parsedCustom.favicon_url = 'https://res.cloudinary.com/dqxccz5bn/image/upload/favicon_jzygcw.png';
-        needsSave = true;
-      }
-      if (parsedCustom.accent_color === '#00f0ff' || parsedCustom.accent_color === '#a855f7') {
-        parsedCustom.accent_color = '#ff2a5f';
-        if (parsedCustom.theme_config) parsedCustom.theme_config.accent_color = '#ff2a5f';
         needsSave = true;
       }
       if (needsSave) {
@@ -267,10 +351,7 @@
         var remoteCfg = res.config;
         var localRaw = localStorage.getItem('portfolio_custom_config');
         if (localRaw !== JSON.stringify(remoteCfg)) {
-          try { localStorage.setItem('portfolio_custom_config', JSON.stringify(remoteCfg)); } catch (_) {}
-          if (typeof CONFIG !== 'undefined') Object.assign(CONFIG, remoteCfg);
-          if (remoteCfg.site_name) setSiteName(remoteCfg.site_name, remoteCfg.accent_letter);
-          if (remoteCfg.avatar_url) setPageAvatar(remoteCfg.avatar_url);
+          applyFullConfig(remoteCfg);
         }
       }
     })
@@ -2032,41 +2113,9 @@
         clerk_frontend_api: 'https://shining-turkey-1325.clerk.accounts.dev'
       };
 
-      localStorage.setItem('portfolio_custom_config', JSON.stringify(updated));
-      Object.assign(CONFIG, updated);
-      applyThemeColors(currentAccentColor, currentBgPreset, currentThemeMode);
-      applyPageFavicon(resolvedFavicon);
+      applyFullConfig(updated);
       pendingAvatarData = null; /* clear pending after save */
       pendingFaviconData = null;
-
-      // Live update portfolio UI without reloading
-      var wordmark = document.querySelector('.wordmark');
-      if (wordmark && updated.site_name) {
-        wordmark.innerHTML = formatWordmark(updated.site_name, updated.accent_letter);
-      }
-      var cornerTag = document.getElementById('corner-tag');
-      if (cornerTag && updated.site_name) {
-        cornerTag.innerHTML = '@' + formatWordmark(updated.site_name, updated.accent_letter);
-      }
-      var bioEl = document.querySelector('.bio');
-      if (bioEl && updated.site_desc) {
-        bioEl.innerHTML = parseRichText(updated.site_desc);
-      }
-      var introEl = document.getElementById('intro-text');
-      if (introEl && updated.intro) {
-        introEl.innerHTML = parseRichText(updated.intro);
-      }
-      renderChannelList(updated);
-
-      /* Live apply projects directly to portfolio */
-      if (projectsList.length > 0) {
-        renderProjects(projectsList);
-      } else {
-        loadPinnedProjects();
-      }
-
-      /* Live apply avatar to page */
-      setPageAvatar(updated.avatar_url || 'https://res.cloudinary.com/dqxccz5bn/image/upload/profile_icon_wf7thb.svg');
 
       var saveStatus = document.getElementById('m-save-status');
       if (saveStatus) {
