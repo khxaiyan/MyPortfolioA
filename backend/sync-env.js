@@ -114,7 +114,9 @@ async function runSync() {
       .map(s => s.trim().toLowerCase())
       .filter(Boolean),
     cloudinary_cloud_name: env.CLOUDINARY_CLOUD_NAME || baseConfig.cloudinary_cloud_name || '',
-    cloudinary_upload_preset: env.CLOUDINARY_UPLOAD_PRESET || baseConfig.cloudinary_upload_preset || ''
+    cloudinary_upload_preset: env.CLOUDINARY_UPLOAD_PRESET || baseConfig.cloudinary_upload_preset || '',
+    cv_url: env.CV_URL || baseConfig.cv_url || 'cv.pdf',
+    cv_enabled: baseConfig.cv_enabled !== false
   });
 
   const outputCode = `if (typeof window !== 'undefined') {\n  window.CONFIG = Object.assign(window.CONFIG || {}, ${JSON.stringify(updatedConfig, null, 2)});\n}\nvar CONFIG = (typeof window !== 'undefined' && window.CONFIG) ? window.CONFIG : ${JSON.stringify(updatedConfig, null, 2)};\n`;

@@ -311,6 +311,21 @@
       modalDevTitle.innerHTML = formatWordmark(siteName, accentLetter);
     }
 
+    // 7.5 CV Download Button
+    var cvBtn = document.getElementById('cv-download-btn');
+    if (cvBtn) {
+      if (cfg.cv_enabled === false) {
+        cvBtn.style.display = 'none';
+      } else {
+        cvBtn.style.display = 'inline-flex';
+        if (cfg.cv_url && cfg.cv_url.trim()) {
+          cvBtn.href = cfg.cv_url.trim();
+        } else {
+          cvBtn.href = 'cv.pdf';
+        }
+      }
+    }
+
     // 8. Headline Bio & Intro text
     var bioEl = document.querySelector('.bio');
     if (bioEl && cfg.site_desc) {
@@ -1202,6 +1217,21 @@
 
     /* Apply dynamic and core channel links */
     renderChannelList(CONFIG);
+
+    /* Apply CV button */
+    var cvBtn = document.getElementById('cv-download-btn');
+    if (cvBtn) {
+      if (CONFIG.cv_enabled === false) {
+        cvBtn.style.display = 'none';
+      } else {
+        cvBtn.style.display = 'inline-flex';
+        if (CONFIG.cv_url && CONFIG.cv_url.trim()) {
+          cvBtn.href = CONFIG.cv_url.trim();
+        } else {
+          cvBtn.href = 'cv.pdf';
+        }
+      }
+    }
 
     if (CONFIG.cf_analytics && typeof CONFIG.cf_analytics === 'string') {
       var cfScript = document.createElement('script');
