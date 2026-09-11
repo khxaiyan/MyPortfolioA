@@ -20,7 +20,9 @@ const MIME_TYPES = {
   '.webp': 'image/webp',
   '.webm': 'video/webm',
   '.txt': 'text/plain; charset=utf-8',
-  '.pdf': 'application/pdf'
+  '.pdf': 'application/pdf',
+  '.docx': 'application/vnd.openxmlformats-officedocument.wordprocessingml.document',
+  '.doc': 'application/msword'
 };
 
 // Load API handlers

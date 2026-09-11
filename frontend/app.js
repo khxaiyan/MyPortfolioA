@@ -311,17 +311,24 @@
       modalDevTitle.innerHTML = formatWordmark(siteName, accentLetter);
     }
 
-    // 7.5 CV Download Button
+    // 7.5 CV Download Button (Supports .pdf, .docx, .doc, images, or online drive/notion links)
     var cvBtn = document.getElementById('cv-download-btn');
     if (cvBtn) {
       if (cfg.cv_enabled === false) {
         cvBtn.style.display = 'none';
       } else {
         cvBtn.style.display = 'inline-flex';
-        if (cfg.cv_url && cfg.cv_url.trim()) {
-          cvBtn.href = cfg.cv_url.trim();
+        var cvTarget = (cfg.cv_url && cfg.cv_url.trim()) ? cfg.cv_url.trim() : 'cv.pdf';
+        cvBtn.href = cvTarget;
+        var cleanPath = cvTarget.split('?')[0].split('#')[0];
+        var isExternalWeb = /^(https?:\/\/)/i.test(cvTarget) && !/\.(pdf|docx?|txt|png|jpe?g|webp)$/i.test(cleanPath);
+        if (isExternalWeb) {
+          cvBtn.removeAttribute('download');
+          cvBtn.title = 'Open CV / Resume';
         } else {
-          cvBtn.href = 'cv.pdf';
+          var filename = cleanPath.split('/').pop() || 'CV.pdf';
+          cvBtn.setAttribute('download', filename);
+          cvBtn.title = 'Download CV (' + filename + ')';
         }
       }
     }
@@ -1218,17 +1225,24 @@
     /* Apply dynamic and core channel links */
     renderChannelList(CONFIG);
 
-    /* Apply CV button */
+    /* Apply CV button (Supports .pdf, .docx, .doc, images, or online links) */
     var cvBtn = document.getElementById('cv-download-btn');
     if (cvBtn) {
       if (CONFIG.cv_enabled === false) {
         cvBtn.style.display = 'none';
       } else {
         cvBtn.style.display = 'inline-flex';
-        if (CONFIG.cv_url && CONFIG.cv_url.trim()) {
-          cvBtn.href = CONFIG.cv_url.trim();
+        var cvTarget = (CONFIG.cv_url && CONFIG.cv_url.trim()) ? CONFIG.cv_url.trim() : 'cv.pdf';
+        cvBtn.href = cvTarget;
+        var cleanPath = cvTarget.split('?')[0].split('#')[0];
+        var isExternalWeb = /^(https?:\/\/)/i.test(cvTarget) && !/\.(pdf|docx?|txt|png|jpe?g|webp)$/i.test(cleanPath);
+        if (isExternalWeb) {
+          cvBtn.removeAttribute('download');
+          cvBtn.title = 'Open CV / Resume';
         } else {
-          cvBtn.href = 'cv.pdf';
+          var filename = cleanPath.split('/').pop() || 'CV.pdf';
+          cvBtn.setAttribute('download', filename);
+          cvBtn.title = 'Download CV (' + filename + ')';
         }
       }
     }
