@@ -13,7 +13,7 @@ img, video {
 
 :root {
   --font-display: 'Space Grotesk', -apple-system, BlinkMacSystemFont, sans-serif;
-  --font-mono:    'IBM Plex Mono', ui-monospace, monospace;
+  --font-mono:    'Space Grotesk', -apple-system, BlinkMacSystemFont, sans-serif;
 
   /* Dark theme (default) */
   --bg:           #0a0a0e;
@@ -66,7 +66,7 @@ html { font-size:15px; scroll-behavior:smooth; }
 @media (min-width: 768px) { html { font-size: 16px; } }
 
 body {
-  font-family: var(--font-mono);
+  font-family: var(--font-display);
   background: var(--bg);
   color: var(--ink);
   min-height: 100vh;
@@ -210,12 +210,18 @@ body {
 .avatar-wrap:hover::after { opacity: 0.9; border-style: solid; }
 
 .avatar-img,
-video.avatar-img {
+video.avatar-img,
+.avatar-placeholder {
   width: 104px;
   height: 104px;
   border-radius: 50%;
   object-fit: cover;
-  display: block;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--surface);
+  border: 1.5px solid var(--line);
+  box-sizing: border-box;
   -webkit-user-drag: none;
   -khtml-user-drag: none;
   -moz-user-drag: none;
@@ -314,10 +320,38 @@ video.avatar-img {
 }
 
 .intro-text {
-  font-size: 0.83rem;
+  font-size: 0.88rem;
   color: var(--ink-dim);
   line-height: 1.7;
-  font-family: var(--font-mono);
+  font-family: var(--font-display);
+}
+
+/* ── Data Fetching Loader Placeholder ── */
+.data-loader {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  color: var(--ink-dim);
+  font-family: var(--font-display);
+  font-size: 0.85rem;
+  font-weight: 500;
+  letter-spacing: 0.02em;
+}
+
+.data-loader-spinner {
+  width: 13px;
+  height: 13px;
+  border: 2px solid var(--line-strong, rgba(255, 255, 255, 0.2));
+  border-top-color: var(--red, #ff2a5f);
+  border-radius: 50%;
+  animation: dataLoaderSpin 0.75s linear infinite;
+  display: inline-block;
+  flex-shrink: 0;
+}
+
+@keyframes dataLoaderSpin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
 }
 
 /* ── Rich Formatting Elements (Bio & Intro) ── */
@@ -1820,6 +1854,181 @@ select, option, optgroup {
   border-color: var(--red);
   color: var(--ink);
   font-weight: 600;
+}
+
+/* ── Skills Pills & Badges ── */
+.skills-pills-wrap {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  padding: 16px 18px;
+}
+
+.skill-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  background: var(--surface-hover, #191a22);
+  border: 1px solid var(--line, rgba(255, 255, 255, 0.08));
+  border-radius: 20px;
+  padding: 6px 13px;
+  font-size: 0.8rem;
+  font-family: var(--font-mono, monospace);
+  font-weight: 500;
+  color: var(--ink, #eef0f4);
+  transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+  user-select: none;
+}
+
+.skill-pill:hover {
+  border-color: var(--red, #ff2a5f);
+  background: var(--red-dim, rgba(255, 42, 95, 0.12));
+  box-shadow: 0 0 12px var(--border-accent-glow, rgba(255, 42, 95, 0.2));
+  transform: translateY(-2px);
+  color: #ffffff;
+}
+
+.skill-pill-dot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: var(--red, #ff2a5f);
+  box-shadow: 0 0 6px var(--red, #ff2a5f);
+  flex-shrink: 0;
+}
+
+/* ── Switch Toggle (Reusable for Developer Dashboard) ── */
+.switch-label {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  cursor: pointer;
+  user-select: none;
+}
+
+.switch-input {
+  position: absolute;
+  opacity: 0;
+  width: 0;
+  height: 0;
+}
+
+.switch-slider {
+  position: relative;
+  width: 38px;
+  height: 20px;
+  background: var(--surface, #131319);
+  border: 1.5px solid var(--line, rgba(255, 255, 255, 0.15));
+  border-radius: 20px;
+  transition: all 0.22s ease;
+  flex-shrink: 0;
+}
+
+.switch-slider::before {
+  content: "";
+  position: absolute;
+  height: 12px;
+  width: 12px;
+  left: 2px;
+  bottom: 2px;
+  background: var(--ink-dim, #8d90a0);
+  border-radius: 50%;
+  transition: all 0.22s ease;
+}
+
+.switch-input:checked + .switch-slider {
+  background: var(--red-dim, rgba(255, 42, 95, 0.25));
+  border-color: var(--red, #ff2a5f);
+}
+
+.switch-input:checked + .switch-slider::before {
+  transform: translateX(18px);
+  background: var(--red, #ff2a5f);
+  box-shadow: 0 0 8px var(--red, #ff2a5f);
+}
+
+@media (max-width: 640px) {
+  .switch-label span:not(.switch-slider) {
+    display: none !important;
+  }
+  .switch-label {
+    gap: 0 !important;
+  }
+  .btn-sync-text {
+    display: none !important;
+  }
+  #btn-sync-projects-github {
+    padding: 4px 7px !important;
+  }
+  .cust-projects-sync-wrap {
+    margin-left: auto !important;
+  }
+}
+
+/* ── Advance Settings Skills Manager Chips ── */
+.skills-chips-grid {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-top: 10px;
+}
+
+.skill-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  background: var(--bg, #0b0c10);
+  border: 1px solid var(--line, rgba(255, 255, 255, 0.12));
+  border-radius: 18px;
+  padding: 5px 12px;
+  font-size: 0.78rem;
+  font-family: var(--font-mono, monospace);
+  color: var(--ink, #eef0f4);
+  transition: all 0.15s ease;
+}
+
+.skill-chip:hover {
+  border-color: var(--red, #ff2a5f);
+}
+
+.skill-chip-action {
+  background: none;
+  border: none;
+  color: var(--ink-faint, #636674);
+  cursor: pointer;
+  padding: 0 2px;
+  font-size: 0.85rem;
+  line-height: 1;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  transition: color 0.15s ease;
+}
+
+.skill-chip-action:hover {
+  color: var(--red, #ff2a5f);
+}
+
+.skill-chip-del:hover {
+  color: #ff334b !important;
+}
+
+.skill-suggestion-tag {
+  background: var(--surface);
+  border: 1px dashed var(--line);
+  border-radius: 14px;
+  padding: 3px 9px;
+  font-size: 0.7rem;
+  font-family: var(--font-mono);
+  color: var(--ink-dim);
+  cursor: pointer;
+  transition: all 0.15s ease;
+}
+
+.skill-suggestion-tag:hover {
+  border-color: var(--red);
+  color: var(--ink);
+  background: var(--red-dim);
 }
 
 /* ── Utility ── */

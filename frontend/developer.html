@@ -14,7 +14,7 @@
   <link
     href="https://fonts.googleapis.com/css2?family=Cinzel:wght@500;600;700&family=Fira+Code:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500;600&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600;700&family=Montserrat:wght@400;500;600;700&family=Outfit:wght@400;500;600;700&family=Playfair+Display:ital,wght@0,500;0,600;0,700;1,400&family=Plus+Jakarta+Sans:wght@400;500;600;700&family=Poppins:wght@400;500;600;700&family=Sora:wght@400;500;600;700&family=Space+Grotesk:wght@400;500;600;700&family=Syne:wght@500;600;700;800&display=swap"
     rel="stylesheet">
-  <link rel="stylesheet" href="style.css?v=35">
+  <link rel="stylesheet" href="style.css?v=36">
   <script src="https://code.iconify.design/iconify-icon/2.1.0/iconify-icon.min.js"></script>
   <script src="/api/config.js"></script>
 
@@ -576,6 +576,9 @@
       }
       #btn-sync-projects-github {
         padding: 4px 7px !important;
+      }
+      .cust-projects-sync-wrap {
+        margin-left: auto !important;
       }
     }
 
@@ -1723,10 +1726,10 @@
           </div>
         </div>
         <div class="surface-card cust-card" id="cust-projects-card" style="display:none; margin-top:2px;">
-          <div style="display:flex; align-items:center; justify-content:space-between; margin-bottom:12px; gap:8px; flex-wrap:wrap;">
+          <div class="cust-projects-header-row" style="display:flex; align-items:center; justify-content:space-between; margin-bottom:12px; gap:8px; flex-wrap:wrap;">
             <p style="font-size:0.72rem; color:var(--ink-faint); margin:0;">Manage projects displayed on your
               portfolio. Add, edit, or remove anytime.</p>
-            <div style="display:inline-flex; align-items:center; gap:8px;">
+            <div class="cust-projects-sync-wrap" style="display:inline-flex; align-items:center; gap:8px; margin-left:auto;">
               <span id="cust-projects-sync-status"
                 style="font-size:0.7rem; display:none; font-family:var(--font-mono, monospace);"></span>
               <button type="button" id="btn-sync-projects-github" class="toolbar-btn"
