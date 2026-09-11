@@ -8,13 +8,9 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;700&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="style.css">
+  <link rel="stylesheet" href="style.css?v=34">
   <script src="/api/config.js"></script>
-  <script>
-    if (typeof CONFIG === 'undefined') {
-      document.write('<script src="config.js?v=28"><\/script>');
-    }
-  </script>
+
   <script>
     (function(){
       var customCfg = null;
@@ -24,12 +20,62 @@
       var t = themeCfg.mode || cfg.default_theme || localStorage.getItem('theme') || (matchMedia('(prefers-color-scheme:light)').matches ? 'light' : 'dark');
       document.documentElement.setAttribute('data-theme', t);
 
-      var accent = themeCfg.accent_color || cfg.accent_color || '#ff2a5f';
+      var accent = themeCfg.accent_color || (customCfg && customCfg.accent_color) || (typeof CONFIG !== 'undefined' && (CONFIG.theme_config ? CONFIG.theme_config.accent_color : CONFIG.accent_color)) || '#ff2a5f';
+      var bgPreset = themeCfg.bg_preset || (typeof CONFIG !== 'undefined' && CONFIG.theme_config && CONFIG.theme_config.bg_preset) || 'midnight';
+
+      function hexToRgba(hex, alpha) {
+        var c = hex.replace('#', '');
+        if (c.length === 3) c = c[0] + c[0] + c[1] + c[1] + c[2] + c[2];
+        var num = parseInt(c, 16);
+        return 'rgba(' + ((num >> 16) & 255) + ',' + ((num >> 8) & 255) + ',' + (num & 255) + ',' + alpha + ')';
+      }
+      function shadeColor(color, percent) {
+        var c = color.replace('#', '');
+        if (c.length === 3) c = c[0] + c[0] + c[1] + c[1] + c[2] + c[2];
+        var num = parseInt(c, 16);
+        var amt = Math.round(2.55 * percent);
+        var R = (num >> 16) + amt, G = ((num >> 8) & 255) + amt, B = (num & 255) + amt;
+        return '#' + (0x1000000 + (R < 255 ? (R < 0 ? 0 : R) : 255) * 0x10000 + (G < 255 ? (G < 0 ? 0 : G) : 255) * 0x100 + (B < 255 ? (B < 0 ? 0 : B) : 255)).toString(16).slice(1);
+      }
+      var PRESETS = {
+        midnight: { bg: '#0a0a0e', surface: '#131319', surfaceHover: '#191a22', rail: '#363a63' },
+        oled: { bg: '#000000', surface: '#0a0a0a', surfaceHover: '#141414', rail: '#262630' },
+        navy: { bg: '#070a13', surface: '#0d1322', surfaceHover: '#141d33', rail: '#223252' },
+        charcoal: { bg: '#101114', surface: '#17181d', surfaceHover: '#1f2027', rail: '#383947' }
+      };
+
       if (accent) {
-        document.documentElement.style.setProperty('--red', accent);
+        var root = document.documentElement;
+        root.style.setProperty('--red', accent);
+        root.style.setProperty('--red-solid', shadeColor(accent, -18));
+        root.style.setProperty('--red-solid-hov', shadeColor(accent, -30));
+        root.style.setProperty('--red-dim', hexToRgba(accent, 0.16));
+        root.style.setProperty('--border-accent', hexToRgba(accent, 0.45));
+        root.style.setProperty('--border-accent-glow', hexToRgba(accent, 0.12));
+      }
+      if (t === 'dark' && bgPreset && PRESETS[bgPreset] && bgPreset !== 'midnight') {
+        var p = PRESETS[bgPreset];
+        var root = document.documentElement;
+        root.style.setProperty('--bg', p.bg);
+        root.style.setProperty('--surface', p.surface);
+        root.style.setProperty('--surface-hover', p.surfaceHover);
+        root.style.setProperty('--rail', p.rail);
       }
 
-      var fav = cfg.favicon_url || 'https://res.cloudinary.com/dqxccz5bn/image/upload/favicon_jzygcw.png';
+      var fontFam = themeCfg.font_family || (customCfg && customCfg.font_family) || (typeof CONFIG !== 'undefined' && (CONFIG.font_family || (CONFIG.theme_config && CONFIG.theme_config.font_family))) || 'Space Grotesk';
+      var fontScope = themeCfg.font_scope || (customCfg && customCfg.font_scope) || (typeof CONFIG !== 'undefined' && (CONFIG.font_scope || (CONFIG.theme_config && CONFIG.theme_config.font_scope))) || 'display';
+      if (fontFam) {
+        var isMono = fontFam.toLowerCase().indexOf('mono') !== -1 || fontFam.toLowerCase().indexOf('code') !== -1;
+        var isSerif = fontFam.toLowerCase().indexOf('serif') !== -1 || fontFam.toLowerCase().indexOf('playfair') !== -1 || fontFam.toLowerCase().indexOf('cinzel') !== -1;
+        var fallback = isMono ? 'ui-monospace, monospace' : (isSerif ? 'Georgia, serif' : '-apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif');
+        var fontRule = '"' + fontFam + '", ' + fallback;
+        document.documentElement.style.setProperty('--font-display', fontRule);
+        if (fontScope === 'all') {
+          document.documentElement.style.setProperty('--font-mono', fontRule);
+        }
+      }
+
+      var fav = (customCfg && customCfg.favicon_url) || cfg.favicon_url || 'https://res.cloudinary.com/dqxccz5bn/image/upload/favicon_jzygcw.png';
       if (fav) {
         var fi = document.querySelector("link[rel~='icon']");
         if (fi) {
@@ -42,66 +88,122 @@
     }());
   </script>
   <style>
-    .not-found-wrap {
-      min-height: 70vh;
+    body {
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: var(--bg);
+      background-image: radial-gradient(circle at 50% 35%, var(--border-accent-glow, rgba(255, 42, 95, 0.12)) 0%, transparent 65%);
+      margin: 0;
+      padding: 24px 16px;
+      box-sizing: border-box;
+    }
+    .not-found-card {
+      background: var(--surface, #131319);
+      border: 1px solid var(--line-strong, rgba(255, 255, 255, 0.18));
+      border-radius: var(--radius, 16px);
+      box-shadow: 0 24px 60px rgba(0, 0, 0, 0.65), 0 0 35px var(--border-accent-glow, rgba(255, 42, 95, 0.12));
+      padding: 40px 32px;
+      max-width: 440px;
+      width: 100%;
       display: flex;
       flex-direction: column;
       align-items: center;
-      justify-content: center;
       text-align: center;
-      padding: 32px 16px;
       gap: 16px;
+      box-sizing: border-box;
     }
-    .not-found-code {
-      font-family: var(--font-display);
-      font-size: 4.5rem;
-      font-weight: 700;
-      color: var(--ink);
-      line-height: 1;
-      letter-spacing: -0.04em;
-    }
-    .not-found-msg {
-      font-size: 0.92rem;
-      color: var(--ink-dim);
-      max-width: 320px;
-      line-height: 1.6;
-    }
-    .not-found-btn {
-      margin-top: 12px;
+    .not-found-badge {
       display: inline-flex;
       align-items: center;
       gap: 8px;
-      padding: 10px 20px;
-      border-radius: var(--radius-sm);
-      background: var(--surface);
-      border: 1px solid var(--line-strong);
-      color: var(--ink);
+      padding: 6px 14px;
+      border-radius: 999px;
+      background: var(--red-dim, rgba(255, 42, 95, 0.14));
+      border: 1px solid var(--border-accent, rgba(255, 42, 95, 0.45));
+      color: var(--red, #ff2a5f);
+      font-size: 0.78rem;
+      font-weight: 600;
+      letter-spacing: 0.06em;
+      font-family: var(--font-mono, 'IBM Plex Mono', monospace);
+      text-transform: uppercase;
+    }
+    .not-found-badge-dot {
+      width: 7px;
+      height: 7px;
+      border-radius: 50%;
+      background: var(--red, #ff2a5f);
+      box-shadow: 0 0 8px var(--red, #ff2a5f);
+    }
+    .not-found-code {
+      font-family: var(--font-display, 'Space Grotesk', sans-serif);
+      font-size: 5rem;
+      font-weight: 800;
+      color: var(--ink, #eef0f4);
+      line-height: 1;
+      letter-spacing: -0.04em;
+      margin: 2px 0 0 0;
+    }
+    .not-found-code .glyph-5 {
+      color: var(--red, #ff2a5f);
+      text-shadow: 0 0 28px var(--border-accent, rgba(255, 42, 95, 0.45));
+    }
+    .not-found-title {
+      font-family: var(--font-display, 'Space Grotesk', sans-serif);
+      font-size: 1.5rem;
+      font-weight: 700;
+      color: var(--ink, #eef0f4);
+      letter-spacing: -0.02em;
+      margin: 0;
+    }
+    .not-found-msg {
+      font-size: 0.88rem;
+      color: var(--ink-dim, #8d90a0);
+      line-height: 1.6;
+      margin: 0;
+      font-family: var(--font-mono, 'IBM Plex Mono', monospace);
+    }
+    .not-found-btn {
+      margin-top: 6px;
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 10px 22px;
+      border-radius: var(--radius-sm, 8px);
+      background: var(--red-dim, rgba(255, 42, 95, 0.14));
+      border: 1px solid var(--border-accent, rgba(255, 42, 95, 0.45));
+      color: var(--ink, #eef0f4);
       text-decoration: none;
       font-size: 0.85rem;
-      font-weight: 500;
-      transition: border-color 0.18s, background-color 0.18s, color 0.18s;
+      font-weight: 600;
+      font-family: var(--font-mono, 'IBM Plex Mono', monospace);
+      transition: all 0.18s ease;
     }
     .not-found-btn:hover {
-      border-color: var(--red);
-      color: var(--red);
-      background: var(--red-dim);
+      background: var(--red, #ff2a5f);
+      color: #ffffff;
+      box-shadow: 0 0 16px var(--border-accent, rgba(255, 42, 95, 0.45));
     }
   </style>
 </head>
 <body>
 
-<main class="sheet">
-  <div class="not-found-wrap">
-    <h1 class="not-found-code">40<span class="glyph-5">4</span></h1>
-    <p class="not-found-msg">The page or route you are looking for does not exist.</p>
-    <a href="/" class="not-found-btn">
-      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-        <path d="M19 12H5"/><path d="m12 19-7-7 7-7"/>
-      </svg>
-      <span>Return home</span>
-    </a>
+<div class="not-found-card">
+  <div class="not-found-badge">
+    <span class="not-found-badge-dot"></span>
+    <span>404 error</span>
   </div>
-</main>
+  <h1 class="not-found-code">40<span class="glyph-5">4</span></h1>
+  <h2 class="not-found-title">Page Not Found</h2>
+  <p class="not-found-msg">The page or route you are looking for does not exist or has been moved.</p>
+  <a href="/" class="not-found-btn">
+    <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+      <path d="M19 12H5"/><path d="m12 19-7-7 7-7"/>
+    </svg>
+    <span>Return home</span>
+  </a>
+</div>
 
 </body>
 </html>

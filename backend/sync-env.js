@@ -92,16 +92,16 @@ async function runSync() {
     default_theme: env.DEFAULT_THEME || baseConfig.default_theme || 'dark',
     theme_config: Object.assign({
       mode: 'dark',
-      accent_color: '#00ff00',
+      accent_color: '#ff2a5f',
       bg_preset: 'midnight'
     }, baseConfig.theme_config || {}, {
       mode: env.DEFAULT_THEME || (baseConfig.theme_config && baseConfig.theme_config.mode) || baseConfig.default_theme || 'dark',
-      accent_color: env.ACCENT_COLOR || (baseConfig.theme_config && baseConfig.theme_config.accent_color) || baseConfig.accent_color || '#00ff00',
+      accent_color: env.ACCENT_COLOR || (baseConfig.theme_config && baseConfig.theme_config.accent_color) || baseConfig.accent_color || '#ff2a5f',
       bg_preset: (baseConfig.theme_config && baseConfig.theme_config.bg_preset) || 'midnight'
     }),
     site_desc: baseConfig.site_desc || 'khxaiyan | developer in active building mode. crafting clean web tools & digital experiences.',
     seo_desc: baseConfig.seo_desc || 'khxaiyan | developer in active building mode. crafting clean web tools & digital experiences.',
-    intro: baseConfig.intro || 'Passionate developer specializing in building modern web applications, clean user interfaces, and dynamic digital tools. Focused on performance, aesthetics, and crafting clean, scalable code.',
+    intro: baseConfig.intro || '',
     projects: baseConfig.projects || [],
     project_links: baseConfig.project_links || {},
     cf_analytics: env.CF_ANALYTICS === 'true' ? true : (env.CF_ANALYTICS && env.CF_ANALYTICS !== 'false' ? env.CF_ANALYTICS : false),
