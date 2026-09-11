@@ -24,12 +24,12 @@ img, video {
   --ink:          #eef0f4;
   --ink-dim:      #8d90a0;
   --ink-faint:    #787c93;
-  --red:          #00ff00;
-  --red-solid:    #00cc00;
-  --red-solid-hov:#009900;
-  --red-dim:      rgba(0,255,0,0.16);
-  --border-accent: rgba(0,255,0,0.45);
-  --border-accent-glow: rgba(0,255,0,0.12);
+  --red:          #ff2a5f;
+  --red-solid:    #e01b4c;
+  --red-solid-hov:#c41440;
+  --red-dim:      rgba(255,42,95,0.16);
+  --border-accent: rgba(255,42,95,0.45);
+  --border-accent-glow: rgba(255,42,95,0.12);
   --rail:         #363a63;
   --success:      #22c07d;
   --radius:       12px;

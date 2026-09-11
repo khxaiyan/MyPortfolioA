@@ -7,7 +7,7 @@
   var metaClr = document.getElementById('meta-theme-color');
 
   var currentThemeMode = 'dark';
-  var currentAccentColor = (typeof CONFIG !== 'undefined' && ((CONFIG.theme_config && CONFIG.theme_config.accent_color) || CONFIG.accent_color)) || '#00ff00';
+  var currentAccentColor = (typeof CONFIG !== 'undefined' && ((CONFIG.theme_config && CONFIG.theme_config.accent_color) || CONFIG.accent_color)) || '#ff2a5f';
   var currentBgPreset = 'midnight';
 
   var BG_PRESETS = {
@@ -166,7 +166,7 @@
   try { customCfg = JSON.parse(localStorage.getItem('portfolio_custom_config')); } catch (_) { }
   var themeCfg = (customCfg && customCfg.theme_config) || (typeof CONFIG !== 'undefined' && CONFIG.theme_config) || {};
   currentThemeMode = themeCfg.mode || (customCfg && customCfg.default_theme) || (typeof CONFIG !== 'undefined' && CONFIG.default_theme) || 'dark';
-  currentAccentColor = themeCfg.accent_color || (customCfg && customCfg.accent_color) || (typeof CONFIG !== 'undefined' && ((CONFIG.theme_config && CONFIG.theme_config.accent_color) || CONFIG.accent_color)) || '#00ff00';
+  currentAccentColor = themeCfg.accent_color || (customCfg && customCfg.accent_color) || (typeof CONFIG !== 'undefined' && ((CONFIG.theme_config && CONFIG.theme_config.accent_color) || CONFIG.accent_color)) || '#ff2a5f';
   currentBgPreset = themeCfg.bg_preset || (typeof CONFIG !== 'undefined' && CONFIG.theme_config && CONFIG.theme_config.bg_preset) || 'midnight';
 
   var currentFontFamily = themeCfg.font_family || (customCfg && customCfg.font_family) || (typeof CONFIG !== 'undefined' && (CONFIG.font_family || (CONFIG.theme_config && CONFIG.theme_config.font_family))) || 'Space Grotesk';
