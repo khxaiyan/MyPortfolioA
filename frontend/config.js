@@ -62,8 +62,6 @@ if (typeof window !== 'undefined') {
   },
   "default_theme": "dark",
   "accent_color": "#00ff00",
-  "font_family": "Space Grotesk",
-  "font_scope": "all",
   "accent_palette": [
     "#ff2a5f",
     "#00f0ff",
@@ -75,6 +73,8 @@ if (typeof window !== 'undefined') {
     "#ec4899",
     "#00ff00"
   ],
+  "font_family": "Space Grotesk",
+  "font_scope": "all",
   "theme_config": {
     "mode": "dark",
     "accent_color": "#00ff00",
@@ -168,8 +168,6 @@ var CONFIG = (typeof window !== 'undefined' && window.CONFIG) ? window.CONFIG : 
   },
   "default_theme": "dark",
   "accent_color": "#00ff00",
-  "font_family": "Space Grotesk",
-  "font_scope": "all",
   "accent_palette": [
     "#ff2a5f",
     "#00f0ff",
@@ -181,6 +179,8 @@ var CONFIG = (typeof window !== 'undefined' && window.CONFIG) ? window.CONFIG : 
     "#ec4899",
     "#00ff00"
   ],
+  "font_family": "Space Grotesk",
+  "font_scope": "all",
   "theme_config": {
     "mode": "dark",
     "accent_color": "#00ff00",
