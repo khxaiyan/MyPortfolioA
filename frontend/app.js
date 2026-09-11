@@ -250,7 +250,7 @@
     // 3. Theme mode, Accent color & Background preset
     var themeCfg = cfg.theme_config || {};
     var mode = themeCfg.mode || cfg.default_theme || currentThemeMode || 'dark';
-    var accent = themeCfg.accent_color || cfg.accent_color || currentAccentColor || '#00ff00';
+    var accent = themeCfg.accent_color || cfg.accent_color || currentAccentColor || '#ff2a5f';
     var bgPreset = themeCfg.bg_preset || (cfg.theme_config && cfg.theme_config.bg_preset) || currentBgPreset || 'midnight';
 
     currentThemeMode = mode;
@@ -326,8 +326,8 @@
       var parsedCustom = JSON.parse(savedCustom);
       var needsSave = false;
       if (parsedCustom.avatar_url === 'avatar.svg' || parsedCustom.avatar_url === 'Diluc.svg' || parsedCustom.logo === 'avatar.svg' || parsedCustom.logo === 'Diluc.svg' || parsedCustom.avatar_url === 'profile_icon.svg' || parsedCustom.logo === 'profile_icon.svg') {
-        parsedCustom.avatar_url = 'https://avatars.githubusercontent.com/u/225553218?v=4';
-        parsedCustom.logo = 'https://avatars.githubusercontent.com/u/225553218?v=4';
+        parsedCustom.avatar_url = 'https://res.cloudinary.com/dqxccz5bn/image/upload/profile_icon_wf7thb.svg';
+        parsedCustom.logo = 'https://res.cloudinary.com/dqxccz5bn/image/upload/profile_icon_wf7thb.svg';
         needsSave = true;
       }
       if (parsedCustom.favicon_url === 'favicon.svg' || parsedCustom.favicon_url === 'favicon.png' || parsedCustom.favicon_url === 'favicon.ico' || parsedCustom.favicon_url === 'profile_icon.svg') {
