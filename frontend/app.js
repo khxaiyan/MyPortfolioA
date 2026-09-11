@@ -321,8 +321,9 @@
       introRow.style.display = (cfg.intro_enabled !== false) ? '' : 'none';
     }
     var introEl = document.getElementById('intro-text');
-    if (introEl && cfg.intro) {
-      introEl.innerHTML = parseRichText(cfg.intro);
+    if (introEl) {
+      var introVal = (cfg.intro && cfg.intro.trim()) ? cfg.intro : 'Passionate developer specializing in building modern web applications, clean user interfaces, and dynamic digital tools. Focused on performance, aesthetics, and crafting clean, scalable code.';
+      introEl.innerHTML = parseRichText(introVal);
     }
 
     // 9. Document Title & SEO meta
@@ -399,8 +400,6 @@
 
     // 13. Apply custom section order if set
     if (Array.isArray(cfg.section_order) && cfg.section_order.length > 0) {
-      var railContainer = document.querySelector('.railway-content, .railway, main, #rail-root');
-      // Find common parent of all rail-rows
       var anyRow = document.getElementById('rail-row-intro');
       var railParent = anyRow && anyRow.parentNode;
       if (railParent) {
@@ -410,6 +409,11 @@
             railParent.appendChild(el);
           }
         });
+        // Footer (and corner-tag button) must always be placed last at the end of the page
+        var footerEl = railParent.querySelector('.footer-row, footer');
+        if (footerEl && footerEl.parentNode === railParent) {
+          railParent.appendChild(footerEl);
+        }
       }
     }
 
@@ -430,6 +434,10 @@
       }
       if (parsedCustom.favicon_url === 'favicon.svg' || parsedCustom.favicon_url === 'favicon.png' || parsedCustom.favicon_url === 'favicon.ico' || parsedCustom.favicon_url === 'profile_icon.svg') {
         parsedCustom.favicon_url = 'https://res.cloudinary.com/dqxccz5bn/image/upload/favicon_jzygcw.png';
+        needsSave = true;
+      }
+      if (parsedCustom && typeof parsedCustom.intro === 'string' && (parsedCustom.intro.includes('{{{{') || parsedCustom.intro.includes('hjvhkv'))) {
+        delete parsedCustom.intro;
         needsSave = true;
       }
       if (needsSave) {
@@ -1099,8 +1107,9 @@
     }
 
     var introEl = document.getElementById('intro-text');
-    if (introEl && CONFIG.intro) {
-      introEl.innerHTML = parseRichText(CONFIG.intro);
+    if (introEl) {
+      var introVal = (CONFIG.intro && CONFIG.intro.trim()) ? CONFIG.intro : 'Passionate developer specializing in building modern web applications, clean user interfaces, and dynamic digital tools. Focused on performance, aesthetics, and crafting clean, scalable code.';
+      introEl.innerHTML = parseRichText(introVal);
     }
 
     /* Apply skills */
@@ -1157,6 +1166,24 @@
     var messageRow = document.getElementById('rail-row-message');
     if (messageRow && CONFIG.message_enabled === false) {
       messageRow.style.display = 'none';
+    }
+
+    /* Apply custom section order if set */
+    if (Array.isArray(CONFIG.section_order) && CONFIG.section_order.length > 0) {
+      var anyRow = document.getElementById('rail-row-intro');
+      var railParent = anyRow && anyRow.parentNode;
+      if (railParent) {
+        CONFIG.section_order.forEach(function (key) {
+          var el = document.getElementById('rail-row-' + key);
+          if (el && el.parentNode === railParent) {
+            railParent.appendChild(el);
+          }
+        });
+        var footerEl = railParent.querySelector('.footer-row, footer');
+        if (footerEl && footerEl.parentNode === railParent) {
+          railParent.appendChild(footerEl);
+        }
+      }
     }
 
     updateTimelineLastRow();
