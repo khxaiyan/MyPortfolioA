@@ -2,9 +2,9 @@
 
 # khxaiyan — Developer Portfolio
 
-<p><em>Minimalist, ultra-clean developer portfolio featuring dynamic real-time projects showcase, smooth skeleton shimmer loading, dark/light themes, and secure deployment architecture.</em></p>
+<p><em>Minimalist, ultra-clean developer portfolio featuring dynamic real-time projects showcase, zero-flicker live theme hydration, dark/light modes, and secure serverless deployment architecture.</em></p>
 
-[![Live Site](https://img.shields.io/badge/Live_Site-khxaiyan.vercel.app-ff2a5f?style=for-the-badge&logo=vercel&logoColor=white)](https://khxaiyan.vercel.app)
+[![Live Site](https://img.shields.io/badge/Live_Site-khxaiyan.vercel.app-00ff00?style=for-the-badge&logo=vercel&logoColor=black)](https://khxaiyan.vercel.app)
 [![GitHub](https://img.shields.io/badge/GitHub-@khxaiyan-181717?style=for-the-badge&logo=github&logoColor=white)](https://github.com/khxaiyan)
 [![License](https://img.shields.io/badge/License-MIT-blue?style=for-the-badge)](LICENSE)
 
@@ -30,12 +30,13 @@
 
 ## ✨ Key Features
 
-- **⚡ Dynamic Projects Showcase**: Automatically renders your curated portfolio projects with direct links to live deployments.
-- **⚡ Pixel-Perfect Skeleton Shimmer Loading**: Zero layout-shift skeleton shimmer loader mirroring the exact card dimensions during initial data resolution.
-- **🎨 Signature Tech Branding**: Sleek rail-node timeline layout, modern typography with *Space Grotesk* and *IBM Plex Mono*, and automatic red accent highlighting (`glyph-5`) on all project capital letters.
+- **⚡ Zero-Flash Live Theme Hydration**: Direct serverless configuration streaming via `/api/config.js` ensuring instant, single-paint theme and asset loading in incognito and privacy-focused browsers (Brave Shields).
+- **🛡️ Pure CSS & HTML Fallbacks**: Pre-rendered project cards and resilient CSS design tokens for zero layout shifts and instant readability even when JavaScript is disabled or blocked.
+- **⚡ Dynamic Projects Showcase**: Automatically renders curated portfolio projects with direct links to live deployments and GitHub repositories.
+- **🎨 Signature Tech Branding**: Sleek rail-node timeline layout, modern typography with *Space Grotesk* and *IBM Plex Mono*, and automatic accent highlighting (`glyph-5`) on wordmark and project capital letters.
 - **🌓 Dual Theme Support (Dark & Light)**: Smooth theme toggling with immediate `localStorage` state persistence and system color-scheme detection.
 - **🍃 MongoDB Atlas Cloud Persistence**: Instant configuration saving without git-push clutter or Vercel redeployment delays.
-- **☁️ Cloudinary Direct Media Uploads**: Fast CDN delivery for avatars and favicons with base64 local fallback.
+- **☁️ Cloudinary Direct Media Uploads**: Fast CDN delivery for avatars and favicons with local base64 fallback.
 - **⚡ Inngest Event-Driven Workflows**: Background pipelines for automated GitHub stars synchronization and contact message archiving.
 - **📬 Working Contact Form**: Web3Forms integration with hCaptcha bot verification for spam protection.
 - **🔒 Privacy & Security First**: Complete `.gitignore` setup, sanitized credentials, and isolated `keys/` folder — secrets are never served to the browser.
@@ -48,10 +49,10 @@
 
 | Technology | Purpose |
 | :--- | :--- |
-| **HTML5** | Semantic, accessible document structure |
+| **HTML5** | Semantic, accessible document structure with pre-rendered fallbacks |
 | **Vanilla CSS** | Design tokens, custom CSS variables, responsive grid, animations |
-| **Vanilla JavaScript (ES6+)** | Dynamic GitHub API fetching, theme toggling, form handling |
-| **MongoDB Atlas** | Instant cloud configuration storage (`/api/save-config` & `/api/get-config`) |
+| **Vanilla JavaScript (ES6+)** | Dynamic API hydration, theme synchronization, form handling |
+| **MongoDB Atlas** | Instant cloud configuration storage (`/api/save-config` & `/api/config.js`) |
 | **Cloudinary** | Global CDN media storage & direct unsigned uploads |
 | **Inngest** | Background serverless workflows (`/api/inngest`), cron GitHub sync, and contact pipeline |
 | **Clerk** | Authentication & RBAC for the developer admin dashboard |
@@ -67,6 +68,7 @@
 MyPortfolioA/
 │
 ├── api/                             ← Vercel serverless endpoints
+│   ├── config.js                    # GET /api/config.js (Live executable JS/JSON config loader)
 │   ├── get-config.js                # GET /api/get-config (MongoDB configuration loader)
 │   ├── save-config.js               # POST /api/save-config (MongoDB configuration writer)
 │   ├── inngest.js                   # Inngest endpoint serving background workflows
@@ -74,7 +76,7 @@ MyPortfolioA/
 │       └── mongodb.js               # Shared MongoDB Atlas connection pooling
 │
 ├── frontend/                        ← Static portfolio files
-│   ├── index.html                   # Main portfolio homepage
+│   ├── index.html                   # Main portfolio homepage with pre-rendered cards
 │   ├── developer.html               # Developer admin dashboard (/developer)
 │   ├── 404.html                     # Themed 404 error page
 │   ├── style.css                    # Design tokens, themes & skeleton shimmer
@@ -83,7 +85,7 @@ MyPortfolioA/
 │
 ├── backend/                         ← Node.js server & workflow routines
 │   ├── dev-server.js                # Local dev server with API routing & static serving
-│   ├── sync-env.js                  # Reads keys/.env → writes frontend/config.js
+│   ├── sync-env.js                  # Reads keys/.env & MongoDB Atlas → writes frontend/config.js
 │   └── inngest/                     # Inngest workflows (GitHub sync & contact pipeline)
 │
 ├── keys/                            ← API keys & secrets (never committed to git)
@@ -209,7 +211,7 @@ If you want to host on `https://<username>.github.io` while keeping your source 
   --ink:          #eef0f4;       /* Primary text */
   --ink-dim:      #8d90a0;       /* Secondary text */
   --ink-faint:    #787c93;       /* Metadata / eyebrow text */
-  --red:          #ff2a5f;       /* Signature neon red accent */
+  --red:          #00ff00;       /* Signature neon green accent (customizable in developer settings) */
   --rail:         #363a63;       /* Timeline rail line */
   --success:      #22c07d;       /* Star & status green */
 }
