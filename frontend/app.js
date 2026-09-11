@@ -349,6 +349,19 @@
       }
     }
 
+    // 9.8 Qualifications
+    var qualRow = document.getElementById('rail-row-qualifications');
+    var isQualEnabled = (cfg.qualifications_enabled !== false);
+    var qualList = Array.isArray(cfg.qualifications) ? cfg.qualifications : [];
+    if (qualRow) {
+      if (isQualEnabled && qualList.length > 0) {
+        qualRow.style.display = '';
+        renderQualifications(qualList);
+      } else {
+        qualRow.style.display = 'none';
+      }
+    }
+
     // 10. Projects
     var projectsRow = document.getElementById('rail-row-projects');
     if (projectsRow) {
@@ -740,6 +753,60 @@
     container.innerHTML = html;
   }
 
+  /* ─── Qualifications Display ─── */
+  function renderQualifications(qualifications) {
+    var container = document.getElementById('qualifications-container');
+    if (!container) return;
+
+    var list = Array.isArray(qualifications) ? qualifications : [];
+    if (list.length === 0) {
+      container.innerHTML = '<div style="padding:16px 18px; font-size:0.78rem; color:var(--ink-faint); font-family:var(--font-mono);">No qualifications listed yet.</div>';
+      return;
+    }
+
+    var html = '<div class="qualifications-list">';
+    list.forEach(function (q) {
+      var title = (q.title || '').trim();
+      var issuer = (q.issuer || q.institution || '').trim();
+      var year = (q.year || q.duration || '').trim();
+      var tag = (q.tag || q.type || 'Degree').trim();
+      var desc = (q.description || '').trim();
+      var url = (q.url || '').trim();
+
+      html += '<div class="qual-item">';
+      html += '  <div class="qual-top-row">';
+      html += '    <span class="qual-tag">' + escapeHtml(tag) + '</span>';
+      if (year) {
+        html += '    <span class="qual-year">' + escapeHtml(year) + '</span>';
+      }
+      html += '  </div>';
+      if (title) {
+        html += '  <h3 class="qual-title">' + escapeHtml(title) + '</h3>';
+      }
+      if (issuer) {
+        html += '  <div class="qual-issuer">';
+        html += '    <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="flex-shrink:0;"><path d="M22 10v6M2 10l10-5 10 5-10 5z"/><path d="M6 12v5c3 3 9 3 12 0v-5"/></svg>';
+        html += '    <span>' + escapeHtml(issuer) + '</span>';
+        html += '  </div>';
+      }
+      if (desc) {
+        html += '  <p class="qual-desc">' + parseRichText(desc) + '</p>';
+      }
+      if (url) {
+        html += '  <div class="qual-action">';
+        html += '    <a href="' + escapeHtml(url) + '" target="_blank" rel="noopener noreferrer" class="qual-link">';
+        html += '      <span>Verify Credential</span>';
+        html += '      <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M7 17L17 7M17 7H7M17 7v10"/></svg>';
+        html += '    </a>';
+        html += '  </div>';
+      }
+      html += '</div>';
+    });
+    html += '</div>';
+
+    container.innerHTML = html;
+  }
+
   /* ─── Sync Config Links, Bio & Analytics ─── */
   if (typeof CONFIG !== 'undefined') {
     var siteName = CONFIG.site_name || 'khxaiyan';
@@ -786,6 +853,19 @@
         renderSkills(skillsList);
       } else {
         skillsRow.style.display = 'none';
+      }
+    }
+
+    /* Apply qualifications */
+    var qualRow = document.getElementById('rail-row-qualifications');
+    var isQualEnabled = (CONFIG.qualifications_enabled !== false);
+    var qualList = Array.isArray(CONFIG.qualifications) ? CONFIG.qualifications : [];
+    if (qualRow) {
+      if (isQualEnabled && qualList.length > 0) {
+        qualRow.style.display = '';
+        renderQualifications(qualList);
+      } else {
+        qualRow.style.display = 'none';
       }
     }
 
