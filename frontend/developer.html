@@ -500,15 +500,15 @@
 
     .swatch-delete-btn {
       position: absolute;
-      top: -4px;
-      right: -4px;
-      width: 15px;
-      height: 15px;
+      top: -6px;
+      right: -6px;
+      width: 18px;
+      height: 18px;
       border-radius: 50%;
       background: #ff2a5f;
       border: 1.5px solid var(--surface, #131319);
       color: #ffffff;
-      font-size: 11px;
+      font-size: 12px;
       line-height: 1;
       font-weight: 800;
       display: none;
@@ -519,10 +519,14 @@
       padding: 0;
       box-shadow: 0 2px 5px rgba(0, 0, 0, 0.6);
       transition: transform 0.15s ease, background 0.15s ease;
+      touch-action: manipulation;
+      user-select: none;
+      -webkit-user-select: none;
     }
 
-    .swatch-wrapper:hover .swatch-delete-btn {
-      display: flex;
+    .swatch-wrapper:hover .swatch-delete-btn,
+    .swatch-wrapper.active .swatch-delete-btn {
+      display: flex !important;
     }
 
     .swatch-delete-btn:hover {
@@ -2123,7 +2127,7 @@
           var isActive = (currentAccentColor || '').toLowerCase() === normColor;
 
           var wrap = document.createElement('div');
-          wrap.className = 'swatch-wrapper';
+          wrap.className = 'swatch-wrapper' + (isActive ? ' active' : '');
           wrap.setAttribute('data-color', normColor);
           wrap.style.cssText = 'position:relative; display:inline-flex; align-items:center; justify-content:center;';
 
@@ -2132,27 +2136,36 @@
           btn.className = 'accent-swatch-btn' + (isActive ? ' active' : '');
           btn.setAttribute('data-color', normColor);
           btn.style.cssText = 'width:32px; height:32px; min-width:32px; border-radius:50%; border:2px solid ' + (isActive ? '#ffffff' : 'var(--line)') + '; background:' + normColor + '; cursor:pointer; position:relative; display:inline-flex; align-items:center; justify-content:center; padding:0; outline:none; transition:transform 0.16s ease, border-color 0.16s ease, box-shadow 0.16s ease; flex-shrink:0;' + (isActive ? ' transform:scale(1.15); box-shadow:0 0 10px rgba(255,255,255,0.4); z-index:3;' : '');
-          btn.title = normColor + ' (Right-click to delete)';
+          btn.title = normColor + ' (Tap × or click Delete Color to remove)';
 
-          // Subtle floating delete badge (15px circle, hidden by default, only on hover)
+          // Subtle floating delete badge (18px circle, visible on active swatch & on hover)
           var delBadge = document.createElement('span');
           delBadge.className = 'swatch-delete-btn';
           delBadge.setAttribute('data-color', normColor);
           delBadge.title = 'Delete ' + normColor;
           delBadge.setAttribute('aria-label', 'Delete ' + normColor);
-          delBadge.style.cssText = 'position:absolute; top:-4px; right:-4px; width:15px; height:15px; border-radius:50%; background:#ff2a5f; color:#ffffff; font-size:11px; font-weight:800; line-height:1; display:none; align-items:center; justify-content:center; cursor:pointer; box-shadow:0 2px 5px rgba(0,0,0,0.6); z-index:10; border:1.5px solid var(--surface, #131319);';
+          delBadge.style.cssText = 'position:absolute; top:-6px; right:-6px; width:18px; height:18px; border-radius:50%; background:#ff2a5f; color:#ffffff; font-size:12px; font-weight:800; line-height:1; display:' + (isActive ? 'flex' : 'none') + '; align-items:center; justify-content:center; cursor:pointer; box-shadow:0 2px 5px rgba(0,0,0,0.6); z-index:10; border:1.5px solid var(--surface, #131319); touch-action:manipulation;';
           delBadge.innerHTML = '&times;';
 
           wrap.onmouseenter = function () {
             delBadge.style.display = 'flex';
           };
           wrap.onmouseleave = function () {
-            delBadge.style.display = 'none';
+            if (!wrap.classList.contains('active')) {
+              delBadge.style.display = 'none';
+            }
           };
           wrap.oncontextmenu = function (e) {
             e.preventDefault();
             deletePaletteColor(normColor);
           };
+
+          // Direct touch delete on badge for mobile phones
+          delBadge.addEventListener('touchend', function (e) {
+            e.preventDefault();
+            e.stopPropagation();
+            deletePaletteColor(normColor);
+          });
 
           wrap.appendChild(btn);
           wrap.appendChild(delBadge);
@@ -2222,10 +2235,9 @@
           currentPalette.splice(idx, 1);
           savePalette();
           if ((currentAccentColor || '').toLowerCase() === norm) {
-            setAccentColor(currentPalette[0]);
-          } else {
-            renderAccentSwatches();
+            setAccentColor(currentPalette[0] || '#00ff00');
           }
+          renderAccentSwatches();
         }
       }
 
@@ -2311,18 +2323,25 @@
         var swatches = document.querySelectorAll('#accent-swatches-container .accent-swatch-btn');
         swatches.forEach(function (btn) {
           var c = (btn.getAttribute('data-color') || '').toLowerCase();
-          if (c === (accent || '').toLowerCase()) {
+          var isMatch = c === (accent || '').toLowerCase();
+          var wrap = btn.closest('.swatch-wrapper');
+          var del = wrap ? wrap.querySelector('.swatch-delete-btn') : null;
+          if (isMatch) {
             btn.classList.add('active');
             btn.style.borderColor = '#ffffff';
             btn.style.boxShadow = '0 0 10px rgba(255,255,255,0.4)';
             btn.style.transform = 'scale(1.15)';
             btn.style.zIndex = '3';
+            if (wrap) wrap.classList.add('active');
+            if (del) del.style.display = 'flex';
           } else {
             btn.classList.remove('active');
             btn.style.borderColor = 'var(--line)';
             btn.style.boxShadow = 'none';
             btn.style.transform = 'scale(1)';
             btn.style.zIndex = '';
+            if (wrap) wrap.classList.remove('active');
+            if (del) del.style.display = 'none';
           }
         });
 
@@ -2450,6 +2469,12 @@
         btnDeleteCurrentColor.addEventListener('click', function () {
           if (currentAccentColor) {
             deletePaletteColor(currentAccentColor);
+            var span = btnDeleteCurrentColor.querySelector('span');
+            if (span) {
+              var oldText = span.textContent;
+              span.textContent = 'Deleted!';
+              setTimeout(function () { span.textContent = oldText; }, 1200);
+            }
           }
         });
       }

@@ -5,8 +5,8 @@ if (typeof window !== 'undefined') {
   "telegram": "khxaiyan",
   "email": "[EMAIL_ADDRESS]",
   "social_links": [],
-  "logo": "https://res.cloudinary.com/dqxccz5bn/image/upload/profile_icon_wf7thb.svg",
-  "avatar_url": "https://res.cloudinary.com/dqxccz5bn/image/upload/profile_icon_wf7thb.svg",
+  "logo": "https://avatars.githubusercontent.com/u/225553218?v=4",
+  "avatar_url": "https://avatars.githubusercontent.com/u/225553218?v=4",
   "favicon_url": "https://res.cloudinary.com/dqxccz5bn/image/upload/favicon_jzygcw.png",
   "site_name": "khxaiyan",
   "accent_letter": "x",
@@ -61,7 +61,7 @@ if (typeof window !== 'undefined') {
     "hotel m": "https://github.com/Blue-SkyStar/hotel_m"
   },
   "default_theme": "dark",
-  "accent_color": "#00ff00",
+  "accent_color": "#ff2a5f",
   "accent_palette": [
     "#ff2a5f",
     "#00f0ff",
@@ -71,14 +71,13 @@ if (typeof window !== 'undefined') {
     "#ff5722",
     "#3b82f6",
     "#ec4899",
-    "#00ff00"
+    "#e2e8f0"
   ],
   "font_family": "Space Grotesk",
   "font_scope": "all",
   "theme_config": {
     "mode": "dark",
-    "accent_color": "#00ff00",
-    "bg_preset": "midnight",
+    "accent_color": "#ff2a5f",
     "accent_palette": [
       "#ff2a5f",
       "#00f0ff",
@@ -88,8 +87,9 @@ if (typeof window !== 'undefined') {
       "#ff5722",
       "#3b82f6",
       "#ec4899",
-      "#00ff00"
+      "#e2e8f0"
     ],
+    "bg_preset": "midnight",
     "font_family": "Space Grotesk",
     "font_scope": "all"
   },
@@ -99,10 +99,7 @@ if (typeof window !== 'undefined') {
   "cloudinary_cloud_name": "dqxccz5bn",
   "cloudinary_upload_preset": "myportfolioa",
   "clerk_publishable_key": "pk_test_c2hpbmluZy10dXJrZXktMTMyNS5jbGVyay5hY2NvdW50cy5kZXYk",
-  "clerk_frontend_api": "https://shining-turkey-1325.clerk.accounts.dev",
-  "authorized_users": [
-    "ayankhan84510@gmail.com"
-  ]
+  "clerk_frontend_api": "https://shining-turkey-1325.clerk.accounts.dev"
 });
 }
 var CONFIG = (typeof window !== 'undefined' && window.CONFIG) ? window.CONFIG : {
@@ -111,8 +108,8 @@ var CONFIG = (typeof window !== 'undefined' && window.CONFIG) ? window.CONFIG : 
   "telegram": "khxaiyan",
   "email": "[EMAIL_ADDRESS]",
   "social_links": [],
-  "logo": "https://res.cloudinary.com/dqxccz5bn/image/upload/profile_icon_wf7thb.svg",
-  "avatar_url": "https://res.cloudinary.com/dqxccz5bn/image/upload/profile_icon_wf7thb.svg",
+  "logo": "https://avatars.githubusercontent.com/u/225553218?v=4",
+  "avatar_url": "https://avatars.githubusercontent.com/u/225553218?v=4",
   "favicon_url": "https://res.cloudinary.com/dqxccz5bn/image/upload/favicon_jzygcw.png",
   "site_name": "khxaiyan",
   "accent_letter": "x",
@@ -167,7 +164,7 @@ var CONFIG = (typeof window !== 'undefined' && window.CONFIG) ? window.CONFIG : 
     "hotel m": "https://github.com/Blue-SkyStar/hotel_m"
   },
   "default_theme": "dark",
-  "accent_color": "#00ff00",
+  "accent_color": "#ff2a5f",
   "accent_palette": [
     "#ff2a5f",
     "#00f0ff",
@@ -177,14 +174,13 @@ var CONFIG = (typeof window !== 'undefined' && window.CONFIG) ? window.CONFIG : 
     "#ff5722",
     "#3b82f6",
     "#ec4899",
-    "#00ff00"
+    "#e2e8f0"
   ],
   "font_family": "Space Grotesk",
   "font_scope": "all",
   "theme_config": {
     "mode": "dark",
-    "accent_color": "#00ff00",
-    "bg_preset": "midnight",
+    "accent_color": "#ff2a5f",
     "accent_palette": [
       "#ff2a5f",
       "#00f0ff",
@@ -194,8 +190,9 @@ var CONFIG = (typeof window !== 'undefined' && window.CONFIG) ? window.CONFIG : 
       "#ff5722",
       "#3b82f6",
       "#ec4899",
-      "#00ff00"
+      "#e2e8f0"
     ],
+    "bg_preset": "midnight",
     "font_family": "Space Grotesk",
     "font_scope": "all"
   },
@@ -205,8 +202,5 @@ var CONFIG = (typeof window !== 'undefined' && window.CONFIG) ? window.CONFIG : 
   "cloudinary_cloud_name": "dqxccz5bn",
   "cloudinary_upload_preset": "myportfolioa",
   "clerk_publishable_key": "pk_test_c2hpbmluZy10dXJrZXktMTMyNS5jbGVyay5hY2NvdW50cy5kZXYk",
-  "clerk_frontend_api": "https://shining-turkey-1325.clerk.accounts.dev",
-  "authorized_users": [
-    "ayankhan84510@gmail.com"
-  ]
+  "clerk_frontend_api": "https://shining-turkey-1325.clerk.accounts.dev"
 };

@@ -1582,15 +1582,15 @@ select, option, optgroup {
 
 .swatch-delete-btn {
   position: absolute;
-  top: -4px;
-  right: -4px;
-  width: 15px;
-  height: 15px;
+  top: -6px;
+  right: -6px;
+  width: 18px;
+  height: 18px;
   border-radius: 50%;
   background: #ff2a5f;
   border: 1.5px solid var(--surface, #131319);
   color: #ffffff;
-  font-size: 11px;
+  font-size: 12px;
   line-height: 1;
   font-weight: 800;
   display: none;
@@ -1601,10 +1601,14 @@ select, option, optgroup {
   padding: 0;
   box-shadow: 0 2px 5px rgba(0, 0, 0, 0.6);
   transition: transform 0.15s ease, background 0.15s ease;
+  touch-action: manipulation;
+  user-select: none;
+  -webkit-user-select: none;
 }
 
-.swatch-wrapper:hover .swatch-delete-btn {
-  display: flex;
+.swatch-wrapper:hover .swatch-delete-btn,
+.swatch-wrapper.active .swatch-delete-btn {
+  display: flex !important;
 }
 
 .swatch-delete-btn:hover {
