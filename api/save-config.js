@@ -74,7 +74,7 @@ module.exports = async function handler(req, res) {
       mongodb: savedToMongo,
       pushed: false,
       message: savedToMongo
-        ? '✓ Configuration saved to MongoDB instantly! (No git push needed)'
+        ? '✓ Configuration saved to MongoDB instantly!'
         : (mongoError ? `Saved locally (MongoDB: ${mongoError})` : 'Saved successfully!')
     });
   } catch (err) {

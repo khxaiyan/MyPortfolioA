@@ -1999,6 +1999,115 @@ select, option, optgroup {
   color: #fff;
 }
 
+/* ── Devices Section ── */
+.devices-list {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: 14px;
+  padding: 16px 18px;
+}
+
+.device-card {
+  background: var(--surface-hover, #191a22);
+  border: 1px solid var(--line, rgba(255, 255, 255, 0.08));
+  border-radius: var(--radius, 12px);
+  padding: 14px 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+  position: relative;
+}
+
+.device-card:hover {
+  border-color: var(--red, #ff2a5f);
+  box-shadow: 0 0 14px var(--border-accent-glow, rgba(255, 42, 95, 0.15));
+  transform: translateY(-2px);
+}
+
+.device-top-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+}
+
+.device-icon-box {
+  width: 34px;
+  height: 34px;
+  border-radius: 8px;
+  background: var(--red-dim, rgba(255, 42, 95, 0.1));
+  border: 1px solid var(--border-accent, rgba(255, 42, 95, 0.25));
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--red, #ff2a5f);
+  flex-shrink: 0;
+}
+
+.device-tag {
+  display: inline-flex;
+  align-items: center;
+  font-size: 0.68rem;
+  font-family: var(--font-mono, monospace);
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  color: var(--red, #ff2a5f);
+  background: var(--red-dim, rgba(255, 42, 95, 0.12));
+  border: 1px solid var(--border-accent, rgba(255, 42, 95, 0.3));
+  border-radius: 12px;
+  padding: 2px 8px;
+}
+
+.device-name {
+  margin: 0;
+  font-family: var(--font-display, sans-serif);
+  font-size: 0.94rem;
+  font-weight: 700;
+  color: var(--ink, #eef0f4);
+  line-height: 1.35;
+}
+
+.device-specs {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 0.76rem;
+  color: var(--ink-dim, #8d90a0);
+  font-family: var(--font-mono, monospace);
+  line-height: 1.4;
+}
+
+.device-desc {
+  margin: 0;
+  font-size: 0.78rem;
+  color: var(--ink-faint, #636674);
+  line-height: 1.5;
+}
+
+.device-action {
+  margin-top: 4px;
+}
+
+.device-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  font-size: 0.74rem;
+  font-family: var(--font-mono, monospace);
+  font-weight: 600;
+  color: var(--red, #ff2a5f);
+  text-decoration: none;
+  transition: color 0.15s ease;
+}
+
+.device-link:hover {
+  text-decoration: underline;
+  color: #fff;
+}
+
+
 /* ── Switch Toggle (Reusable for Developer Dashboard) ── */
 .switch-label {
   display: inline-flex;

@@ -245,6 +245,7 @@
     }
   }
 
+
   /* ─── Universal Live Configuration Hydration ─── */
   function applyFullConfig(cfg) {
     if (!cfg || typeof cfg !== 'object') return;
@@ -369,6 +370,18 @@
     }
     if (Array.isArray(cfg.projects) && cfg.projects.length > 0) {
       renderProjects(cfg.projects);
+    }
+
+    // 10.5 Devices
+    var devicesRow = document.getElementById('rail-row-devices');
+    var devicesList = Array.isArray(cfg.devices) ? cfg.devices : [];
+    if (devicesRow) {
+      if (cfg.devices_enabled !== false && devicesList.length > 0) {
+        devicesRow.style.display = '';
+        renderDevices(devicesList);
+      } else {
+        devicesRow.style.display = 'none';
+      }
     }
 
     // 11. Channel / Social links (Reach)
@@ -983,6 +996,77 @@
     container.innerHTML = html;
   }
 
+  /* ─── Devices Display ─── */
+  function getDeviceIcon(typeOrIcon) {
+    var raw = (typeOrIcon || '').toLowerCase().trim();
+    if (raw.indexOf(':') !== -1) return raw;
+    if (raw.indexOf('laptop') !== -1 || raw.indexOf('notebook') !== -1 || raw.indexOf('macbook') !== -1) return 'lucide:laptop';
+    if (raw.indexOf('phone') !== -1 || raw.indexOf('mobile') !== -1 || raw.indexOf('android') !== -1 || raw.indexOf('iphone') !== -1) return 'lucide:smartphone';
+    if (raw.indexOf('monitor') !== -1 || raw.indexOf('display') !== -1 || raw.indexOf('screen') !== -1) return 'lucide:monitor';
+    if (raw.indexOf('keyboard') !== -1) return 'lucide:keyboard';
+    if (raw.indexOf('mouse') !== -1) return 'lucide:mouse';
+    if (raw.indexOf('audio') !== -1 || raw.indexOf('headphone') !== -1 || raw.indexOf('earbud') !== -1) return 'lucide:headphones';
+    if (raw.indexOf('tablet') !== -1 || raw.indexOf('ipad') !== -1) return 'lucide:tablet';
+    if (raw.indexOf('watch') !== -1) return 'lucide:watch';
+    if (raw.indexOf('desktop') !== -1 || raw.indexOf('pc') !== -1 || raw.indexOf('rig') !== -1 || raw.indexOf('tower') !== -1) return 'lucide:cpu';
+    return 'lucide:laptop';
+  }
+
+  function renderDevices(devices) {
+    var container = document.getElementById('devices-container');
+    if (!container) return;
+
+    var list = Array.isArray(devices) ? devices : [];
+    if (list.length === 0) {
+      container.innerHTML = '<div style="padding:16px 18px; font-size:0.78rem; color:var(--ink-faint); font-family:var(--font-mono);">No devices listed yet.</div>';
+      return;
+    }
+
+    var html = '<div class="devices-list">';
+    list.forEach(function (d) {
+      var name = (d.name || d.title || '').trim();
+      var type = (d.type || d.category || 'Device').trim();
+      var specs = (d.specs || d.model || '').trim();
+      var tag = (d.tag || type || 'Gear').trim();
+      var desc = (d.description || '').trim();
+      var url = (d.url || '').trim();
+      var icon = getDeviceIcon(d.icon || type);
+
+      html += '<div class="device-card">';
+      html += '  <div class="device-top-row">';
+      html += '    <div class="device-icon-box">';
+      html += '      <iconify-icon icon="' + escapeHtml(icon) + '" width="18" height="18"></iconify-icon>';
+      html += '    </div>';
+      if (tag) {
+        html += '    <span class="device-tag">' + escapeHtml(tag) + '</span>';
+      }
+      html += '  </div>';
+      if (name) {
+        html += '  <h3 class="device-name">' + escapeHtml(name) + '</h3>';
+      }
+      if (specs) {
+        html += '  <div class="device-specs">';
+        html += '    <span>' + escapeHtml(specs) + '</span>';
+        html += '  </div>';
+      }
+      if (desc) {
+        html += '  <p class="device-desc">' + parseRichText(desc) + '</p>';
+      }
+      if (url) {
+        html += '  <div class="device-action">';
+        html += '    <a href="' + escapeHtml(url) + '" target="_blank" rel="noopener noreferrer" class="device-link">';
+        html += '      <span>View Specs</span>';
+        html += '      <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M7 17L17 7H7M17 7v10"/></svg>';
+        html += '    </a>';
+        html += '  </div>';
+      }
+      html += '</div>';
+    });
+    html += '</div>';
+
+    container.innerHTML = html;
+  }
+
   /* ─── Sync Config Links, Bio & Analytics ─── */
   if (typeof CONFIG !== 'undefined') {
     var siteName = CONFIG.site_name || 'khxaiyan';
@@ -1049,6 +1133,18 @@
     var projectsRow = document.getElementById('rail-row-projects');
     if (projectsRow && CONFIG.projects_enabled === false) {
       projectsRow.style.display = 'none';
+    }
+
+    /* Apply devices */
+    var devicesRow = document.getElementById('rail-row-devices');
+    var devicesList = Array.isArray(CONFIG.devices) ? CONFIG.devices : [];
+    if (devicesRow) {
+      if (CONFIG.devices_enabled !== false && devicesList.length > 0) {
+        devicesRow.style.display = '';
+        renderDevices(devicesList);
+      } else {
+        devicesRow.style.display = 'none';
+      }
     }
 
     /* Apply reach */
@@ -2523,7 +2619,7 @@
           if (!saveStatus) return;
           saveStatus.style.color = '#10b981';
           if (res && res.mongodb) {
-            saveStatus.textContent = '✓ Changes saved to MongoDB! (Live instantly without git push)';
+            saveStatus.textContent = '✓ Changes saved to MongoDB!';
           } else if (res && res.message) {
             saveStatus.textContent = res.message;
           } else {

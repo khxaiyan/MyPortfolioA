@@ -232,10 +232,10 @@
       justify-content: center;
       width: 20px;
       height: 16px;
-      background: var(--surface-hover, rgba(255,255,255,0.04));
-      border: 1px solid var(--line, rgba(255,255,255,0.08));
+      background: var(--surface-hover, rgba(255, 255, 255, 0.04));
+      border: 1px solid var(--line, rgba(255, 255, 255, 0.08));
       border-radius: 4px;
-      color: var(--ink-faint, rgba(255,255,255,0.3));
+      color: var(--ink-faint, rgba(255, 255, 255, 0.3));
       font-size: 11px;
       line-height: 1;
       cursor: pointer;
@@ -244,7 +244,7 @@
     }
 
     .rail-order-btn:hover {
-      background: var(--red-dim, rgba(255,42,95,0.15));
+      background: var(--red-dim, rgba(255, 42, 95, 0.15));
       border-color: var(--red, #ff2a5f);
       color: var(--red, #ff2a5f);
     }
@@ -610,18 +610,23 @@
       .field-grid-2 {
         grid-template-columns: 1fr;
       }
+
       .switch-label span:not(.switch-slider) {
         display: none !important;
       }
+
       .switch-label {
         gap: 0 !important;
       }
+
       .btn-sync-text {
         display: none !important;
       }
+
       #btn-sync-projects-github {
         padding: 4px 7px !important;
       }
+
       .cust-projects-sync-wrap {
         margin-left: auto !important;
       }
@@ -720,7 +725,8 @@
       box-shadow: 0 0 12px var(--border-accent-glow, rgba(255, 42, 95, 0.12));
     }
 
-    .cust-section .m-qual-card {
+    .cust-section .m-qual-card,
+    .cust-section .m-device-card {
       background: var(--surface);
       border: 1px solid var(--line);
       border-radius: var(--radius);
@@ -733,7 +739,9 @@
     }
 
     .cust-section .m-qual-card:hover,
-    .cust-section .m-qual-card:focus-within {
+    .cust-section .m-qual-card:focus-within,
+    .cust-section .m-device-card:hover,
+    .cust-section .m-device-card:focus-within {
       border-color: var(--border-accent, rgba(255, 42, 95, 0.45));
       box-shadow: 0 0 12px var(--border-accent-glow, rgba(255, 42, 95, 0.12));
     }
@@ -877,9 +885,14 @@
 <body>
   <noscript>
     <style>
-      main.sheet, #scroll-progress, .cust-header, .auth-box, #dev-toast {
+      main.sheet,
+      #scroll-progress,
+      .cust-header,
+      .auth-box,
+      #dev-toast {
         display: none !important;
       }
+
       .noscript-error-screen {
         position: fixed;
         top: 0;
@@ -899,6 +912,7 @@
         box-sizing: border-box;
         font-family: var(--font-display, 'Space Grotesk', -apple-system, sans-serif);
       }
+
       .noscript-badge {
         display: inline-flex;
         align-items: center;
@@ -914,6 +928,7 @@
         font-family: var(--font-mono, 'IBM Plex Mono', monospace);
         text-transform: uppercase;
       }
+
       .noscript-code {
         font-size: 5.5rem;
         font-weight: 800;
@@ -922,10 +937,12 @@
         letter-spacing: -0.04em;
         margin: 8px 0 0 0;
       }
+
       .noscript-code .glyph-5 {
         color: var(--red, #ff2a5f);
         text-shadow: 0 0 24px var(--border-accent, rgba(255, 42, 95, 0.45));
       }
+
       .noscript-title {
         font-size: 1.8rem;
         font-weight: 700;
@@ -933,6 +950,7 @@
         letter-spacing: -0.02em;
         margin: 0;
       }
+
       .noscript-msg {
         font-size: 0.95rem;
         color: var(--ink-dim, #8d90a0);
@@ -944,13 +962,18 @@
     </style>
     <div class="noscript-error-screen">
       <div class="noscript-badge">
-        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><line x1="4.93" y1="4.93" x2="19.07" y2="19.07"/></svg>
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+          stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+          <circle cx="12" cy="12" r="10" />
+          <line x1="4.93" y1="4.93" x2="19.07" y2="19.07" />
+        </svg>
         <span>scripts blocked</span>
       </div>
       <h1 class="noscript-code">40<span class="glyph-5">4</span></h1>
       <h2 class="noscript-title">Don't Do That</h2>
       <p class="noscript-msg">
-        JavaScript is blocked in your browser. Please disable &ldquo;Block scripts&rdquo; in Brave Shields or your ad-blocker to view this page.
+        JavaScript is blocked in your browser. Please disable &ldquo;Block scripts&rdquo; in Brave Shields or your
+        ad-blocker to view this page.
       </p>
     </div>
   </noscript>
@@ -1015,11 +1038,14 @@
     <div id="customizer-sections" style="display:none;">
 
       <!-- Quick Expand / Collapse All Controls -->
-      <div style="display:flex; align-items:center; justify-content:space-between; margin-bottom:14px; padding-bottom:10px; border-bottom:1px solid var(--line);">
+      <div
+        style="display:flex; align-items:center; justify-content:space-between; margin-bottom:14px; padding-bottom:10px; border-bottom:1px solid var(--line);">
         <span style="font-size:0.75rem; color:var(--ink-faint); font-family:var(--font-mono);">// sections menu</span>
         <div style="display:flex; gap:6px;">
-          <button type="button" id="btn-expand-all" class="toolbar-btn" style="font-size:0.7rem; padding:3px 10px; border-radius:12px; cursor:pointer;">Expand All</button>
-          <button type="button" id="btn-collapse-all" class="toolbar-btn" style="font-size:0.7rem; padding:3px 10px; border-radius:12px; cursor:pointer;">Collapse All</button>
+          <button type="button" id="btn-expand-all" class="toolbar-btn"
+            style="font-size:0.7rem; padding:3px 10px; border-radius:12px; cursor:pointer;">Expand All</button>
+          <button type="button" id="btn-collapse-all" class="toolbar-btn"
+            style="font-size:0.7rem; padding:3px 10px; border-radius:12px; cursor:pointer;">Collapse All</button>
         </div>
       </div>
 
@@ -1028,7 +1054,8 @@
         <div id="cust-favicon-toggle" class="accordion-eyebrow-toggle" role="button" tabindex="0" aria-expanded="false"
           aria-controls="cust-favicon-card"
           style="display:inline-flex; align-items:center; gap:7px; cursor:pointer; user-select:none; margin-bottom:8px;">
-          <p class="eyebrow" style="margin:0; cursor:pointer; color:var(--ink-dim); transition:color 0.15s;">// favicon</p>
+          <p class="eyebrow" style="margin:0; cursor:pointer; color:var(--ink-dim); transition:color 0.15s;">// favicon
+          </p>
           <svg id="cust-favicon-chevron" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor"
             stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"
             style="color:var(--ink-faint); transition:transform 0.22s cubic-bezier(0.4, 0, 0.2, 1), color 0.15s; transform:rotate(-90deg);">
@@ -1132,7 +1159,8 @@
         <div id="cust-avatar-toggle" class="accordion-eyebrow-toggle" role="button" tabindex="0" aria-expanded="false"
           aria-controls="cust-avatar-card"
           style="display:inline-flex; align-items:center; gap:7px; cursor:pointer; user-select:none; margin-bottom:8px;">
-          <p class="eyebrow" style="margin:0; cursor:pointer; color:var(--ink-dim); transition:color 0.15s;">// avatar</p>
+          <p class="eyebrow" style="margin:0; cursor:pointer; color:var(--ink-dim); transition:color 0.15s;">// avatar
+          </p>
           <svg id="cust-avatar-chevron" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor"
             stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"
             style="color:var(--ink-faint); transition:transform 0.22s cubic-bezier(0.4, 0, 0.2, 1), color 0.15s; transform:rotate(-90deg);">
@@ -1221,7 +1249,8 @@
         <div id="cust-identity-toggle" class="accordion-eyebrow-toggle" role="button" tabindex="0" aria-expanded="false"
           aria-controls="cust-identity-card"
           style="display:inline-flex; align-items:center; gap:7px; cursor:pointer; user-select:none; margin-bottom:8px;">
-          <p class="eyebrow" style="margin:0; cursor:pointer; color:var(--ink-dim); transition:color 0.15s;">// identity</p>
+          <p class="eyebrow" style="margin:0; cursor:pointer; color:var(--ink-dim); transition:color 0.15s;">// identity
+          </p>
           <svg id="cust-identity-chevron" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor"
             stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"
             style="color:var(--ink-faint); transition:transform 0.22s cubic-bezier(0.4, 0, 0.2, 1), color 0.15s; transform:rotate(-90deg);">
@@ -1276,21 +1305,21 @@
         </div>
       </div>
 
-      <!-- ── Railway Section Order (drag-free reorder) ── -->
-      <div id="railway-order-list">
-
+      <!-- ── Railway Timeline Sections (orderable) ── -->
       <!-- 4. // intro -->
       <div class="cust-section rail-orderable" data-section-key="intro">
-        <div style="display:flex; align-items:center; justify-content:space-between; margin-bottom:8px; flex-wrap:wrap; gap:8px;">
+        <div
+          style="display:flex; align-items:center; justify-content:space-between; margin-bottom:8px; flex-wrap:wrap; gap:8px;">
           <div style="display:flex; align-items:center; gap:6px;">
             <div class="rail-order-btns">
               <button type="button" class="rail-order-btn" data-dir="up" title="Move up">&#8679;</button>
               <button type="button" class="rail-order-btn" data-dir="down" title="Move down">&#8681;</button>
             </div>
-            <div id="cust-intro-toggle" class="accordion-eyebrow-toggle" role="button" tabindex="0" aria-expanded="false"
-              aria-controls="cust-intro-card"
+            <div id="cust-intro-toggle" class="accordion-eyebrow-toggle" role="button" tabindex="0"
+              aria-expanded="false" aria-controls="cust-intro-card"
               style="display:inline-flex; align-items:center; gap:7px; cursor:pointer; user-select:none;">
-              <p class="eyebrow" style="margin:0; cursor:pointer; color:var(--ink-dim); transition:color 0.15s;">// intro</p>
+              <p class="eyebrow" style="margin:0; cursor:pointer; color:var(--ink-dim); transition:color 0.15s;">//
+                intro</p>
               <svg id="cust-intro-chevron" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor"
                 stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"
                 style="color:var(--ink-faint); transition:transform 0.22s cubic-bezier(0.4, 0, 0.2, 1), color 0.15s; transform:rotate(-90deg);">
@@ -1298,7 +1327,8 @@
               </svg>
             </div>
           </div>
-          <label class="switch-label" title="Toggle visibility of intro section on the railway line" onclick="event.stopPropagation();">
+          <label class="switch-label" title="Toggle visibility of intro section on the railway line"
+            onclick="event.stopPropagation();">
             <span style="font-size:0.75rem; color:var(--ink-dim); font-family:var(--font-mono);">Show on timeline</span>
             <input type="checkbox" id="cust-intro-enabled" class="switch-input" checked>
             <span class="switch-slider"></span>
@@ -1332,16 +1362,18 @@
 
       <!-- 5. // skills -->
       <div class="cust-section rail-orderable" data-section-key="skills">
-        <div style="display:flex; align-items:center; justify-content:space-between; margin-bottom:8px; flex-wrap:wrap; gap:8px;">
+        <div
+          style="display:flex; align-items:center; justify-content:space-between; margin-bottom:8px; flex-wrap:wrap; gap:8px;">
           <div style="display:flex; align-items:center; gap:6px;">
             <div class="rail-order-btns">
               <button type="button" class="rail-order-btn" data-dir="up" title="Move up">&#8679;</button>
               <button type="button" class="rail-order-btn" data-dir="down" title="Move down">&#8681;</button>
             </div>
-            <div id="cust-skills-toggle" class="accordion-eyebrow-toggle" role="button" tabindex="0" aria-expanded="false"
-              aria-controls="cust-skills-card"
+            <div id="cust-skills-toggle" class="accordion-eyebrow-toggle" role="button" tabindex="0"
+              aria-expanded="false" aria-controls="cust-skills-card"
               style="display:inline-flex; align-items:center; gap:7px; cursor:pointer; user-select:none;">
-              <p class="eyebrow" style="margin:0; cursor:pointer; color:var(--ink-dim); transition:color 0.15s;">// skills</p>
+              <p class="eyebrow" style="margin:0; cursor:pointer; color:var(--ink-dim); transition:color 0.15s;">//
+                skills</p>
               <svg id="cust-skills-chevron" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor"
                 stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"
                 style="color:var(--ink-faint); transition:transform 0.22s cubic-bezier(0.4, 0, 0.2, 1), color 0.15s; transform:rotate(-90deg);">
@@ -1349,7 +1381,8 @@
               </svg>
             </div>
           </div>
-          <label class="switch-label" title="Toggle visibility of skills section on the railway line" onclick="event.stopPropagation();">
+          <label class="switch-label" title="Toggle visibility of skills section on the railway line"
+            onclick="event.stopPropagation();">
             <span style="font-size:0.75rem; color:var(--ink-dim); font-family:var(--font-mono);">Show on timeline</span>
             <input type="checkbox" id="cust-skills-enabled" class="switch-input" checked>
             <span class="switch-slider"></span>
@@ -1357,12 +1390,14 @@
         </div>
         <div class="surface-card cust-card" id="cust-skills-card" style="display:none; margin-top:2px;">
           <p style="font-size:0.73rem; color:var(--ink-faint); margin:0 0 12px 0;">
-            Manage the skills and technologies displayed on your portfolio timeline. Type a skill and press Enter or click <b>Add</b>.
+            Manage the skills and technologies displayed on your portfolio timeline. Type a skill and press Enter or
+            click <b>Add</b>.
           </p>
 
           <!-- Input + Add Button -->
           <div style="display:flex; gap:8px; margin-bottom:12px;">
-            <input type="text" class="field-input" id="cust-skill-input" placeholder="e.g. TypeScript, React, Docker..." style="flex:1;">
+            <input type="text" class="field-input" id="cust-skill-input" placeholder="e.g. TypeScript, React, Docker..."
+              style="flex:1;">
             <button type="button" id="btn-add-skill" class="toolbar-btn"
               style="padding:0 18px; background:var(--red-solid); color:#fff; border:none; font-weight:500; font-size:0.78rem; white-space:nowrap; border-radius:var(--radius-sm); cursor:pointer;">
               + Add Skill
@@ -1387,8 +1422,10 @@
           <!-- Active Skills Chips Container -->
           <div style="border-top:1px solid var(--line); padding-top:12px;">
             <div style="display:flex; align-items:center; justify-content:space-between; margin-bottom:6px;">
-              <span class="field-label" style="margin:0; font-weight:600; color:var(--ink);">Active Skills (<span id="cust-skills-count">0</span>)</span>
-              <button type="button" id="btn-clear-skills" class="toolbar-btn" style="font-size:0.68rem; padding:2px 8px; color:var(--ink-faint);">Clear All</button>
+              <span class="field-label" style="margin:0; font-weight:600; color:var(--ink);">Active Skills (<span
+                  id="cust-skills-count">0</span>)</span>
+              <button type="button" id="btn-clear-skills" class="toolbar-btn"
+                style="font-size:0.68rem; padding:2px 8px; color:var(--ink-faint);">Clear All</button>
             </div>
             <div id="cust-skills-list" class="skills-chips-grid">
               <!-- Rendered dynamically -->
@@ -1399,31 +1436,35 @@
 
       <!-- 6. // qualifications -->
       <div class="cust-section rail-orderable" data-section-key="qualifications">
-        <div style="display:flex; align-items:center; justify-content:space-between; margin-bottom:8px; flex-wrap:wrap; gap:8px;">
+        <div
+          style="display:flex; align-items:center; justify-content:space-between; margin-bottom:8px; flex-wrap:wrap; gap:8px;">
           <div style="display:flex; align-items:center; gap:6px;">
             <div class="rail-order-btns">
               <button type="button" class="rail-order-btn" data-dir="up" title="Move up">&#8679;</button>
               <button type="button" class="rail-order-btn" data-dir="down" title="Move down">&#8681;</button>
             </div>
-            <div id="cust-qualifications-toggle" class="accordion-eyebrow-toggle" role="button" tabindex="0" aria-expanded="false"
-              aria-controls="cust-qualifications-card"
+            <div id="cust-qualifications-toggle" class="accordion-eyebrow-toggle" role="button" tabindex="0"
+              aria-expanded="false" aria-controls="cust-qualifications-card"
               style="display:inline-flex; align-items:center; gap:7px; cursor:pointer; user-select:none;">
-              <p class="eyebrow" style="margin:0; cursor:pointer; color:var(--ink-dim); transition:color 0.15s;">// qualifications</p>
-              <svg id="cust-qualifications-chevron" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor"
-                stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"
+              <p class="eyebrow" style="margin:0; cursor:pointer; color:var(--ink-dim); transition:color 0.15s;">//
+                qualifications</p>
+              <svg id="cust-qualifications-chevron" width="13" height="13" viewBox="0 0 24 24" fill="none"
+                stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"
                 style="color:var(--ink-faint); transition:transform 0.22s cubic-bezier(0.4, 0, 0.2, 1), color 0.15s; transform:rotate(-90deg);">
                 <path d="m6 9 6 6 6-6" />
               </svg>
             </div>
           </div>
-          <label class="switch-label" title="Toggle visibility of qualifications section on the railway line" onclick="event.stopPropagation();">
+          <label class="switch-label" title="Toggle visibility of qualifications section on the railway line"
+            onclick="event.stopPropagation();">
             <span style="font-size:0.75rem; color:var(--ink-dim); font-family:var(--font-mono);">Show on timeline</span>
             <input type="checkbox" id="cust-qualifications-enabled" class="switch-input" checked>
             <span class="switch-slider"></span>
           </label>
         </div>
         <div class="surface-card cust-card" id="cust-qualifications-card" style="display:none; margin-top:2px;">
-          <div style="display:flex; align-items:center; justify-content:space-between; margin-bottom:12px; gap:8px; flex-wrap:wrap;">
+          <div
+            style="display:flex; align-items:center; justify-content:space-between; margin-bottom:12px; gap:8px; flex-wrap:wrap;">
             <p style="font-size:0.72rem; color:var(--ink-faint); margin:0;">
               Manage degrees, certifications, education, and credentials displayed on your portfolio timeline.
             </p>
@@ -1442,36 +1483,42 @@
 
       <!-- 7. // projects -->
       <div class="cust-section rail-orderable" data-section-key="projects">
-        <div style="display:flex; align-items:center; justify-content:space-between; margin-bottom:8px; flex-wrap:wrap; gap:8px;">
+        <div
+          style="display:flex; align-items:center; justify-content:space-between; margin-bottom:8px; flex-wrap:wrap; gap:8px;">
           <div style="display:flex; align-items:center; gap:6px;">
             <div class="rail-order-btns">
               <button type="button" class="rail-order-btn" data-dir="up" title="Move up">&#8679;</button>
               <button type="button" class="rail-order-btn" data-dir="down" title="Move down">&#8681;</button>
             </div>
-            <div id="cust-projects-toggle" class="accordion-eyebrow-toggle" role="button" tabindex="0" aria-expanded="false"
-              aria-controls="cust-projects-card"
+            <div id="cust-projects-toggle" class="accordion-eyebrow-toggle" role="button" tabindex="0"
+              aria-expanded="false" aria-controls="cust-projects-card"
               style="display:inline-flex; align-items:center; gap:7px; cursor:pointer; user-select:none;">
-              <p class="eyebrow" style="margin:0; cursor:pointer; color:var(--ink-dim); transition:color 0.15s;">// projects</p>
-              <svg id="cust-projects-chevron" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor"
-                stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"
+              <p class="eyebrow" style="margin:0; cursor:pointer; color:var(--ink-dim); transition:color 0.15s;">//
+                projects</p>
+              <svg id="cust-projects-chevron" width="13" height="13" viewBox="0 0 24 24" fill="none"
+                stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"
                 style="color:var(--ink-faint); transition:transform 0.22s cubic-bezier(0.4, 0, 0.2, 1), color 0.15s; transform:rotate(-90deg);">
                 <path d="m6 9 6 6 6-6" />
               </svg>
             </div>
           </div>
           <div style="display:inline-flex; align-items:center; gap:10px;">
-            <label class="switch-label" title="Toggle visibility of projects section on the railway line" onclick="event.stopPropagation();">
-              <span style="font-size:0.75rem; color:var(--ink-dim); font-family:var(--font-mono);">Show on timeline</span>
+            <label class="switch-label" title="Toggle visibility of projects section on the railway line"
+              onclick="event.stopPropagation();">
+              <span style="font-size:0.75rem; color:var(--ink-dim); font-family:var(--font-mono);">Show on
+                timeline</span>
               <input type="checkbox" id="cust-projects-enabled" class="switch-input" checked>
               <span class="switch-slider"></span>
             </label>
           </div>
         </div>
         <div class="surface-card cust-card" id="cust-projects-card" style="display:none; margin-top:2px;">
-          <div class="cust-projects-header-row" style="display:flex; align-items:center; justify-content:space-between; margin-bottom:12px; gap:8px; flex-wrap:wrap;">
+          <div class="cust-projects-header-row"
+            style="display:flex; align-items:center; justify-content:space-between; margin-bottom:12px; gap:8px; flex-wrap:wrap;">
             <p style="font-size:0.72rem; color:var(--ink-faint); margin:0;">Manage projects displayed on your
               portfolio. Add, edit, or remove anytime.</p>
-            <div class="cust-projects-sync-wrap" style="display:inline-flex; align-items:center; gap:8px; margin-left:auto;">
+            <div class="cust-projects-sync-wrap"
+              style="display:inline-flex; align-items:center; gap:8px; margin-left:auto;">
               <span id="cust-projects-sync-status"
                 style="font-size:0.7rem; display:none; font-family:var(--font-mono, monospace);"></span>
               <button type="button" id="btn-sync-projects-github" class="toolbar-btn"
@@ -1494,18 +1541,65 @@
         </div>
       </div>
 
-      <!-- 8. // reach -->
-      <div class="cust-section rail-orderable" data-section-key="reach">
-        <div style="display:flex; align-items:center; justify-content:space-between; margin-bottom:8px; flex-wrap:wrap; gap:8px;">
+      <!-- 8. // devices -->
+      <div class="cust-section rail-orderable" data-section-key="devices">
+        <div
+          style="display:flex; align-items:center; justify-content:space-between; margin-bottom:8px; flex-wrap:wrap; gap:8px;">
           <div style="display:flex; align-items:center; gap:6px;">
             <div class="rail-order-btns">
               <button type="button" class="rail-order-btn" data-dir="up" title="Move up">&#8679;</button>
               <button type="button" class="rail-order-btn" data-dir="down" title="Move down">&#8681;</button>
             </div>
-            <div id="cust-reach-toggle" class="accordion-eyebrow-toggle" role="button" tabindex="0" aria-expanded="false"
-              aria-controls="cust-reach-card"
+            <div id="cust-devices-toggle" class="accordion-eyebrow-toggle" role="button" tabindex="0"
+              aria-expanded="false" aria-controls="cust-devices-card"
               style="display:inline-flex; align-items:center; gap:7px; cursor:pointer; user-select:none;">
-              <p class="eyebrow" style="margin:0; cursor:pointer; color:var(--ink-dim); transition:color 0.15s;">// reach</p>
+              <p class="eyebrow" style="margin:0; cursor:pointer; color:var(--ink-dim); transition:color 0.15s;">//
+                devices</p>
+              <svg id="cust-devices-chevron" width="13" height="13" viewBox="0 0 24 24" fill="none"
+                stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"
+                style="color:var(--ink-faint); transition:transform 0.22s cubic-bezier(0.4, 0, 0.2, 1), color 0.15s; transform:rotate(-90deg);">
+                <path d="m6 9 6 6 6-6" />
+              </svg>
+            </div>
+          </div>
+          <div style="display:inline-flex; align-items:center; gap:10px;">
+            <label class="switch-label" title="Toggle visibility of devices section on the railway line"
+              onclick="event.stopPropagation();">
+              <span style="font-size:0.75rem; color:var(--ink-dim); font-family:var(--font-mono);">Show on
+                timeline</span>
+              <input type="checkbox" id="cust-devices-enabled" class="switch-input" checked>
+              <span class="switch-slider"></span>
+            </label>
+          </div>
+        </div>
+        <div class="surface-card cust-card" id="cust-devices-card" style="display:none; margin-top:2px;">
+          <p style="font-size:0.72rem; color:var(--ink-faint); margin:0 0 12px 0; line-height:1.45;">
+            Manage workstations, mobile testing devices, and hardware displayed on your portfolio timeline.
+          </p>
+          <div id="cust-devices-list" style="display:flex; flex-direction:column; gap:10px; margin-bottom:10px;"></div>
+          <div style="margin-top:10px;">
+            <button type="button" class="toolbar-btn" id="cust-btn-add-device"
+              style="color:var(--ink); font-weight:600; padding:8px 14px; border-color:var(--red); background:rgba(255,42,95,0.08); font-size:0.75rem; width:100%; display:flex; align-items:center; justify-content:center; gap:6px;">
+              + Add Device
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <!-- 9. // reach -->
+      <div class="cust-section rail-orderable" data-section-key="reach">
+        <div
+          style="display:flex; align-items:center; justify-content:space-between; margin-bottom:8px; flex-wrap:wrap; gap:8px;">
+          <div style="display:flex; align-items:center; gap:6px;">
+            <div class="rail-order-btns">
+              <button type="button" class="rail-order-btn" data-dir="up" title="Move up">&#8679;</button>
+              <button type="button" class="rail-order-btn" data-dir="down" title="Move down">&#8681;</button>
+            </div>
+            <div id="cust-reach-toggle" class="accordion-eyebrow-toggle" role="button" tabindex="0"
+              aria-expanded="false" aria-controls="cust-reach-card"
+              style="display:inline-flex; align-items:center; gap:7px; cursor:pointer; user-select:none;">
+              <p class="eyebrow" style="margin:0; cursor:pointer; color:var(--ink-dim); transition:color 0.15s;">//
+                reach</p>
               <svg id="cust-reach-chevron" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor"
                 stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"
                 style="color:var(--ink-faint); transition:transform 0.22s cubic-bezier(0.4, 0, 0.2, 1), color 0.15s; transform:rotate(-90deg);">
@@ -1513,7 +1607,8 @@
               </svg>
             </div>
           </div>
-          <label class="switch-label" title="Toggle visibility of reach section on the railway line" onclick="event.stopPropagation();">
+          <label class="switch-label" title="Toggle visibility of reach section on the railway line"
+            onclick="event.stopPropagation();">
             <span style="font-size:0.75rem; color:var(--ink-dim); font-family:var(--font-mono);">Show on timeline</span>
             <input type="checkbox" id="cust-reach-enabled" class="switch-input" checked>
             <span class="switch-slider"></span>
@@ -1595,7 +1690,8 @@
         <div id="cust-theme-toggle" class="accordion-eyebrow-toggle" role="button" tabindex="0" aria-expanded="false"
           aria-controls="cust-theme-card"
           style="display:inline-flex; align-items:center; gap:7px; cursor:pointer; user-select:none; margin-bottom:8px;">
-          <p class="eyebrow" style="margin:0; cursor:pointer; color:var(--ink-dim); transition:color 0.15s;">// theme</p>
+          <p class="eyebrow" style="margin:0; cursor:pointer; color:var(--ink-dim); transition:color 0.15s;">// theme
+          </p>
           <svg id="cust-theme-chevron" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor"
             stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"
             style="color:var(--ink-faint); transition:transform 0.22s cubic-bezier(0.4, 0, 0.2, 1), color 0.15s; transform:rotate(-90deg);">
@@ -1650,14 +1746,16 @@
           <div class="field-group" style="margin-top:12px; border-top:1px solid var(--line); padding-top:14px;">
             <div
               style="display:flex; align-items:center; justify-content:space-between; margin-bottom:4px; flex-wrap:wrap; gap:6px;">
-              <label class="field-label" style="font-weight:600; color:var(--ink); margin:0;">Highlight Accent Color</label>
+              <label class="field-label" style="font-weight:600; color:var(--ink); margin:0;">Highlight Accent
+                Color</label>
               <div style="display:flex; align-items:center; gap:8px;">
                 <span id="accent-hex-indicator"
                   style="font-family:var(--font-mono); font-size:0.74rem; color:var(--ink-dim); background:var(--bg); padding:2px 8px; border-radius:10px; border:1px solid var(--line);">#ff2a5f</span>
               </div>
             </div>
             <p style="font-size:0.72rem; color:var(--ink-faint); margin-bottom:10px;">
-              Colors project highlights, icons, rail nodes, badges, and buttons. Click <b>+</b> to add a new color, or select a color and click <b>Delete Color</b> to remove.
+              Colors project highlights, icons, rail nodes, badges, and buttons. Click <b>+</b> to add a new color, or
+              select a color and click <b>Delete Color</b> to remove.
             </p>
 
             <div class="accent-swatches-wrap" id="accent-swatches-container">
@@ -1803,7 +1901,8 @@
         <div id="cust-font-toggle" class="accordion-eyebrow-toggle" role="button" tabindex="0" aria-expanded="false"
           aria-controls="cust-font-card"
           style="display:inline-flex; align-items:center; gap:7px; cursor:pointer; user-select:none; margin-bottom:8px;">
-          <p class="eyebrow" style="margin:0; cursor:pointer; color:var(--ink-dim); transition:color 0.15s;">// typography &amp; font</p>
+          <p class="eyebrow" style="margin:0; cursor:pointer; color:var(--ink-dim); transition:color 0.15s;">//
+            typography &amp; font</p>
           <svg id="cust-font-chevron" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor"
             stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"
             style="color:var(--ink-faint); transition:transform 0.22s cubic-bezier(0.4, 0, 0.2, 1), color 0.15s; transform:rotate(-90deg);">
@@ -1813,8 +1912,10 @@
 
         <div id="cust-font-card" class="surface-card cust-card" style="display:none; margin-top:2px;">
           <!-- Top bar with Reset Font button -->
-          <div style="display:flex; align-items:center; justify-content:space-between; padding-bottom:10px; border-bottom:1px solid var(--line); flex-wrap:wrap; gap:8px;">
-            <span style="font-size:0.73rem; color:var(--ink-faint);">Customize portfolio typeface and typography across headings and body text.</span>
+          <div
+            style="display:flex; align-items:center; justify-content:space-between; padding-bottom:10px; border-bottom:1px solid var(--line); flex-wrap:wrap; gap:8px;">
+            <span style="font-size:0.73rem; color:var(--ink-faint);">Customize portfolio typeface and typography across
+              headings and body text.</span>
             <button type="button" id="btn-reset-font" class="toolbar-btn"
               style="white-space:nowrap; padding:4px 10px; font-size:0.7rem;"
               title="Reset back to default Space Grotesk">
@@ -1855,10 +1956,13 @@
           <!-- Quick Font Dropdown Menu -->
           <div class="field-group">
             <div style="display:flex; align-items:center; justify-content:space-between; margin-bottom:2px;">
-              <label class="field-label" for="cust-font-select" style="font-weight:600; color:var(--ink);">Select Typeface Dropdown</label>
-              <span style="font-size:0.68rem; color:var(--ink-faint); font-family:var(--font-mono);">Instant Switch</span>
+              <label class="field-label" for="cust-font-select" style="font-weight:600; color:var(--ink);">Select
+                Typeface Dropdown</label>
+              <span style="font-size:0.68rem; color:var(--ink-faint); font-family:var(--font-mono);">Instant
+                Switch</span>
             </div>
-            <select id="cust-font-select" class="field-input" style="cursor:pointer; font-weight:600; font-size:0.86rem; padding:10px 14px; background:var(--bg); color:var(--ink); border:1px solid var(--line); border-radius:var(--radius-sm); outline:none;">
+            <select id="cust-font-select" class="field-input"
+              style="cursor:pointer; font-weight:600; font-size:0.86rem; padding:10px 14px; background:var(--bg); color:var(--ink); border:1px solid var(--line); border-radius:var(--radius-sm); outline:none;">
               <option value="Space Grotesk">Space Grotesk (Default / Cyber)</option>
               <option value="Inter">Inter (Clean Modern Sans)</option>
               <option value="Outfit">Outfit (Geometric Tech)</option>
@@ -1878,8 +1982,10 @@
           <!-- Curated Typeface Presets Grid -->
           <div class="field-group" style="margin-top:6px;">
             <div style="display:flex; align-items:center; justify-content:space-between;">
-              <label class="field-label" style="font-weight:600; color:var(--ink); margin-bottom:2px;">Visual Typeface Cards</label>
-              <span style="font-size:0.68rem; color:var(--ink-faint); font-family:var(--font-mono);">12 Curated Presets</span>
+              <label class="field-label" style="font-weight:600; color:var(--ink); margin-bottom:2px;">Visual Typeface
+                Cards</label>
+              <span style="font-size:0.68rem; color:var(--ink-faint); font-family:var(--font-mono);">12 Curated
+                Presets</span>
             </div>
 
             <div class="font-presets-grid" id="font-presets-grid">
@@ -1890,7 +1996,8 @@
           <!-- Custom Google Font Input -->
           <div class="field-group" style="padding-top:10px; border-top:1px solid var(--line);">
             <div style="display:flex; align-items:center; justify-content:space-between; margin-bottom:4px;">
-              <label class="field-label" for="cust-custom-font" style="font-weight:600; color:var(--ink); margin-bottom:0;">Custom Google Font</label>
+              <label class="field-label" for="cust-custom-font"
+                style="font-weight:600; color:var(--ink); margin-bottom:0;">Custom Google Font</label>
               <a href="https://fonts.google.com" target="_blank" rel="noopener noreferrer"
                 style="font-size:0.68rem; color:var(--red); text-decoration:none; display:flex; align-items:center; gap:3px;">
                 <span>Explore 1,700+ Google Fonts</span>
@@ -1902,9 +2009,14 @@
                 </svg>
               </a>
             </div>
-            <p style="font-size:0.72rem; color:var(--ink-faint); margin:0 0 8px;">Type any font name from Google Fonts (e.g. <code style="font-family:var(--font-mono); color:var(--ink);">Urbanist</code>, <code style="font-family:var(--font-mono); color:var(--ink);">Manrope</code>, <code style="font-family:var(--font-mono); color:var(--ink);">Orbitron</code>, <code style="font-family:var(--font-mono); color:var(--ink);">Raleway</code>):</p>
+            <p style="font-size:0.72rem; color:var(--ink-faint); margin:0 0 8px;">Type any font name from Google Fonts
+              (e.g. <code style="font-family:var(--font-mono); color:var(--ink);">Urbanist</code>, <code
+                style="font-family:var(--font-mono); color:var(--ink);">Manrope</code>, <code
+                style="font-family:var(--font-mono); color:var(--ink);">Orbitron</code>, <code
+                style="font-family:var(--font-mono); color:var(--ink);">Raleway</code>):</p>
             <div style="display:flex; gap:8px;">
-              <input type="text" class="field-input" id="cust-custom-font" placeholder="e.g. Urbanist or Orbitron" style="flex:1;">
+              <input type="text" class="field-input" id="cust-custom-font" placeholder="e.g. Urbanist or Orbitron"
+                style="flex:1;">
               <button type="button" id="btn-apply-custom-font" class="toolbar-btn"
                 style="padding:0 16px; background:var(--red-solid); color:#fff; border:none; font-weight:500; font-size:0.75rem; white-space:nowrap; border-radius:var(--radius-sm); cursor:pointer;">
                 Apply Font
@@ -1916,14 +2028,17 @@
           <!-- Interactive Live Font Preview Showcase -->
           <div style="padding-top:12px; border-top:1px solid var(--line);">
             <div style="display:flex; align-items:center; justify-content:space-between; margin-bottom:8px;">
-              <span class="field-label" style="font-weight:600; color:var(--ink); margin-bottom:0;">Live Font Showcase</span>
-              <span style="font-size:0.68rem; color:var(--ink-dim); font-family:var(--font-mono);" id="font-preview-name-tag">Rendered in Space Grotesk</span>
+              <span class="field-label" style="font-weight:600; color:var(--ink); margin-bottom:0;">Live Font
+                Showcase</span>
+              <span style="font-size:0.68rem; color:var(--ink-dim); font-family:var(--font-mono);"
+                id="font-preview-name-tag">Rendered in Space Grotesk</span>
             </div>
 
             <div id="font-live-preview-box"
               style="background:var(--bg); border:1px solid var(--line); border-radius:var(--radius); padding:16px; display:flex; flex-direction:column; gap:12px;">
               <!-- Wordmark Sample -->
-              <div style="display:flex; align-items:center; justify-content:space-between; padding-bottom:10px; border-bottom:1px dashed var(--line);">
+              <div
+                style="display:flex; align-items:center; justify-content:space-between; padding-bottom:10px; border-bottom:1px dashed var(--line);">
                 <span style="font-size:0.7rem; color:var(--ink-faint); font-family:var(--font-mono);">Wordmark:</span>
                 <span id="font-prev-wordmark"
                   style="font-family:var(--font-display); font-weight:700; font-size:1.35rem; color:var(--ink); letter-spacing:-0.02em;">
@@ -1933,7 +2048,9 @@
 
               <!-- Heading Sample -->
               <div>
-                <span style="font-size:0.68rem; color:var(--ink-faint); font-family:var(--font-mono); display:block; margin-bottom:3px;">Heading (h1 / Title):</span>
+                <span
+                  style="font-size:0.68rem; color:var(--ink-faint); font-family:var(--font-mono); display:block; margin-bottom:3px;">Heading
+                  (h1 / Title):</span>
                 <h3 id="font-prev-heading"
                   style="font-family:var(--font-display); font-size:1.1rem; font-weight:700; color:var(--ink); margin:0; line-height:1.3;">
                   Designing the future with clean code &amp; modern aesthetics.
@@ -1941,7 +2058,8 @@
               </div>
 
               <!-- Project Title & Subtitle Sample -->
-              <div style="background:var(--surface); border:1px solid var(--line); border-radius:var(--radius-sm); padding:10px 12px; display:flex; align-items:center; gap:10px;">
+              <div
+                style="background:var(--surface); border:1px solid var(--line); border-radius:var(--radius-sm); padding:10px 12px; display:flex; align-items:center; gap:10px;">
                 <div
                   style="width:30px; height:30px; border-radius:8px; border:1px solid var(--red); background:var(--red-dim); color:var(--red); display:flex; align-items:center; justify-content:center; flex-shrink:0; font-size:0.9rem;">
                   ✦
@@ -1977,7 +2095,8 @@
 
       <!-- 11. // message & security -->
       <div class="cust-section rail-orderable" data-section-key="message">
-        <div style="display:flex; align-items:center; justify-content:space-between; margin-bottom:8px; flex-wrap:wrap; gap:8px;">
+        <div
+          style="display:flex; align-items:center; justify-content:space-between; margin-bottom:8px; flex-wrap:wrap; gap:8px;">
           <div style="display:flex; align-items:center; gap:6px;">
             <div class="rail-order-btns">
               <button type="button" class="rail-order-btn" data-dir="up" title="Move up">&#8679;</button>
@@ -1986,7 +2105,8 @@
             <div id="cust-msg-toggle" class="accordion-eyebrow-toggle" role="button" tabindex="0" aria-expanded="false"
               aria-controls="cust-msg-card"
               style="display:inline-flex; align-items:center; gap:7px; cursor:pointer; user-select:none;">
-              <p class="eyebrow" style="margin:0; cursor:pointer; color:var(--ink-dim); transition:color 0.15s;">// message
+              <p class="eyebrow" style="margin:0; cursor:pointer; color:var(--ink-dim); transition:color 0.15s;">//
+                message
                 &amp; security</p>
               <svg id="cust-msg-chevron" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor"
                 stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"
@@ -1995,7 +2115,8 @@
               </svg>
             </div>
           </div>
-          <label class="switch-label" title="Toggle visibility of message section on the railway line" onclick="event.stopPropagation();">
+          <label class="switch-label" title="Toggle visibility of message section on the railway line"
+            onclick="event.stopPropagation();">
             <span style="font-size:0.75rem; color:var(--ink-dim); font-family:var(--font-mono);">Show on timeline</span>
             <input type="checkbox" id="cust-message-enabled" class="switch-input" checked>
             <span class="switch-slider"></span>
@@ -2020,8 +2141,6 @@
         </div>
       </div>
 
-      </div><!-- /#railway-order-list -->
-
       <!-- 12. // media cloud storage (cloudinary) -->
       <div class="cust-section">
         <div id="cust-cloudinary-toggle" class="accordion-eyebrow-toggle" role="button" tabindex="0"
@@ -2029,8 +2148,8 @@
           style="display:inline-flex; align-items:center; gap:7px; cursor:pointer; margin-bottom:8px; user-select:none;">
           <p class="eyebrow" style="margin:0; cursor:pointer; color:var(--ink-dim); transition:color 0.15s;">// media
             cloud storage (cloudinary)</p>
-          <svg id="cust-cloudinary-chevron" width="13" height="13" viewBox="0 0 24 24" fill="none"
-            stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"
+          <svg id="cust-cloudinary-chevron" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+            stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"
             style="color:var(--ink-faint); transition:transform 0.22s cubic-bezier(0.4, 0, 0.2, 1), color 0.15s; transform:rotate(-90deg);">
             <path d="m6 9 6 6 6-6" />
           </svg>
@@ -2183,21 +2302,26 @@
   </div>
 
   <!-- Sync Pinned Repos Confirmation Warning Modal -->
-  <div id="sync-warning-modal" class="avatar-modal-backdrop" style="display:none; z-index:99999;" role="dialog" aria-modal="true"
-    aria-labelledby="sync-warning-title">
+  <div id="sync-warning-modal" class="avatar-modal-backdrop" style="display:none; z-index:99999;" role="dialog"
+    aria-modal="true" aria-labelledby="sync-warning-title">
     <div class="avatar-modal-card surface-card" style="max-width:440px; text-align:center; padding:28px 24px;">
-      <div style="width:54px; height:54px; border-radius:50%; background:var(--red-dim); border:1.5px solid var(--border-accent); display:inline-flex; align-items:center; justify-content:center; margin:0 auto 16px auto; color:var(--red); box-shadow:0 0 25px var(--border-accent-glow);">
-        <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+      <div
+        style="width:54px; height:54px; border-radius:50%; background:var(--red-dim); border:1.5px solid var(--border-accent); display:inline-flex; align-items:center; justify-content:center; margin:0 auto 16px auto; color:var(--red); box-shadow:0 0 25px var(--border-accent-glow);">
+        <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"
+          stroke-linecap="round" stroke-linejoin="round">
           <path d="m21.73 18-8-14a2 2 0 0 0-3.48 0l-8 14A2 2 0 0 0 4 21h16a2 2 0 0 0 1.73-3Z" />
           <line x1="12" y1="9" x2="12" y2="13" />
           <line x1="12" y1="17" x2="12.01" y2="17" />
         </svg>
       </div>
-      <h3 id="sync-warning-title" style="font-family:var(--font-display); font-size:1.25rem; font-weight:700; color:var(--ink); margin:0 0 8px 0; letter-spacing:-0.02em;">
+      <h3 id="sync-warning-title"
+        style="font-family:var(--font-display); font-size:1.25rem; font-weight:700; color:var(--ink); margin:0 0 8px 0; letter-spacing:-0.02em;">
         Sync Pinned Repositories?
       </h3>
-      <p style="font-size:0.82rem; color:var(--ink-dim); line-height:1.55; margin:0 0 24px 0; font-family:var(--font-mono);">
-        Warning: This will fetch your pinned repositories from GitHub and overwrite your current projects list. Do you want to proceed?
+      <p
+        style="font-size:0.82rem; color:var(--ink-dim); line-height:1.55; margin:0 0 24px 0; font-family:var(--font-mono);">
+        Warning: This will fetch your pinned repositories from GitHub and overwrite your current projects list. Do you
+        want to proceed?
       </p>
       <div style="display:flex; gap:12px; justify-content:center;">
         <button type="button" id="btn-sync-warning-no" class="toolbar-btn"
@@ -3981,68 +4105,113 @@
           return false;
         }
       }, false);
-      /* ── Railway Section Reorder ── */
-      var RAIL_SECTION_DEFAULT_ORDER = ['intro', 'skills', 'qualifications', 'projects', 'reach', 'message'];
+      /* ── Railway Section Reorder (Applies to the 7 timeline railway sections) ── */
+      var RAIL_SECTION_DEFAULT_ORDER = ['intro', 'skills', 'qualifications', 'projects', 'devices', 'reach', 'message'];
       var currentSectionOrder = RAIL_SECTION_DEFAULT_ORDER.slice();
 
       function getRailOrderableItems() {
-        var list = document.getElementById('railway-order-list');
-        if (!list) return [];
-        return Array.from(list.querySelectorAll(':scope > .rail-orderable'));
+        return Array.from(document.querySelectorAll('.rail-orderable[data-section-key]'));
       }
 
       function updateRailOrderButtons() {
-        var items = getRailOrderableItems();
-        items.forEach(function (item, index) {
+        if (!Array.isArray(currentSectionOrder) || currentSectionOrder.length === 0) return;
+        currentSectionOrder.forEach(function (key, index) {
+          var item = document.querySelector('.rail-orderable[data-section-key="' + key + '"]');
+          if (!item) return;
           var upBtn = item.querySelector('.rail-order-btn[data-dir="up"]');
           var downBtn = item.querySelector('.rail-order-btn[data-dir="down"]');
           if (upBtn) upBtn.disabled = (index === 0);
-          if (downBtn) downBtn.disabled = (index === items.length - 1);
+          if (downBtn) downBtn.disabled = (index === currentSectionOrder.length - 1);
         });
       }
 
+      function swapDOMElements(el1, el2) {
+        if (!el1 || !el2 || el1 === el2 || !el1.parentNode || el1.parentNode !== el2.parentNode) return;
+        var parent = el1.parentNode;
+        var next1 = el1.nextSibling;
+        var next2 = el2.nextSibling;
+        if (next1 === el2) {
+          parent.insertBefore(el2, el1);
+        } else if (next2 === el1) {
+          parent.insertBefore(el1, el2);
+        } else {
+          var temp = document.createTextNode('');
+          parent.insertBefore(temp, el1);
+          parent.insertBefore(el1, el2);
+          parent.insertBefore(el2, temp);
+          temp.remove();
+        }
+      }
+
       function moveSectionInOrder(key, dir) {
-        var list = document.getElementById('railway-order-list');
-        if (!list) return;
-        var items = getRailOrderableItems();
-        var idx = items.findIndex(function (el) { return el.getAttribute('data-section-key') === key; });
+        var idx = currentSectionOrder.indexOf(key);
         if (idx === -1) return;
 
-        var target, sibling;
-        if (dir === 'up' && idx > 0) {
-          target = items[idx];
-          sibling = items[idx - 1];
-          list.insertBefore(target, sibling);
-        } else if (dir === 'down' && idx < items.length - 1) {
-          target = items[idx];
-          sibling = items[idx + 2] || null;
-          list.insertBefore(target, sibling);
-        } else {
-          return;
+        var swapIdx = (dir === 'up') ? idx - 1 : idx + 1;
+        if (swapIdx < 0 || swapIdx >= currentSectionOrder.length) return;
+
+        var otherKey = currentSectionOrder[swapIdx];
+        var el1 = document.querySelector('.rail-orderable[data-section-key="' + key + '"]');
+        var el2 = document.querySelector('.rail-orderable[data-section-key="' + otherKey + '"]');
+
+        // Swap in currentSectionOrder array
+        currentSectionOrder[idx] = otherKey;
+        currentSectionOrder[swapIdx] = key;
+
+        // Swap in DOM
+        if (el1 && el2) {
+          swapDOMElements(el1, el2);
+          el1.classList.add('reorder-flash');
+          setTimeout(function () { el1.classList.remove('reorder-flash'); }, 400);
         }
 
-        // Flash animation
-        var moved = list.querySelector('.rail-orderable[data-section-key="' + key + '"]');
-        if (moved) {
-          moved.classList.add('reorder-flash');
-          setTimeout(function () { moved.classList.remove('reorder-flash'); }, 380);
-        }
-
-        // Sync currentSectionOrder from DOM
-        var newItems = getRailOrderableItems();
-        currentSectionOrder = newItems.map(function (el) { return el.getAttribute('data-section-key'); });
         updateRailOrderButtons();
       }
 
       function loadSectionOrderIntoDOM(order) {
         if (!Array.isArray(order) || order.length === 0) return;
-        var list = document.getElementById('railway-order-list');
-        if (!list) return;
-        order.forEach(function (key) {
-          var el = list.querySelector('.rail-orderable[data-section-key="' + key + '"]');
-          if (el) list.appendChild(el);
+        var validOrder = [];
+        order.forEach(function (k) {
+          if (RAIL_SECTION_DEFAULT_ORDER.indexOf(k) !== -1 && validOrder.indexOf(k) === -1) {
+            validOrder.push(k);
+          }
         });
-        currentSectionOrder = order.slice();
+        RAIL_SECTION_DEFAULT_ORDER.forEach(function (k) {
+          if (validOrder.indexOf(k) === -1) validOrder.push(k);
+        });
+        currentSectionOrder = validOrder.slice();
+
+        var elements = {};
+        var originalPositions = [];
+        validOrder.forEach(function (key) {
+          var el = document.querySelector('.rail-orderable[data-section-key="' + key + '"]');
+          if (el) {
+            elements[key] = el;
+            originalPositions.push(el);
+          }
+        });
+
+        // Sort original positions by their DOM appearance
+        originalPositions.sort(function (a, b) {
+          return (a.compareDocumentPosition(b) & Node.DOCUMENT_POSITION_FOLLOWING) ? -1 : 1;
+        });
+
+        if (originalPositions.length === validOrder.length) {
+          var placeholders = originalPositions.map(function (posEl) {
+            var p = document.createTextNode('');
+            posEl.parentNode.insertBefore(p, posEl);
+            return p;
+          });
+          validOrder.forEach(function (key, i) {
+            var el = elements[key];
+            var placeholder = placeholders[i];
+            if (el && placeholder && placeholder.parentNode) {
+              placeholder.parentNode.insertBefore(el, placeholder);
+              placeholder.remove();
+            }
+          });
+        }
+
         updateRailOrderButtons();
       }
 
@@ -4065,52 +4234,52 @@
 
       /* ── Skill Icon Resolver (mirrors app.js map) ── */
       var DEV_SKILL_ICON_MAP = {
-        'javascript':'simple-icons:javascript','js':'simple-icons:javascript',
-        'typescript':'simple-icons:typescript','ts':'simple-icons:typescript',
-        'react':'simple-icons:react','react.js':'simple-icons:react','reactjs':'simple-icons:react',
-        'next.js':'simple-icons:nextdotjs','nextjs':'simple-icons:nextdotjs',
-        'vue':'simple-icons:vuedotjs','vue.js':'simple-icons:vuedotjs','vuejs':'simple-icons:vuedotjs',
-        'angular':'simple-icons:angular','svelte':'simple-icons:svelte','astro':'simple-icons:astro',
-        'remix':'simple-icons:remix','nuxt':'simple-icons:nuxtdotjs','nuxt.js':'simple-icons:nuxtdotjs',
-        'html':'simple-icons:html5','html5':'simple-icons:html5',
-        'css':'simple-icons:css3','css3':'simple-icons:css3',
-        'sass':'simple-icons:sass','scss':'simple-icons:sass',
-        'tailwind':'simple-icons:tailwindcss','tailwind css':'simple-icons:tailwindcss','tailwindcss':'simple-icons:tailwindcss',
-        'bootstrap':'simple-icons:bootstrap','jquery':'simple-icons:jquery',
-        'node':'simple-icons:nodedotjs','node.js':'simple-icons:nodedotjs','nodejs':'simple-icons:nodedotjs',
-        'express':'simple-icons:express','express.js':'simple-icons:express',
-        'fastapi':'simple-icons:fastapi','django':'simple-icons:django','flask':'simple-icons:flask',
-        'laravel':'simple-icons:laravel','spring':'simple-icons:spring',
-        'graphql':'simple-icons:graphql','socket.io':'simple-icons:socketdotio',
-        'python':'simple-icons:python','java':'simple-icons:openjdk',
-        'c++':'simple-icons:cplusplus','cpp':'simple-icons:cplusplus',
-        'c#':'simple-icons:csharp','csharp':'simple-icons:csharp',
-        'go':'simple-icons:go','golang':'simple-icons:go','rust':'simple-icons:rust',
-        'ruby':'simple-icons:ruby','php':'simple-icons:php','swift':'simple-icons:swift',
-        'kotlin':'simple-icons:kotlin','dart':'simple-icons:dart','scala':'simple-icons:scala',
-        'mongodb':'simple-icons:mongodb','postgres':'simple-icons:postgresql','postgresql':'simple-icons:postgresql',
-        'mysql':'simple-icons:mysql','sqlite':'simple-icons:sqlite','redis':'simple-icons:redis',
-        'firebase':'simple-icons:firebase','supabase':'simple-icons:supabase','prisma':'simple-icons:prisma',
-        'dynamodb':'simple-icons:amazondynamodb','elasticsearch':'simple-icons:elasticsearch',
-        'docker':'simple-icons:docker','kubernetes':'simple-icons:kubernetes','k8s':'simple-icons:kubernetes',
-        'aws':'simple-icons:amazonaws','azure':'simple-icons:microsoftazure',
-        'gcp':'simple-icons:googlecloud','google cloud':'simple-icons:googlecloud',
-        'vercel':'simple-icons:vercel','netlify':'simple-icons:netlify','heroku':'simple-icons:heroku',
-        'nginx':'simple-icons:nginx','terraform':'simple-icons:terraform','ansible':'simple-icons:ansible',
-        'jenkins':'simple-icons:jenkins','github actions':'simple-icons:githubactions',
-        'git':'simple-icons:git','github':'simple-icons:github','gitlab':'simple-icons:gitlab',
-        'linux':'simple-icons:linux','ubuntu':'simple-icons:ubuntu','bash':'simple-icons:gnubash',
-        'vscode':'simple-icons:visualstudiocode','vs code':'simple-icons:visualstudiocode',
-        'figma':'simple-icons:figma','photoshop':'simple-icons:adobephotoshop',
-        'illustrator':'simple-icons:adobeillustrator','blender':'simple-icons:blender',
-        'react native':'simple-icons:react','flutter':'simple-icons:flutter',
-        'android':'simple-icons:android','ios':'simple-icons:apple',
-        'tensorflow':'simple-icons:tensorflow','pytorch':'simple-icons:pytorch','openai':'simple-icons:openai',
-        'jest':'simple-icons:jest','cypress':'simple-icons:cypress','vitest':'simple-icons:vitest',
-        'wordpress':'simple-icons:wordpress','shopify':'simple-icons:shopify','stripe':'simple-icons:stripe',
-        'three.js':'simple-icons:threedotjs','threejs':'simple-icons:threedotjs',
-        'solidity':'simple-icons:solidity','web3':'simple-icons:web3dotjs',
-        'arduino':'simple-icons:arduino','raspberrypi':'simple-icons:raspberrypi'
+        'javascript': 'simple-icons:javascript', 'js': 'simple-icons:javascript',
+        'typescript': 'simple-icons:typescript', 'ts': 'simple-icons:typescript',
+        'react': 'simple-icons:react', 'react.js': 'simple-icons:react', 'reactjs': 'simple-icons:react',
+        'next.js': 'simple-icons:nextdotjs', 'nextjs': 'simple-icons:nextdotjs',
+        'vue': 'simple-icons:vuedotjs', 'vue.js': 'simple-icons:vuedotjs', 'vuejs': 'simple-icons:vuedotjs',
+        'angular': 'simple-icons:angular', 'svelte': 'simple-icons:svelte', 'astro': 'simple-icons:astro',
+        'remix': 'simple-icons:remix', 'nuxt': 'simple-icons:nuxtdotjs', 'nuxt.js': 'simple-icons:nuxtdotjs',
+        'html': 'simple-icons:html5', 'html5': 'simple-icons:html5',
+        'css': 'simple-icons:css3', 'css3': 'simple-icons:css3',
+        'sass': 'simple-icons:sass', 'scss': 'simple-icons:sass',
+        'tailwind': 'simple-icons:tailwindcss', 'tailwind css': 'simple-icons:tailwindcss', 'tailwindcss': 'simple-icons:tailwindcss',
+        'bootstrap': 'simple-icons:bootstrap', 'jquery': 'simple-icons:jquery',
+        'node': 'simple-icons:nodedotjs', 'node.js': 'simple-icons:nodedotjs', 'nodejs': 'simple-icons:nodedotjs',
+        'express': 'simple-icons:express', 'express.js': 'simple-icons:express',
+        'fastapi': 'simple-icons:fastapi', 'django': 'simple-icons:django', 'flask': 'simple-icons:flask',
+        'laravel': 'simple-icons:laravel', 'spring': 'simple-icons:spring',
+        'graphql': 'simple-icons:graphql', 'socket.io': 'simple-icons:socketdotio',
+        'python': 'simple-icons:python', 'java': 'simple-icons:openjdk',
+        'c++': 'simple-icons:cplusplus', 'cpp': 'simple-icons:cplusplus',
+        'c#': 'simple-icons:csharp', 'csharp': 'simple-icons:csharp',
+        'go': 'simple-icons:go', 'golang': 'simple-icons:go', 'rust': 'simple-icons:rust',
+        'ruby': 'simple-icons:ruby', 'php': 'simple-icons:php', 'swift': 'simple-icons:swift',
+        'kotlin': 'simple-icons:kotlin', 'dart': 'simple-icons:dart', 'scala': 'simple-icons:scala',
+        'mongodb': 'simple-icons:mongodb', 'postgres': 'simple-icons:postgresql', 'postgresql': 'simple-icons:postgresql',
+        'mysql': 'simple-icons:mysql', 'sqlite': 'simple-icons:sqlite', 'redis': 'simple-icons:redis',
+        'firebase': 'simple-icons:firebase', 'supabase': 'simple-icons:supabase', 'prisma': 'simple-icons:prisma',
+        'dynamodb': 'simple-icons:amazondynamodb', 'elasticsearch': 'simple-icons:elasticsearch',
+        'docker': 'simple-icons:docker', 'kubernetes': 'simple-icons:kubernetes', 'k8s': 'simple-icons:kubernetes',
+        'aws': 'simple-icons:amazonaws', 'azure': 'simple-icons:microsoftazure',
+        'gcp': 'simple-icons:googlecloud', 'google cloud': 'simple-icons:googlecloud',
+        'vercel': 'simple-icons:vercel', 'netlify': 'simple-icons:netlify', 'heroku': 'simple-icons:heroku',
+        'nginx': 'simple-icons:nginx', 'terraform': 'simple-icons:terraform', 'ansible': 'simple-icons:ansible',
+        'jenkins': 'simple-icons:jenkins', 'github actions': 'simple-icons:githubactions',
+        'git': 'simple-icons:git', 'github': 'simple-icons:github', 'gitlab': 'simple-icons:gitlab',
+        'linux': 'simple-icons:linux', 'ubuntu': 'simple-icons:ubuntu', 'bash': 'simple-icons:gnubash',
+        'vscode': 'simple-icons:visualstudiocode', 'vs code': 'simple-icons:visualstudiocode',
+        'figma': 'simple-icons:figma', 'photoshop': 'simple-icons:adobephotoshop',
+        'illustrator': 'simple-icons:adobeillustrator', 'blender': 'simple-icons:blender',
+        'react native': 'simple-icons:react', 'flutter': 'simple-icons:flutter',
+        'android': 'simple-icons:android', 'ios': 'simple-icons:apple',
+        'tensorflow': 'simple-icons:tensorflow', 'pytorch': 'simple-icons:pytorch', 'openai': 'simple-icons:openai',
+        'jest': 'simple-icons:jest', 'cypress': 'simple-icons:cypress', 'vitest': 'simple-icons:vitest',
+        'wordpress': 'simple-icons:wordpress', 'shopify': 'simple-icons:shopify', 'stripe': 'simple-icons:stripe',
+        'three.js': 'simple-icons:threedotjs', 'threejs': 'simple-icons:threedotjs',
+        'solidity': 'simple-icons:solidity', 'web3': 'simple-icons:web3dotjs',
+        'arduino': 'simple-icons:arduino', 'raspberrypi': 'simple-icons:raspberrypi'
       };
 
       function devGetSkillIcon(name) {
@@ -4352,6 +4521,112 @@
           container.appendChild(newCard);
           var titleInp = newCard.querySelector('.m-qual-input-title');
           if (titleInp) titleInp.focus();
+        });
+      }
+
+      /* ── Visual Devices Manager ── */
+      var DEFAULT_DEVICES = [];
+      var currentDevices = [];
+
+      function createDeviceCardElement(d, index) {
+        var card = document.createElement('div');
+        card.className = 'surface-card cust-card m-device-card';
+        card.innerHTML =
+          '<div style="display:flex; align-items:center; justify-content:space-between; border-bottom:1px solid var(--line); padding-bottom:8px; margin-bottom:8px;">' +
+          '<span class="m-device-card-title" style="font-size:0.75rem; font-weight:700; color:var(--ink); text-transform:uppercase; letter-spacing:0.04em;">DEVICE #' + (index + 1) + '</span>' +
+          '<button type="button" class="m-device-del-btn" style="background:none; border:none; color:var(--ink-faint); font-size:0.75rem; cursor:pointer; font-weight:600; padding:2px 6px; border-radius:4px;" title="Remove this device">✕ Remove</button>' +
+          '</div>' +
+          '<div class="field-grid-2" style="margin-bottom:6px;">' +
+          '<div class="field-group" style="margin-bottom:6px;">' +
+          '<label class="field-label">Device Name / Model</label>' +
+          '<input type="text" class="field-input m-device-input-name" placeholder="e.g. Lenovo Legion Pro, iPhone 15 Pro">' +
+          '</div>' +
+          '<div class="field-group" style="margin-bottom:6px;">' +
+          '<label class="field-label">Category / Type</label>' +
+          '<input type="text" class="field-input m-device-input-type" placeholder="e.g. Laptop, Smartphone, Monitor, Peripherals">' +
+          '</div>' +
+          '</div>' +
+          '<div class="field-grid-2" style="margin-bottom:6px;">' +
+          '<div class="field-group" style="margin-bottom:6px;">' +
+          '<label class="field-label">Hardware Specs / Details</label>' +
+          '<input type="text" class="field-input m-device-input-specs" placeholder="e.g. Core i7 • 32GB RAM • 1TB SSD">' +
+          '</div>' +
+          '<div class="field-group" style="margin-bottom:6px;">' +
+          '<label class="field-label">Badge Tag</label>' +
+          '<input type="text" class="field-input m-device-input-tag" placeholder="e.g. Daily Driver, Mobile, Workspace">' +
+          '</div>' +
+          '</div>' +
+          '<div class="field-grid-2" style="margin-bottom:6px;">' +
+          '<div class="field-group" style="margin-bottom:6px;">' +
+          '<label class="field-label">Icon (Iconify name or type)</label>' +
+          '<input type="text" class="field-input m-device-input-icon" placeholder="e.g. lucide:laptop, lucide:smartphone, lucide:monitor">' +
+          '</div>' +
+          '<div class="field-group" style="margin-bottom:6px;">' +
+          '<label class="field-label">Product Link / Specs URL (Optional)</label>' +
+          '<input type="url" class="field-input m-device-input-url" placeholder="https://...">' +
+          '</div>' +
+          '</div>' +
+          '<div class="field-group" style="margin-bottom:6px;">' +
+          '<label class="field-label">Notes / Description (Optional)</label>' +
+          '<textarea class="field-input m-device-input-desc" rows="2" placeholder="Brief note about how you use this device for development..."></textarea>' +
+          '</div>';
+
+        var nameInp = card.querySelector('.m-device-input-name');
+        var typeInp = card.querySelector('.m-device-input-type');
+        var specsInp = card.querySelector('.m-device-input-specs');
+        var tagInp = card.querySelector('.m-device-input-tag');
+        var iconInp = card.querySelector('.m-device-input-icon');
+        var urlInp = card.querySelector('.m-device-input-url');
+        var descInp = card.querySelector('.m-device-input-desc');
+
+        if (nameInp) nameInp.value = d.name || d.title || '';
+        if (typeInp) typeInp.value = d.type || d.category || '';
+        if (specsInp) specsInp.value = d.specs || d.model || '';
+        if (tagInp) tagInp.value = d.tag || '';
+        if (iconInp) iconInp.value = d.icon || '';
+        if (urlInp) urlInp.value = d.url || '';
+        if (descInp) descInp.value = d.description || '';
+
+        var delBtn = card.querySelector('.m-device-del-btn');
+        if (delBtn) {
+          delBtn.addEventListener('click', function () {
+            card.remove();
+            refreshDeviceCardNumbers();
+          });
+        }
+
+        return card;
+      }
+
+      function refreshDeviceCardNumbers() {
+        var cards = document.querySelectorAll('#cust-devices-list .m-device-card');
+        cards.forEach(function (c, idx) {
+          var titleEl = c.querySelector('.m-device-card-title');
+          if (titleEl) titleEl.textContent = 'DEVICE #' + (idx + 1);
+        });
+      }
+
+      function renderDevicesManager(list) {
+        var container = document.getElementById('cust-devices-list');
+        if (!container) return;
+        container.innerHTML = '';
+        var items = (Array.isArray(list) && list.length > 0) ? list : (currentDevices.length > 0 ? currentDevices : []);
+        currentDevices = items.slice();
+        items.forEach(function (d, idx) {
+          container.appendChild(createDeviceCardElement(d, idx));
+        });
+      }
+
+      var btnAddDevice = document.getElementById('cust-btn-add-device');
+      if (btnAddDevice) {
+        btnAddDevice.addEventListener('click', function () {
+          var container = document.getElementById('cust-devices-list');
+          if (!container) return;
+          var count = container.querySelectorAll('.m-device-card').length;
+          var newCard = createDeviceCardElement({ name: '', type: 'Laptop', specs: '', tag: 'Gear', icon: 'lucide:laptop', description: '', url: '' }, count);
+          container.appendChild(newCard);
+          var nameInp = newCard.querySelector('.m-device-input-name');
+          if (nameInp) nameInp.focus();
         });
       }
 
@@ -5451,6 +5726,21 @@
           syncPinnedProjectsOnly(cfg.github || 'khxaiyan', true);
         }
 
+        /* Render devices in visual manager */
+        var devToggle = document.getElementById('cust-devices-enabled');
+        if (devToggle) {
+          devToggle.checked = (cfg.devices_enabled !== false);
+        }
+        var activeDevs = [];
+        if (cfg.devices && Array.isArray(cfg.devices)) {
+          activeDevs = cfg.devices;
+        } else if (overrideCfg && Array.isArray(overrideCfg.devices)) {
+          activeDevs = overrideCfg.devices;
+        } else if (typeof CONFIG !== 'undefined' && Array.isArray(CONFIG.devices)) {
+          activeDevs = CONFIG.devices;
+        }
+        renderDevicesManager(activeDevs);
+
         /* Render additional social links */
         var activeSocial = [];
         if (cfg.social_links && Array.isArray(cfg.social_links) && cfg.social_links.length > 0) {
@@ -5502,196 +5792,309 @@
       }
 
       function saveCustomizer(isSilent) {
-        // Dev bypass: always allow saving on localhost
-        var isLocalhost = (window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1');
-        if (!isLocalhost) {
-          if (!window.Clerk || !window.Clerk.user || !isUserAuthorized(window.Clerk.user)) {
-            console.warn('[Save] Auth blocked:', {
-              clerkLoaded: !!window.Clerk,
-              user: window.Clerk && window.Clerk.user ? window.Clerk.user.primaryEmailAddress : null,
-              authorized: window.Clerk && window.Clerk.user ? isUserAuthorized(window.Clerk.user) : false
-            });
-            if (!isSilent) {
-              alert('Access Denied: Only authorized administrators can save changes.');
-              window.location.replace('/');
-            }
-            return;
-          }
-        }
+        try {
+          var isLocalhost = (
+            window.location.hostname === 'localhost' ||
+            window.location.hostname === '127.0.0.1' ||
+            window.location.hostname === '0.0.0.0' ||
+            window.location.hostname === '[::1]' ||
+            window.location.hostname === '' ||
+            window.location.protocol === 'file:' ||
+            window.location.hostname.startsWith('192.168.') ||
+            window.location.hostname.startsWith('10.') ||
+            window.location.hostname.endsWith('.local')
+          );
 
-        /* Collect qualifications from visual cards */
-        var qualCards = document.querySelectorAll('#cust-qualifications-list .m-qual-card');
-        var qualificationsList = [];
-        qualCards.forEach(function (card) {
-          var title = (card.querySelector('.m-qual-input-title') || {}).value || '';
-          var issuer = (card.querySelector('.m-qual-input-issuer') || {}).value || '';
-          var year = (card.querySelector('.m-qual-input-year') || {}).value || '';
-          var tag = (card.querySelector('.m-qual-input-tag') || {}).value || 'Qualification';
-          var url = (card.querySelector('.m-qual-input-url') || {}).value || '';
-          var desc = (card.querySelector('.m-qual-input-desc') || {}).value || '';
-          if (title.trim() || issuer.trim()) {
-            qualificationsList.push({
-              title: title.trim(),
-              issuer: issuer.trim(),
-              year: year.trim(),
-              tag: tag.trim() || 'Qualification',
-              url: url.trim(),
-              description: desc.trim()
-            });
-          }
-        });
-
-        /* Collect projects from visual cards */
-        var projCards = document.querySelectorAll('#cust-projects-list .m-proj-card');
-        var projectsList = [];
-        var projectLinks = {};
-        projCards.forEach(function (card) {
-          var ghUrl = (card.querySelector('.m-proj-input-github') || {}).value || '';
-          var title = (card.querySelector('.m-proj-input-title') || {}).value || '';
-          var url = (card.querySelector('.m-proj-input-url') || {}).value || '';
-          var desc = (card.querySelector('.m-proj-input-desc') || {}).value || '';
-          var tag = (card.querySelector('.m-proj-input-tag') || {}).value || 'Project';
-          if (title.trim()) {
-            var trimmedTitle = title.trim();
-            var slug = trimmedTitle.replace(/[^a-zA-Z0-9_-]+/g, '-');
-            projectsList.push({
-              title: trimmedTitle,
-              name: slug,
-              url: url.trim(),
-              github_url: ghUrl.trim(),
-              description: desc.trim(),
-              tag: tag.trim() || 'Project',
-              stars: 1
-            });
-            if (url.trim()) {
-              projectLinks[slug] = url.trim();
-              projectLinks[trimmedTitle] = url.trim();
+          if (!isLocalhost) {
+            if (!window.Clerk || !window.Clerk.user || !isUserAuthorized(window.Clerk.user)) {
+              console.warn('[Save] Auth blocked:', {
+                clerkLoaded: !!window.Clerk,
+                user: window.Clerk && window.Clerk.user ? window.Clerk.user.primaryEmailAddress : null,
+                authorized: window.Clerk && window.Clerk.user ? isUserAuthorized(window.Clerk.user) : false
+              });
+              if (!isSilent) {
+                alert('Access Denied: Only authorized administrators can save changes.');
+                window.location.replace('/');
+              }
+              return;
             }
           }
-        });
 
-        /* Collect additional social links */
-        var socialCards = document.querySelectorAll('#cust-social-links-list .m-social-card');
-        var customSocials = [];
-        socialCards.forEach(function (card) {
-          var platform = (card.querySelector('.m-social-platform') || {}).value || 'website';
-          var label = (card.querySelector('.m-social-label') || {}).value || '';
-          var url = (card.querySelector('.m-social-url') || {}).value || '';
-          var icon = (card.querySelector('.m-social-icon') || {}).value || '';
-          if (url.trim()) {
-            customSocials.push({
-              platform: platform,
-              label: label.trim() || platform,
-              url: url.trim(),
-              icon: icon.trim()
-            });
-          }
-        });
-
-        var resolvedFavicon = pendingFaviconData || currentFaviconUrl || ((typeof CONFIG !== 'undefined') ? CONFIG.favicon_url : '') || 'https://res.cloudinary.com/dqxccz5bn/image/upload/favicon_jzygcw.png';
-        if (resolvedFavicon === 'favicon.svg' || resolvedFavicon === 'favicon.png' || resolvedFavicon === 'favicon.ico' || resolvedFavicon === 'profile_icon.svg') {
-          resolvedFavicon = 'https://res.cloudinary.com/dqxccz5bn/image/upload/favicon_jzygcw.png';
-        }
-
-        var resolvedAvatar = pendingAvatarData || currentAvatarUrl || ((typeof CONFIG !== 'undefined') ? CONFIG.avatar_url : '') || 'https://avatars.githubusercontent.com/u/225553218?v=4';
-        if (resolvedAvatar === 'avatar.svg' || resolvedAvatar === 'Diluc.svg' || resolvedAvatar === 'profile_icon.svg') {
-          resolvedAvatar = 'https://avatars.githubusercontent.com/u/225553218?v=4';
-        }
-
-        var themeColorMeta = document.getElementById('meta-theme-color');
-        if (themeColorMeta) {
-          themeColorMeta.setAttribute('content', currentThemeMode === 'light' ? '#ffffff' : '#0a0a0e');
-        }
-
-        var updated = {
-          github: cleanGitHubUsername(document.getElementById('cust-github').value),
-          x: document.getElementById('cust-x').value.trim(),
-          telegram: document.getElementById('cust-telegram').value.trim(),
-          email: document.getElementById('cust-email').value.trim(),
-          social_links: customSocials,
-          logo: resolvedAvatar || 'https://res.cloudinary.com/dqxccz5bn/image/upload/profile_icon_wf7thb.svg',
-          avatar_url: resolvedAvatar,
-          favicon_url: resolvedFavicon,
-          site_name: document.getElementById('cust-sitename').value.trim(),
-          accent_letter: document.getElementById('cust-accent').value.trim() || 'x',
-          site_desc: document.getElementById('cust-bio').value.trim(),
-          seo_desc: document.getElementById('cust-bio').value.trim(),
-          intro_enabled: document.getElementById('cust-intro-enabled') ? document.getElementById('cust-intro-enabled').checked : true,
-          intro: document.getElementById('cust-intro').value.trim(),
-          skills_enabled: document.getElementById('cust-skills-enabled') ? document.getElementById('cust-skills-enabled').checked : true,
-          skills: currentSkills,
-          qualifications_enabled: document.getElementById('cust-qualifications-enabled') ? document.getElementById('cust-qualifications-enabled').checked : true,
-          qualifications: qualificationsList,
-          projects_enabled: document.getElementById('cust-projects-enabled') ? document.getElementById('cust-projects-enabled').checked : true,
-          projects: projectsList,
-          project_links: projectLinks,
-          reach_enabled: document.getElementById('cust-reach-enabled') ? document.getElementById('cust-reach-enabled').checked : true,
-          message_enabled: document.getElementById('cust-message-enabled') ? document.getElementById('cust-message-enabled').checked : true,
-          default_theme: currentThemeMode,
-          accent_color: currentAccentColor,
-          accent_palette: currentPalette,
-          font_family: currentFontFamily,
-          font_scope: currentFontScope,
-          theme_config: {
-            mode: currentThemeMode,
-            accent: currentAccentColor,
-            palette: currentPalette,
-            font: currentFontFamily,
-            font_scope: currentFontScope
-          },
-          cf_analytics: (typeof CONFIG !== 'undefined' && CONFIG.cf_analytics) ? CONFIG.cf_analytics : false,
-          web3forms_access_key: (document.getElementById('cust-web3forms') ? document.getElementById('cust-web3forms').value.trim() : '') || 'd36ee933-00cb-453e-aa38-b18ee60ce5d1',
-          hcaptcha_sitekey: (document.getElementById('cust-hcaptcha') ? document.getElementById('cust-hcaptcha').value.trim() : '') || '50b2fe65-b00b-4b9e-ad62-3ba471098be2',
-          cloudinary_cloud_name: ((document.getElementById('cust-cloudinary-cloud') || {}).value || '').trim(),
-          cloudinary_upload_preset: ((document.getElementById('cust-cloudinary-preset') || {}).value || '').trim(),
-          clerk_publishable_key: (typeof CONFIG !== 'undefined' && CONFIG.clerk_publishable_key) ? CONFIG.clerk_publishable_key : 'pk_test_c2hpbmluZy10dXJrZXktMTMyNS5jbGVyay5hY2NvdW50cy5kZXYk',
-          clerk_frontend_api: 'https://shining-turkey-1325.clerk.accounts.dev',
-          section_order: currentSectionOrder.slice()
-        };
-
-        localStorage.setItem('portfolio_custom_config', JSON.stringify(updated));
-        applyBrowserFavicon(resolvedFavicon);
-        pendingFaviconData = null;
-        updateCodeSnippet(updated);
-
-        var saveStatusMsg = document.getElementById('save-status-msg');
-        if (saveStatusMsg) {
-          saveStatusMsg.style.display = 'block';
-          saveStatusMsg.style.color = '#38bdf8';
-          saveStatusMsg.textContent = '⏳ Applying changes...';
-        }
-
-        /* ── Universal Persistence: Call /api/save-config ── */
-        fetch('/api/save-config', {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify(updated)
-        })
-          .then(async function (r) {
-            return r.json().catch(function () { return { success: true }; });
-          })
-          .then(function (res) {
-            if (!saveStatusMsg) return;
-            saveStatusMsg.style.color = '#10b981';
-            if (res && res.mongodb) {
-              saveStatusMsg.textContent = '✓ Changes saved to MongoDB!';
-            } else if (res && res.message) {
-              saveStatusMsg.textContent = res.message;
-            } else {
-              saveStatusMsg.textContent = '✓ Theme & settings saved and applied!';
+          /* Collect qualifications from visual cards */
+          var qualCards = document.querySelectorAll('#cust-qualifications-list .m-qual-card');
+          var qualificationsList = [];
+          qualCards.forEach(function (card) {
+            var title = (card.querySelector('.m-qual-input-title') || {}).value || '';
+            var issuer = (card.querySelector('.m-qual-input-issuer') || {}).value || '';
+            var year = (card.querySelector('.m-qual-input-year') || {}).value || '';
+            var tag = (card.querySelector('.m-qual-input-tag') || {}).value || 'Qualification';
+            var url = (card.querySelector('.m-qual-input-url') || {}).value || '';
+            var desc = (card.querySelector('.m-qual-input-desc') || {}).value || '';
+            if (title.trim() || issuer.trim()) {
+              qualificationsList.push({
+                title: title.trim(),
+                issuer: issuer.trim(),
+                year: year.trim(),
+                tag: tag.trim() || 'Qualification',
+                url: url.trim(),
+                description: desc.trim()
+              });
             }
-            setTimeout(function () {
-              if (saveStatusMsg) saveStatusMsg.style.display = 'none';
-            }, 4000);
-          })
-          .catch(function () {
-            if (!saveStatusMsg) return;
-            saveStatusMsg.style.color = '#10b981';
-            saveStatusMsg.textContent = '✓ Theme & settings saved and applied!';
-            setTimeout(function () {
-              if (saveStatusMsg) saveStatusMsg.style.display = 'none';
-            }, 4000);
           });
+
+          /* Collect projects from visual cards */
+          var projCards = document.querySelectorAll('#cust-projects-list .m-proj-card');
+          var projectsList = [];
+          var projectLinks = {};
+          projCards.forEach(function (card) {
+            var ghUrl = (card.querySelector('.m-proj-input-github') || {}).value || '';
+            var title = (card.querySelector('.m-proj-input-title') || {}).value || '';
+            var url = (card.querySelector('.m-proj-input-url') || {}).value || '';
+            var desc = (card.querySelector('.m-proj-input-desc') || {}).value || '';
+            var tag = (card.querySelector('.m-proj-input-tag') || {}).value || 'Project';
+            if (title.trim()) {
+              var trimmedTitle = title.trim();
+              var slug = trimmedTitle.replace(/[^a-zA-Z0-9_-]+/g, '-');
+              projectsList.push({
+                title: trimmedTitle,
+                name: slug,
+                url: url.trim(),
+                github_url: ghUrl.trim(),
+                description: desc.trim(),
+                tag: tag.trim() || 'Project',
+                stars: 1
+              });
+              if (url.trim()) {
+                projectLinks[slug] = url.trim();
+                projectLinks[trimmedTitle] = url.trim();
+              }
+            }
+          });
+
+          /* Collect devices from visual cards */
+          var devCards = document.querySelectorAll('#cust-devices-list .m-device-card');
+          var devicesList = [];
+          devCards.forEach(function (card) {
+            var name = (card.querySelector('.m-device-input-name') || {}).value || '';
+            var type = (card.querySelector('.m-device-input-type') || {}).value || '';
+            var specs = (card.querySelector('.m-device-input-specs') || {}).value || '';
+            var tag = (card.querySelector('.m-device-input-tag') || {}).value || '';
+            var icon = (card.querySelector('.m-device-input-icon') || {}).value || '';
+            var url = (card.querySelector('.m-device-input-url') || {}).value || '';
+            var desc = (card.querySelector('.m-device-input-desc') || {}).value || '';
+            if (name.trim() || specs.trim()) {
+              devicesList.push({
+                name: name.trim(),
+                type: type.trim() || 'Device',
+                specs: specs.trim(),
+                tag: tag.trim() || 'Gear',
+                icon: icon.trim() || 'lucide:laptop',
+                url: url.trim(),
+                description: desc.trim()
+              });
+            }
+          });
+
+          /* Collect additional social links */
+          var socialCards = document.querySelectorAll('#cust-social-links-list .m-social-card');
+          var customSocials = [];
+          socialCards.forEach(function (card) {
+            var platform = (card.querySelector('.m-social-platform') || {}).value || 'website';
+            var label = (card.querySelector('.m-social-label') || {}).value || '';
+            var url = (card.querySelector('.m-social-url') || {}).value || '';
+            var icon = (card.querySelector('.m-social-icon') || {}).value || '';
+            if (url.trim()) {
+              customSocials.push({
+                platform: platform,
+                label: label.trim() || platform,
+                url: url.trim(),
+                icon: icon.trim()
+              });
+            }
+          });
+
+          var thumbAvatar = document.getElementById('cust-avatar-preview');
+          var thumbFavicon = document.getElementById('cust-favicon-preview');
+          var existingCustom = {};
+          try {
+            existingCustom = JSON.parse(localStorage.getItem('portfolio_custom_config') || '{}');
+          } catch (_) { }
+
+          var resolvedFavicon = pendingFaviconData ||
+            (thumbFavicon ? (thumbFavicon.currentSrc || thumbFavicon.src) : '') ||
+            existingCustom.favicon_url ||
+            ((typeof CONFIG !== 'undefined') ? CONFIG.favicon_url : '') ||
+            'https://res.cloudinary.com/dqxccz5bn/image/upload/favicon_jzygcw.png';
+          if (resolvedFavicon === 'favicon.svg' || resolvedFavicon === 'favicon.png' || resolvedFavicon === 'favicon.ico' || resolvedFavicon === 'profile_icon.svg') {
+            resolvedFavicon = 'https://res.cloudinary.com/dqxccz5bn/image/upload/favicon_jzygcw.png';
+          }
+
+          var resolvedAvatar = pendingAvatarData ||
+            (thumbAvatar ? (thumbAvatar.currentSrc || thumbAvatar.src) : '') ||
+            existingCustom.avatar_url ||
+            ((typeof CONFIG !== 'undefined') ? CONFIG.avatar_url : '') ||
+            'https://avatars.githubusercontent.com/u/225553218?v=4';
+          if (resolvedAvatar === 'avatar.svg' || resolvedAvatar === 'Diluc.svg' || resolvedAvatar === 'profile_icon.svg') {
+            resolvedAvatar = 'https://avatars.githubusercontent.com/u/225553218?v=4';
+          }
+
+          var themeColorMeta = document.getElementById('meta-theme-color');
+          if (themeColorMeta) {
+            themeColorMeta.setAttribute('content', currentThemeMode === 'light' ? '#ffffff' : '#0a0a0e');
+          }
+
+          var updated = {
+            github: (typeof cleanGitHubUsername === 'function')
+              ? cleanGitHubUsername((document.getElementById('cust-github') || {}).value || '')
+              : (((document.getElementById('cust-github') || {}).value || '').trim()),
+            x: ((document.getElementById('cust-x') || {}).value || '').trim(),
+            telegram: ((document.getElementById('cust-telegram') || {}).value || '').trim(),
+            email: ((document.getElementById('cust-email') || {}).value || '').trim(),
+            social_links: customSocials,
+            logo: resolvedAvatar || 'https://res.cloudinary.com/dqxccz5bn/image/upload/profile_icon_wf7thb.svg',
+            avatar_url: resolvedAvatar,
+            favicon_url: resolvedFavicon,
+            site_name: ((document.getElementById('cust-sitename') || {}).value || '').trim(),
+            accent_letter: ((document.getElementById('cust-accent') || {}).value || '').trim() || 'x',
+            site_desc: ((document.getElementById('cust-bio') || {}).value || '').trim(),
+            seo_desc: ((document.getElementById('cust-bio') || {}).value || '').trim(),
+            intro_enabled: document.getElementById('cust-intro-enabled') ? document.getElementById('cust-intro-enabled').checked : true,
+            intro: ((document.getElementById('cust-intro') || {}).value || '').trim(),
+            skills_enabled: document.getElementById('cust-skills-enabled') ? document.getElementById('cust-skills-enabled').checked : true,
+            skills: Array.isArray(currentSkills) ? currentSkills : [],
+            qualifications_enabled: document.getElementById('cust-qualifications-enabled') ? document.getElementById('cust-qualifications-enabled').checked : true,
+            qualifications: qualificationsList,
+            projects_enabled: document.getElementById('cust-projects-enabled') ? document.getElementById('cust-projects-enabled').checked : true,
+            projects: projectsList,
+            project_links: projectLinks,
+            devices_enabled: document.getElementById('cust-devices-enabled') ? document.getElementById('cust-devices-enabled').checked : true,
+            devices: devicesList,
+            reach_enabled: document.getElementById('cust-reach-enabled') ? document.getElementById('cust-reach-enabled').checked : true,
+            message_enabled: document.getElementById('cust-message-enabled') ? document.getElementById('cust-message-enabled').checked : true,
+            default_theme: currentThemeMode,
+            accent_color: currentAccentColor,
+            accent_palette: currentPalette,
+            font_family: currentFontFamily,
+            font_scope: currentFontScope,
+            theme_config: {
+              mode: currentThemeMode,
+              accent: currentAccentColor,
+              palette: currentPalette,
+              font: currentFontFamily,
+              font_scope: currentFontScope
+            },
+            cf_analytics: (typeof CONFIG !== 'undefined' && CONFIG.cf_analytics) ? CONFIG.cf_analytics : false,
+            web3forms_access_key: (document.getElementById('cust-web3forms') ? document.getElementById('cust-web3forms').value.trim() : '') || 'd36ee933-00cb-453e-aa38-b18ee60ce5d1',
+            hcaptcha_sitekey: (document.getElementById('cust-hcaptcha') ? document.getElementById('cust-hcaptcha').value.trim() : '') || '50b2fe65-b00b-4b9e-ad62-3ba471098be2',
+            cloudinary_cloud_name: ((document.getElementById('cust-cloudinary-cloud') || {}).value || '').trim(),
+            cloudinary_upload_preset: ((document.getElementById('cust-cloudinary-preset') || {}).value || '').trim(),
+            clerk_publishable_key: (typeof CONFIG !== 'undefined' && CONFIG.clerk_publishable_key) ? CONFIG.clerk_publishable_key : 'pk_test_c2hpbmluZy10dXJrZXktMTMyNS5jbGVyay5hY2NvdW50cy5kZXYk',
+            clerk_frontend_api: 'https://shining-turkey-1325.clerk.accounts.dev',
+            section_order: (typeof currentSectionOrder !== 'undefined' && Array.isArray(currentSectionOrder) && currentSectionOrder.length > 0)
+              ? currentSectionOrder.slice()
+              : (typeof RAIL_SECTION_DEFAULT_ORDER !== 'undefined' ? RAIL_SECTION_DEFAULT_ORDER.slice() : ['intro', 'skills', 'qualifications', 'projects', 'devices', 'reach', 'message'])
+          };
+
+          localStorage.setItem('portfolio_custom_config', JSON.stringify(updated));
+          if (typeof applyBrowserFavicon === 'function') {
+            applyBrowserFavicon(resolvedFavicon);
+          }
+          pendingFaviconData = null;
+          updateCodeSnippet(updated);
+
+          var saveBtn = document.getElementById('btn-save-customizer');
+          var saveStatusMsg = document.getElementById('save-status-msg');
+
+          if (saveBtn) {
+            saveBtn.disabled = true;
+            saveBtn.style.opacity = '0.8';
+            saveBtn.style.cursor = 'wait';
+            var btnSpan = saveBtn.querySelector('span');
+            if (btnSpan) btnSpan.textContent = '⏳ Saving to MongoDB...';
+          }
+
+          if (saveStatusMsg) {
+            saveStatusMsg.style.display = 'block';
+            saveStatusMsg.style.color = '#38bdf8';
+            saveStatusMsg.textContent = '⏳ Applying changes & saving to MongoDB...';
+          }
+
+          /* ── Universal Persistence: Call /api/save-config ── */
+          fetch('/api/save-config', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(updated)
+          })
+            .then(async function (r) {
+              return r.json().catch(function () { return { success: true }; });
+            })
+            .then(function (res) {
+              if (saveBtn) {
+                saveBtn.disabled = false;
+                saveBtn.style.opacity = '';
+                saveBtn.style.cursor = '';
+                var btnSpan = saveBtn.querySelector('span');
+                if (btnSpan) {
+                  btnSpan.textContent = (res && res.mongodb) ? '✓ Saved to MongoDB!' : '✓ Changes Saved!';
+                  setTimeout(function () {
+                    btnSpan.textContent = 'Save & Apply Changes';
+                  }, 3000);
+                }
+              }
+              if (!saveStatusMsg) return;
+              saveStatusMsg.style.color = '#10b981';
+              if (res && res.mongodb) {
+                saveStatusMsg.textContent = '✓ Changes saved to MongoDB!';
+              } else if (res && res.message) {
+                saveStatusMsg.textContent = res.message;
+              } else {
+                saveStatusMsg.textContent = '✓ Theme & settings saved and applied!';
+              }
+              setTimeout(function () {
+                if (saveStatusMsg) saveStatusMsg.style.display = 'none';
+              }, 4500);
+            })
+            .catch(function (fetchErr) {
+              console.warn('API save-config fetch issue:', fetchErr);
+              if (saveBtn) {
+                saveBtn.disabled = false;
+                saveBtn.style.opacity = '';
+                saveBtn.style.cursor = '';
+                var btnSpan = saveBtn.querySelector('span');
+                if (btnSpan) {
+                  btnSpan.textContent = '✓ Saved locally!';
+                  setTimeout(function () {
+                    btnSpan.textContent = 'Save & Apply Changes';
+                  }, 2500);
+                }
+              }
+              if (!saveStatusMsg) return;
+              saveStatusMsg.style.color = '#10b981';
+              saveStatusMsg.textContent = '✓ Theme & settings saved locally and applied!';
+              setTimeout(function () {
+                if (saveStatusMsg) saveStatusMsg.style.display = 'none';
+              }, 4500);
+            });
+        } catch (saveErr) {
+          console.error('[Save Customizer Error]:', saveErr);
+          var errBtn = document.getElementById('btn-save-customizer');
+          if (errBtn) {
+            errBtn.disabled = false;
+            errBtn.style.opacity = '';
+            errBtn.style.cursor = '';
+            var errSpan = errBtn.querySelector('span');
+            if (errSpan) errSpan.textContent = 'Save & Apply Changes';
+          }
+          var errStatus = document.getElementById('save-status-msg');
+          if (errStatus) {
+            errStatus.style.display = 'block';
+            errStatus.style.color = '#ef4444';
+            errStatus.textContent = '⚠️ Save error: ' + (saveErr && saveErr.message ? saveErr.message : saveErr);
+          }
+          if (!isSilent) {
+            alert('Save error: ' + (saveErr && saveErr.message ? saveErr.message : saveErr));
+          }
+        }
       }
 
       var btnSaveCustomizer = document.getElementById('btn-save-customizer');
