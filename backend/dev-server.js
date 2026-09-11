@@ -25,6 +25,7 @@ const MIME_TYPES = {
 // Load API handlers
 const saveConfigHandler = require('../api/save-config');
 const getConfigHandler = require('../api/get-config');
+const dynamicConfigHandler = require('../api/config');
 let inngestHandler = null;
 try {
   inngestHandler = require('../api/inngest');
@@ -34,16 +35,27 @@ const server = http.createServer(async (req, res) => {
   const parsedUrl = url.parse(req.url, true);
   let pathname = decodeURIComponent(parsedUrl.pathname);
 
-  // ── Handle /api/get-config & /api/config ──
-  if (pathname === '/api/get-config' || pathname === '/api/config') {
-    res.status = (code) => {
-      res.statusCode = code;
-      return res;
-    };
-    res.json = (data) => {
-      res.setHeader('Content-Type', 'application/json');
-      res.end(JSON.stringify(data));
-    };
+  // Helper response wrappers
+  res.status = (code) => {
+    res.statusCode = code;
+    return res;
+  };
+  res.json = (data) => {
+    res.setHeader('Content-Type', 'application/json');
+    res.end(JSON.stringify(data));
+  };
+  res.send = (data) => {
+    res.end(data);
+  };
+
+  // ── Handle /api/config.js & /api/config ──
+  if (pathname === '/api/config.js' || pathname === '/api/config') {
+    await dynamicConfigHandler(req, res);
+    return;
+  }
+
+  // ── Handle /api/get-config ──
+  if (pathname === '/api/get-config') {
     await getConfigHandler(req, res);
     return;
   }
