@@ -813,6 +813,86 @@
 </head>
 
 <body>
+  <noscript>
+    <style>
+      main.sheet, #scroll-progress, .cust-header, .auth-box, #dev-toast {
+        display: none !important;
+      }
+      .noscript-error-screen {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100vw;
+        height: 100vh;
+        background: var(--bg, #0a0a0e);
+        z-index: 99999999;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        text-align: center;
+        padding: 32px 20px;
+        gap: 16px;
+        color: var(--ink, #eef0f4);
+        box-sizing: border-box;
+        font-family: var(--font-display, 'Space Grotesk', -apple-system, sans-serif);
+      }
+      .noscript-badge {
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+        padding: 6px 16px;
+        border-radius: 20px;
+        background: var(--red-dim, rgba(0, 255, 0, 0.12));
+        border: 1px solid var(--border-accent, rgba(0, 255, 0, 0.45));
+        color: var(--red, #00ff00);
+        font-size: 0.82rem;
+        font-weight: 600;
+        letter-spacing: 0.04em;
+        font-family: var(--font-mono, 'IBM Plex Mono', monospace);
+        text-transform: uppercase;
+      }
+      .noscript-code {
+        font-size: 5.5rem;
+        font-weight: 800;
+        color: var(--ink, #eef0f4);
+        line-height: 1;
+        letter-spacing: -0.04em;
+        margin: 8px 0 0 0;
+      }
+      .noscript-code .glyph-5 {
+        color: var(--red, #00ff00);
+        text-shadow: 0 0 24px var(--border-accent, rgba(0, 255, 0, 0.45));
+      }
+      .noscript-title {
+        font-size: 1.8rem;
+        font-weight: 700;
+        color: var(--red, #00ff00);
+        letter-spacing: -0.02em;
+        margin: 0;
+      }
+      .noscript-msg {
+        font-size: 0.95rem;
+        color: var(--ink-dim, #8d90a0);
+        max-width: 380px;
+        line-height: 1.6;
+        margin: 0;
+        font-family: var(--font-mono, 'IBM Plex Mono', monospace);
+      }
+    </style>
+    <div class="noscript-error-screen">
+      <div class="noscript-badge">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><line x1="4.93" y1="4.93" x2="19.07" y2="19.07"/></svg>
+        <span>scripts blocked</span>
+      </div>
+      <h1 class="noscript-code">40<span class="glyph-5">4</span></h1>
+      <h2 class="noscript-title">dont do that</h2>
+      <p class="noscript-msg">
+        JavaScript is blocked in your browser. Please disable &ldquo;Block scripts&rdquo; in Brave Shields or your ad-blocker to view this page.
+      </p>
+    </div>
+  </noscript>
+
   <div id="scroll-progress" class="scroll-progress-bar" aria-hidden="true"></div>
 
   <main class="sheet cust-container">
