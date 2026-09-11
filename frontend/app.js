@@ -384,6 +384,22 @@
       messageRow.style.display = (cfg.message_enabled !== false) ? '' : 'none';
     }
 
+    // 13. Apply custom section order if set
+    if (Array.isArray(cfg.section_order) && cfg.section_order.length > 0) {
+      var railContainer = document.querySelector('.railway-content, .railway, main, #rail-root');
+      // Find common parent of all rail-rows
+      var anyRow = document.getElementById('rail-row-intro');
+      var railParent = anyRow && anyRow.parentNode;
+      if (railParent) {
+        cfg.section_order.forEach(function (key) {
+          var el = document.getElementById('rail-row-' + key);
+          if (el && el.parentNode === railParent) {
+            railParent.appendChild(el);
+          }
+        });
+      }
+    }
+
     // Dynamic timeline terminator update
     updateTimelineLastRow();
   }
@@ -728,6 +744,165 @@
     container.innerHTML = html;
   }
 
+  /* ─── Skill Icon Resolver ─── */
+  var SKILL_ICON_MAP = {
+    // Web & Frameworks
+    'javascript': 'simple-icons:javascript',
+    'js': 'simple-icons:javascript',
+    'typescript': 'simple-icons:typescript',
+    'ts': 'simple-icons:typescript',
+    'react': 'simple-icons:react',
+    'react.js': 'simple-icons:react',
+    'reactjs': 'simple-icons:react',
+    'next.js': 'simple-icons:nextdotjs',
+    'nextjs': 'simple-icons:nextdotjs',
+    'vue': 'simple-icons:vuedotjs',
+    'vue.js': 'simple-icons:vuedotjs',
+    'vuejs': 'simple-icons:vuedotjs',
+    'angular': 'simple-icons:angular',
+    'svelte': 'simple-icons:svelte',
+    'astro': 'simple-icons:astro',
+    'remix': 'simple-icons:remix',
+    'nuxt': 'simple-icons:nuxtdotjs',
+    'nuxt.js': 'simple-icons:nuxtdotjs',
+    'html': 'simple-icons:html5',
+    'html5': 'simple-icons:html5',
+    'css': 'simple-icons:css3',
+    'css3': 'simple-icons:css3',
+    'sass': 'simple-icons:sass',
+    'scss': 'simple-icons:sass',
+    'tailwind': 'simple-icons:tailwindcss',
+    'tailwind css': 'simple-icons:tailwindcss',
+    'tailwindcss': 'simple-icons:tailwindcss',
+    'bootstrap': 'simple-icons:bootstrap',
+    'jquery': 'simple-icons:jquery',
+    // Backend & Runtime
+    'node': 'simple-icons:nodedotjs',
+    'node.js': 'simple-icons:nodedotjs',
+    'nodejs': 'simple-icons:nodedotjs',
+    'express': 'simple-icons:express',
+    'express.js': 'simple-icons:express',
+    'fastapi': 'simple-icons:fastapi',
+    'django': 'simple-icons:django',
+    'flask': 'simple-icons:flask',
+    'laravel': 'simple-icons:laravel',
+    'spring': 'simple-icons:spring',
+    'graphql': 'simple-icons:graphql',
+    'rest': 'lucide:globe',
+    'restapi': 'lucide:globe',
+    'websocket': 'lucide:activity',
+    'socket.io': 'simple-icons:socketdotio',
+    // Languages
+    'python': 'simple-icons:python',
+    'java': 'simple-icons:openjdk',
+    'c': 'lucide:code-2',
+    'c++': 'simple-icons:cplusplus',
+    'cpp': 'simple-icons:cplusplus',
+    'c#': 'simple-icons:csharp',
+    'csharp': 'simple-icons:csharp',
+    'go': 'simple-icons:go',
+    'golang': 'simple-icons:go',
+    'rust': 'simple-icons:rust',
+    'ruby': 'simple-icons:ruby',
+    'php': 'simple-icons:php',
+    'swift': 'simple-icons:swift',
+    'kotlin': 'simple-icons:kotlin',
+    'dart': 'simple-icons:dart',
+    'r': 'simple-icons:r',
+    'scala': 'simple-icons:scala',
+    'elixir': 'simple-icons:elixir',
+    'haskell': 'simple-icons:haskell',
+    // Databases
+    'mongodb': 'simple-icons:mongodb',
+    'postgres': 'simple-icons:postgresql',
+    'postgresql': 'simple-icons:postgresql',
+    'mysql': 'simple-icons:mysql',
+    'sqlite': 'simple-icons:sqlite',
+    'redis': 'simple-icons:redis',
+    'firebase': 'simple-icons:firebase',
+    'supabase': 'simple-icons:supabase',
+    'prisma': 'simple-icons:prisma',
+    'dynamodb': 'simple-icons:amazondynamodb',
+    'elasticsearch': 'simple-icons:elasticsearch',
+    // DevOps & Cloud
+    'docker': 'simple-icons:docker',
+    'kubernetes': 'simple-icons:kubernetes',
+    'k8s': 'simple-icons:kubernetes',
+    'aws': 'simple-icons:amazonaws',
+    'azure': 'simple-icons:microsoftazure',
+    'gcp': 'simple-icons:googlecloud',
+    'google cloud': 'simple-icons:googlecloud',
+    'vercel': 'simple-icons:vercel',
+    'netlify': 'simple-icons:netlify',
+    'heroku': 'simple-icons:heroku',
+    'nginx': 'simple-icons:nginx',
+    'terraform': 'simple-icons:terraform',
+    'ansible': 'simple-icons:ansible',
+    'jenkins': 'simple-icons:jenkins',
+    'github actions': 'simple-icons:githubactions',
+    'ci/cd': 'lucide:git-branch',
+    // Tools & Other
+    'git': 'simple-icons:git',
+    'github': 'simple-icons:github',
+    'gitlab': 'simple-icons:gitlab',
+    'linux': 'simple-icons:linux',
+    'ubuntu': 'simple-icons:ubuntu',
+    'bash': 'simple-icons:gnubash',
+    'shell': 'lucide:terminal',
+    'terminal': 'lucide:terminal',
+    'vscode': 'simple-icons:visualstudiocode',
+    'vs code': 'simple-icons:visualstudiocode',
+    'figma': 'simple-icons:figma',
+    'photoshop': 'simple-icons:adobephotoshop',
+    'illustrator': 'simple-icons:adobeillustrator',
+    'blender': 'simple-icons:blender',
+    // Mobile
+    'react native': 'simple-icons:react',
+    'flutter': 'simple-icons:flutter',
+    'android': 'simple-icons:android',
+    'ios': 'simple-icons:apple',
+    // AI/ML
+    'tensorflow': 'simple-icons:tensorflow',
+    'pytorch': 'simple-icons:pytorch',
+    'openai': 'simple-icons:openai',
+    'machine learning': 'lucide:cpu',
+    'ai': 'lucide:sparkles',
+    'ml': 'lucide:cpu',
+    'llm': 'lucide:sparkles',
+    // Testing
+    'jest': 'simple-icons:jest',
+    'cypress': 'simple-icons:cypress',
+    'vitest': 'simple-icons:vitest',
+    'testing': 'lucide:check-circle',
+    // Other popular
+    'wordpress': 'simple-icons:wordpress',
+    'shopify': 'simple-icons:shopify',
+    'stripe': 'simple-icons:stripe',
+    'threejs': 'simple-icons:threedotjs',
+    'three.js': 'simple-icons:threedotjs',
+    'webgl': 'lucide:layers',
+    'blockchain': 'lucide:link',
+    'solidity': 'simple-icons:solidity',
+    'web3': 'simple-icons:web3dotjs',
+    'arduino': 'simple-icons:arduino',
+    'raspberrypi': 'simple-icons:raspberrypi'
+  };
+
+  function getSkillIcon(skillName) {
+    var key = (skillName || '').toLowerCase().trim();
+    var icon = SKILL_ICON_MAP[key] || null;
+    if (!icon) {
+      // Fuzzy: partial match
+      for (var k in SKILL_ICON_MAP) {
+        if (key.indexOf(k) !== -1 || k.indexOf(key) !== -1) {
+          icon = SKILL_ICON_MAP[k];
+          break;
+        }
+      }
+    }
+    return icon || 'lucide:code-2';
+  }
+
   /* ─── Interactive Skills Pills Display ─── */
   function renderSkills(skills) {
     var container = document.getElementById('skills-container');
@@ -743,8 +918,9 @@
     list.forEach(function (s) {
       var name = (typeof s === 'string' ? s : (s && s.name ? s.name : '')).trim();
       if (!name) return;
+      var icon = getSkillIcon(name);
       html += '<span class="skill-pill">' +
-        '<span class="skill-pill-dot"></span>' +
+        '<iconify-icon icon="' + escapeHtml(icon) + '" class="skill-pill-icon" width="14" height="14" aria-hidden="true"></iconify-icon>' +
         '<span class="skill-pill-name">' + escapeHtml(name) + '</span>' +
         '</span>';
     });
