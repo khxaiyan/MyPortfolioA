@@ -69,14 +69,6 @@ module.exports = async function handler(req, res) {
       mongoError = mErr.message;
     }
 
-    // 2. If running locally with disk access, keep frontend/config.js up-to-date (no git commit or push!)
-    try {
-      const configPath = path.join(process.cwd(), 'frontend', 'config.js');
-      if (fs.existsSync(path.dirname(configPath))) {
-        fs.writeFileSync(configPath, formattedConfig, 'utf8');
-      }
-    } catch (_) {}
-
     return res.status(200).json({
       success: true,
       mongodb: savedToMongo,
