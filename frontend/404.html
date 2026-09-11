@@ -24,7 +24,7 @@
       var t = themeCfg.mode || cfg.default_theme || localStorage.getItem('theme') || (matchMedia('(prefers-color-scheme:light)').matches ? 'light' : 'dark');
       document.documentElement.setAttribute('data-theme', t);
 
-      var accent = themeCfg.accent_color || cfg.accent_color || '#00ff00';
+      var accent = themeCfg.accent_color || cfg.accent_color || '#ff2a5f';
       if (accent) {
         document.documentElement.style.setProperty('--red', accent);
       }
