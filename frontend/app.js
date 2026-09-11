@@ -230,6 +230,21 @@
     });
   }
 
+  /* ─── Dynamic Timeline Node & Terminator Engine ─── */
+  function updateTimelineLastRow() {
+    var rows = document.querySelectorAll('.sheet > .rail-row:not(.rail-row--root)');
+    var lastVisible = null;
+    rows.forEach(function (row) {
+      row.classList.remove('rail-row--last');
+      if (row.style.display !== 'none' && window.getComputedStyle(row).display !== 'none') {
+        lastVisible = row;
+      }
+    });
+    if (lastVisible) {
+      lastVisible.classList.add('rail-row--last');
+    }
+  }
+
   /* ─── Universal Live Configuration Hydration ─── */
   function applyFullConfig(cfg) {
     if (!cfg || typeof cfg !== 'object') return;
@@ -274,6 +289,8 @@
     var avatarUrl = cfg.avatar_url || cfg.logo;
     if (avatarUrl) {
       setPageAvatar(avatarUrl);
+    } else {
+      setPageAvatar('https://res.cloudinary.com/dqxccz5bn/image/upload/profile_icon_wf7thb.svg');
     }
 
     // 7. Wordmark & Corner Tag
@@ -286,12 +303,21 @@
     var cornerTag = document.getElementById('corner-tag');
     if (cornerTag) {
       cornerTag.innerHTML = '@' + formatWordmark(siteName, accentLetter);
+      cornerTag.style.display = '';
+    }
+    var modalDevTitle = document.getElementById('modal-dev-title');
+    if (modalDevTitle) {
+      modalDevTitle.innerHTML = formatWordmark(siteName, accentLetter);
     }
 
     // 8. Headline Bio & Intro text
     var bioEl = document.querySelector('.bio');
     if (bioEl && cfg.site_desc) {
       bioEl.innerHTML = parseRichText(cfg.site_desc);
+    }
+    var introRow = document.getElementById('rail-row-intro');
+    if (introRow) {
+      introRow.style.display = (cfg.intro_enabled !== false) ? '' : 'none';
     }
     var introEl = document.getElementById('intro-text');
     if (introEl && cfg.intro) {
@@ -310,13 +336,43 @@
       metaDescs.forEach(function (m) { m.content = descContent; });
     }
 
+    // 9.5 Skills
+    var skillsRow = document.getElementById('rail-row-skills');
+    var isSkillsEnabled = (cfg.skills_enabled !== false);
+    var skillsList = Array.isArray(cfg.skills) ? cfg.skills : [];
+    if (skillsRow) {
+      if (isSkillsEnabled && skillsList.length > 0) {
+        skillsRow.style.display = '';
+        renderSkills(skillsList);
+      } else {
+        skillsRow.style.display = 'none';
+      }
+    }
+
     // 10. Projects
+    var projectsRow = document.getElementById('rail-row-projects');
+    if (projectsRow) {
+      projectsRow.style.display = (cfg.projects_enabled !== false) ? '' : 'none';
+    }
     if (Array.isArray(cfg.projects) && cfg.projects.length > 0) {
       renderProjects(cfg.projects);
     }
 
-    // 11. Channel / Social links
+    // 11. Channel / Social links (Reach)
+    var reachRow = document.getElementById('rail-row-reach');
+    if (reachRow) {
+      reachRow.style.display = (cfg.reach_enabled !== false) ? '' : 'none';
+    }
     renderChannelList(cfg);
+
+    // 12. Message
+    var messageRow = document.getElementById('rail-row-message');
+    if (messageRow) {
+      messageRow.style.display = (cfg.message_enabled !== false) ? '' : 'none';
+    }
+
+    // Dynamic timeline terminator update
+    updateTimelineLastRow();
   }
 
   /* ─── Load Local Customizer Overrides if present ─── */
@@ -659,16 +715,50 @@
     container.innerHTML = html;
   }
 
+  /* ─── Interactive Skills Pills Display ─── */
+  function renderSkills(skills) {
+    var container = document.getElementById('skills-container');
+    if (!container) return;
+
+    var list = Array.isArray(skills) ? skills : [];
+    if (list.length === 0) {
+      container.innerHTML = '<div style="padding:16px 18px; font-size:0.78rem; color:var(--ink-faint); font-family:var(--font-mono);">No skills listed yet.</div>';
+      return;
+    }
+
+    var html = '<div class="skills-pills-wrap">';
+    list.forEach(function (s) {
+      var name = (typeof s === 'string' ? s : (s && s.name ? s.name : '')).trim();
+      if (!name) return;
+      html += '<span class="skill-pill">' +
+        '<span class="skill-pill-dot"></span>' +
+        '<span class="skill-pill-name">' + escapeHtml(name) + '</span>' +
+        '</span>';
+    });
+    html += '</div>';
+
+    container.innerHTML = html;
+  }
+
   /* ─── Sync Config Links, Bio & Analytics ─── */
   if (typeof CONFIG !== 'undefined') {
+    var siteName = CONFIG.site_name || 'khxaiyan';
+    var accentLetter = CONFIG.accent_letter !== undefined ? CONFIG.accent_letter : 'x';
+
     var wordmark = document.querySelector('.wordmark');
-    if (wordmark && CONFIG.site_name) {
-      wordmark.innerHTML = formatWordmark(CONFIG.site_name, CONFIG.accent_letter);
+    if (wordmark) {
+      wordmark.innerHTML = formatWordmark(siteName, accentLetter);
     }
 
     var cornerTag = document.getElementById('corner-tag');
-    if (cornerTag && CONFIG.site_name) {
-      cornerTag.innerHTML = '@' + formatWordmark(CONFIG.site_name, CONFIG.accent_letter);
+    if (cornerTag) {
+      cornerTag.innerHTML = '@' + formatWordmark(siteName, accentLetter);
+      cornerTag.style.display = '';
+    }
+
+    var modalDevTitle = document.getElementById('modal-dev-title');
+    if (modalDevTitle) {
+      modalDevTitle.innerHTML = formatWordmark(siteName, accentLetter);
     }
 
     var bioEl = document.querySelector('.bio');
@@ -676,14 +766,54 @@
       bioEl.innerHTML = parseRichText(CONFIG.site_desc);
     }
 
+    var introRow = document.getElementById('rail-row-intro');
+    if (introRow && CONFIG.intro_enabled === false) {
+      introRow.style.display = 'none';
+    }
+
     var introEl = document.getElementById('intro-text');
     if (introEl && CONFIG.intro) {
       introEl.innerHTML = parseRichText(CONFIG.intro);
     }
 
+    /* Apply skills */
+    var skillsRow = document.getElementById('rail-row-skills');
+    var isSkillsEnabled = (CONFIG.skills_enabled !== false);
+    var skillsList = Array.isArray(CONFIG.skills) ? CONFIG.skills : [];
+    if (skillsRow) {
+      if (isSkillsEnabled && skillsList.length > 0) {
+        skillsRow.style.display = '';
+        renderSkills(skillsList);
+      } else {
+        skillsRow.style.display = 'none';
+      }
+    }
+
+    /* Apply projects */
+    var projectsRow = document.getElementById('rail-row-projects');
+    if (projectsRow && CONFIG.projects_enabled === false) {
+      projectsRow.style.display = 'none';
+    }
+
+    /* Apply reach */
+    var reachRow = document.getElementById('rail-row-reach');
+    if (reachRow && CONFIG.reach_enabled === false) {
+      reachRow.style.display = 'none';
+    }
+
+    /* Apply message */
+    var messageRow = document.getElementById('rail-row-message');
+    if (messageRow && CONFIG.message_enabled === false) {
+      messageRow.style.display = 'none';
+    }
+
+    updateTimelineLastRow();
+
     /* Apply saved avatar/profile picture */
     if (CONFIG.avatar_url && CONFIG.avatar_url.trim()) {
       setPageAvatar(CONFIG.avatar_url.trim());
+    } else {
+      setPageAvatar('https://res.cloudinary.com/dqxccz5bn/image/upload/profile_icon_wf7thb.svg');
     }
 
     /* Apply saved favicon */
@@ -1563,7 +1693,7 @@
     var introVal = (document.getElementById('m-cust-intro') || {}).value || '';
     var introPrev = document.getElementById('m-intro-preview');
     if (introPrev) {
-      introPrev.innerHTML = parseRichText(introVal || 'Passionate developer specializing in web apps.');
+      introPrev.innerHTML = parseRichText(introVal || '');
     }
 
     var favTabTitle = document.getElementById('m-favicon-tab-title');
@@ -1630,7 +1760,7 @@
 
   function setPageAvatar(url) {
     var wrap = document.getElementById('avatar-wrap');
-    var currentEl = wrap ? wrap.querySelector('.avatar-img, video.avatar-img') : null;
+    var currentEl = wrap ? wrap.querySelector('.avatar-img, video.avatar-img, .avatar-placeholder') : null;
     if (!wrap) return;
     var isWebm = isWebmSource(url);
     if (isWebm) {
@@ -1662,7 +1792,7 @@
         var img = document.createElement('img');
         img.className = 'avatar-img';
         img.src = finalImgSrc;
-        img.alt = 'khxaiyan';
+        img.alt = (typeof CONFIG !== 'undefined' && CONFIG.site_name) ? CONFIG.site_name : 'Avatar';
         img.setAttribute('width', '88');
         img.setAttribute('height', '88');
         img.setAttribute('loading', 'eager');
@@ -2486,78 +2616,106 @@
 
   loadPinnedProjects();
 
-  /* ─── Contact form ─── */
-  var btn = document.getElementById('cf-submit');
-  var status = document.getElementById('contact-status');
-  var msgArea = document.getElementById('cf-message');
+  /* ─── Dynamic Contact Form Mount ─── */
+  function renderContactForm() {
+    var wrap = document.getElementById('msg-card-wrap');
+    if (!wrap) return;
 
-  if (!btn) return;
+    wrap.innerHTML =
+      '<div class="msg-field">' +
+        '<textarea id="cf-message" rows="5" placeholder="Write your message..."></textarea>' +
+      '</div>' +
+      '<p class="msg-hint">leave an email if you want a reply</p>' +
+      '<input type="checkbox" name="botcheck" id="botcheck" style="display:none;" tabindex="-1" aria-hidden="true">' +
+      '<div id="hcaptcha-container" class="h-captcha" data-sitekey="50b2fe65-b00b-4b9e-ad62-3ba471098be2" data-captcha="true"></div>' +
+      '<button class="send-btn" id="cf-submit" type="button">' +
+        '<span>Send message</span>' +
+        '<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">' +
+          '<path d="M5 12h14" />' +
+          '<path d="m12 5 7 7-7 7" />' +
+        '</svg>' +
+      '</button>' +
+      '<p id="contact-status" class="status-msg" role="status" aria-live="polite"></p>';
 
-  btn.addEventListener('click', function () {
-    if (btn.disabled) return;
+    setupContactFormHandler();
+    renderHcaptcha(currentThemeMode);
+  }
 
-    var msg = (msgArea ? msgArea.value : '').trim();
-    if (!msg) {
-      status.textContent = 'please write a message first.';
-      status.style.color = 'var(--red)';
-      return;
-    }
+  function setupContactFormHandler() {
+    var btn = document.getElementById('cf-submit');
+    var status = document.getElementById('contact-status');
+    var msgArea = document.getElementById('cf-message');
 
-    var captchaVal = '';
-    if (window.hcaptcha && hcaptchaWidgetId !== null) {
-      try { captchaVal = window.hcaptcha.getResponse(hcaptchaWidgetId); } catch (_) { }
-    }
-    if (!captchaVal) {
-      var captchaEl = document.querySelector('textarea[name="h-captcha-response"]');
-      captchaVal = captchaEl ? captchaEl.value : '';
-    }
-    if (!captchaVal) {
-      status.textContent = 'please complete the captcha.';
-      status.style.color = 'var(--red)';
-      return;
-    }
+    if (!btn) return;
 
-    btn.disabled = true;
-    btn.querySelector('span').textContent = 'sending...';
-    status.textContent = '';
-    status.style.color = 'var(--ink-faint)';
+    btn.addEventListener('click', function () {
+      if (btn.disabled) return;
 
-    var accessKey = (typeof CONFIG !== 'undefined' && CONFIG.web3forms_access_key)
-      ? CONFIG.web3forms_access_key
-      : 'd36ee933-00cb-453e-aa38-b18ee60ce5d1';
-
-    fetch('https://api.web3forms.com/submit', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json', Accept: 'application/json' },
-      body: JSON.stringify({
-        access_key: accessKey,
-        message: msg,
-        'h-captcha-response': captchaVal
-      })
-    })
-      .then(function (r) { return r.json(); })
-      .then(function (d) {
-        if (d.success) {
-          status.textContent = 'message sent!';
-          status.style.color = 'var(--success)';
-          if (msgArea) msgArea.value = '';
-          if (window.hcaptcha && hcaptchaWidgetId !== null) {
-            try { window.hcaptcha.reset(hcaptchaWidgetId); } catch (_) { }
-          }
-        } else {
-          status.textContent = d.message || 'something went wrong. try again.';
-          status.style.color = 'var(--red)';
-        }
-      })
-      .catch(function () {
-        status.textContent = 'network error. check connection.';
+      var msg = (msgArea ? msgArea.value : '').trim();
+      if (!msg) {
+        status.textContent = 'please write a message first.';
         status.style.color = 'var(--red)';
+        return;
+      }
+
+      var captchaVal = '';
+      if (window.hcaptcha && hcaptchaWidgetId !== null) {
+        try { captchaVal = window.hcaptcha.getResponse(hcaptchaWidgetId); } catch (_) { }
+      }
+      if (!captchaVal) {
+        var captchaEl = document.querySelector('textarea[name="h-captcha-response"]');
+        captchaVal = captchaEl ? captchaEl.value : '';
+      }
+      if (!captchaVal) {
+        status.textContent = 'please complete the captcha.';
+        status.style.color = 'var(--red)';
+        return;
+      }
+
+      btn.disabled = true;
+      btn.querySelector('span').textContent = 'sending...';
+      status.textContent = '';
+      status.style.color = 'var(--ink-faint)';
+
+      var accessKey = (typeof CONFIG !== 'undefined' && CONFIG.web3forms_access_key)
+        ? CONFIG.web3forms_access_key
+        : 'd36ee933-00cb-453e-aa38-b18ee60ce5d1';
+
+      fetch('https://api.web3forms.com/submit', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json', Accept: 'application/json' },
+        body: JSON.stringify({
+          access_key: accessKey,
+          message: msg,
+          'h-captcha-response': captchaVal
+        })
       })
-      .finally(function () {
-        btn.disabled = false;
-        btn.querySelector('span').textContent = 'send message';
-      });
-  });
+        .then(function (r) { return r.json(); })
+        .then(function (d) {
+          if (d.success) {
+            status.textContent = 'message sent!';
+            status.style.color = 'var(--success)';
+            if (msgArea) msgArea.value = '';
+            if (window.hcaptcha && hcaptchaWidgetId !== null) {
+              try { window.hcaptcha.reset(hcaptchaWidgetId); } catch (_) { }
+            }
+          } else {
+            status.textContent = d.message || 'something went wrong. try again.';
+            status.style.color = 'var(--red)';
+          }
+        })
+        .catch(function () {
+          status.textContent = 'network error. check connection.';
+          status.style.color = 'var(--red)';
+        })
+        .finally(function () {
+          btn.disabled = false;
+          btn.querySelector('span').textContent = 'send message';
+        });
+    });
+  }
+
+  renderContactForm();
 
   /* ─── Slim Theme-Based Scroll Progress Bar ─── */
   var scrollProgressBar = document.getElementById('scroll-progress');
