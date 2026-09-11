@@ -205,7 +205,7 @@
     try {
       var saved = localStorage.getItem('portfolio_custom_config');
       if (saved) Object.assign(cfg, JSON.parse(saved));
-    } catch (_) {}
+    } catch (_) { }
     cfg.default_theme = newMode;
     if (!cfg.theme_config) cfg.theme_config = {};
     cfg.theme_config.mode = newMode;
@@ -215,7 +215,7 @@
     cfg.font_scope = currentFontScope;
     cfg.theme_config.font_family = currentFontFamily;
     cfg.theme_config.font_scope = currentFontScope;
-    try { localStorage.setItem('portfolio_custom_config', JSON.stringify(cfg)); } catch (_) {}
+    try { localStorage.setItem('portfolio_custom_config', JSON.stringify(cfg)); } catch (_) { }
     if (typeof CONFIG !== 'undefined') Object.assign(CONFIG, cfg);
   }
 
@@ -245,7 +245,7 @@
     // 2. Persist to localStorage
     try {
       localStorage.setItem('portfolio_custom_config', JSON.stringify(cfg));
-    } catch (_) {}
+    } catch (_) { }
 
     // 3. Theme mode, Accent color & Background preset
     var themeCfg = cfg.theme_config || {};
@@ -355,7 +355,7 @@
         }
       }
     })
-    .catch(function () {});
+    .catch(function () { });
 
   /* ─── Wordmark & Accent Highlighting ─── */
   function formatWordmark(name, accent) {
@@ -1011,7 +1011,7 @@
       '</div>' +
       '<div class="m-field-group" style="margin-bottom:8px;">' +
       '<div style="display:flex; align-items:center; justify-content:space-between;">' +
-      '<label class="m-field-label">GitHub Repo URL (Paste to auto-fill ✨)</label>' +
+      '<label class="m-field-label">GitHub Repo URL (Paste to auto-fill)</label>' +
       '<span class="m-gh-status" style="font-size:0.72rem; display:none;"></span>' +
       '</div>' +
       '<div style="display:flex; gap:6px;">' +
@@ -1819,7 +1819,7 @@
 
     if (!res.ok) {
       var errData = {};
-      try { errData = await res.json(); } catch (_) {}
+      try { errData = await res.json(); } catch (_) { }
       var msg = (errData && errData.error && errData.error.message) ? errData.error.message : ('HTTP ' + res.status);
       throw new Error(msg);
     }
@@ -2130,31 +2130,31 @@
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(updated)
       })
-      .then(async function (r) {
-        return r.json().catch(function() { return { success: true }; });
-      })
-      .then(function (res) {
-        if (!saveStatus) return;
-        saveStatus.style.color = '#10b981';
-        if (res && res.mongodb) {
-          saveStatus.textContent = '✓ Changes saved to MongoDB! (Live instantly without git push)';
-        } else if (res && res.message) {
-          saveStatus.textContent = res.message;
-        } else {
+        .then(async function (r) {
+          return r.json().catch(function () { return { success: true }; });
+        })
+        .then(function (res) {
+          if (!saveStatus) return;
+          saveStatus.style.color = '#10b981';
+          if (res && res.mongodb) {
+            saveStatus.textContent = '✓ Changes saved to MongoDB! (Live instantly without git push)';
+          } else if (res && res.message) {
+            saveStatus.textContent = res.message;
+          } else {
+            saveStatus.textContent = '✓ Theme & settings saved and applied!';
+          }
+          setTimeout(function () {
+            if (saveStatus) saveStatus.style.display = 'none';
+          }, 4000);
+        })
+        .catch(function () {
+          if (!saveStatus) return;
+          saveStatus.style.color = '#10b981';
           saveStatus.textContent = '✓ Theme & settings saved and applied!';
-        }
-        setTimeout(function () {
-          if (saveStatus) saveStatus.style.display = 'none';
-        }, 4000);
-      })
-      .catch(function () {
-        if (!saveStatus) return;
-        saveStatus.style.color = '#10b981';
-        saveStatus.textContent = '✓ Theme & settings saved and applied!';
-        setTimeout(function () {
-          if (saveStatus) saveStatus.style.display = 'none';
-        }, 4000);
-      });
+          setTimeout(function () {
+            if (saveStatus) saveStatus.style.display = 'none';
+          }, 4000);
+        });
     });
   }
 
