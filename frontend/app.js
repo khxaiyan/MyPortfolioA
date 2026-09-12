@@ -675,6 +675,94 @@
     }
   }
 
+  /* ── Avatar & Favicon helpers ── */
+  function applyPageFavicon(url) {
+    if (!url || url === 'favicon.svg' || url === 'favicon.png' || url === 'favicon.ico' || url === 'profile_icon.svg') {
+      url = 'https://res.cloudinary.com/dqxccz5bn/image/upload/favicon_jzygcw.png';
+    }
+    var links = document.querySelectorAll("link[rel*='icon']");
+    if (!links || links.length === 0) {
+      var link = document.createElement('link');
+      link.rel = 'icon';
+      document.head.appendChild(link);
+      links = [link];
+    }
+    var type = 'image/png';
+    if (url.startsWith('data:image/svg') || /\.svg(\?.*)?$/i.test(url)) {
+      type = 'image/svg+xml';
+    } else if (url.startsWith('data:image/x-icon') || /\.ico(\?.*)?$/i.test(url)) {
+      type = 'image/x-icon';
+    } else if (url.startsWith('data:image/gif') || /\.gif(\?.*)?$/i.test(url)) {
+      type = 'image/gif';
+    } else if (url.startsWith('data:image/png') || /\.png(\?.*)?$/i.test(url)) {
+      type = 'image/png';
+    }
+    links.forEach(function (l) {
+      l.type = type;
+      l.href = url;
+    });
+    var appleLink = document.querySelector("link[rel='apple-touch-icon']");
+    if (appleLink) appleLink.href = url;
+  }
+
+  function emojiToSvgDataUrl(emoji) {
+    var svg = '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><text y=".9em" font-size="90">' + emoji + '</text></svg>';
+    return 'data:image/svg+xml,' + encodeURIComponent(svg);
+  }
+
+  function isWebmSource(url) {
+    return typeof url === 'string' && (url.startsWith('data:video/webm') || /\.webm(\?.*)?$/i.test(url));
+  }
+
+  function setPageAvatar(url) {
+    var wrap = document.getElementById('avatar-wrap');
+    if (!wrap) return;
+    var currentEl = wrap.querySelector('.avatar-img, video.avatar-img, .avatar-placeholder');
+    var isWebm = isWebmSource(url);
+    if (isWebm) {
+      if (currentEl && currentEl.tagName && currentEl.tagName.toLowerCase() === 'video') {
+        currentEl.src = url;
+      } else {
+        var video = document.createElement('video');
+        video.className = 'avatar-img';
+        video.src = url;
+        video.autoplay = true;
+        video.loop = true;
+        video.muted = true;
+        video.playsInline = true;
+        video.setAttribute('playsinline', '');
+        video.setAttribute('draggable', 'false');
+        video.style.pointerEvents = 'none';
+        if (currentEl && currentEl.parentNode) {
+          currentEl.parentNode.replaceChild(video, currentEl);
+        } else {
+          wrap.insertBefore(video, wrap.firstChild);
+        }
+      }
+    } else {
+      var finalImgSrc = (url && url !== 'avatar.svg' && url !== 'Diluc.svg' && url !== 'profile_icon.svg') ? url : 'https://res.cloudinary.com/dqxccz5bn/image/upload/profile_icon_wf7thb.svg';
+      if (currentEl && currentEl.tagName && currentEl.tagName.toLowerCase() === 'img') {
+        currentEl.src = finalImgSrc;
+        currentEl.setAttribute('draggable', 'false');
+      } else {
+        var img = document.createElement('img');
+        img.className = 'avatar-img';
+        img.src = finalImgSrc;
+        img.alt = (typeof CONFIG !== 'undefined' && CONFIG.site_name) ? CONFIG.site_name : 'Avatar';
+        img.setAttribute('width', '88');
+        img.setAttribute('height', '88');
+        img.setAttribute('loading', 'eager');
+        img.setAttribute('draggable', 'false');
+        img.style.pointerEvents = 'none';
+        if (currentEl && currentEl.parentNode) {
+          currentEl.parentNode.replaceChild(img, currentEl);
+        } else {
+          wrap.insertBefore(img, wrap.firstChild);
+        }
+      }
+    }
+  }
+
   /* ─── Universal Live Configuration Hydration ─── */
   function applyFullConfig(cfg) {
     if (!cfg || typeof cfg !== 'object') return;
