@@ -2,7 +2,7 @@
 
 # khxaiyan — Developer Portfolio
 
-<p><em>Minimalist, ultra-clean developer portfolio featuring dynamic real-time projects showcase, zero-flicker live theme hydration, dark/light modes, and secure serverless deployment architecture.</em></p>
+<p><em>A modern, high-performance, minimalist developer portfolio featuring zero-flash theme hydration, dynamic GitHub project and language synchronization, cloud persistence, and a secure serverless architecture.</em></p>
 
 [![Live Site](https://img.shields.io/badge/Live_Site-khxaiyan.vercel.app-00ff00?style=for-the-badge&logo=vercel&logoColor=black)](https://khxaiyan.vercel.app)
 [![GitHub](https://img.shields.io/badge/GitHub-@khxaiyan-181717?style=for-the-badge&logo=github&logoColor=white)](https://github.com/khxaiyan)
@@ -13,30 +13,39 @@
 ---
 
 ## 📑 Table of Contents
-- [✨ Key Features](#-key-features)
+
+- [✨ Overview & Highlights](#-overview--highlights)
 - [🛠️ Tech Stack](#️-tech-stack)
 - [📁 Project Structure](#-project-structure)
-- [⚙️ Configuration](#️-configuration)
-- [🚀 Quick Start / Local Development](#-quick-start--local-development)
-- [🌐 Deployment Options](#-deployment-options)
-  - [Option A: Deploy on Vercel (Recommended)](#option-a-deploy-on-vercel-recommended)
-  - [Option B: GitHub Pages with Hidden Source Code](#option-b-github-pages-with-hidden-source-code)
-- [🎨 Design System & Customization](#-design-system--customization)
-- [📬 Contact Form Setup](#-contact-form-setup)
+- [🚀 Complete Installation & Setup Guide](#-complete-installation--setup-guide)
+  - [Prerequisites](#prerequisites)
+  - [Step 1: Clone the Repository](#step-1-clone-the-repository)
+  - [Step 2: Install Dependencies](#step-2-install-dependencies)
+  - [Step 3: Configure Environment Keys](#step-3-configure-environment-keys)
+  - [Step 4: Synchronize Environment Variables](#step-4-synchronize-environment-variables)
+  - [Step 5: Start the Local Development Server](#step-5-start-the-local-development-server)
+  - [Step 6: Access Local Portfolio & Developer Panel](#step-6-access-local-portfolio--developer-panel)
+- [⚙️ Environment Variables Reference](#️-environment-variables-reference)
+- [🌐 Production Deployment Guide](#-production-deployment-guide)
+  - [Deploying to Vercel (Recommended)](#deploying-to-vercel-recommended)
+  - [Deploying to GitHub Pages](#deploying-to-github-pages)
+- [🎨 Design System & Visual Customization](#-design-system--visual-customization)
+- [📬 Contact Form Integration](#-contact-form-integration)
+- [🙏 Acknowledgements & Credits](#-acknowledgements--credits)
 - [👤 Author](#-author)
 - [📄 License](#-license)
 
 ---
 
-## ✨ Key Features
+## ✨ Overview & Highlights
 
-- **⚡ Zero-Flash Live Theme Hydration**: Direct serverless configuration streaming via `/api/config.js` ensuring instant, single-paint theme and asset loading in incognito and privacy-focused browsers (Brave Shields).
+- **⚡ Zero-Flash Live Theme Hydration**: Direct serverless configuration streaming via `/api/config.js` ensuring instant, single-paint theme and asset loading in incognito and privacy-focused browsers (Brave Shields, Firefox Enhanced Tracking).
 - **🛡️ Pure CSS & HTML Fallbacks**: Pre-rendered project cards and resilient CSS design tokens for zero layout shifts and instant readability even when JavaScript is disabled or blocked.
-- **⚡ Dynamic Projects Showcase**: Automatically renders curated portfolio projects with direct links to live deployments and GitHub repositories.
+- **⚡ Dynamic GitHub Sync & Language Detection**: Automatically imports repository details, live demo links, star counts, and coding languages directly from GitHub API (`@khxaiyan`).
 - **🎨 Signature Tech Branding**: Sleek rail-node timeline layout, modern typography with *Space Grotesk* and *IBM Plex Mono*, and automatic accent highlighting (`glyph-5`) on wordmark and project capital letters.
 - **🌓 Dual Theme Support (Dark & Light)**: Smooth theme toggling with immediate `localStorage` state persistence and system color-scheme detection.
 - **🍃 MongoDB Atlas Cloud Persistence**: Instant configuration saving without git-push clutter or Vercel redeployment delays.
-- **☁️ Cloudinary Direct Media Uploads**: Fast CDN delivery for avatars and favicons with local base64 fallback.
+- **☁️ Cloudinary Direct Media Uploads**: Fast CDN delivery for avatars, favicons, and assets with local base64 fallback.
 - **⚡ Inngest Event-Driven Workflows**: Background pipelines for automated GitHub stars synchronization and contact message archiving.
 - **📬 Working Contact Form**: Web3Forms integration with hCaptcha bot verification for spam protection.
 - **🔒 Privacy & Security First**: Complete `.gitignore` setup, sanitized credentials, and isolated `keys/` folder — secrets are never served to the browser.
@@ -47,18 +56,19 @@
 
 ## 🛠️ Tech Stack
 
-| Technology | Purpose |
-| :--- | :--- |
-| **HTML5** | Semantic, accessible document structure with pre-rendered fallbacks |
-| **Vanilla CSS** | Design tokens, custom CSS variables, responsive grid, animations |
-| **Vanilla JavaScript (ES6+)** | Dynamic API hydration, theme synchronization, form handling |
-| **MongoDB Atlas** | Instant cloud configuration storage (`/api/save-config` & `/api/config.js`) |
-| **Cloudinary** | Global CDN media storage & direct unsigned uploads |
-| **Inngest** | Background serverless workflows (`/api/inngest`), cron GitHub sync, and contact pipeline |
-| **Clerk** | Authentication & RBAC for the developer admin dashboard |
-| **Web3Forms API** | Serverless contact form submission endpoint |
-| **hCaptcha** | Privacy-friendly CAPTCHA protection |
-| **Vercel** | Serverless functions hosting and continuous deployment |
+| Component | Technology | Purpose |
+| :--- | :--- | :--- |
+| **Frontend Structure** | HTML5 | Semantic, accessible document structure with pre-rendered cards |
+| **Styling** | Vanilla CSS | Custom design tokens, CSS variables, responsive grid, animations |
+| **Client Logic** | Vanilla JavaScript (ES6+) | Dynamic API hydration, theme synchronization, form handling |
+| **Database** | MongoDB Atlas | Instant cloud configuration storage (`/api/save-config` & `/api/config.js`) |
+| **Media CDN** | Cloudinary | Global CDN media storage & direct unsigned uploads |
+| **Workflows** | Inngest | Background serverless workflows (`/api/inngest`), cron GitHub sync |
+| **Authentication** | Clerk | Authentication & RBAC for the developer admin dashboard |
+| **Contact Form** | Web3Forms API | Serverless contact form submission endpoint |
+| **Anti-Bot Protection**| hCaptcha | Privacy-friendly CAPTCHA protection |
+| **Icons** | Iconify & Custom SVG | Authentic full-color brand logos and vector icons |
+| **Hosting & Functions**| Vercel | Serverless functions hosting and continuous deployment |
 
 ---
 
@@ -81,7 +91,9 @@ MyPortfolioA/
 │   ├── 404.html                     # Themed 404 error page
 │   ├── style.css                    # Design tokens, themes & skeleton shimmer
 │   ├── app.js                       # Main application & GitHub pins loader
-│   └── config.js                    # Local configuration fallback
+│   ├── config.js                    # Local configuration fallback
+│   ├── cv.pdf                       # Local résumé file
+│   └── robots.txt                   # Search engine crawl rules
 │
 ├── backend/                         ← Node.js server & workflow routines
 │   ├── dev-server.js                # Local dev server with API routing & static serving
@@ -92,139 +104,252 @@ MyPortfolioA/
 │   ├── .env                         # Real secrets (gitignored ✓)
 │   └── .env.example                 # Safe template (committed to git ✓)
 │
+├── .github/                         ← GitHub workflows & automation
+│   ├── dependabot.yml               # Automated weekly dependency security updates
+│   └── workflows/
+│       └── notify-deploy.yml        # Webhook trigger for GitHub Pages
+│
 ├── package.json                     # Project manifest & npm scripts
 ├── vercel.json                      # Vercel deployment configuration
+├── .gitignore                       # Strict recursive secrets exclusion rules
 └── README.md
 ```
 
 ---
 
-## ⚙️ Configuration
+## 🚀 Complete Installation & Setup Guide
 
-All personal information and API keys live in `keys/.env`.
-Run `npm run sync` to write initial defaults into `frontend/config.js`.
+Follow this step-by-step walkthrough to run the portfolio locally on your computer:
 
-**`keys/.env` structure:**
+### Prerequisites
+
+Make sure you have the following installed on your machine:
+- **[Node.js](https://nodejs.org/)** (v18.0.0 or higher)
+- **[Git](https://git-scm.com/)**
+- **npm** (bundled with Node.js)
+
+Verify your installation:
 ```bash
-# Clerk Authentication
-CLERK_PUBLISHABLE_KEY=pk_test_...
-CLERK_SECRET_KEY=sk_test_...
-
-# Contact Form & Security
-WEB3FORMS_ACCESS_KEY=your_web3forms_access_key
-HCAPTCHA_SITEKEY=50b2fe65-b00b-4b9e-ad62-3ba471098be2
-
-# Cloudinary Media Storage (Unsigned Direct Uploads)
-CLOUDINARY_CLOUD_NAME=your_cloud_name
-CLOUDINARY_UPLOAD_PRESET=your_preset
-AVATAR_URL=https://res.cloudinary.com/...
-FAVICON_URL=https://res.cloudinary.com/...
-
-# MongoDB Atlas (Cloud Persistence)
-MONGODB_URI=mongodb+srv://<user>:<password>@cluster0.xxxxx.mongodb.net/myportfolio?retryWrites=true&w=majority
-
-# Inngest Background Workflows (Optional)
-INNGEST_EVENT_KEY=your_inngest_event_key
-INNGEST_SIGNING_KEY=your_inngest_signing_key
-
-# Whitelist of Authorized Admins (comma-separated)
-AUTHORIZED_USERS=your@email.com
+node -v
+npm -v
+git --version
 ```
-
-> Copy `keys/.env.example` → `keys/.env` and fill in your values, then run `npm run sync`.
 
 ---
 
-## 🚀 Quick Start / Local Development
+### Step 1: Clone the Repository
 
-### Prerequisites
-- Node.js (v18+) installed on your machine.
+Clone the project from GitHub and navigate into the workspace:
 
-### 1. Clone the repository
 ```bash
 git clone https://github.com/khxaiyan/MyPortfolioA.git
 cd MyPortfolioA
 ```
 
-### 2. Set up your environment keys
+---
+
+### Step 2: Install Dependencies
+
+Install all project dependencies:
+
 ```bash
-cp keys/.env.example keys/.env
-# Edit keys/.env with your real values
+npm install
 ```
 
-### 3. Sync keys into config
+---
+
+### Step 3: Configure Environment Keys
+
+Create your private environment file from the provided example template:
+
+```bash
+# On Windows (PowerShell):
+Copy-Item keys/.env.example keys/.env
+
+# On Linux / macOS:
+cp keys/.env.example keys/.env
+```
+
+Open `keys/.env` in your text editor and fill in your values (see [Environment Variables Reference](#️-environment-variables-reference) below for guidance).
+
+---
+
+### Step 4: Synchronize Environment Variables
+
+Run the sync script to compile public variables from `keys/.env` into `frontend/config.js`:
+
 ```bash
 npm run sync
 ```
 
-### 4. Start the local development server
+> **Note:** The sync script only copies safe, client-facing identifiers (like Clerk publishable key and Web3Forms key) into `frontend/config.js`. Private secrets (like `MONGODB_URI` and `CLERK_SECRET_KEY`) are kept strictly isolated on the backend.
+
+---
+
+### Step 5: Start the Local Development Server
+
+Start the local server:
+
 ```bash
 npm run serve
 ```
 
-### 5. Open in Browser
-Visit **`http://localhost:3000`** in your browser.
+Alternatively, you can run sync and serve in a single command:
+```bash
+npm run dev
+```
 
 ---
 
-### npm scripts reference
+### Step 6: Access Local Portfolio & Developer Panel
 
-| Command | What it does |
+Open your browser and navigate to:
+- **Portfolio Homepage**: [`http://localhost:3000`](http://localhost:3000)
+- **Developer Admin Panel**: [`http://localhost:3000/developer`](http://localhost:3000/developer)
+
+---
+
+### npm Scripts Reference
+
+| Command | Description |
 | :--- | :--- |
-| `npm run sync` | Reads `keys/.env` → writes `frontend/config.js` |
-| `npm run serve` | Serves `frontend/` at `http://localhost:3000` |
-| `npm run dev` | `sync` + `serve` in one step |
-| `npm run start` | Same as `dev` |
+| `npm run sync` | Reads `keys/.env` and updates `frontend/config.js` |
+| `npm run serve` | Starts the local dev server at `http://localhost:3000` with API routing |
+| `npm run dev` | Runs `sync` followed by `serve` |
+| `npm run start` | Alias for `npm run dev` |
 
 ---
 
-## 🌐 Deployment Options
+## ⚙️ Environment Variables Reference
 
-### Option A: Deploy on Vercel (Recommended)
-1. Push your repository to GitHub as **Private** (or Public).
-2. Go to **[vercel.com/new](https://vercel.com/new)** and import your `MyPortfolioA` repository.
-3. Set the **Root Directory** to `frontend/` in the Vercel project settings.
-4. Click **Deploy**. Vercel will automatically build and assign a free SSL-secured domain.
+All credentials are kept in `keys/.env` (which is excluded from Git tracking):
+
+```bash
+# ==========================================
+# ── PUBLIC KEYS & CLIENT IDENTIFIERS ──
+# (Safe for browser / client-side consumption)
+# ==========================================
+
+# Clerk Authentication (Publishable Key - https://clerk.com)
+CLERK_PUBLISHABLE_KEY=pk_test_your_clerk_publishable_key
+CLERK_FRONTEND_API=https://your-app.clerk.accounts.dev
+
+# Contact Form & Anti-Bot Protection (https://web3forms.com & https://hcaptcha.com)
+WEB3FORMS_ACCESS_KEY=your_web3forms_access_key
+HCAPTCHA_SITEKEY=50b2fe65-b00b-4b9e-ad62-3ba471098be2
+
+# Cloudinary Media Storage (Unsigned Direct Uploads - https://cloudinary.com)
+CLOUDINARY_CLOUD_NAME=your_cloud_name
+CLOUDINARY_UPLOAD_PRESET=your_upload_preset
+AVATAR_URL=https://res.cloudinary.com/your_cloud_name/image/upload/avatar.png
+FAVICON_URL=https://res.cloudinary.com/your_cloud_name/image/upload/favicon.png
+
+# ==========================================
+# ── PRIVATE KEYS & ADMIN SECRETS ──
+# (Keep secure - Server-side & admin access only)
+# ==========================================
+
+# Clerk Secret Key (Backend API access only)
+CLERK_SECRET_KEY=sk_test_your_clerk_secret_key
+
+# Authorized Admin Whitelist (Comma-separated emails allowed to edit settings)
+AUTHORIZED_USERS=your@email.com
+
+# MongoDB Atlas (Cloud Persistence Connection String)
+MONGODB_URI=mongodb+srv://<username>:<password>@cluster0.xxxxx.mongodb.net/myportfolio?retryWrites=true&w=majority
+
+# Inngest Background Workflows (Optional - https://inngest.com)
+INNGEST_EVENT_KEY=your_inngest_event_key
+INNGEST_SIGNING_KEY=your_inngest_signing_key
+```
 
 ---
 
-### Option B: GitHub Pages with Hidden Source Code
-If you want to host on `https://<username>.github.io` while keeping your source code 100% private:
+## 🌐 Production Deployment Guide
 
-1. **Private Repository (`MyPortfolioA`)**: Contains your full source code and `.github/workflows/notify-deploy.yml`.
-2. **Public Repository (`<username>.github.io`)**: Contains only `.github/workflows/deploy.yml`.
-3. **Secret Token**: Add your GitHub Personal Access Token (`PAGES_TOKEN` / `PRIVATE_REPO_TOKEN`) in the repository secrets.
-4. Whenever you push to `MyPortfolioA`, it triggers `<username>.github.io` to deploy behind the scenes without exposing your source files!
+### Deploying to Vercel (Recommended)
+
+1. Push your repository to GitHub.
+2. Log in to **[Vercel](https://vercel.com/)** and click **Add New** → **Project**.
+3. Import your **`MyPortfolioA`** repository.
+4. In the configuration screen:
+   - **Framework Preset**: Other
+   - **Root Directory**: `./` (leave default, `vercel.json` will route to `frontend`)
+   - **Build Command**: `node backend/sync-env.js`
+   - **Output Directory**: `frontend`
+5. Expand **Environment Variables** and add your secrets from `keys/.env`:
+   - `MONGODB_URI`
+   - `CLERK_PUBLISHABLE_KEY`
+   - `CLERK_SECRET_KEY`
+   - `AUTHORIZED_USERS`
+   - `WEB3FORMS_ACCESS_KEY`
+   - `HCAPTCHA_SITEKEY`
+   - `CLOUDINARY_CLOUD_NAME`
+   - `CLOUDINARY_UPLOAD_PRESET`
+   - `INNGEST_EVENT_KEY` (optional)
+   - `INNGEST_SIGNING_KEY` (optional)
+6. Click **Deploy**. Vercel will build and assign your free SSL production URL.
 
 ---
 
-## 🎨 Design System & Customization
+### Deploying to GitHub Pages
 
-### Color Palette (CSS Variables in `frontend/style.css`)
+If you wish to deploy to GitHub Pages:
+1. Under your repository **Settings** → **Pages**, select **GitHub Actions** as the source.
+2. The bundled `.github/workflows/notify-deploy.yml` workflow can trigger deployment on push to `main`.
+3. If running statically on GitHub Pages, ensure `npm run sync` has been run locally so `frontend/config.js` holds your public configuration.
+
+---
+
+## 🎨 Design System & Visual Customization
+
+The design system is managed via CSS variables in [style.css](file:///c:/Users/Lenovo/AIYAN/GitHub%20Project/khxaiyan/MyPortfolioA/frontend/style.css):
+
 ```css
 :root {
-  --bg:           #0a0a0e;       /* Deep dark background */
-  --surface:      #131319;       /* Card surface */
-  --surface-hover:#191a22;       /* Hover card surface */
-  --line:         rgba(255,255,255,0.09);
-  --line-strong:  rgba(255,255,255,0.20);
-  --ink:          #eef0f4;       /* Primary text */
-  --ink-dim:      #8d90a0;       /* Secondary text */
-  --ink-faint:    #787c93;       /* Metadata / eyebrow text */
-  --red:          #00ff00;       /* Signature neon green accent (customizable in developer settings) */
-  --rail:         #363a63;       /* Timeline rail line */
-  --success:      #22c07d;       /* Star & status green */
+  --bg:            #0a0a0e;       /* Deep dark background */
+  --surface:       #131319;       /* Card surface background */
+  --surface-hover: #191a22;       /* Elevated card hover surface */
+  --line:          rgba(255,255,255,0.09); /* Subtle divider lines */
+  --line-strong:   rgba(255,255,255,0.20);
+  --ink:           #eef0f4;       /* Primary text */
+  --ink-dim:       #8d90a0;       /* Secondary text */
+  --ink-faint:     #787c93;       /* Metadata / caption text */
+  --red:           #ff2a5f;       /* Signature Crimson Red accent */
+  --red-dim:       rgba(255,42,95,0.12);
+  --rail:          #363a63;       /* Timeline connection line */
+  --success:       #22c07d;       /* Star count and online badge */
+}
+
+/* Light Theme Variables */
+[data-theme="light"] {
+  --bg:            #f5f5f7;
+  --surface:       #ffffff;
+  --surface-hover: #f0f0f3;
+  --ink:           #111118;
+  --line:          rgba(0,0,0,0.08);
 }
 ```
 
 ---
 
-## 📬 Contact Form Setup
+## 📬 Contact Form Integration
 
-1. Register for a free Access Key at **[web3forms.com](https://web3forms.com/)**.
+1. Sign up for a free Access Key at **[web3forms.com](https://web3forms.com/)**.
 2. Add your Access Key to `keys/.env` under `WEB3FORMS_ACCESS_KEY`.
-3. Run `npm run sync` to push the key into `frontend/config.js`.
-4. Messages submitted through the contact form will be delivered directly to your email inbox.
+3. (Optional) Set up hCaptcha at **[hcaptcha.com](https://hcaptcha.com/)** and add your site key to `HCAPTCHA_SITEKEY`.
+4. Run `npm run sync` to update `frontend/config.js`.
+5. Messages submitted through the contact modal will be sent directly to your email inbox.
+
+---
+
+## 🙏 Acknowledgements & Credits
+
+- Special thanks and credit to **[offici5l](https://github.com/offici5l)** — while he did not create the UI code directly, his creative work provided great inspiration for the interface design, clean aesthetics, and visual concept of this portfolio.
+- **[Clerk](https://clerk.com/)** for seamless, secure developer authentication.
+- **[Inngest](https://www.inngest.com/)** for background event-driven serverless orchestration.
+- **[Iconify](https://iconify.design/)** & **[TheSVG](https://thesvg.org/)** for brand icons and vector assets.
+- **[Web3Forms](https://web3forms.com/)** & **[hCaptcha](https://www.hcaptcha.com/)** for contact delivery and spam protection.
 
 ---
 
