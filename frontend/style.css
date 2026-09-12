@@ -179,7 +179,7 @@ body {
 .cv-corner-btn,
 #cust-cv-live-pill {
   position: absolute;
-  top: 0;
+  top: -20px;
   right: 0;
   z-index: 10;
   text-decoration: none !important;
@@ -2512,6 +2512,8 @@ select, option, optgroup {
   font-family: var(--font-mono, monospace);
   font-weight: 500;
   color: var(--ink, #eef0f4);
+  text-decoration: none;
+  cursor: pointer;
   transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
   user-select: none;
 }
@@ -2524,16 +2526,43 @@ select, option, optgroup {
   color: #ffffff;
 }
 
+.skill-pill:active {
+  transform: translateY(0) scale(0.97);
+}
+
 .skill-pill-icon {
   flex-shrink: 0;
-  color: var(--red, #ff2a5f);
-  filter: drop-shadow(0 0 4px var(--red, rgba(255, 42, 95, 0.5)));
-  transition: color 0.2s, filter 0.2s;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  transition: transform 0.2s ease;
 }
 
 .skill-pill:hover .skill-pill-icon {
-  color: #ffffff;
-  filter: drop-shadow(0 0 6px rgba(255, 255, 255, 0.4));
+  transform: scale(1.12);
+}
+
+/* Light Theme Overrides for Skill Pills */
+[data-theme="light"] .skill-pill {
+  background: #ffffff;
+  border-color: rgba(0, 0, 0, 0.09);
+  color: var(--ink, #111118);
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.04);
+}
+
+[data-theme="light"] .skill-pill-icon {
+  filter: none !important;
+}
+
+[data-theme="light"] .skill-pill:hover {
+  background: var(--red-dim, rgba(209, 18, 63, 0.10));
+  border-color: var(--red, #d1123f);
+  color: var(--ink, #111118);
+  box-shadow: 0 2px 10px rgba(209, 18, 63, 0.12);
+}
+
+[data-theme="light"] .skill-pill:hover .skill-pill-icon {
+  filter: none !important;
 }
 
 /* ── Qualifications Section ── */
@@ -2548,10 +2577,13 @@ select, option, optgroup {
   background: var(--surface-hover, #191a22);
   border: 1px solid var(--line, rgba(255, 255, 255, 0.08));
   border-radius: var(--radius, 12px);
-  padding: 14px 16px;
+  padding: 14px 16px 10px 16px;
   display: flex;
-  flex-direction: column;
-  gap: 8px;
+  flex-direction: row;
+  align-items: stretch;
+  justify-content: space-between;
+  gap: 14px;
+  min-height: 90px;
   transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
@@ -2561,10 +2593,18 @@ select, option, optgroup {
   transform: translateY(-1px);
 }
 
+/* left content block */
+.qual-main {
+  flex: 1;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
 .qual-top-row {
   display: flex;
   align-items: center;
-  justify-content: space-between;
   gap: 8px;
 }
 
@@ -2581,12 +2621,29 @@ select, option, optgroup {
   border: 1px solid var(--border-accent, rgba(255, 42, 95, 0.3));
   border-radius: 12px;
   padding: 2px 8px;
+  flex-shrink: 0;
+}
+
+.qual-right-col {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  flex-shrink: 0;
+  width: 48px;
 }
 
 .qual-year {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
   font-size: 0.72rem;
   font-family: var(--font-mono, monospace);
   color: var(--ink-dim, #8d90a0);
+  height: 20px;
+  width: 100%;
+  text-align: center;
 }
 
 .qual-title {
@@ -2614,25 +2671,65 @@ select, option, optgroup {
   line-height: 1.6;
 }
 
-.qual-action {
-  margin-top: 4px;
-}
-
-.qual-link {
-  display: inline-flex;
+/* right link button */
+.qual-link-btn {
+  flex-shrink: 0;
+  display: flex;
+  flex-direction: column;
   align-items: center;
+  justify-content: center;
   gap: 5px;
-  font-size: 0.74rem;
+  width: 48px;
+  padding: 10px 0;
+  font-size: 0.62rem;
   font-family: var(--font-mono, monospace);
   font-weight: 600;
-  color: var(--red, #ff2a5f);
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  color: var(--ink-dim, #8d90a0);
+  background: rgba(255, 255, 255, 0.03);
+  border: 1px solid var(--line, rgba(255, 255, 255, 0.08));
+  border-radius: 10px;
   text-decoration: none;
-  transition: color 0.15s ease;
+  transition: all 0.2s ease;
 }
 
-.qual-link:hover {
-  text-decoration: underline;
-  color: #fff;
+.qual-right-col .qual-link-btn {
+  margin-top: auto;
+}
+
+.qual-link-btn:hover {
+  color: var(--red, #ff2a5f);
+  border-color: rgba(255, 42, 95, 0.4);
+  background: rgba(255, 42, 95, 0.07);
+  box-shadow: 0 0 10px rgba(255, 42, 95, 0.15);
+}
+
+/* Light Theme Overrides for Qualifications & Devices */
+[data-theme="light"] .qual-item,
+[data-theme="light"] .device-card {
+  background: #ffffff;
+  border-color: rgba(0, 0, 0, 0.09);
+  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.04);
+}
+
+[data-theme="light"] .qual-item:hover,
+[data-theme="light"] .device-card:hover {
+  border-color: rgba(209, 18, 63, 0.4);
+  box-shadow: 0 2px 14px rgba(209, 18, 63, 0.10);
+}
+
+[data-theme="light"] .qual-link-btn {
+  background: #ffffff;
+  border-color: rgba(0, 0, 0, 0.12);
+  color: var(--ink-dim, #555770);
+}
+
+[data-theme="light"] .qual-link-btn:hover {
+  background: var(--red-dim, rgba(209, 18, 63, 0.10));
+  border-color: var(--red, #d1123f);
+  color: var(--red, #d1123f);
+  box-shadow: 0 2px 8px rgba(209, 18, 63, 0.15);
 }
 
 /* ── Devices Section ── */
@@ -2647,10 +2744,11 @@ select, option, optgroup {
   background: var(--surface-hover, #191a22);
   border: 1px solid var(--line, rgba(255, 255, 255, 0.08));
   border-radius: var(--radius, 12px);
-  padding: 16px 18px;
+  padding: 14px 16px 10px 16px;
   display: flex;
-  align-items: flex-start;
-  gap: 16px;
+  align-items: stretch;
+  gap: 14px;
+  min-height: 90px;
   transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
   position: relative;
 }
@@ -2672,6 +2770,7 @@ select, option, optgroup {
   justify-content: center;
   color: var(--red, #ff2a5f);
   flex-shrink: 0;
+  align-self: center;
   transition: transform 0.2s ease, border-color 0.2s ease, box-shadow 0.2s ease;
 }
 
@@ -2686,14 +2785,22 @@ select, option, optgroup {
   min-width: 0;
   display: flex;
   flex-direction: column;
+  justify-content: center;
   gap: 6px;
 }
 
-.device-header {
+.device-right-col {
   display: flex;
-  align-items: flex-start;
+  flex-direction: column;
+  align-items: center;
   justify-content: space-between;
-  gap: 12px;
+  gap: 10px;
+  flex-shrink: 0;
+  width: 48px;
+}
+
+.device-right-col .qual-link-btn {
+  margin-top: auto;
 }
 
 .device-title-area {
@@ -2716,6 +2823,7 @@ select, option, optgroup {
 .device-tag {
   display: inline-flex;
   align-items: center;
+  justify-content: center;
   font-size: 0.68rem;
   font-family: var(--font-mono, monospace);
   font-weight: 600;
@@ -2725,7 +2833,7 @@ select, option, optgroup {
   background: var(--red-dim, rgba(255, 42, 95, 0.12));
   border: 1px solid var(--border-accent, rgba(255, 42, 95, 0.3));
   border-radius: 12px;
-  padding: 2px 9px;
+  padding: 2px 8px;
   flex-shrink: 0;
 }
 

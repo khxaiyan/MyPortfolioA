@@ -1255,157 +1255,199 @@
     container.innerHTML = html;
   }
 
-  /* ─── Skill Icon Resolver ─── */
+  /* ─── Custom Brand Icons Registration (Inngest, Clerk, etc.) ─── */
+  var INNGEST_ICON_DATA = {
+    body: '<path d="M21.4072 129.294C19.0746 129.294 16.9123 127.809 16.17 125.48C12.2674 113.258 15.1639 103.03 25.2893 93.2902L66.5214 54.0973C72.8173 48.0347 81.6973 46.4807 89.7012 50.0448C97.6725 53.5967 102.419 61.177 102.106 69.8471V74.061C102.106 77.0843 99.6441 79.5303 96.6097 79.5303C93.5753 79.5303 91.1129 77.0802 91.1129 74.061V69.7421C91.1129 69.6655 91.1129 69.5928 91.1169 69.5202C91.2914 65.3022 89.0845 61.7542 85.2104 60.0307C81.3363 58.3072 77.2066 59.0297 74.1641 61.9681C74.156 61.9762 74.1439 61.9883 74.1358 61.9964L32.9159 101.177C25.8816 107.946 24.0602 114.037 26.6565 122.166C27.5774 125.044 25.9749 128.12 23.0825 129.036C22.5268 129.21 21.9669 129.294 21.4152 129.294H21.4072Z" fill="currentColor"/><path d="M112.284 144.019C109.371 144.019 106.41 143.397 103.562 142.13C95.591 138.578 90.8447 130.998 91.1571 122.328V118.142C91.1571 115.119 93.6195 112.673 96.6539 112.673C99.6883 112.673 102.151 115.123 102.151 118.142V122.433C102.151 122.509 102.151 122.582 102.147 122.659C101.972 126.877 104.179 130.425 108.053 132.148C111.927 133.872 116.057 133.149 119.099 130.211L160.031 91.0136C167.195 84.1195 169.025 78.0569 166.335 70.0972C165.37 67.2314 166.915 64.1315 169.796 63.1668C172.676 62.2062 175.791 63.744 176.761 66.6098C180.797 78.5574 177.824 89.1165 167.67 98.8885L126.746 138.077C122.698 141.985 117.566 144.023 112.284 144.023V144.019Z" fill="currentColor"/><path d="M42.9197 143.918C39.6662 143.918 36.4209 143.333 33.3338 142.126C33.0336 142.009 32.7334 141.888 32.4373 141.758C29.6463 140.564 28.3603 137.347 29.5611 134.57C30.7619 131.793 33.9951 130.513 36.786 131.708C36.9727 131.789 37.1592 131.865 37.3458 131.938C42.8994 134.102 49.4266 132.818 54.392 128.592C54.6272 128.378 55.4021 127.655 55.5075 127.555L129.485 57.4512C129.485 57.4512 131.075 55.9578 131.42 55.6712C136.45 51.4532 142.162 48.9264 147.939 48.3654C149.164 48.2443 150.405 48.208 151.626 48.2524C154.356 48.3452 157.35 48.6358 160.604 50.1333C163.358 51.4048 164.559 54.654 163.281 57.3987C162.003 60.1394 158.738 61.3342 155.979 60.0627C154.576 59.4169 153.18 59.2514 151.237 59.1868C150.49 59.1586 149.748 59.1828 149.01 59.2555C145.472 59.5985 141.862 61.2373 138.56 63.9941C138.296 64.2323 137.237 65.2171 137.067 65.3746L63.0895 135.482C63.0895 135.482 61.8765 136.62 61.6088 136.85C56.2012 141.484 49.5442 143.918 42.9197 143.922V143.918Z" fill="currentColor"/>',
+    width: 192,
+    height: 192
+  };
+  var CLERK_ICON_DATA = {
+    body: '<g fill="none"><circle cx="64" cy="64" r="20" fill="#6c47ff"/><path fill="#bab1ff" d="M99.572 10.788c1.999 1.34 2.17 4.156.468 5.858L85.424 31.262c-1.32 1.32-3.37 1.53-5.033.678A35.85 35.85 0 0 0 64 28c-19.882 0-36 16.118-36 36a35.85 35.85 0 0 0 3.94 16.391c.851 1.663.643 3.712-.678 5.033L16.646 100.04c-1.702 1.702-4.519 1.531-5.858-.468C3.974 89.399 0 77.163 0 64C0 28.654 28.654 0 64 0c13.163 0 25.399 3.974 35.572 10.788"/><path fill="#6c47ff" d="M100.04 111.354c1.702 1.702 1.531 4.519-.468 5.858C89.399 124.026 77.164 128 64 128s-25.399-3.974-35.572-10.788c-2-1.339-2.17-4.156-.468-5.858l14.615-14.616c1.322-1.32 3.37-1.53 5.033-.678A35.85 35.85 0 0 0 64 100a35.85 35.85 0 0 0 16.392-3.94c1.662-.852 3.712-.643 5.032.678z"/></g>',
+    width: 128,
+    height: 128
+  };
+  window.IconifyPreload = window.IconifyPreload || [];
+  window.IconifyPreload.push({ prefix: 'custom', icons: { 'inngest': INNGEST_ICON_DATA, 'clerk': CLERK_ICON_DATA } });
+  window.IconifyPreload.push({ prefix: 'logos', icons: { 'inngest': INNGEST_ICON_DATA, 'clerk': CLERK_ICON_DATA } });
+  window.IconifyPreload.push({ prefix: 'simple-icons', icons: { 'clerk': CLERK_ICON_DATA } });
+  function registerCustomIcons() {
+    try {
+      var el = window.customElements && window.customElements.get('iconify-icon');
+      if (el && typeof el.addIcon === 'function') {
+        el.addIcon('custom:inngest', INNGEST_ICON_DATA);
+        el.addIcon('logos:inngest', INNGEST_ICON_DATA);
+        el.addIcon('thesvg-color:inngest-dark', INNGEST_ICON_DATA);
+        el.addIcon('thesvg-color:inngest-light', INNGEST_ICON_DATA);
+        el.addIcon('custom:clerk', CLERK_ICON_DATA);
+        el.addIcon('logos:clerk', CLERK_ICON_DATA);
+        el.addIcon('simple-icons:clerk', CLERK_ICON_DATA);
+      }
+    } catch (e) {}
+  }
+  registerCustomIcons();
+  if (window.customElements && window.customElements.whenDefined) {
+    window.customElements.whenDefined('iconify-icon').then(registerCustomIcons);
+  }
+
+  /* ─── Skill Icon Resolver (Original Full-Color Brand Logos) ─── */
   var SKILL_ICON_MAP = {
     // Web & Frameworks
-    'javascript': 'simple-icons:javascript',
-    'js': 'simple-icons:javascript',
-    'typescript': 'simple-icons:typescript',
-    'ts': 'simple-icons:typescript',
-    'react': 'simple-icons:react',
-    'react.js': 'simple-icons:react',
-    'reactjs': 'simple-icons:react',
-    'next.js': 'simple-icons:nextdotjs',
-    'nextjs': 'simple-icons:nextdotjs',
-    'vue': 'simple-icons:vuedotjs',
-    'vue.js': 'simple-icons:vuedotjs',
-    'vuejs': 'simple-icons:vuedotjs',
-    'angular': 'simple-icons:angular',
-    'svelte': 'simple-icons:svelte',
-    'astro': 'simple-icons:astro',
-    'remix': 'simple-icons:remix',
-    'nuxt': 'simple-icons:nuxtdotjs',
-    'nuxt.js': 'simple-icons:nuxtdotjs',
-    'html': 'simple-icons:html5',
-    'html5': 'simple-icons:html5',
-    'css': 'simple-icons:css3',
-    'css3': 'simple-icons:css3',
-    'sass': 'simple-icons:sass',
-    'scss': 'simple-icons:sass',
-    'tailwind': 'simple-icons:tailwindcss',
-    'tailwind css': 'simple-icons:tailwindcss',
-    'tailwindcss': 'simple-icons:tailwindcss',
-    'bootstrap': 'simple-icons:bootstrap',
-    'jquery': 'simple-icons:jquery',
+    'javascript': 'logos:javascript',
+    'js': 'logos:javascript',
+    'typescript': 'logos:typescript-icon',
+    'ts': 'logos:typescript-icon',
+    'react': 'logos:react',
+    'react.js': 'logos:react',
+    'reactjs': 'logos:react',
+    'next.js': 'logos:nextjs-icon',
+    'nextjs': 'logos:nextjs-icon',
+    'vue': 'logos:vue',
+    'vue.js': 'logos:vue',
+    'vuejs': 'logos:vue',
+    'angular': 'logos:angular-icon',
+    'svelte': 'logos:svelte-icon',
+    'astro': 'logos:astro-icon',
+    'remix': 'logos:remix-icon',
+    'nuxt': 'logos:nuxt-icon',
+    'nuxt.js': 'logos:nuxt-icon',
+    'html': 'logos:html-5',
+    'html5': 'logos:html-5',
+    'css': 'logos:css-3',
+    'css3': 'logos:css-3',
+    'sass': 'logos:sass',
+    'scss': 'logos:sass',
+    'tailwind': 'logos:tailwindcss-icon',
+    'tailwind css': 'logos:tailwindcss-icon',
+    'tailwindcss': 'logos:tailwindcss-icon',
+    'bootstrap': 'logos:bootstrap',
+    'jquery': 'logos:jquery-mobile',
     // Backend & Runtime
-    'node': 'simple-icons:nodedotjs',
-    'node.js': 'simple-icons:nodedotjs',
-    'nodejs': 'simple-icons:nodedotjs',
-    'express': 'simple-icons:express',
-    'express.js': 'simple-icons:express',
-    'fastapi': 'simple-icons:fastapi',
-    'django': 'simple-icons:django',
-    'flask': 'simple-icons:flask',
-    'laravel': 'simple-icons:laravel',
-    'spring': 'simple-icons:spring',
-    'graphql': 'simple-icons:graphql',
+    'node': 'logos:nodejs-icon',
+    'node.js': 'logos:nodejs-icon',
+    'nodejs': 'logos:nodejs-icon',
+    'express': 'skill-icons:expressjs-light',
+    'express.js': 'skill-icons:expressjs-light',
+    'fastapi': 'logos:fastapi-icon',
+    'django': 'logos:django-icon',
+    'flask': 'logos:flask',
+    'laravel': 'logos:laravel',
+    'spring': 'logos:spring-icon',
+    'graphql': 'logos:graphql',
     'rest': 'lucide:globe',
     'restapi': 'lucide:globe',
     'websocket': 'lucide:activity',
-    'socket.io': 'simple-icons:socketdotio',
+    'socket.io': 'logos:socket-io',
     // Languages
-    'python': 'simple-icons:python',
-    'java': 'simple-icons:openjdk',
-    'c': 'lucide:code-2',
-    'c++': 'simple-icons:cplusplus',
-    'cpp': 'simple-icons:cplusplus',
-    'c#': 'simple-icons:csharp',
-    'csharp': 'simple-icons:csharp',
-    'go': 'simple-icons:go',
-    'golang': 'simple-icons:go',
-    'rust': 'simple-icons:rust',
-    'ruby': 'simple-icons:ruby',
-    'php': 'simple-icons:php',
-    'swift': 'simple-icons:swift',
-    'kotlin': 'simple-icons:kotlin',
-    'dart': 'simple-icons:dart',
-    'r': 'simple-icons:r',
-    'scala': 'simple-icons:scala',
-    'elixir': 'simple-icons:elixir',
-    'haskell': 'simple-icons:haskell',
+    'python': 'logos:python',
+    'java': 'logos:java',
+    'c': 'logos:c',
+    'c++': 'logos:c-plusplus',
+    'cpp': 'logos:c-plusplus',
+    'c#': 'logos:c-sharp',
+    'csharp': 'logos:c-sharp',
+    'go': 'logos:go',
+    'golang': 'logos:go',
+    'rust': 'logos:rust',
+    'ruby': 'logos:ruby',
+    'php': 'logos:php',
+    'swift': 'logos:swift',
+    'kotlin': 'logos:kotlin-icon',
+    'dart': 'logos:dart',
+    'r': 'logos:r-lang',
+    'scala': 'logos:scala',
+    'elixir': 'logos:elixir-icon',
+    'haskell': 'logos:haskell-icon',
     // Databases
-    'mongodb': 'simple-icons:mongodb',
-    'postgres': 'simple-icons:postgresql',
-    'postgresql': 'simple-icons:postgresql',
-    'mysql': 'simple-icons:mysql',
-    'sqlite': 'simple-icons:sqlite',
-    'redis': 'simple-icons:redis',
-    'firebase': 'simple-icons:firebase',
-    'supabase': 'simple-icons:supabase',
-    'prisma': 'simple-icons:prisma',
-    'dynamodb': 'simple-icons:amazondynamodb',
-    'elasticsearch': 'simple-icons:elasticsearch',
-    // DevOps & Cloud
-    'docker': 'simple-icons:docker',
-    'kubernetes': 'simple-icons:kubernetes',
-    'k8s': 'simple-icons:kubernetes',
-    'aws': 'simple-icons:amazonaws',
-    'azure': 'simple-icons:microsoftazure',
-    'gcp': 'simple-icons:googlecloud',
-    'google cloud': 'simple-icons:googlecloud',
-    'vercel': 'simple-icons:vercel',
-    'netlify': 'simple-icons:netlify',
-    'heroku': 'simple-icons:heroku',
-    'nginx': 'simple-icons:nginx',
-    'terraform': 'simple-icons:terraform',
-    'ansible': 'simple-icons:ansible',
-    'jenkins': 'simple-icons:jenkins',
-    'github actions': 'simple-icons:githubactions',
+    'mongodb': 'logos:mongodb-icon',
+    'postgres': 'logos:postgresql',
+    'postgresql': 'logos:postgresql',
+    'mysql': 'logos:mysql-icon',
+    'sqlite': 'logos:sqlite',
+    'redis': 'logos:redis',
+    'firebase': 'logos:firebase',
+    'supabase': 'logos:supabase-icon',
+    'prisma': 'logos:prisma',
+    'dynamodb': 'logos:aws-dynamodb',
+    'elasticsearch': 'logos:elasticsearch',
+    // DevOps & Cloud & Auth
+    'cloudinary': 'logos:cloudinary-icon',
+    'clerk': 'logos:clerk',
+    'clerk auth': 'logos:clerk',
+    'clerk.dev': 'logos:clerk',
+    'clerk.com': 'logos:clerk',
+    'inngest': 'custom:inngest',
+    'inggest': 'custom:inngest',
+    'ingest': 'custom:inngest',
+    'docker': 'logos:docker-icon',
+    'kubernetes': 'logos:kubernetes',
+    'k8s': 'logos:kubernetes',
+    'aws': 'logos:aws',
+    'azure': 'logos:azure-icon',
+    'gcp': 'logos:google-cloud',
+    'google cloud': 'logos:google-cloud',
+    'vercel': 'logos:vercel-icon',
+    'netlify': 'logos:netlify-icon',
+    'heroku': 'logos:heroku-icon',
+    'nginx': 'logos:nginx',
+    'terraform': 'logos:terraform-icon',
+    'ansible': 'logos:ansible',
+    'jenkins': 'logos:jenkins',
+    'github actions': 'logos:github-actions',
     'ci/cd': 'lucide:git-branch',
     // Tools & Other
-    'git': 'simple-icons:git',
-    'github': 'simple-icons:github',
-    'gitlab': 'simple-icons:gitlab',
-    'linux': 'simple-icons:linux',
-    'ubuntu': 'simple-icons:ubuntu',
-    'bash': 'simple-icons:gnubash',
+    'git': 'logos:git-icon',
+    'github': 'logos:github-icon',
+    'gitlab': 'logos:gitlab',
+    'linux': 'logos:linux-tux',
+    'ubuntu': 'logos:ubuntu',
+    'bash': 'logos:bash-icon',
     'shell': 'lucide:terminal',
     'terminal': 'lucide:terminal',
-    'vscode': 'simple-icons:visualstudiocode',
-    'vs code': 'simple-icons:visualstudiocode',
-    'figma': 'simple-icons:figma',
-    'photoshop': 'simple-icons:adobephotoshop',
-    'illustrator': 'simple-icons:adobeillustrator',
-    'blender': 'simple-icons:blender',
+    'vscode': 'logos:visual-studio-code',
+    'vs code': 'logos:visual-studio-code',
+    'figma': 'logos:figma',
+    'photoshop': 'logos:adobe-photoshop',
+    'illustrator': 'logos:adobe-illustrator',
+    'blender': 'logos:blender',
     // Mobile
-    'react native': 'simple-icons:react',
-    'flutter': 'simple-icons:flutter',
-    'android': 'simple-icons:android',
-    'ios': 'simple-icons:apple',
+    'react native': 'logos:react',
+    'flutter': 'logos:flutter',
+    'android': 'logos:android-icon',
+    'ios': 'logos:apple',
     // AI/ML
-    'tensorflow': 'simple-icons:tensorflow',
-    'pytorch': 'simple-icons:pytorch',
-    'openai': 'simple-icons:openai',
+    'tensorflow': 'logos:tensorflow',
+    'pytorch': 'logos:pytorch-icon',
+    'openai': 'logos:openai-icon',
     'machine learning': 'lucide:cpu',
     'ai': 'lucide:sparkles',
     'ml': 'lucide:cpu',
     'llm': 'lucide:sparkles',
     // Testing
-    'jest': 'simple-icons:jest',
-    'cypress': 'simple-icons:cypress',
-    'vitest': 'simple-icons:vitest',
+    'jest': 'logos:jest',
+    'cypress': 'logos:cypress-icon',
+    'vitest': 'logos:vitest',
     'testing': 'lucide:check-circle',
     // Other popular
-    'wordpress': 'simple-icons:wordpress',
-    'shopify': 'simple-icons:shopify',
-    'stripe': 'simple-icons:stripe',
-    'threejs': 'simple-icons:threedotjs',
-    'three.js': 'simple-icons:threedotjs',
-    'webgl': 'lucide:layers',
+    'wordpress': 'logos:wordpress-icon',
+    'shopify': 'logos:shopify',
+    'stripe': 'logos:stripe',
+    'threejs': 'logos:threejs',
+    'three.js': 'logos:threejs',
+    'webgl': 'logos:webgl',
     'blockchain': 'lucide:link',
-    'solidity': 'simple-icons:solidity',
-    'web3': 'simple-icons:web3dotjs',
-    'arduino': 'simple-icons:arduino',
-    'raspberrypi': 'simple-icons:raspberrypi'
+    'solidity': 'logos:solidity',
+    'web3': 'logos:web3js',
+    'arduino': 'logos:arduino',
+    'raspberrypi': 'logos:raspberry-pi'
   };
 
   function getSkillIcon(skillName) {
     var key = (skillName || '').toLowerCase().trim();
     var icon = SKILL_ICON_MAP[key] || null;
     if (!icon) {
-      // Fuzzy: partial match
+      // Fuzzy: partial match (only for keys with >= 3 characters to avoid false matches like 'c' matching 'clerk')
       for (var k in SKILL_ICON_MAP) {
-        if (key.indexOf(k) !== -1 || k.indexOf(key) !== -1) {
+        if (k.length >= 3 && key.length >= 3 && (key.indexOf(k) !== -1 || k.indexOf(key) !== -1)) {
           icon = SKILL_ICON_MAP[k];
           break;
         }
@@ -1414,7 +1456,132 @@
     return icon || 'lucide:code-2';
   }
 
-  /* ─── Interactive Skills Pills Display ─── */
+  /* ─── Skill Official Website Resolver ─── */
+  var SKILL_URL_MAP = {
+    'javascript': 'https://developer.mozilla.org/en-US/docs/Web/JavaScript',
+    'js': 'https://developer.mozilla.org/en-US/docs/Web/JavaScript',
+    'typescript': 'https://www.typescriptlang.org/',
+    'ts': 'https://www.typescriptlang.org/',
+    'react': 'https://react.dev/',
+    'react.js': 'https://react.dev/',
+    'reactjs': 'https://react.dev/',
+    'next.js': 'https://nextjs.org/',
+    'nextjs': 'https://nextjs.org/',
+    'vue': 'https://vuejs.org/',
+    'vue.js': 'https://vuejs.org/',
+    'vuejs': 'https://vuejs.org/',
+    'angular': 'https://angular.dev/',
+    'svelte': 'https://svelte.dev/',
+    'astro': 'https://astro.build/',
+    'remix': 'https://remix.run/',
+    'nuxt': 'https://nuxt.com/',
+    'nuxt.js': 'https://nuxt.com/',
+    'html': 'https://developer.mozilla.org/en-US/docs/Web/HTML',
+    'html5': 'https://developer.mozilla.org/en-US/docs/Web/HTML',
+    'css': 'https://developer.mozilla.org/en-US/docs/Web/CSS',
+    'css3': 'https://developer.mozilla.org/en-US/docs/Web/CSS',
+    'sass': 'https://sass-lang.com/',
+    'scss': 'https://sass-lang.com/',
+    'tailwind': 'https://tailwindcss.com/',
+    'tailwind css': 'https://tailwindcss.com/',
+    'tailwindcss': 'https://tailwindcss.com/',
+    'bootstrap': 'https://getbootstrap.com/',
+    'jquery': 'https://jquery.com/',
+    'node': 'https://nodejs.org/',
+    'node.js': 'https://nodejs.org/',
+    'nodejs': 'https://nodejs.org/',
+    'express': 'https://expressjs.com/',
+    'express.js': 'https://expressjs.com/',
+    'fastapi': 'https://fastapi.tiangolo.com/',
+    'django': 'https://www.djangoproject.com/',
+    'flask': 'https://flask.palletsprojects.com/',
+    'laravel': 'https://laravel.com/',
+    'spring': 'https://spring.io/',
+    'graphql': 'https://graphql.org/',
+    'socket.io': 'https://socket.io/',
+    'python': 'https://www.python.org/',
+    'java': 'https://www.java.com/',
+    'c++': 'https://isocpp.org/',
+    'cpp': 'https://isocpp.org/',
+    'c#': 'https://learn.microsoft.com/dotnet/csharp/',
+    'csharp': 'https://learn.microsoft.com/dotnet/csharp/',
+    'go': 'https://go.dev/',
+    'golang': 'https://go.dev/',
+    'rust': 'https://www.rust-lang.org/',
+    'ruby': 'https://www.ruby-lang.org/',
+    'php': 'https://www.php.net/',
+    'swift': 'https://www.swift.org/',
+    'kotlin': 'https://kotlinlang.org/',
+    'dart': 'https://dart.dev/',
+    'r': 'https://www.r-project.org/',
+    'scala': 'https://www.scala-lang.org/',
+    'mongodb': 'https://www.mongodb.com/',
+    'postgres': 'https://www.postgresql.org/',
+    'postgresql': 'https://www.postgresql.org/',
+    'mysql': 'https://www.mysql.com/',
+    'sqlite': 'https://www.sqlite.org/',
+    'redis': 'https://redis.io/',
+    'firebase': 'https://firebase.google.com/',
+    'supabase': 'https://supabase.com/',
+    'prisma': 'https://www.prisma.io/',
+    'cloudinary': 'https://cloudinary.com/',
+    'clerk': 'https://clerk.com/',
+    'clerk auth': 'https://clerk.com/',
+    'clerk.dev': 'https://clerk.com/',
+    'clerk.com': 'https://clerk.com/',
+    'inngest': 'https://www.inngest.com/',
+    'inggest': 'https://www.inngest.com/',
+    'ingest': 'https://www.inngest.com/',
+    'docker': 'https://www.docker.com/',
+    'kubernetes': 'https://kubernetes.io/',
+    'k8s': 'https://kubernetes.io/',
+    'aws': 'https://aws.amazon.com/',
+    'azure': 'https://azure.microsoft.com/',
+    'gcp': 'https://cloud.google.com/',
+    'google cloud': 'https://cloud.google.com/',
+    'vercel': 'https://vercel.com/',
+    'netlify': 'https://www.netlify.com/',
+    'heroku': 'https://www.heroku.com/',
+    'nginx': 'https://nginx.org/',
+    'git': 'https://git-scm.com/',
+    'github': 'https://github.com/',
+    'gitlab': 'https://gitlab.com/',
+    'linux': 'https://www.linux.org/',
+    'ubuntu': 'https://ubuntu.com/',
+    'vscode': 'https://code.visualstudio.com/',
+    'vs code': 'https://code.visualstudio.com/',
+    'figma': 'https://www.figma.com/',
+    'photoshop': 'https://www.adobe.com/products/photoshop.html',
+    'flutter': 'https://flutter.dev/',
+    'android': 'https://developer.android.com/',
+    'tensorflow': 'https://www.tensorflow.org/',
+    'pytorch': 'https://pytorch.org/',
+    'openai': 'https://openai.com/',
+    'jest': 'https://jestjs.io/',
+    'cypress': 'https://www.cypress.io/',
+    'vitest': 'https://vitest.dev/',
+    'wordpress': 'https://wordpress.org/',
+    'shopify': 'https://www.shopify.com/',
+    'stripe': 'https://stripe.com/',
+    'threejs': 'https://threejs.org/',
+    'three.js': 'https://threejs.org/',
+    'solidity': 'https://soliditylang.org/',
+    'web3': 'https://web3js.readthedocs.io/'
+  };
+
+  function getSkillUrl(skillName, customUrl) {
+    if (customUrl && typeof customUrl === 'string' && customUrl.trim()) return customUrl.trim();
+    var key = (skillName || '').toLowerCase().trim();
+    if (SKILL_URL_MAP[key]) return SKILL_URL_MAP[key];
+    for (var k in SKILL_URL_MAP) {
+      if (k.length >= 3 && key.length >= 3 && (key.indexOf(k) !== -1 || k.indexOf(key) !== -1)) {
+        return SKILL_URL_MAP[k];
+      }
+    }
+    return 'https://www.google.com/search?q=' + encodeURIComponent(skillName + ' official website');
+  }
+
+  /* ─── Interactive Skills Pills Display (Clickable Links) ─── */
   function renderSkills(skills) {
     var container = document.getElementById('skills-container');
     if (!container) return;
@@ -1428,12 +1595,14 @@
     var html = '<div class="skills-pills-wrap">';
     list.forEach(function (s) {
       var name = (typeof s === 'string' ? s : (s && s.name ? s.name : '')).trim();
+      var customUrl = (s && typeof s === 'object' && s.url) ? s.url : '';
       if (!name) return;
       var icon = getSkillIcon(name);
-      html += '<span class="skill-pill">' +
+      var url = getSkillUrl(name, customUrl);
+      html += '<a href="' + escapeHtml(url) + '" target="_blank" rel="noopener noreferrer" class="skill-pill" title="Visit ' + escapeHtml(name) + ' website" aria-label="' + escapeHtml(name) + '">' +
         '<iconify-icon icon="' + escapeHtml(icon) + '" class="skill-pill-icon" width="14" height="14" aria-hidden="true"></iconify-icon>' +
         '<span class="skill-pill-name">' + escapeHtml(name) + '</span>' +
-        '</span>';
+        '</a>';
     });
     html += '</div>';
 
@@ -1461,30 +1630,34 @@
       var url = (q.url || '').trim();
 
       html += '<div class="qual-item">';
-      html += '  <div class="qual-top-row">';
-      html += '    <span class="qual-tag">' + escapeHtml(tag) + '</span>';
-      if (year) {
-        html += '    <span class="qual-year">' + escapeHtml(year) + '</span>';
-      }
-      html += '  </div>';
+      html += '  <div class="qual-main">';
+      html += '    <div class="qual-top-row">';
+      html += '      <span class="qual-tag">' + escapeHtml(tag) + '</span>';
+      html += '    </div>';
       if (title) {
-        html += '  <h3 class="qual-title">' + escapeHtml(title) + '</h3>';
+        html += '    <h3 class="qual-title">' + escapeHtml(title) + '</h3>';
       }
       if (issuer) {
-        html += '  <div class="qual-issuer">';
-        html += '    <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="flex-shrink:0;"><path d="M22 10v6M2 10l10-5 10 5-10 5z"/><path d="M6 12v5c3 3 9 3 12 0v-5"/></svg>';
-        html += '    <span>' + escapeHtml(issuer) + '</span>';
-        html += '  </div>';
+        html += '    <div class="qual-issuer">';
+        html += '      <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="flex-shrink:0;"><path d="M22 10v6M2 10l10-5 10 5-10 5z"/><path d="M6 12v5c3 3 9 3 12 0v-5"/></svg>';
+        html += '      <span>' + escapeHtml(issuer) + '</span>';
+        html += '    </div>';
       }
       if (desc) {
-        html += '  <p class="qual-desc">' + parseRichText(desc) + '</p>';
+        html += '    <p class="qual-desc">' + parseRichText(desc) + '</p>';
       }
-      if (url) {
-        html += '  <div class="qual-action">';
-        html += '    <a href="' + escapeHtml(url) + '" target="_blank" rel="noopener noreferrer" class="qual-link">';
-        html += '      <span>Verify Credential</span>';
-        html += '      <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M7 17L17 7M17 7H7M17 7v10"/></svg>';
-        html += '    </a>';
+      html += '  </div>';
+      if (year || url) {
+        html += '  <div class="qual-right-col">';
+        if (year) {
+          html += '    <span class="qual-year">' + escapeHtml(year) + '</span>';
+        }
+        if (url) {
+          html += '    <a href="' + escapeHtml(url) + '" target="_blank" rel="noopener noreferrer" class="qual-link-btn" title="Verify Credential">';
+          html += '      <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>';
+          html += '      <span>Link</span>';
+          html += '    </a>';
+        }
         html += '  </div>';
       }
       html += '</div>';
@@ -1535,31 +1708,31 @@
       html += '    <iconify-icon icon="' + escapeHtml(icon) + '" width="22" height="22"></iconify-icon>';
       html += '  </div>';
       html += '  <div class="device-content">';
-      html += '    <div class="device-header">';
-      html += '      <div class="device-title-area">';
+      html += '    <div class="device-title-area">';
       if (name) {
-        html += '        <h3 class="device-name">' + escapeHtml(name) + '</h3>';
+        html += '      <h3 class="device-name">' + escapeHtml(name) + '</h3>';
       }
       if (specs) {
-        html += '        <div class="device-specs"><span>' + escapeHtml(specs) + '</span></div>';
-      }
-      html += '      </div>';
-      if (tag) {
-        html += '      <span class="device-tag">' + escapeHtml(tag) + '</span>';
+        html += '      <div class="device-specs"><span>' + escapeHtml(specs) + '</span></div>';
       }
       html += '    </div>';
       if (desc) {
         html += '    <p class="device-desc">' + parseRichText(desc) + '</p>';
       }
-      if (url) {
-        html += '    <div class="device-action">';
-        html += '      <a href="' + escapeHtml(url) + '" target="_blank" rel="noopener noreferrer" class="device-link">';
-        html += '        <span>View Specs</span>';
-        html += '        <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M7 17L17 7H7M17 7v10"/></svg>';
-        html += '      </a>';
-        html += '    </div>';
-      }
       html += '  </div>';
+      if (tag || url) {
+        html += '  <div class="device-right-col">';
+        if (tag) {
+          html += '    <span class="device-tag">' + escapeHtml(tag) + '</span>';
+        }
+        if (url) {
+          html += '    <a href="' + escapeHtml(url) + '" target="_blank" rel="noopener noreferrer" class="qual-link-btn" title="View Specs">';
+          html += '      <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>';
+          html += '      <span>Link</span>';
+          html += '    </a>';
+        }
+        html += '  </div>';
+      }
       html += '</div>';
     });
     html += '</div>';
@@ -3465,6 +3638,30 @@
               if (r.full_name) repoMap[r.full_name.toLowerCase()] = r;
             }
           });
+        }
+        // Auto-populate skills from GitHub repo languages if no custom skills configured
+        var skillsContainer = document.getElementById('skills-container');
+        if ((!window.CONFIG || !window.CONFIG.skills || !window.CONFIG.skills.length) && skillsContainer) {
+          var autoLangs = [];
+          if (Array.isArray(reposData)) {
+            reposData.forEach(function (r) {
+              if (r && r.language && typeof r.language === 'string') {
+                var l = r.language.trim();
+                if (l && autoLangs.indexOf(l) === -1) autoLangs.push(l);
+              }
+            });
+          }
+          if (Array.isArray(pinnedData)) {
+            pinnedData.forEach(function (p) {
+              if (p && p.language && typeof p.language === 'string') {
+                var l = p.language.trim();
+                if (l && autoLangs.indexOf(l) === -1) autoLangs.push(l);
+              }
+            });
+          }
+          if (autoLangs.length) {
+            renderSkills(autoLangs);
+          }
         }
 
         if (Array.isArray(pinnedData) && pinnedData.length) {
