@@ -175,25 +175,77 @@ body {
   padding-bottom: 48px;
 }
 
-/* ── CV Button (Top Right Corner Tag) ── */
-.cv-corner-btn {
+/* ── CV Button (Top Right Corner Tag - Always Glowing, No Cursor Required) ── */
+.cv-corner-btn,
+#cust-cv-live-pill {
   position: absolute;
   top: 0;
   right: 0;
   z-index: 10;
   text-decoration: none !important;
+  color: var(--ink) !important;
+  border: 1px solid var(--red) !important;
+  background: var(--surface-hover) !important;
+  box-shadow: 0 0 14px var(--border-accent-glow, rgba(255, 42, 95, 0.35)), 0 0 4px rgba(255, 42, 95, 0.25) !important;
+  animation: cvGlowPulse 3s ease-in-out infinite;
+  transition: color 0.18s ease, border-color 0.18s ease, background 0.18s ease, transform 0.18s ease, box-shadow 0.18s ease !important;
 }
 
-.cv-corner-btn:hover {
+#cust-cv-live-pill {
+  position: static !important;
+}
+
+@keyframes cvGlowPulse {
+  0%, 100% {
+    box-shadow: 0 0 12px var(--border-accent-glow, rgba(255, 42, 95, 0.35)), 0 0 4px rgba(255, 42, 95, 0.22);
+    border-color: var(--red);
+  }
+  50% {
+    box-shadow: 0 0 18px var(--border-accent, rgba(255, 42, 95, 0.55)), 0 0 6px var(--red);
+    border-color: var(--red);
+  }
+}
+
+.cv-corner-btn:hover,
+#cust-cv-live-pill:hover {
   text-decoration: none !important;
+  color: #ffffff !important;
+  border-color: var(--red) !important;
+  background: var(--surface-hover) !important;
+  box-shadow: 0 0 24px var(--border-accent, rgba(255, 42, 95, 0.7)), 0 0 8px var(--red) !important;
+  transform: translateY(-1px);
+  animation-play-state: paused;
 }
 
-.cv-corner-btn .cv-icon {
+.cv-corner-btn:active,
+#cust-cv-live-pill:active {
+  transform: scale(0.96);
+}
+
+.cv-corner-btn .cv-icon,
+#cust-cv-live-pill .cv-icon {
   transition: transform 0.18s ease;
+  color: var(--red) !important;
 }
 
-.cv-corner-btn:hover .cv-icon {
+.cv-corner-btn:hover .cv-icon,
+#cust-cv-live-pill:hover .cv-icon {
   transform: scale(1.15);
+}
+
+#cust-cv-preview-link {
+  border: 1px solid var(--red) !important;
+  color: var(--ink) !important;
+  background: var(--surface-hover) !important;
+  box-shadow: 0 0 12px var(--border-accent-glow, rgba(255, 42, 95, 0.35)), 0 0 4px rgba(255, 42, 95, 0.22) !important;
+  transition: color 0.18s ease, border-color 0.18s ease, background 0.18s ease, transform 0.18s ease, box-shadow 0.18s ease !important;
+}
+
+#cust-cv-preview-link:hover {
+  color: #ffffff !important;
+  border-color: var(--red) !important;
+  box-shadow: 0 0 20px var(--border-accent, rgba(255, 42, 95, 0.65)), 0 0 6px var(--red) !important;
+  transform: translateY(-1px);
 }
 
 /* ── Avatar ── */

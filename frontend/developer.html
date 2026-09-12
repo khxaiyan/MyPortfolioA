@@ -1498,7 +1498,7 @@
               <!-- Live Preview Badge -->
               <div style="display:flex; align-items:center; gap:6px;">
                 <span style="font-size:0.68rem; color:var(--ink-faint); font-family:var(--font-mono);">Live Look:</span>
-                <span class="corner-tag" id="cust-cv-live-pill" style="position:static; text-decoration:none; padding:4px 10px; display:inline-flex; align-items:center; font-size:0.72rem; pointer-events:none; border-radius:var(--radius-sm);">
+                <span class="corner-tag cv-corner-btn" id="cust-cv-live-pill" style="position:static; text-decoration:none; padding:4px 10px; display:inline-flex; align-items:center; font-size:0.72rem; pointer-events:none; border-radius:var(--radius-sm); border:1px solid var(--red); background:var(--surface-hover); color:var(--ink); box-shadow:0 0 14px var(--border-accent-glow, rgba(255, 42, 95, 0.35)), 0 0 4px rgba(255, 42, 95, 0.25);">
                   <span id="cust-cv-live-icon-wrap" style="display:inline-flex; align-items:center; margin-right:5px; color:var(--red);">
                     <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
                       <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8z" />
@@ -1634,7 +1634,7 @@
             </div>
             <div style="display:flex; align-items:center; gap:6px;">
               <a id="cust-cv-preview-link" href="#" target="_blank" rel="noopener noreferrer" class="toolbar-btn"
-                style="padding:4px 12px; font-size:0.72rem; border-radius:14px; display:none; align-items:center; gap:5px; text-decoration:none; color:var(--ink);">
+                style="padding:4px 12px; font-size:0.72rem; border-radius:14px; display:none; align-items:center; gap:5px; text-decoration:none; color:var(--ink); border:1px solid var(--red); background:var(--surface-hover); box-shadow:0 0 12px var(--border-accent-glow, rgba(255, 42, 95, 0.35)), 0 0 4px rgba(255, 42, 95, 0.22);">
                 <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                   <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8z" />
                   <circle cx="12" cy="12" r="3" />
@@ -2715,34 +2715,38 @@
   </div>
 
   <!-- Sync Pinned Repos Confirmation Warning Modal -->
-  <div id="sync-warning-modal" class="avatar-modal-backdrop" style="display:none; z-index:99999;" role="dialog"
+  <div id="sync-warning-modal" class="app-popup-backdrop" style="display:none;" role="dialog"
     aria-modal="true" aria-labelledby="sync-warning-title">
-    <div class="avatar-modal-card surface-card" style="max-width:440px; text-align:center; padding:28px 24px;">
-      <div
-        style="width:54px; height:54px; border-radius:50%; background:var(--red-dim); border:1.5px solid var(--border-accent); display:inline-flex; align-items:center; justify-content:center; margin:0 auto 16px auto; color:var(--red); box-shadow:0 0 25px var(--border-accent-glow);">
-        <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"
+    <div class="app-popup-card">
+      <div class="app-popup-top-glow"></div>
+      <div class="app-popup-header-row">
+        <span class="app-popup-tag">// GITHUB SYNC</span>
+        <button type="button" id="btn-sync-warning-close" class="app-popup-close-btn" aria-label="Close dialog">✕</button>
+      </div>
+      <div class="app-popup-icon-wrap" style="color:var(--red);">
+        <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"
           stroke-linecap="round" stroke-linejoin="round">
           <path d="m21.73 18-8-14a2 2 0 0 0-3.48 0l-8 14A2 2 0 0 0 4 21h16a2 2 0 0 0 1.73-3Z" />
           <line x1="12" y1="9" x2="12" y2="13" />
           <line x1="12" y1="17" x2="12.01" y2="17" />
         </svg>
       </div>
-      <h3 id="sync-warning-title"
-        style="font-family:var(--font-display); font-size:1.25rem; font-weight:700; color:var(--ink); margin:0 0 8px 0; letter-spacing:-0.02em;">
+      <h3 id="sync-warning-title" class="app-popup-title" style="margin-bottom:8px;">
         Sync Pinned Repositories?
       </h3>
-      <p
-        style="font-size:0.82rem; color:var(--ink-dim); line-height:1.55; margin:0 0 24px 0; font-family:var(--font-mono);">
+      <p id="sync-warning-body" class="app-popup-body" style="margin-bottom:20px;">
         Warning: This will fetch your pinned repositories from GitHub and overwrite your current projects list. Do you
         want to proceed?
       </p>
-      <div style="display:flex; gap:12px; justify-content:center;">
-        <button type="button" id="btn-sync-warning-no" class="toolbar-btn"
-          style="flex:1; padding:11px 18px; border-radius:var(--radius-sm); font-size:0.82rem; font-weight:600; cursor:pointer; color:var(--ink-dim); border:1px solid var(--line-strong); background:var(--surface-hover); transition:all 0.18s ease;">
+      <div class="app-popup-actions">
+        <button type="button" id="btn-sync-warning-no" class="app-popup-btn app-popup-btn-secondary">
           No, Cancel
         </button>
-        <button type="button" id="btn-sync-warning-yes" class="toolbar-btn"
-          style="flex:1; padding:11px 18px; border-radius:var(--radius-sm); font-size:0.82rem; font-weight:600; cursor:pointer; background:var(--red-solid); color:#ffffff; border:none; box-shadow:0 0 20px var(--border-accent-glow); transition:all 0.18s ease;">
+        <button type="button" id="btn-sync-warning-yes" class="app-popup-btn app-popup-btn-primary">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+            <polyline points="23 4 23 10 17 10"></polyline>
+            <path d="M20.49 15a9 9 0 1 1-2.12-9.36L23 10"></path>
+          </svg>
           Yes, Sync
         </button>
       </div>
@@ -6320,13 +6324,29 @@
               statusEl.style.display = 'inline';
               statusEl.style.color = '#10b981';
               statusEl.textContent = '✓ ' + targetProjects.length + ' projects loaded';
-              setTimeout(function () { statusEl.style.display = 'none'; }, 4000);
+            if (!isAuto) {
+              showCustomPopup({
+                type: 'success',
+                tag: '// GITHUB SYNC',
+                title: 'Pinned Projects Loaded',
+                message: 'Successfully loaded <strong>' + targetProjects.length + ' projects</strong> from @' + escapeHtml(username) + '!',
+                buttonText: 'Great'
+              });
             }
           } else {
             if (statusEl) {
               statusEl.style.display = 'inline';
               statusEl.style.color = 'var(--red)';
               statusEl.textContent = 'No pinned projects found for @' + username;
+            }
+            if (!isAuto) {
+              showCustomPopup({
+                type: 'warning',
+                tag: '// NO PROJECTS',
+                title: 'No Pinned Projects',
+                message: 'No pinned repositories found for <strong>@' + escapeHtml(username) + '</strong> on GitHub.',
+                buttonText: 'Understood'
+              });
             }
           }
         } catch (err) {
@@ -6339,6 +6359,15 @@
             statusEl.style.display = 'inline';
             statusEl.style.color = 'var(--red)';
             statusEl.textContent = '✗ ' + (err.message || 'Failed to sync');
+          }
+          if (!isAuto) {
+            showCustomPopup({
+              type: 'error',
+              tag: '// SYNC FAILED',
+              title: 'Projects Sync Failed',
+              message: err.message || 'Failed to sync pinned projects from GitHub.',
+              buttonText: 'Dismiss'
+            });
           }
         } finally {
           if (btn) {
@@ -6507,12 +6536,27 @@
               statusEl.style.display = 'none';
             }, 6000);
           }
+
+          showCustomPopup({
+            type: 'success',
+            tag: '// GITHUB SYNC',
+            title: 'Sync Complete',
+            message: 'Successfully synced from <strong>@' + escapeHtml(username) + '</strong>!<br>Updated: ' + (updatedSummary.length ? updatedSummary.join(', ') : 'details') + '.',
+            buttonText: 'Great'
+          });
         } catch (err) {
           if (statusEl) {
             statusEl.style.display = 'block';
             statusEl.style.color = 'var(--red)';
             statusEl.textContent = '✗ ' + (err.message || 'Could not sync with GitHub');
           }
+          showCustomPopup({
+            type: 'error',
+            tag: '// SYNC FAILED',
+            title: 'Sync Failed',
+            message: err.message || 'Could not sync with GitHub. Please check your username and connection.',
+            buttonText: 'Understood'
+          });
         } finally {
           syncBtns.forEach(function (btn) {
             btn.disabled = false;
@@ -6522,29 +6566,58 @@
       }
 
       var btnSyncGh = document.getElementById('btn-sync-github');
-      if (btnSyncGh) {
-        btnSyncGh.addEventListener('click', function () {
-          syncAllFromGitHub();
-        });
-      }
-
       var btnSyncProjectsGh = document.getElementById('btn-sync-projects-github');
       var syncWarningModal = document.getElementById('sync-warning-modal');
       var btnSyncWarningYes = document.getElementById('btn-sync-warning-yes');
       var btnSyncWarningNo = document.getElementById('btn-sync-warning-no');
+      var btnSyncWarningClose = document.getElementById('btn-sync-warning-close');
 
-      function openSyncWarningModal() {
+      var pendingSyncMode = 'all'; // 'all' or 'projects'
+
+      function openSyncWarningModal(mode) {
+        pendingSyncMode = mode || 'all';
+        var username = cleanGitHubUsername((document.getElementById('cust-github') || {}).value || '');
+        var titleEl = document.getElementById('sync-warning-title');
+        var bodyEl = document.getElementById('sync-warning-body');
+
+        if (pendingSyncMode === 'projects') {
+          if (titleEl) titleEl.textContent = 'Sync Pinned Repositories?';
+          if (bodyEl) {
+            bodyEl.innerHTML = 'This will fetch your pinned repositories from GitHub' + (username ? (' for <strong>@' + escapeHtml(username) + '</strong>') : '') + ' and overwrite your current projects list.<br>Do you want to proceed?';
+          }
+        } else {
+          if (titleEl) titleEl.textContent = 'Sync from GitHub?';
+          if (bodyEl) {
+            bodyEl.innerHTML = 'This will fetch your public avatar, bio, and pinned repositories from GitHub' + (username ? (' for <strong>@' + escapeHtml(username) + '</strong>') : '') + '.<br>Do you want to proceed?';
+          }
+        }
+
         if (syncWarningModal) {
           syncWarningModal.style.display = 'flex';
+          void syncWarningModal.offsetHeight;
+          syncWarningModal.classList.add('active');
           syncWarningModal.setAttribute('aria-hidden', 'false');
         }
       }
 
       function closeSyncWarningModal() {
         if (syncWarningModal) {
-          syncWarningModal.style.display = 'none';
-          syncWarningModal.setAttribute('aria-hidden', 'true');
+          syncWarningModal.classList.remove('active');
+          setTimeout(function () {
+            syncWarningModal.style.display = 'none';
+            syncWarningModal.setAttribute('aria-hidden', 'true');
+          }, 220);
         }
+      }
+
+      if (btnSyncGh) {
+        btnSyncGh.addEventListener('click', function (e) {
+          if (e) {
+            e.preventDefault();
+            e.stopPropagation();
+          }
+          openSyncWarningModal('all');
+        });
       }
 
       if (btnSyncProjectsGh) {
@@ -6553,19 +6626,29 @@
             e.preventDefault();
             e.stopPropagation();
           }
-          openSyncWarningModal();
+          openSyncWarningModal('projects');
         });
       }
 
       if (btnSyncWarningYes) {
         btnSyncWarningYes.addEventListener('click', function () {
           closeSyncWarningModal();
-          syncPinnedProjectsOnly();
+          if (pendingSyncMode === 'projects') {
+            syncPinnedProjectsOnly();
+          } else {
+            syncAllFromGitHub();
+          }
         });
       }
 
       if (btnSyncWarningNo) {
         btnSyncWarningNo.addEventListener('click', function () {
+          closeSyncWarningModal();
+        });
+      }
+
+      if (btnSyncWarningClose) {
+        btnSyncWarningClose.addEventListener('click', function () {
           closeSyncWarningModal();
         });
       }
