@@ -417,6 +417,7 @@
       align-items: center;
       justify-content: center;
       padding: 16px;
+      overflow-y: auto;
       animation: fadeInModal 0.2s cubic-bezier(0.16, 1, 0.3, 1) forwards;
     }
 
@@ -435,12 +436,48 @@
     .avatar-modal-card {
       width: 100%;
       max-width: 480px;
+      max-height: calc(100vh - 32px);
+      overflow-y: auto;
+      -webkit-overflow-scrolling: touch;
       background: var(--surface);
       border: 1.5px solid var(--border-accent, rgba(255, 42, 95, 0.4));
       border-radius: var(--radius-md);
       box-shadow: 0 24px 50px rgba(0, 0, 0, 0.8), 0 0 35px var(--border-accent-glow, rgba(255, 42, 95, 0.15));
       padding: 22px 24px;
       position: relative;
+    }
+
+    @media (max-width: 480px) {
+      .avatar-modal-backdrop {
+        padding: 8px;
+        align-items: center;
+      }
+      .avatar-modal-card {
+        padding: 16px 14px;
+        max-height: calc(100vh - 16px);
+        margin: auto 0;
+      }
+      .avatar-canvas-wrapper {
+        min-height: 170px !important;
+        padding: 8px !important;
+      }
+      #avatar-color-canvas {
+        max-height: 200px !important;
+      }
+      .avatar-palette-swatch {
+        width: 34px !important;
+        height: 34px !important;
+      }
+      #btn-apply-avatar-color {
+        padding: 8px 18px !important;
+        font-size: 0.82rem !important;
+        min-height: 36px !important;
+      }
+      #btn-sample-screen {
+        padding: 8px 12px !important;
+        font-size: 0.8rem !important;
+        min-height: 36px !important;
+      }
     }
 
     /* ── Premium Custom Glassmorphism Popup Modal & Alerts ── */
@@ -645,8 +682,8 @@
     }
 
     .avatar-palette-swatch {
-      width: 28px;
-      height: 28px;
+      width: 30px;
+      height: 30px;
       border-radius: 50%;
       border: 2px solid rgba(255, 255, 255, 0.25);
       cursor: pointer;
@@ -654,10 +691,13 @@
       outline: none;
       padding: 0;
       flex-shrink: 0;
+      touch-action: manipulation;
+      -webkit-tap-highlight-color: transparent;
     }
 
-    .avatar-palette-swatch:hover {
-      transform: scale(1.25);
+    .avatar-palette-swatch:hover,
+    .avatar-palette-swatch:active {
+      transform: scale(1.2);
       border-color: #fff;
       box-shadow: 0 0 12px rgba(255, 255, 255, 0.5);
       z-index: 2;
@@ -2611,22 +2651,22 @@
       </div>
 
       <p style="font-size:0.75rem; color:var(--ink-faint); margin:0 0 12px 0; line-height:1.5;">
-        Hover or click anywhere on your profile picture to sample and select your portfolio accent color.
+        Touch, drag, or click anywhere on your profile picture to sample and select your portfolio accent color.
       </p>
 
       <!-- Canvas / Eyedropper Interactive Area -->
       <div class="avatar-canvas-wrapper"
-        style="position:relative; display:flex; justify-content:center; align-items:center; background:var(--bg); border:1px solid var(--line); border-radius:var(--radius-sm); padding:16px; min-height:220px; overflow:hidden;">
+        style="position:relative; display:flex; justify-content:center; align-items:center; background:var(--bg); border:1px solid var(--line); border-radius:var(--radius-sm); padding:14px; min-height:200px; touch-action:none; -webkit-user-select:none; user-select:none;">
         <canvas id="avatar-color-canvas"
-          style="cursor:crosshair; max-width:100%; max-height:260px; border-radius:12px; box-shadow:0 8px 24px rgba(0,0,0,0.5); object-fit:contain;"></canvas>
+          style="cursor:crosshair; max-width:100%; max-height:260px; border-radius:12px; box-shadow:0 8px 24px rgba(0,0,0,0.5); object-fit:contain; touch-action:none; -webkit-touch-callout:none;"></canvas>
 
         <!-- Hover Loupe / Magnifier Circle -->
         <div id="avatar-magnifier"
-          style="position:absolute; width:64px; height:64px; border-radius:50%; border:2.5px solid #fff; box-shadow:0 0 12px rgba(0,0,0,0.8), 0 0 0 1px rgba(0,0,0,0.5); pointer-events:none; display:none; overflow:hidden; z-index:10;">
-          <canvas id="avatar-magnifier-canvas" width="64" height="64" style="width:100%; height:100%;"></canvas>
+          style="position:absolute; width:68px; height:68px; border-radius:50%; border:2.5px solid #fff; box-shadow:0 0 16px rgba(0,0,0,0.85), 0 0 0 1px rgba(0,0,0,0.4); pointer-events:none; display:none; overflow:hidden; z-index:25; transition:border-color 0.15s ease;">
+          <canvas id="avatar-magnifier-canvas" width="68" height="68" style="width:100%; height:100%; display:block;"></canvas>
           <div
             style="position:absolute; inset:0; display:flex; align-items:center; justify-content:center; pointer-events:none;">
-            <div style="width:6px; height:6px; border-radius:50%; border:1.5px solid #fff; box-shadow:0 0 2px #000;">
+            <div style="width:6px; height:6px; border-radius:50%; border:1.5px solid #fff; box-shadow:0 0 3px #000;">
             </div>
           </div>
         </div>
@@ -3972,12 +4012,25 @@
             swatch.className = 'avatar-palette-swatch';
             swatch.style.background = c.hex;
             swatch.title = 'Select ' + c.hex;
-            swatch.addEventListener('click', function () {
+            swatch.setAttribute('aria-label', 'Select ' + c.hex);
+
+            function selectColor(e) {
+              if (e && e.type === 'touchend') e.preventDefault();
               currentSelectedAvatarHex = c.hex;
               if (avatarHoverSwatch) avatarHoverSwatch.style.background = c.hex;
-              if (avatarHoverHex) avatarHoverHex.textContent = c.hex;
+              if (avatarHoverHex) avatarHoverHex.textContent = c.hex + ' (Applied!)';
               setAccentColor(c.hex);
-            });
+              if (avatarPaletteContainer) {
+                avatarPaletteContainer.querySelectorAll('.avatar-palette-swatch').forEach(function (s) {
+                  s.style.transform = (s === swatch) ? 'scale(1.2)' : 'scale(1)';
+                  s.style.borderColor = (s === swatch) ? '#ffffff' : 'rgba(255, 255, 255, 0.25)';
+                  s.style.boxShadow = (s === swatch) ? '0 0 14px rgba(255, 255, 255, 0.7)' : 'none';
+                });
+              }
+            }
+
+            swatch.addEventListener('click', selectColor);
+            swatch.addEventListener('touchend', selectColor);
             avatarPaletteContainer.appendChild(swatch);
           });
         } catch (e) {
@@ -4035,47 +4088,177 @@
         });
       }
 
-      if (avatarCanvas) {
-        avatarCanvas.addEventListener('mousemove', function (e) {
-          var rect = avatarCanvas.getBoundingClientRect();
-          var scaleX = avatarCanvas.width / rect.width;
-          var scaleY = avatarCanvas.height / rect.height;
-          var x = Math.floor((e.clientX - rect.left) * scaleX);
-          var y = Math.floor((e.clientY - rect.top) * scaleY);
-          var ctx = avatarCanvas.getContext('2d', { willReadFrequently: true });
-          try {
-            var pixel = ctx.getImageData(x, y, 1, 1).data;
-            if (pixel[3] > 10) {
-              var hex = rgbToHex(pixel[0], pixel[1], pixel[2]);
-              currentSelectedAvatarHex = hex;
-              if (avatarHoverSwatch) avatarHoverSwatch.style.background = hex;
-              if (avatarHoverHex) avatarHoverHex.textContent = hex;
+      function sampleColorFromPoint(clientX, clientY, shouldApply) {
+        if (!avatarCanvas) return;
+        var rect = avatarCanvas.getBoundingClientRect();
+        if (!rect.width || !rect.height) return;
 
-              if (avatarMagnifier && avatarMagnifierCanvas) {
-                avatarMagnifier.style.display = 'block';
-                var wrapperRect = avatarCanvas.parentElement.getBoundingClientRect();
-                avatarMagnifier.style.left = (e.clientX - wrapperRect.left - 32) + 'px';
-                avatarMagnifier.style.top = (e.clientY - wrapperRect.top - 74) + 'px';
-                var mCtx = avatarMagnifierCanvas.getContext('2d');
-                mCtx.imageSmoothingEnabled = false;
-                mCtx.clearRect(0, 0, 64, 64);
-                mCtx.drawImage(avatarCanvas, x - 4, y - 4, 8, 8, 0, 0, 64, 64);
-              }
+        // Clamp client coords to canvas bounds
+        var clampedClientX = Math.max(rect.left, Math.min(rect.right, clientX));
+        var clampedClientY = Math.max(rect.top, Math.min(rect.bottom, clientY));
+
+        var scaleX = avatarCanvas.width / rect.width;
+        var scaleY = avatarCanvas.height / rect.height;
+        var x = Math.floor((clampedClientX - rect.left) * scaleX);
+        var y = Math.floor((clampedClientY - rect.top) * scaleY);
+
+        x = Math.max(0, Math.min(avatarCanvas.width - 1, x));
+        y = Math.max(0, Math.min(avatarCanvas.height - 1, y));
+
+        var ctx = avatarCanvas.getContext('2d', { willReadFrequently: true });
+        try {
+          var pixel = ctx.getImageData(x, y, 1, 1).data;
+          if (pixel[3] > 10) {
+            var hex = rgbToHex(pixel[0], pixel[1], pixel[2]);
+            currentSelectedAvatarHex = hex;
+            if (avatarHoverSwatch) avatarHoverSwatch.style.background = hex;
+            if (avatarHoverHex) {
+              avatarHoverHex.textContent = hex + (shouldApply ? ' (Applied!)' : '');
             }
-          } catch (_) { }
+            if (shouldApply) {
+              setAccentColor(hex);
+            }
+
+            // Position and render magnifier loupe
+            if (avatarMagnifier && avatarMagnifierCanvas) {
+              avatarMagnifier.style.display = 'block';
+              avatarMagnifier.style.borderColor = hex;
+              var wrapper = avatarCanvas.parentElement;
+              var wrapperRect = wrapper ? wrapper.getBoundingClientRect() : rect;
+
+              var magSize = 68;
+              var halfMag = magSize / 2;
+
+              // Horizontal position clamped inside wrapper
+              var targetLeft = clampedClientX - wrapperRect.left - halfMag;
+              targetLeft = Math.max(4, Math.min(wrapperRect.width - magSize - 4, targetLeft));
+              avatarMagnifier.style.left = targetLeft + 'px';
+
+              // Vertical position: if touching near top, flip loupe below finger!
+              var relY = clampedClientY - wrapperRect.top;
+              var targetTop;
+              if (relY < 85) {
+                targetTop = relY + 32; // below finger
+              } else {
+                targetTop = relY - magSize - 16; // above finger
+              }
+              targetTop = Math.max(4, Math.min(wrapperRect.height - magSize - 4, targetTop));
+              avatarMagnifier.style.top = targetTop + 'px';
+
+              var mCtx = avatarMagnifierCanvas.getContext('2d');
+              mCtx.imageSmoothingEnabled = false;
+              mCtx.clearRect(0, 0, magSize, magSize);
+              mCtx.drawImage(avatarCanvas, x - 5, y - 5, 10, 10, 0, 0, magSize, magSize);
+            }
+          }
+        } catch (_) { }
+      }
+
+      if (avatarCanvas) {
+        var isMouseDown = false;
+        var isTouching = false;
+        var canvasWrapper = avatarCanvas.parentElement;
+
+        /* ── Mouse Events (Desktop) ── */
+        avatarCanvas.addEventListener('mousedown', function (e) {
+          isMouseDown = true;
+          sampleColorFromPoint(e.clientX, e.clientY, true);
+        });
+
+        window.addEventListener('mousemove', function (e) {
+          if (!avatarModal || avatarModal.style.display === 'none') return;
+          if (isMouseDown) {
+            sampleColorFromPoint(e.clientX, e.clientY, false);
+          }
+        });
+
+        window.addEventListener('mouseup', function () {
+          if (isMouseDown) {
+            isMouseDown = false;
+            if (currentSelectedAvatarHex) {
+              setAccentColor(currentSelectedAvatarHex);
+              if (avatarHoverHex) avatarHoverHex.textContent = currentSelectedAvatarHex + ' (Applied!)';
+            }
+          }
+        });
+
+        avatarCanvas.addEventListener('mousemove', function (e) {
+          if (!isMouseDown) {
+            sampleColorFromPoint(e.clientX, e.clientY, false);
+          }
         });
 
         avatarCanvas.addEventListener('mouseleave', function () {
-          if (avatarMagnifier) avatarMagnifier.style.display = 'none';
+          if (!isMouseDown && avatarMagnifier) {
+            avatarMagnifier.style.display = 'none';
+          }
         });
 
         avatarCanvas.addEventListener('click', function (e) {
-          if (currentSelectedAvatarHex) {
+          sampleColorFromPoint(e.clientX, e.clientY, true);
+        });
+
+        /* ── Touch Events (Mobile Phones & Tablets) ── */
+        function getTouchPoint(e) {
+          if (e.touches && e.touches.length > 0) return e.touches[0];
+          if (e.changedTouches && e.changedTouches.length > 0) return e.changedTouches[0];
+          return null;
+        }
+
+        avatarCanvas.addEventListener('touchstart', function (e) {
+          var t = getTouchPoint(e);
+          if (!t) return;
+          e.preventDefault();
+          e.stopPropagation();
+          isTouching = true;
+          sampleColorFromPoint(t.clientX, t.clientY, false);
+        }, { passive: false });
+
+        avatarCanvas.addEventListener('touchmove', function (e) {
+          if (!isTouching) return;
+          var t = getTouchPoint(e);
+          if (!t) return;
+          e.preventDefault();
+          e.stopPropagation();
+          sampleColorFromPoint(t.clientX, t.clientY, false);
+        }, { passive: false });
+
+        avatarCanvas.addEventListener('touchend', function (e) {
+          if (!isTouching) return;
+          var t = getTouchPoint(e);
+          e.preventDefault();
+          e.stopPropagation();
+          isTouching = false;
+          if (t) {
+            sampleColorFromPoint(t.clientX, t.clientY, true);
+          } else if (currentSelectedAvatarHex) {
             setAccentColor(currentSelectedAvatarHex);
             if (avatarHoverSwatch) avatarHoverSwatch.style.background = currentSelectedAvatarHex;
             if (avatarHoverHex) avatarHoverHex.textContent = currentSelectedAvatarHex + ' (Applied!)';
           }
+          setTimeout(function () {
+            if (!isTouching && avatarMagnifier) {
+              avatarMagnifier.style.display = 'none';
+            }
+          }, 450);
+        }, { passive: false });
+
+        avatarCanvas.addEventListener('touchcancel', function () {
+          isTouching = false;
+          if (avatarMagnifier) avatarMagnifier.style.display = 'none';
         });
+
+        if (canvasWrapper) {
+          canvasWrapper.addEventListener('touchmove', function (e) {
+            if (isTouching) {
+              var t = getTouchPoint(e);
+              if (t) {
+                e.preventDefault();
+                sampleColorFromPoint(t.clientX, t.clientY, false);
+              }
+            }
+          }, { passive: false });
+        }
       }
 
       if (btnApplyAvatarColor) {
