@@ -7,16 +7,23 @@ node_modules/
 .env.*
 .env.local
 .env.*.local
+**/.env
+**/.env.*
+**/.env.local
+**/.env.*.local
 keys/.env
 keys/.env.*
 keys/.env.local
 *.pem
 *.key
 *.cert
+keys/*.key
+keys/*.pem
 
 # Never ignore the example environment template
 !keys/.env.example
 !*.env.example
+!**/.env.example
 
 # Vercel & Inngest Deployment Artifacts
 .vercel/
