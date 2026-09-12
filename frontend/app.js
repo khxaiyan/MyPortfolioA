@@ -786,17 +786,21 @@
 
     // 8. Headline Bio & Intro text
     var bioEl = document.querySelector('.bio');
-    if (bioEl && cfg.site_desc) {
-      bioEl.innerHTML = parseRichText(cfg.site_desc);
+    if (bioEl) {
+      if (cfg.site_desc && typeof cfg.site_desc === 'string' && cfg.site_desc.trim()) {
+        bioEl.innerHTML = parseRichText(cfg.site_desc.trim());
+      } else {
+        bioEl.innerHTML = '';
+      }
     }
     var introRow = document.getElementById('rail-row-intro');
+    var hasIntro = !!(cfg.intro && typeof cfg.intro === 'string' && cfg.intro.trim());
     if (introRow) {
-      introRow.style.display = (cfg.intro_enabled !== false) ? '' : 'none';
+      introRow.style.display = (cfg.intro_enabled !== false && hasIntro) ? '' : 'none';
     }
     var introEl = document.getElementById('intro-text');
     if (introEl) {
-      var introVal = (cfg.intro && cfg.intro.trim()) ? cfg.intro : 'Passionate developer specializing in building modern web applications, clean user interfaces, and dynamic digital tools. Focused on performance, aesthetics, and crafting clean, scalable code.';
-      introEl.innerHTML = parseRichText(introVal);
+      introEl.innerHTML = hasIntro ? parseRichText(cfg.intro.trim()) : '';
     }
 
     // 9. Document Title & SEO meta
@@ -1570,19 +1574,23 @@
     }
 
     var bioEl = document.querySelector('.bio');
-    if (bioEl && CONFIG.site_desc) {
-      bioEl.innerHTML = parseRichText(CONFIG.site_desc);
+    if (bioEl) {
+      if (CONFIG.site_desc && typeof CONFIG.site_desc === 'string' && CONFIG.site_desc.trim()) {
+        bioEl.innerHTML = parseRichText(CONFIG.site_desc.trim());
+      } else {
+        bioEl.innerHTML = '';
+      }
     }
 
     var introRow = document.getElementById('rail-row-intro');
-    if (introRow && CONFIG.intro_enabled === false) {
-      introRow.style.display = 'none';
+    var hasIntro = !!(CONFIG.intro && typeof CONFIG.intro === 'string' && CONFIG.intro.trim());
+    if (introRow) {
+      introRow.style.display = (CONFIG.intro_enabled !== false && hasIntro) ? '' : 'none';
     }
 
     var introEl = document.getElementById('intro-text');
     if (introEl) {
-      var introVal = (CONFIG.intro && CONFIG.intro.trim()) ? CONFIG.intro : 'Passionate developer specializing in building modern web applications, clean user interfaces, and dynamic digital tools. Focused on performance, aesthetics, and crafting clean, scalable code.';
-      introEl.innerHTML = parseRichText(introVal);
+      introEl.innerHTML = hasIntro ? parseRichText(CONFIG.intro.trim()) : '';
     }
 
     /* Apply skills */

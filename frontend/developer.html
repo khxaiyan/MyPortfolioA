@@ -225,18 +225,19 @@
 
     /* Railway section reorder buttons */
     .rail-order-btns {
-      display: flex;
-      flex-direction: column;
-      gap: 1px;
+      display: inline-flex;
+      flex-direction: row;
+      align-items: center;
+      gap: 3px;
       flex-shrink: 0;
     }
 
     .rail-order-btn {
-      display: flex;
+      display: inline-flex;
       align-items: center;
       justify-content: center;
-      width: 20px;
-      height: 16px;
+      width: 18px;
+      height: 18px;
       background: var(--surface-hover, rgba(255, 255, 255, 0.04));
       border: 1px solid var(--line, rgba(255, 255, 255, 0.08));
       border-radius: 4px;
@@ -447,26 +448,35 @@
       position: relative;
     }
 
-    @media (max-width: 480px) {
+    @media (max-width: 600px) {
       .avatar-modal-backdrop {
         padding: 8px;
         align-items: center;
       }
       .avatar-modal-card {
-        padding: 16px 14px;
+        padding: 14px 12px;
         max-height: calc(100vh - 16px);
         margin: auto 0;
+        width: 100%;
       }
       .avatar-canvas-wrapper {
-        min-height: 170px !important;
-        padding: 8px !important;
+        min-height: unset !important;
+        padding: 4px !important;
+        width: 100% !important;
+        box-sizing: border-box !important;
       }
       #avatar-color-canvas {
-        max-height: 200px !important;
+        width: 100% !important;
+        max-width: 100% !important;
+        height: auto !important;
+        max-height: none !important;
+        aspect-ratio: 1 / 1 !important;
+        border-radius: 10px !important;
+        display: block !important;
       }
       .avatar-palette-swatch {
-        width: 34px !important;
-        height: 34px !important;
+        width: 32px !important;
+        height: 32px !important;
       }
       #btn-apply-avatar-color {
         padding: 8px 18px !important;
@@ -1723,21 +1733,20 @@
       <div class="cust-section rail-orderable" data-section-key="intro">
         <div
           style="display:flex; align-items:center; justify-content:space-between; margin-bottom:8px; flex-wrap:wrap; gap:8px;">
-          <div style="display:flex; align-items:center; gap:6px;">
-            <div class="rail-order-btns">
-              <button type="button" class="rail-order-btn" data-dir="up" title="Move up">&#8679;</button>
-              <button type="button" class="rail-order-btn" data-dir="down" title="Move down">&#8681;</button>
-            </div>
+          <div style="display:flex; align-items:center; gap:8px;">
             <div id="cust-intro-toggle" class="accordion-eyebrow-toggle" role="button" tabindex="0"
               aria-expanded="false" aria-controls="cust-intro-card"
               style="display:inline-flex; align-items:center; gap:7px; cursor:pointer; user-select:none;">
-              <p class="eyebrow" style="margin:0; cursor:pointer; color:var(--ink-dim); transition:color 0.15s;">//
-                intro</p>
+              <p class="eyebrow" style="margin:0; cursor:pointer; color:var(--ink-dim); transition:color 0.15s;">// intro</p>
               <svg id="cust-intro-chevron" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor"
                 stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"
                 style="color:var(--ink-faint); transition:transform 0.22s cubic-bezier(0.4, 0, 0.2, 1), color 0.15s; transform:rotate(-90deg);">
                 <path d="m6 9 6 6 6-6" />
               </svg>
+            </div>
+            <div class="rail-order-btns" title="Reorder section on timeline">
+              <button type="button" class="rail-order-btn" data-dir="up" title="Move up">&#8679;</button>
+              <button type="button" class="rail-order-btn" data-dir="down" title="Move down">&#8681;</button>
             </div>
           </div>
           <label class="switch-label" title="Toggle visibility of intro section on the railway line"
@@ -1777,21 +1786,20 @@
       <div class="cust-section rail-orderable" data-section-key="skills">
         <div
           style="display:flex; align-items:center; justify-content:space-between; margin-bottom:8px; flex-wrap:wrap; gap:8px;">
-          <div style="display:flex; align-items:center; gap:6px;">
-            <div class="rail-order-btns">
-              <button type="button" class="rail-order-btn" data-dir="up" title="Move up">&#8679;</button>
-              <button type="button" class="rail-order-btn" data-dir="down" title="Move down">&#8681;</button>
-            </div>
+          <div style="display:flex; align-items:center; gap:8px;">
             <div id="cust-skills-toggle" class="accordion-eyebrow-toggle" role="button" tabindex="0"
               aria-expanded="false" aria-controls="cust-skills-card"
               style="display:inline-flex; align-items:center; gap:7px; cursor:pointer; user-select:none;">
-              <p class="eyebrow" style="margin:0; cursor:pointer; color:var(--ink-dim); transition:color 0.15s;">//
-                skills</p>
+              <p class="eyebrow" style="margin:0; cursor:pointer; color:var(--ink-dim); transition:color 0.15s;">// skills</p>
               <svg id="cust-skills-chevron" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor"
                 stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"
                 style="color:var(--ink-faint); transition:transform 0.22s cubic-bezier(0.4, 0, 0.2, 1), color 0.15s; transform:rotate(-90deg);">
                 <path d="m6 9 6 6 6-6" />
               </svg>
+            </div>
+            <div class="rail-order-btns" title="Reorder section on timeline">
+              <button type="button" class="rail-order-btn" data-dir="up" title="Move up">&#8679;</button>
+              <button type="button" class="rail-order-btn" data-dir="down" title="Move down">&#8681;</button>
             </div>
           </div>
           <label class="switch-label" title="Toggle visibility of skills section on the railway line"
@@ -1851,21 +1859,20 @@
       <div class="cust-section rail-orderable" data-section-key="qualifications">
         <div
           style="display:flex; align-items:center; justify-content:space-between; margin-bottom:8px; flex-wrap:wrap; gap:8px;">
-          <div style="display:flex; align-items:center; gap:6px;">
-            <div class="rail-order-btns">
-              <button type="button" class="rail-order-btn" data-dir="up" title="Move up">&#8679;</button>
-              <button type="button" class="rail-order-btn" data-dir="down" title="Move down">&#8681;</button>
-            </div>
+          <div style="display:flex; align-items:center; gap:8px;">
             <div id="cust-qualifications-toggle" class="accordion-eyebrow-toggle" role="button" tabindex="0"
               aria-expanded="false" aria-controls="cust-qualifications-card"
               style="display:inline-flex; align-items:center; gap:7px; cursor:pointer; user-select:none;">
-              <p class="eyebrow" style="margin:0; cursor:pointer; color:var(--ink-dim); transition:color 0.15s;">//
-                qualifications</p>
+              <p class="eyebrow" style="margin:0; cursor:pointer; color:var(--ink-dim); transition:color 0.15s;">// qualifications</p>
               <svg id="cust-qualifications-chevron" width="13" height="13" viewBox="0 0 24 24" fill="none"
                 stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"
                 style="color:var(--ink-faint); transition:transform 0.22s cubic-bezier(0.4, 0, 0.2, 1), color 0.15s; transform:rotate(-90deg);">
                 <path d="m6 9 6 6 6-6" />
               </svg>
+            </div>
+            <div class="rail-order-btns" title="Reorder section on timeline">
+              <button type="button" class="rail-order-btn" data-dir="up" title="Move up">&#8679;</button>
+              <button type="button" class="rail-order-btn" data-dir="down" title="Move down">&#8681;</button>
             </div>
           </div>
           <label class="switch-label" title="Toggle visibility of qualifications section on the railway line"
@@ -1898,21 +1905,20 @@
       <div class="cust-section rail-orderable" data-section-key="projects">
         <div
           style="display:flex; align-items:center; justify-content:space-between; margin-bottom:8px; flex-wrap:wrap; gap:8px;">
-          <div style="display:flex; align-items:center; gap:6px;">
-            <div class="rail-order-btns">
-              <button type="button" class="rail-order-btn" data-dir="up" title="Move up">&#8679;</button>
-              <button type="button" class="rail-order-btn" data-dir="down" title="Move down">&#8681;</button>
-            </div>
+          <div style="display:flex; align-items:center; gap:8px;">
             <div id="cust-projects-toggle" class="accordion-eyebrow-toggle" role="button" tabindex="0"
               aria-expanded="false" aria-controls="cust-projects-card"
               style="display:inline-flex; align-items:center; gap:7px; cursor:pointer; user-select:none;">
-              <p class="eyebrow" style="margin:0; cursor:pointer; color:var(--ink-dim); transition:color 0.15s;">//
-                projects</p>
+              <p class="eyebrow" style="margin:0; cursor:pointer; color:var(--ink-dim); transition:color 0.15s;">// projects</p>
               <svg id="cust-projects-chevron" width="13" height="13" viewBox="0 0 24 24" fill="none"
                 stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"
                 style="color:var(--ink-faint); transition:transform 0.22s cubic-bezier(0.4, 0, 0.2, 1), color 0.15s; transform:rotate(-90deg);">
                 <path d="m6 9 6 6 6-6" />
               </svg>
+            </div>
+            <div class="rail-order-btns" title="Reorder section on timeline">
+              <button type="button" class="rail-order-btn" data-dir="up" title="Move up">&#8679;</button>
+              <button type="button" class="rail-order-btn" data-dir="down" title="Move down">&#8681;</button>
             </div>
           </div>
           <div style="display:inline-flex; align-items:center; gap:10px;">
@@ -1958,21 +1964,20 @@
       <div class="cust-section rail-orderable" data-section-key="devices">
         <div
           style="display:flex; align-items:center; justify-content:space-between; margin-bottom:8px; flex-wrap:wrap; gap:8px;">
-          <div style="display:flex; align-items:center; gap:6px;">
-            <div class="rail-order-btns">
-              <button type="button" class="rail-order-btn" data-dir="up" title="Move up">&#8679;</button>
-              <button type="button" class="rail-order-btn" data-dir="down" title="Move down">&#8681;</button>
-            </div>
+          <div style="display:flex; align-items:center; gap:8px;">
             <div id="cust-devices-toggle" class="accordion-eyebrow-toggle" role="button" tabindex="0"
               aria-expanded="false" aria-controls="cust-devices-card"
               style="display:inline-flex; align-items:center; gap:7px; cursor:pointer; user-select:none;">
-              <p class="eyebrow" style="margin:0; cursor:pointer; color:var(--ink-dim); transition:color 0.15s;">//
-                devices</p>
+              <p class="eyebrow" style="margin:0; cursor:pointer; color:var(--ink-dim); transition:color 0.15s;">// devices</p>
               <svg id="cust-devices-chevron" width="13" height="13" viewBox="0 0 24 24" fill="none"
                 stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"
                 style="color:var(--ink-faint); transition:transform 0.22s cubic-bezier(0.4, 0, 0.2, 1), color 0.15s; transform:rotate(-90deg);">
                 <path d="m6 9 6 6 6-6" />
               </svg>
+            </div>
+            <div class="rail-order-btns" title="Reorder section on timeline">
+              <button type="button" class="rail-order-btn" data-dir="up" title="Move up">&#8679;</button>
+              <button type="button" class="rail-order-btn" data-dir="down" title="Move down">&#8681;</button>
             </div>
           </div>
           <div style="display:inline-flex; align-items:center; gap:10px;">
@@ -2003,21 +2008,20 @@
       <div class="cust-section rail-orderable" data-section-key="reach">
         <div
           style="display:flex; align-items:center; justify-content:space-between; margin-bottom:8px; flex-wrap:wrap; gap:8px;">
-          <div style="display:flex; align-items:center; gap:6px;">
-            <div class="rail-order-btns">
-              <button type="button" class="rail-order-btn" data-dir="up" title="Move up">&#8679;</button>
-              <button type="button" class="rail-order-btn" data-dir="down" title="Move down">&#8681;</button>
-            </div>
+          <div style="display:flex; align-items:center; gap:8px;">
             <div id="cust-reach-toggle" class="accordion-eyebrow-toggle" role="button" tabindex="0"
               aria-expanded="false" aria-controls="cust-reach-card"
               style="display:inline-flex; align-items:center; gap:7px; cursor:pointer; user-select:none;">
-              <p class="eyebrow" style="margin:0; cursor:pointer; color:var(--ink-dim); transition:color 0.15s;">//
-                reach</p>
+              <p class="eyebrow" style="margin:0; cursor:pointer; color:var(--ink-dim); transition:color 0.15s;">// reach</p>
               <svg id="cust-reach-chevron" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor"
                 stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"
                 style="color:var(--ink-faint); transition:transform 0.22s cubic-bezier(0.4, 0, 0.2, 1), color 0.15s; transform:rotate(-90deg);">
                 <path d="m6 9 6 6 6-6" />
               </svg>
+            </div>
+            <div class="rail-order-btns" title="Reorder section on timeline">
+              <button type="button" class="rail-order-btn" data-dir="up" title="Move up">&#8679;</button>
+              <button type="button" class="rail-order-btn" data-dir="down" title="Move down">&#8681;</button>
             </div>
           </div>
           <label class="switch-label" title="Toggle visibility of reach section on the railway line"
@@ -2510,22 +2514,20 @@
       <div class="cust-section rail-orderable" data-section-key="message">
         <div
           style="display:flex; align-items:center; justify-content:space-between; margin-bottom:8px; flex-wrap:wrap; gap:8px;">
-          <div style="display:flex; align-items:center; gap:6px;">
-            <div class="rail-order-btns">
-              <button type="button" class="rail-order-btn" data-dir="up" title="Move up">&#8679;</button>
-              <button type="button" class="rail-order-btn" data-dir="down" title="Move down">&#8681;</button>
-            </div>
+          <div style="display:flex; align-items:center; gap:8px;">
             <div id="cust-msg-toggle" class="accordion-eyebrow-toggle" role="button" tabindex="0" aria-expanded="false"
               aria-controls="cust-msg-card"
               style="display:inline-flex; align-items:center; gap:7px; cursor:pointer; user-select:none;">
-              <p class="eyebrow" style="margin:0; cursor:pointer; color:var(--ink-dim); transition:color 0.15s;">//
-                message
-                &amp; security</p>
+              <p class="eyebrow" style="margin:0; cursor:pointer; color:var(--ink-dim); transition:color 0.15s;">// message &amp; security</p>
               <svg id="cust-msg-chevron" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor"
                 stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"
                 style="color:var(--ink-faint); transition:transform 0.22s cubic-bezier(0.4, 0, 0.2, 1), color 0.15s; transform:rotate(-90deg);">
                 <path d="m6 9 6 6 6-6" />
               </svg>
+            </div>
+            <div class="rail-order-btns" title="Reorder section on timeline">
+              <button type="button" class="rail-order-btn" data-dir="up" title="Move up">&#8679;</button>
+              <button type="button" class="rail-order-btn" data-dir="down" title="Move down">&#8681;</button>
             </div>
           </div>
           <label class="switch-label" title="Toggle visibility of message section on the railway line"
@@ -2656,9 +2658,9 @@
 
       <!-- Canvas / Eyedropper Interactive Area -->
       <div class="avatar-canvas-wrapper"
-        style="position:relative; display:flex; justify-content:center; align-items:center; background:var(--bg); border:1px solid var(--line); border-radius:var(--radius-sm); padding:14px; min-height:200px; touch-action:none; -webkit-user-select:none; user-select:none;">
+        style="position:relative; display:flex; justify-content:center; align-items:center; background:var(--bg); border:1px solid var(--line); border-radius:var(--radius-sm); padding:10px; width:100%; box-sizing:border-box; touch-action:none; -webkit-user-select:none; user-select:none;">
         <canvas id="avatar-color-canvas"
-          style="cursor:crosshair; max-width:100%; max-height:260px; border-radius:12px; box-shadow:0 8px 24px rgba(0,0,0,0.5); object-fit:contain; touch-action:none; -webkit-touch-callout:none;"></canvas>
+          style="cursor:crosshair; width:100%; max-width:360px; aspect-ratio:1/1; border-radius:12px; box-shadow:0 8px 24px rgba(0,0,0,0.5); object-fit:cover; display:block; touch-action:none; -webkit-touch-callout:none;"></canvas>
 
         <!-- Hover Loupe / Magnifier Circle -->
         <div id="avatar-magnifier"
@@ -4054,25 +4056,30 @@
         img.crossOrigin = 'anonymous';
         img.onload = function () {
           var ctx = avatarCanvas.getContext('2d', { willReadFrequently: true });
-          var maxDim = 260;
-          var w = img.naturalWidth || img.width || maxDim;
-          var h = img.naturalHeight || img.height || maxDim;
-          var scale = Math.min(maxDim / w, maxDim / h, 1);
-          avatarCanvas.width = Math.round(w * scale);
-          avatarCanvas.height = Math.round(h * scale);
-          ctx.clearRect(0, 0, avatarCanvas.width, avatarCanvas.height);
-          ctx.drawImage(img, 0, 0, avatarCanvas.width, avatarCanvas.height);
+          var targetSize = 512;
+          var w = img.naturalWidth || img.width || targetSize;
+          var h = img.naturalHeight || img.height || targetSize;
+          avatarCanvas.width = targetSize;
+          avatarCanvas.height = targetSize;
+          ctx.clearRect(0, 0, targetSize, targetSize);
 
-          extractAvatarPalette(ctx, avatarCanvas.width, avatarCanvas.height);
+          // Center-crop to 1:1 square so the photo fills the 1x1 canvas without left/right letterbox space
+          var minSide = Math.min(w, h);
+          var sx = (w - minSide) / 2;
+          var sy = (h - minSide) / 2;
+          ctx.drawImage(img, sx, sy, minSide, minSide, 0, 0, targetSize, targetSize);
+
+          extractAvatarPalette(ctx, targetSize, targetSize);
         };
         img.onerror = function () {
           console.warn('Avatar crossOrigin load fallback');
           var ctx = avatarCanvas.getContext('2d');
-          avatarCanvas.width = 240;
-          avatarCanvas.height = 240;
+          var targetSize = 512;
+          avatarCanvas.width = targetSize;
+          avatarCanvas.height = targetSize;
           ctx.fillStyle = currentAccentColor || '#ff2a5f';
           ctx.beginPath();
-          ctx.arc(120, 120, 100, 0, Math.PI * 2);
+          ctx.arc(targetSize / 2, targetSize / 2, targetSize * 0.42, 0, Math.PI * 2);
           ctx.fill();
         };
         img.src = avatarUrl;
@@ -6324,6 +6331,7 @@
               statusEl.style.display = 'inline';
               statusEl.style.color = '#10b981';
               statusEl.textContent = '✓ ' + targetProjects.length + ' projects loaded';
+            }
             if (!isAuto) {
               showCustomPopup({
                 type: 'success',
