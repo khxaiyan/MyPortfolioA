@@ -22,7 +22,10 @@ const MIME_TYPES = {
   '.txt': 'text/plain; charset=utf-8',
   '.pdf': 'application/pdf',
   '.docx': 'application/vnd.openxmlformats-officedocument.wordprocessingml.document',
-  '.doc': 'application/msword'
+  '.doc': 'application/msword',
+  '.rtf': 'application/rtf',
+  '.md': 'text/markdown; charset=utf-8',
+  '.markdown': 'text/markdown; charset=utf-8'
 };
 
 // Load API handlers
@@ -141,10 +144,18 @@ const server = http.createServer(async (req, res) => {
   const ext = path.extname(filePath).toLowerCase();
   const contentType = MIME_TYPES[ext] || 'application/octet-stream';
 
-  res.writeHead(200, {
+  const responseHeaders = {
     'Content-Type': contentType,
-    'Cache-Control': ext === '.html' || ext === '.js' ? 'no-cache, must-revalidate' : 'public, max-age=3600'
-  });
+    'Cache-Control': ext === '.html' || ext === '.js' || ext === '.json' ? 'no-store, no-cache, must-revalidate, max-age=0' : 'public, max-age=3600',
+    'Pragma': 'no-cache',
+    'Expires': '0'
+  };
+
+  if (['.pdf', '.png', '.jpg', '.jpeg', '.webp', '.txt', '.html', '.htm', '.md', '.markdown'].includes(ext)) {
+    responseHeaders['Content-Disposition'] = 'inline';
+  }
+
+  res.writeHead(200, responseHeaders);
 
   fs.createReadStream(filePath).pipe(res);
 });

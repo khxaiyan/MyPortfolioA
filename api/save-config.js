@@ -46,7 +46,34 @@ module.exports = async function handler(req, res) {
       newConfig.favicon_url = 'https://res.cloudinary.com/dqxccz5bn/image/upload/favicon_jzygcw.png';
     }
 
-    const formattedConfig = `if (typeof window !== 'undefined') {\n  window.CONFIG = Object.assign(window.CONFIG || {}, ${JSON.stringify(newConfig, null, 2)});\n}\nvar CONFIG = (typeof window !== 'undefined' && window.CONFIG) ? window.CONFIG : ${JSON.stringify(newConfig, null, 2)};\n`;
+
+    try {
+      const configPath = path.join(__dirname, '..', 'frontend', 'config.js');
+      if (fs.existsSync(configPath)) {
+        const coreKeys = [
+          'cf_analytics',
+          'web3forms_access_key',
+          'hcaptcha_sitekey',
+          'cloudinary_cloud_name',
+          'cloudinary_upload_preset',
+          'clerk_publishable_key',
+          'clerk_frontend_api',
+          'authorized_users',
+          'cv_url',
+          'cv_enabled',
+          'cv_label',
+          'cv_action'
+        ];
+        const strippedConfig = {};
+        coreKeys.forEach(k => {
+          if (newConfig[k] !== undefined) {
+            strippedConfig[k] = newConfig[k];
+          }
+        });
+        const formattedConfig = `var CONFIG = ${JSON.stringify(strippedConfig, null, 2)};\nif (typeof window !== 'undefined') {\n  window.CONFIG = Object.assign(window.CONFIG || {}, CONFIG);\n}\n`;
+        fs.writeFileSync(configPath, formattedConfig, 'utf-8');
+      }
+    } catch (_) {}
 
     // 1. Save to MongoDB
     let savedToMongo = false;

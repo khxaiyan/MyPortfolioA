@@ -36,7 +36,7 @@ module.exports = async function handler(req, res) {
     const configPath = path.join(process.cwd(), 'frontend', 'config.js');
     if (fs.existsSync(configPath)) {
       const fileContent = fs.readFileSync(configPath, 'utf8');
-      const match = fileContent.match(/const\s+CONFIG\s*=\s*(\{[\s\S]*?\});/);
+      const match = fileContent.match(/(?:const|var|let)?\s*CONFIG\s*=\s*(\{[\s\S]*?\});/);
       if (match) {
         const parsed = eval('(' + match[1] + ')');
         return res.status(200).json({

@@ -1,6 +1,128 @@
 (function () {
   'use strict';
 
+  /* ── Universal Premium Glassmorphism Popup / Dialog System ── */
+  function showCustomPopup(opts) {
+    if (typeof opts === 'string') {
+      opts = { message: opts };
+    }
+    opts = opts || {};
+    var backdrop = document.getElementById('custom-app-popup');
+    if (!backdrop) {
+      console.warn('[Popup]', opts.message || opts.title);
+      return;
+    }
+
+    var tagEl = document.getElementById('app-popup-tag');
+    var iconEl = document.getElementById('app-popup-icon');
+    var titleEl = document.getElementById('app-popup-title');
+    var bodyEl = document.getElementById('app-popup-body');
+    var actionsEl = document.getElementById('app-popup-actions');
+    var closeBtn = document.getElementById('app-popup-close-btn');
+
+    var type = opts.type || 'info';
+    if (tagEl) {
+      tagEl.textContent = opts.tag || ('// ' + (type === 'document' ? 'CV SYSTEM' : type.toUpperCase()));
+      if (type === 'error' || type === 'warning' || type === 'document') {
+        tagEl.style.color = 'var(--red, #ff2a5f)';
+        tagEl.style.borderColor = 'var(--border-accent, rgba(255, 42, 95, 0.35))';
+        tagEl.style.background = 'var(--red-dim, rgba(255, 42, 95, 0.12))';
+      } else if (type === 'success') {
+        tagEl.style.color = '#10b981';
+        tagEl.style.borderColor = 'rgba(16, 185, 129, 0.35)';
+        tagEl.style.background = 'rgba(16, 185, 129, 0.12)';
+      }
+    }
+
+    if (titleEl) titleEl.textContent = opts.title || (type === 'document' ? 'No Document Uploaded' : 'Notice');
+    if (bodyEl) bodyEl.innerHTML = opts.message || '';
+
+    // Icon generation
+    var iconSvg = '';
+    if (type === 'document') {
+      iconSvg = '<svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/><polyline points="10 9 9 9 8 9"/></svg>';
+    } else if (type === 'warning' || type === 'error') {
+      iconSvg = '<svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m21.73 18-8-14a2 2 0 0 0-3.48 0l-8 14A2 2 0 0 0 4 21h16a2 2 0 0 0 1.73-3Z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>';
+    } else if (type === 'success') {
+      iconSvg = '<svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>';
+    } else {
+      iconSvg = '<svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="12" y1="16" x2="12" y2="12"/><line x1="12" y1="8" x2="12.01" y2="8"/></svg>';
+    }
+    if (iconEl) {
+      iconEl.innerHTML = opts.customIcon || iconSvg;
+      if (type === 'success') {
+        iconEl.style.color = '#10b981';
+        iconEl.style.borderColor = 'rgba(16, 185, 129, 0.4)';
+        iconEl.style.background = 'rgba(16, 185, 129, 0.12)';
+        iconEl.style.boxShadow = '0 0 24px rgba(16, 185, 129, 0.2)';
+      } else {
+        iconEl.style.color = 'var(--red, #ff2a5f)';
+        iconEl.style.borderColor = 'var(--border-accent, rgba(255, 42, 95, 0.35))';
+        iconEl.style.background = 'var(--red-dim, rgba(255, 42, 95, 0.12))';
+        iconEl.style.boxShadow = '0 0 24px var(--border-accent-glow, rgba(255, 42, 95, 0.2))';
+      }
+    }
+
+    function closePopup() {
+      backdrop.classList.remove('active');
+      setTimeout(function () {
+        backdrop.style.display = 'none';
+      }, 220);
+      document.removeEventListener('keydown', onKey);
+    }
+
+    function onKey(e) {
+      if (e.key === 'Escape') closePopup();
+    }
+    document.addEventListener('keydown', onKey);
+
+    if (closeBtn) closeBtn.onclick = closePopup;
+    backdrop.onclick = function (e) {
+      if (e.target === backdrop) closePopup();
+    };
+
+    if (actionsEl) {
+      actionsEl.innerHTML = '';
+      if (Array.isArray(opts.buttons) && opts.buttons.length > 0) {
+        opts.buttons.forEach(function (btn) {
+          var b = document.createElement('button');
+          b.type = 'button';
+          b.className = 'app-popup-btn ' + (btn.primary ? 'app-popup-btn-primary' : 'app-popup-btn-secondary');
+          b.innerHTML = btn.text;
+          b.onclick = function (e) {
+            closePopup();
+            if (typeof btn.onClick === 'function') btn.onClick(e);
+          };
+          actionsEl.appendChild(b);
+        });
+      } else {
+        var okBtn = document.createElement('button');
+        okBtn.type = 'button';
+        okBtn.className = 'app-popup-btn app-popup-btn-primary';
+        okBtn.textContent = opts.buttonText || 'Understood';
+        okBtn.onclick = function () {
+          closePopup();
+          if (typeof opts.onConfirm === 'function') opts.onConfirm();
+        };
+        actionsEl.appendChild(okBtn);
+      }
+    }
+
+    backdrop.style.display = 'flex';
+    void backdrop.offsetHeight; // force reflow for smooth transition
+    backdrop.classList.add('active');
+  }
+
+  // Intercept native browser alert
+  window.alert = function (msg) {
+    showCustomPopup({
+      title: 'Notice',
+      tag: '// NOTICE',
+      message: String(msg || ''),
+      type: 'info'
+    });
+  };
+
   /* ─── Theme & Accent Customization ─── */
   var root = document.documentElement;
   var aw = document.getElementById('avatar-wrap');
@@ -246,6 +368,300 @@
   }
 
 
+  /* ─── CV / Document In-Page Preview Modal Logic ─── */
+  function fetchDocumentText(targetUrl) {
+    if (targetUrl.startsWith('data:')) {
+      try {
+        var commaIdx = targetUrl.indexOf(',');
+        var meta = targetUrl.slice(0, commaIdx);
+        var payload = targetUrl.slice(commaIdx + 1);
+        if (meta.includes('base64')) {
+          var binary = atob(payload);
+          var bytes = new Uint8Array(binary.length);
+          for (var i = 0; i < binary.length; i++) bytes[i] = binary.charCodeAt(i);
+          var decoded = new TextDecoder('utf-8').decode(bytes);
+          return Promise.resolve(decoded);
+        }
+        return Promise.resolve(decodeURIComponent(payload));
+      } catch (e) {
+        return Promise.reject(e);
+      }
+    }
+    return fetch(targetUrl).then(function (res) {
+      if (!res.ok) throw new Error('Network error: ' + res.status);
+      return res.text();
+    });
+  }
+
+  function renderMarkdownDocument(raw) {
+    if (!raw) return '<p style="color:var(--ink-dim);">Empty document</p>';
+    var escaped = String(raw)
+      .replace(/&/g, '&amp;')
+      .replace(/</g, '&lt;')
+      .replace(/>/g, '&gt;')
+      .replace(/"/g, '&quot;');
+
+    // Code blocks: ```lang ... ```
+    escaped = escaped.replace(/```([\w-]*)\n([\s\S]*?)```/g, function (m, lang, code) {
+      return '<pre style="background:var(--bg); border:1px solid var(--line); border-radius:8px; padding:16px; margin:16px 0; overflow-x:auto; font-family:var(--font-mono); font-size:0.84rem; color:var(--ink);"><code>' + code.trim() + '</code></pre>';
+    });
+
+    var lines = escaped.split('\n');
+    var out = [];
+    var inList = false;
+
+    for (var i = 0; i < lines.length; i++) {
+      var line = lines[i];
+      var trimmed = line.trim();
+
+      if (/^(\*\*\*|---|___)$/.test(trimmed)) {
+        if (inList) { out.push('</ul>'); inList = false; }
+        out.push('<hr style="border:none; border-top:1px solid var(--line); margin:20px 0;">');
+        continue;
+      }
+      if (/^###\s+/.test(trimmed)) {
+        if (inList) { out.push('</ul>'); inList = false; }
+        out.push('<h3 style="font-family:var(--font-display); font-size:1.15rem; font-weight:700; color:var(--ink); margin:18px 0 8px 0;">' + trimmed.replace(/^###\s+/, '') + '</h3>');
+        continue;
+      }
+      if (/^##\s+/.test(trimmed)) {
+        if (inList) { out.push('</ul>'); inList = false; }
+        out.push('<h2 style="font-family:var(--font-display); font-size:1.35rem; font-weight:700; color:var(--ink); margin:24px 0 10px 0; padding-bottom:6px; border-bottom:1px solid var(--line);">' + trimmed.replace(/^##\s+/, '') + '</h2>');
+        continue;
+      }
+      if (/^#\s+/.test(trimmed)) {
+        if (inList) { out.push('</ul>'); inList = false; }
+        out.push('<h1 style="font-family:var(--font-display); font-size:1.6rem; font-weight:800; color:var(--ink); margin:22px 0 12px 0;">' + trimmed.replace(/^#\s+/, '') + '</h1>');
+        continue;
+      }
+      if (/^&gt;\s?/.test(trimmed)) {
+        if (inList) { out.push('</ul>'); inList = false; }
+        out.push('<blockquote style="border-left:3px solid var(--red); padding:8px 16px; margin:12px 0; background:var(--red-dim); color:var(--ink); font-style:italic; border-radius:0 6px 6px 0;">' + trimmed.replace(/^&gt;\s?/, '') + '</blockquote>');
+        continue;
+      }
+      if (/^[-*]\s+/.test(trimmed)) {
+        if (!inList) { out.push('<ul style="margin:8px 0 12px 22px; padding:0; display:flex; flex-direction:column; gap:6px;">'); inList = true; }
+        out.push('<li style="color:var(--ink);">' + trimmed.replace(/^[-*]\s+/, '') + '</li>');
+        continue;
+      } else if (inList) {
+        out.push('</ul>');
+        inList = false;
+      }
+      if (!trimmed) continue;
+
+      out.push('<p style="margin:8px 0; color:var(--ink); line-height:1.7;">' + trimmed + '</p>');
+    }
+    if (inList) out.push('</ul>');
+
+    var html = out.join('\n');
+    html = html.replace(/\[([^\]]+)\]\((https?:\/\/[^\s\)]+)\)/g, '<a href="$2" target="_blank" rel="noopener noreferrer" style="color:var(--red); text-decoration:underline;">$1</a>');
+    html = html.replace(/\{([^}]+)\}/g, '<span class="glyph-5">$1</span>');
+    html = html.replace(/\*\*([^*]+)\*\*/g, '<strong>$1</strong>');
+    html = html.replace(/__([^_]+)__/g, '<u>$1</u>');
+    html = html.replace(/(?:^|\s)\*([^*\s][^*]*[^*\s]|[^*])\*(?=\s|$|[.,!?:;])/g, ' <em>$1</em>');
+    html = html.replace(/(?:^|\s)_([^_\s][^_]*[^_\s]|[^_])_(?=\s|$|[.,!?:;])/g, ' <em>$1</em>');
+    html = html.replace(/`([^`]+)`/g, '<code style="background:var(--surface-hover); border:1px solid var(--line); border-radius:4px; padding:2px 6px; font-family:var(--font-mono); font-size:0.85em; color:var(--red);">$1</code>');
+
+    return html;
+  }
+
+  function openCvPreviewModal(url, label) {
+    var modal = document.getElementById('cv-preview-modal');
+    if (!modal) {
+      window.open(url, '_blank', 'noopener,noreferrer');
+      return;
+    }
+
+    var titleEl = document.getElementById('cv-modal-title');
+    var filenameEl = document.getElementById('cv-modal-filename');
+    var downloadBtn = document.getElementById('cv-modal-download-btn');
+    var closeBtn = document.getElementById('cv-modal-close-btn');
+    var loadingEl = document.getElementById('cv-modal-loading');
+    var canvasContainer = document.getElementById('cv-pdf-canvas-container');
+    var iframeEl = document.getElementById('cv-modal-iframe');
+    var imgEl = document.getElementById('cv-modal-img');
+    var textContainer = document.getElementById('cv-modal-text-container');
+
+    var cleanPath = (url || 'document').split('?')[0].split('#')[0];
+    var filename = cleanPath.split('/').pop() || (label || 'CV');
+    var plainLabel = label ? label.replace(/\{([^}]+)\}/g, '$1') : 'CV';
+
+    if (titleEl) titleEl.textContent = '// preview - ' + plainLabel;
+    if (filenameEl) filenameEl.textContent = filename;
+    if (downloadBtn) {
+      downloadBtn.href = url;
+      downloadBtn.setAttribute('download', filename);
+    }
+
+    // Reset viewer elements
+    if (loadingEl) loadingEl.style.display = 'flex';
+    if (canvasContainer) {
+      canvasContainer.innerHTML = '';
+      canvasContainer.style.display = 'none';
+    }
+    if (iframeEl) {
+      iframeEl.src = '';
+      iframeEl.style.display = 'none';
+    }
+    if (imgEl) {
+      imgEl.src = '';
+      imgEl.style.display = 'none';
+    }
+    if (textContainer) {
+      textContainer.innerHTML = '';
+      textContainer.style.display = 'none';
+    }
+
+    modal.classList.add('open');
+    document.body.style.overflow = 'hidden';
+
+    function closeModal() {
+      modal.classList.remove('open');
+      document.body.style.overflow = '';
+      if (iframeEl) iframeEl.src = '';
+    }
+
+    if (closeBtn) closeBtn.onclick = closeModal;
+    modal.onclick = function (e) {
+      if (e.target === modal) closeModal();
+    };
+    function escHandler(e) {
+      if (e.key === 'Escape') {
+        closeModal();
+        window.removeEventListener('keydown', escHandler);
+      }
+    }
+    window.addEventListener('keydown', escHandler);
+
+    var lowerPath = cleanPath.toLowerCase();
+    var isPdf = lowerPath.endsWith('.pdf') || (url && url.startsWith('data:application/pdf'));
+    var isImg = /\.(png|jpe?g|webp|gif|svg|bmp|ico)$/i.test(lowerPath) || (url && url.startsWith('data:image/'));
+    var isMarkdown = /\.(md|markdown)$/i.test(lowerPath) || (url && url.startsWith('data:text/markdown'));
+    var isPlainText = /\.(txt|rtf|json|csv|log)$/i.test(lowerPath) || (url && (url.startsWith('data:text/plain') || url.startsWith('data:text/rtf')));
+    var isHtml = /\.(html?|htm)$/i.test(lowerPath) || (url && url.startsWith('data:text/html'));
+    var isDocx = /\.(docx?|doc)$/i.test(lowerPath) || (url && (url.startsWith('data:application/vnd.openxmlformats') || url.startsWith('data:application/msword')));
+
+    if (isImg && imgEl) {
+      imgEl.src = url;
+      imgEl.style.display = 'block';
+      if (loadingEl) loadingEl.style.display = 'none';
+    } else if (isPdf) {
+      if (window.pdfjsLib && canvasContainer) {
+        try {
+          pdfjsLib.GlobalWorkerOptions.workerSrc = 'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js';
+          var pdfSource = url;
+          if (typeof url === 'string' && url.startsWith('data:application/pdf;base64,')) {
+            try {
+              var rawB64 = url.split(',')[1];
+              var binStr = window.atob(rawB64);
+              var bLen = binStr.length;
+              var u8 = new Uint8Array(bLen);
+              for (var bi = 0; bi < bLen; bi++) {
+                u8[bi] = binStr.charCodeAt(bi);
+              }
+              pdfSource = { data: u8 };
+            } catch (b64Err) {
+              console.warn('Base64 decode error:', b64Err);
+              pdfSource = url;
+            }
+          }
+          var loadingTask = pdfjsLib.getDocument(pdfSource);
+          loadingTask.promise.then(function (pdf) {
+            canvasContainer.innerHTML = '';
+            canvasContainer.style.display = 'flex';
+            if (loadingEl) loadingEl.style.display = 'none';
+
+            for (var i = 1; i <= pdf.numPages; i++) {
+              (function (pageNum) {
+                pdf.getPage(pageNum).then(function (page) {
+                  var scale = 1.5;
+                  var viewport = page.getViewport({ scale: scale });
+                  var canvas = document.createElement('canvas');
+                  canvas.className = 'cv-pdf-page-canvas';
+                  canvas.style.maxWidth = '96%';
+                  canvas.style.height = 'auto';
+                  canvas.style.borderRadius = '4px';
+                  canvas.style.boxShadow = '0 8px 24px rgba(0,0,0,0.55)';
+                  canvas.style.background = '#ffffff';
+                  var ctx = canvas.getContext('2d');
+                  canvas.height = viewport.height;
+                  canvas.width = viewport.width;
+                  page.render({ canvasContext: ctx, viewport: viewport });
+                  canvasContainer.appendChild(canvas);
+                });
+              })(i);
+            }
+          }).catch(function (err) {
+            console.warn('[PDF.js] Canvas render failed, fallback to iframe:', err);
+            if (loadingEl) loadingEl.style.display = 'none';
+            if (iframeEl) {
+              iframeEl.src = (url.startsWith('data:') ? url : (url + '#toolbar=0'));
+              iframeEl.style.display = 'block';
+            }
+          });
+        } catch (err) {
+          if (loadingEl) loadingEl.style.display = 'none';
+          if (iframeEl) {
+            iframeEl.src = (url.startsWith('data:') ? url : (url + '#toolbar=0'));
+            iframeEl.style.display = 'block';
+          }
+        }
+      } else {
+        if (loadingEl) loadingEl.style.display = 'none';
+        if (iframeEl) {
+          iframeEl.src = (url.startsWith('data:') ? url : (url + '#toolbar=0'));
+          iframeEl.style.display = 'block';
+        }
+      }
+    } else if (isMarkdown && textContainer) {
+      fetchDocumentText(url).then(function (mdText) {
+        textContainer.innerHTML = renderMarkdownDocument(mdText);
+        textContainer.style.display = 'block';
+        if (loadingEl) loadingEl.style.display = 'none';
+      }).catch(function (err) {
+        textContainer.innerHTML = '<p style="color:var(--red);">Could not load markdown preview: ' + escapeHtml(err.message) + '</p>';
+        textContainer.style.display = 'block';
+        if (loadingEl) loadingEl.style.display = 'none';
+      });
+    } else if (isPlainText && textContainer) {
+      fetchDocumentText(url).then(function (plainText) {
+        textContainer.innerHTML = '<pre style="font-family:var(--font-mono); font-size:0.86rem; color:var(--ink); white-space:pre-wrap; background:var(--surface); padding:24px; border-radius:8px; border:1px solid var(--line); line-height:1.65; max-width:100%; overflow-x:auto;">' + escapeHtml(plainText) + '</pre>';
+        textContainer.style.display = 'block';
+        if (loadingEl) loadingEl.style.display = 'none';
+      }).catch(function (err) {
+        textContainer.innerHTML = '<p style="color:var(--red);">Could not load text preview: ' + escapeHtml(err.message) + '</p>';
+        textContainer.style.display = 'block';
+        if (loadingEl) loadingEl.style.display = 'none';
+      });
+    } else if (isHtml && iframeEl) {
+      if (url.startsWith('data:')) {
+        iframeEl.src = url;
+      } else {
+        iframeEl.src = url;
+      }
+      iframeEl.style.display = 'block';
+      if (loadingEl) loadingEl.style.display = 'none';
+    } else if (isDocx) {
+      if (url.startsWith('http://') || url.startsWith('https://')) {
+        // Embed via Microsoft Office Online Viewer
+        iframeEl.src = 'https://view.officeapps.live.com/op/embed.aspx?src=' + encodeURIComponent(url);
+        iframeEl.style.display = 'block';
+        if (loadingEl) loadingEl.style.display = 'none';
+      } else if (textContainer) {
+        textContainer.innerHTML = '<div style="text-align:center; padding:48px 24px; display:flex; flex-direction:column; align-items:center; gap:12px;"><div style="font-size:3.2rem; line-height:1;">📑</div><h4 style="font-family:var(--font-display); font-size:1.2rem; font-weight:700; color:var(--ink); margin:0;">' + escapeHtml(filename) + '</h4><p style="font-size:0.84rem; color:var(--ink-dim); margin:0; font-family:var(--font-mono);">Word Document Ready to View</p><div style="display:flex; gap:10px; margin-top:8px;"><a href="' + url + '" download="' + filename + '" class="toolbar-btn" style="padding:10px 22px; font-size:0.84rem; font-weight:600; background:var(--red-solid); color:#fff; border-radius:8px; display:inline-flex; align-items:center; gap:8px; text-decoration:none;"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4" /><polyline points="7 10 12 15 17 10" /><line x1="12" y1="15" x2="12" y2="3" /></svg><span>Download / Open Document</span></a></div></div>';
+        textContainer.style.display = 'block';
+        if (loadingEl) loadingEl.style.display = 'none';
+      }
+    } else {
+      // External link or other format
+      if (loadingEl) loadingEl.style.display = 'none';
+      if (iframeEl) {
+        iframeEl.src = url;
+        iframeEl.style.display = 'block';
+      }
+    }
+  }
+
   /* ─── Universal Live Configuration Hydration ─── */
   function applyFullConfig(cfg) {
     if (!cfg || typeof cfg !== 'object') return;
@@ -314,21 +730,56 @@
     // 7.5 CV Download Button (Supports .pdf, .docx, .doc, images, or online drive/notion links)
     var cvBtn = document.getElementById('cv-download-btn');
     if (cvBtn) {
-      if (cfg.cv_enabled === false) {
+      var cvTarget = (cfg.cv_url && typeof cfg.cv_url === 'string' && cfg.cv_url.trim()) ? cfg.cv_url.trim() : '';
+      var isCvEnabled = cfg.cv_enabled === true;
+      if (!isCvEnabled || !cvTarget) {
         cvBtn.style.display = 'none';
+        cvBtn.removeAttribute('href');
       } else {
         cvBtn.style.display = 'inline-flex';
-        var cvTarget = (cfg.cv_url && cfg.cv_url.trim()) ? cfg.cv_url.trim() : 'cv.pdf';
-        cvBtn.href = cvTarget;
+        var isDataUrl = cvTarget.startsWith('data:');
+        cvBtn.href = isDataUrl ? '#' : cvTarget;
+        var cvLabelText = (cfg.cv_label && cfg.cv_label.trim()) ? cfg.cv_label.trim() : 'CV';
+        var cvAction = (cfg.cv_action === 'download') ? 'download' : 'preview';
         var cleanPath = cvTarget.split('?')[0].split('#')[0];
-        var isExternalWeb = /^(https?:\/\/)/i.test(cvTarget) && !/\.(pdf|docx?|txt|png|jpe?g|webp)$/i.test(cleanPath);
-        if (isExternalWeb) {
-          cvBtn.removeAttribute('download');
-          cvBtn.title = 'Open CV / Resume';
+        var isExternalWeb = !isDataUrl && /^(https?:\/\/)/i.test(cvTarget) && !/\.(pdf|docx?|rtf|txt|md|markdown|html?|png|jpe?g|webp)$/i.test(cleanPath);
+
+        var PREVIEW_ICON_SVG = '<svg class="cv-icon" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" style="margin-right:5px; color:var(--red);"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8z" /><circle cx="12" cy="12" r="3" /></svg>';
+        var DOWNLOAD_ICON_SVG = '<svg class="cv-icon" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" style="margin-right:5px; color:var(--red);"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4" /><polyline points="7 10 12 15 17 10" /><line x1="12" y1="15" x2="12" y2="3" /></svg>';
+
+        var formattedLabel = formatWordmark(cvLabelText, accentLetter);
+        var plainLabel = cvLabelText.replace(/\{([^}]+)\}/g, '$1');
+
+        if (cvAction === 'download' && !isExternalWeb) {
+          var cleanName = (isDataUrl ? (plainLabel + '.pdf') : (cleanPath.split('/').pop() || (plainLabel + '.pdf')));
+          cvBtn.setAttribute('download', cleanName);
+          cvBtn.innerHTML = DOWNLOAD_ICON_SVG + '<span>' + formattedLabel + '</span>';
+          cvBtn.title = 'Download ' + plainLabel;
+          cvBtn.setAttribute('aria-label', 'Download ' + plainLabel);
+          cvBtn.onclick = function (e) {
+            if (isDataUrl) {
+              e.preventDefault();
+              var a = document.createElement('a');
+              a.href = cvTarget;
+              a.download = cleanName;
+              document.body.appendChild(a);
+              a.click();
+              document.body.removeChild(a);
+              return false;
+            }
+          };
         } else {
-          var filename = cleanPath.split('/').pop() || 'CV.pdf';
-          cvBtn.setAttribute('download', filename);
-          cvBtn.title = 'Download CV (' + filename + ')';
+          cvBtn.removeAttribute('download');
+          cvBtn.innerHTML = PREVIEW_ICON_SVG + '<span>' + formattedLabel + '</span>';
+          cvBtn.title = (isExternalWeb ? 'Open ' : 'Preview ') + plainLabel;
+          cvBtn.setAttribute('aria-label', (isExternalWeb ? 'Open ' : 'Preview ') + plainLabel);
+          cvBtn.onclick = function (e) {
+            if (isExternalWeb) return true;
+            e.preventDefault();
+            e.stopPropagation();
+            openCvPreviewModal(cvTarget, cvLabelText);
+            return false;
+          };
         }
       }
     }
@@ -1228,21 +1679,57 @@
     /* Apply CV button (Supports .pdf, .docx, .doc, images, or online links) */
     var cvBtn = document.getElementById('cv-download-btn');
     if (cvBtn) {
-      if (CONFIG.cv_enabled === false) {
+      var cvTarget = (CONFIG.cv_url && typeof CONFIG.cv_url === 'string' && CONFIG.cv_url.trim()) ? CONFIG.cv_url.trim() : '';
+      var isCvEnabled = CONFIG.cv_enabled === true;
+      if (!isCvEnabled || !cvTarget) {
         cvBtn.style.display = 'none';
+        cvBtn.removeAttribute('href');
       } else {
         cvBtn.style.display = 'inline-flex';
-        var cvTarget = (CONFIG.cv_url && CONFIG.cv_url.trim()) ? CONFIG.cv_url.trim() : 'cv.pdf';
-        cvBtn.href = cvTarget;
+        var isDataUrl = cvTarget.startsWith('data:');
+        cvBtn.href = isDataUrl ? '#' : cvTarget;
+        var cvLabelText = (CONFIG.cv_label && CONFIG.cv_label.trim()) ? CONFIG.cv_label.trim() : 'CV';
+        var cvAction = (CONFIG.cv_action === 'download') ? 'download' : 'preview';
         var cleanPath = cvTarget.split('?')[0].split('#')[0];
-        var isExternalWeb = /^(https?:\/\/)/i.test(cvTarget) && !/\.(pdf|docx?|txt|png|jpe?g|webp)$/i.test(cleanPath);
-        if (isExternalWeb) {
-          cvBtn.removeAttribute('download');
-          cvBtn.title = 'Open CV / Resume';
+        var isExternalWeb = !isDataUrl && /^(https?:\/\/)/i.test(cvTarget) && !/\.(pdf|docx?|rtf|txt|md|markdown|html?|png|jpe?g|webp)$/i.test(cleanPath);
+
+        var PREVIEW_ICON_SVG = '<svg class="cv-icon" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" style="margin-right:5px; color:var(--red);"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8z" /><circle cx="12" cy="12" r="3" /></svg>';
+        var DOWNLOAD_ICON_SVG = '<svg class="cv-icon" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" style="margin-right:5px; color:var(--red);"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4" /><polyline points="7 10 12 15 17 10" /><line x1="12" y1="15" x2="12" y2="3" /></svg>';
+
+        var accentLetter = CONFIG.accent_letter !== undefined ? CONFIG.accent_letter : 'x';
+        var formattedLabel = formatWordmark(cvLabelText, accentLetter);
+        var plainLabel = cvLabelText.replace(/\{([^}]+)\}/g, '$1');
+
+        if (cvAction === 'download' && !isExternalWeb) {
+          var cleanName = (isDataUrl ? (plainLabel + '.pdf') : (cleanPath.split('/').pop() || (plainLabel + '.pdf')));
+          cvBtn.setAttribute('download', cleanName);
+          cvBtn.innerHTML = DOWNLOAD_ICON_SVG + '<span>' + formattedLabel + '</span>';
+          cvBtn.title = 'Download ' + plainLabel;
+          cvBtn.setAttribute('aria-label', 'Download ' + plainLabel);
+          cvBtn.onclick = function (e) {
+            if (isDataUrl) {
+              e.preventDefault();
+              var a = document.createElement('a');
+              a.href = cvTarget;
+              a.download = cleanName;
+              document.body.appendChild(a);
+              a.click();
+              document.body.removeChild(a);
+              return false;
+            }
+          };
         } else {
-          var filename = cleanPath.split('/').pop() || 'CV.pdf';
-          cvBtn.setAttribute('download', filename);
-          cvBtn.title = 'Download CV (' + filename + ')';
+          cvBtn.removeAttribute('download');
+          cvBtn.innerHTML = PREVIEW_ICON_SVG + '<span>' + formattedLabel + '</span>';
+          cvBtn.title = (isExternalWeb ? 'Open ' : 'Preview ') + plainLabel;
+          cvBtn.setAttribute('aria-label', (isExternalWeb ? 'Open ' : 'Preview ') + plainLabel);
+          cvBtn.onclick = function (e) {
+            if (isExternalWeb) return true;
+            e.preventDefault();
+            e.stopPropagation();
+            openCvPreviewModal(cvTarget, cvLabelText);
+            return false;
+          };
         }
       }
     }
@@ -2559,7 +3046,13 @@
   if (btnModalSave) {
     btnModalSave.addEventListener('click', function () {
       if (!window.Clerk || !window.Clerk.user || !isUserAuthorized(window.Clerk.user)) {
-        alert('Access Denied: Only authorized administrators can save changes.');
+        showCustomPopup({
+          type: 'error',
+          tag: '// ACCESS RESTRICTED',
+          title: 'Access Denied',
+          message: 'Only authorized administrators can save changes.',
+          buttonText: 'Understood'
+        });
         return;
       }
 
@@ -2663,7 +3156,11 @@
         cloudinary_cloud_name: (typeof CONFIG !== 'undefined' && CONFIG.cloudinary_cloud_name) ? CONFIG.cloudinary_cloud_name : '',
         cloudinary_upload_preset: (typeof CONFIG !== 'undefined' && CONFIG.cloudinary_upload_preset) ? CONFIG.cloudinary_upload_preset : '',
         clerk_publishable_key: (typeof CONFIG !== 'undefined' && CONFIG.clerk_publishable_key) ? CONFIG.clerk_publishable_key : 'pk_test_c2hpbmluZy10dXJrZXktMTMyNS5jbGVyay5hY2NvdW50cy5kZXYk',
-        clerk_frontend_api: 'https://shining-turkey-1325.clerk.accounts.dev'
+        clerk_frontend_api: 'https://shining-turkey-1325.clerk.accounts.dev',
+        cv_url: (typeof CONFIG !== 'undefined' && CONFIG.cv_url) ? CONFIG.cv_url : '',
+        cv_enabled: (typeof CONFIG !== 'undefined' && CONFIG.cv_enabled !== undefined) ? CONFIG.cv_enabled : true,
+        cv_label: (typeof CONFIG !== 'undefined' && CONFIG.cv_label) ? CONFIG.cv_label : 'CV',
+        cv_action: (typeof CONFIG !== 'undefined' && CONFIG.cv_action) ? CONFIG.cv_action : 'preview'
       };
 
       applyFullConfig(updated);
@@ -3048,7 +3545,7 @@
       '<div class="msg-field">' +
         '<textarea id="cf-message" rows="5" placeholder="Write your message..."></textarea>' +
       '</div>' +
-      '<p class="msg-hint">leave an email if you want a reply</p>' +
+      '<p class="msg-hint">leave an email id if you want a reply</p>' +
       '<input type="checkbox" name="botcheck" id="botcheck" style="display:none;" tabindex="-1" aria-hidden="true">' +
       '<div id="hcaptcha-container" class="h-captcha" data-sitekey="50b2fe65-b00b-4b9e-ad62-3ba471098be2" data-captcha="true"></div>' +
       '<button class="send-btn" id="cf-submit" type="button">' +

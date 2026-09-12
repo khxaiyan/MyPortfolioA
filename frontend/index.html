@@ -28,7 +28,7 @@
   <link
     href="https://fonts.googleapis.com/css2?family=Cinzel:wght@500;600;700&family=Fira+Code:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500;600&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600;700&family=Montserrat:wght@400;500;600;700&family=Outfit:wght@400;500;600;700&family=Playfair+Display:ital,wght@0,500;0,600;0,700;1,400&family=Plus+Jakarta+Sans:wght@400;500;600;700&family=Poppins:wght@400;500;600;700&family=Sora:wght@400;500;600;700&family=Space+Grotesk:wght@400;500;600;700&family=Syne:wght@500;600;700;800&display=swap"
     rel="stylesheet">
-  <link rel="stylesheet" href="style.css?v=35">
+  <link rel="stylesheet" href="style.css?v=38">
   <script src="https://code.iconify.design/iconify-icon/2.1.0/iconify-icon.min.js"></script>
   <script src="/api/config.js"></script>
 
@@ -173,17 +173,14 @@
             <h1 class="wordmark"><span class="data-loader"><span class="data-loader-spinner"></span><span>fetching data......</span></span></h1>
             <p class="bio"><span class="data-loader"><span class="data-loader-spinner"></span><span>fetching data......</span></span></p>
           </div>
-          <div class="id-action">
-            <a href="cv.pdf" class="cv-download-btn" id="cv-download-btn" download="CV.pdf" target="_blank" rel="noopener noreferrer" title="Download CV" aria-label="Download CV">
-              <svg class="cv-icon" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4" />
-                <polyline points="7 10 12 15 17 10" />
-                <line x1="12" y1="15" x2="12" y2="3" />
-              </svg>
-              <span>CV</span>
-            </a>
-          </div>
         </div>
+        <a href="#" class="corner-tag cv-corner-btn" id="cv-download-btn" target="_blank" rel="noopener noreferrer" title="Preview CV" aria-label="Preview CV" style="position:absolute; top:0; right:0; text-decoration:none; display:none;">
+          <svg class="cv-icon" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" style="margin-right:5px; color:var(--red);">
+            <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8z" />
+            <circle cx="12" cy="12" r="3" />
+          </svg>
+          <span>CV</span>
+        </a>
       </div>
     </div>
 
@@ -630,13 +627,77 @@
 
     <div id="dev-toast" class="dev-toast" role="status" aria-live="polite"></div>
     <div id="sr-alert" role="alert" aria-live="assertive" class="sr-only"></div>
+
+    <!-- ── Custom Glassmorphism App Popup / Notice Dialog ── -->
+    <div id="custom-app-popup" class="app-popup-backdrop" style="display:none;" role="dialog" aria-modal="true" aria-labelledby="app-popup-title">
+      <div class="app-popup-card">
+        <div class="app-popup-top-glow"></div>
+        <div class="app-popup-header-row">
+          <span id="app-popup-tag" class="app-popup-tag">// NOTICE</span>
+          <button type="button" id="app-popup-close-btn" class="app-popup-close-btn" aria-label="Close dialog">✕</button>
+        </div>
+        <div id="app-popup-icon" class="app-popup-icon-wrap"></div>
+        <h3 id="app-popup-title" class="app-popup-title">Notice</h3>
+        <div id="app-popup-body" class="app-popup-body"></div>
+        <div id="app-popup-actions" class="app-popup-actions"></div>
+      </div>
+    </div>
+
+    <!-- ── CV / Document In-Page Preview Modal ── -->
+    <div id="cv-preview-modal" class="modal-overlay" role="dialog" aria-modal="true" aria-labelledby="cv-modal-title" style="z-index:99999;">
+      <div class="modal-dialog cv-preview-dialog" style="max-width:920px; width:94%; max-height:92vh; padding:0; display:flex; flex-direction:column; overflow:hidden; border:1px solid var(--border-accent); box-shadow:0 24px 60px rgba(0,0,0,0.7), 0 0 35px var(--border-accent-glow); background:var(--surface);">
+        <!-- Modal Top Bar -->
+        <div style="display:flex; align-items:center; justify-content:space-between; padding:12px 18px; border-bottom:1px solid var(--line); background:var(--bg);">
+          <div style="display:flex; align-items:center; gap:10px;">
+            <span style="color:var(--red); display:flex; align-items:center;">
+              <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8z" />
+                <circle cx="12" cy="12" r="3" />
+              </svg>
+            </span>
+            <div style="display:flex; flex-direction:column; gap:2px;">
+              <h3 id="cv-modal-title" style="font-family:var(--font-display); font-size:0.95rem; font-weight:700; color:var(--ink); margin:0; line-height:1.2;">
+                Preview Document
+              </h3>
+              <span id="cv-modal-filename" style="font-family:var(--font-mono); font-size:0.7rem; color:var(--ink-faint); line-height:1;">Document</span>
+            </div>
+          </div>
+
+          <div style="display:flex; align-items:center; gap:8px;">
+            <a id="cv-modal-download-btn" href="#" class="toolbar-btn" style="padding:6px 14px; font-size:0.75rem; font-family:var(--font-mono); font-weight:600; display:inline-flex; align-items:center; gap:6px; background:var(--surface-hover); color:var(--ink); border:1px solid var(--line); border-radius:var(--radius-sm, 8px); text-decoration:none; cursor:pointer;" title="Download to device">
+              <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4" />
+                <polyline points="7 10 12 15 17 10" />
+                <line x1="12" y1="15" x2="12" y2="3" />
+              </svg>
+              <span>Download</span>
+            </a>
+            <button type="button" id="cv-modal-close-btn" class="modal-close-btn" style="width:32px; height:32px; display:inline-flex; align-items:center; justify-content:center; background:var(--surface-hover); border:1px solid var(--line); border-radius:8px; color:var(--ink-dim); cursor:pointer; font-size:1rem;" aria-label="Close Preview">✕</button>
+          </div>
+        </div>
+
+        <!-- Modal Body (Viewer container) -->
+        <div id="cv-modal-viewer-body" style="flex:1; overflow-y:auto; overflow-x:hidden; position:relative; background:#121319; display:flex; flex-direction:column; align-items:center; min-height:450px; max-height:calc(92vh - 60px); width:100%;">
+          <div id="cv-modal-loading" style="display:flex; flex-direction:column; align-items:center; justify-content:center; gap:12px; color:var(--ink-dim); font-family:var(--font-mono); font-size:0.85rem; padding:60px 20px;">
+            <div style="width:30px; height:30px; border:2.5px solid var(--line-strong); border-top-color:var(--red); border-radius:50%; animation:spin 0.8s linear infinite;"></div>
+            <span>Rendering document preview...</span>
+          </div>
+          <div id="cv-pdf-canvas-container" style="display:flex; flex-direction:column; align-items:center; width:100%; gap:16px; padding:18px 12px;"></div>
+          <iframe id="cv-modal-iframe" style="display:none; width:100%; height:75vh; border:none; background:#ffffff;" title="Document Preview"></iframe>
+          <img id="cv-modal-img" style="display:none; max-width:96%; max-height:75vh; object-fit:contain; border-radius:6px; box-shadow:0 8px 30px rgba(0,0,0,0.5); margin:20px auto;" alt="CV Preview" />
+          <div id="cv-modal-text-container" style="display:none; width:100%; max-width:840px; padding:32px 24px; color:var(--ink); font-family:var(--font-sans, system-ui); font-size:0.92rem; line-height:1.7; word-break:break-word; overflow-wrap:break-word;"></div>
+        </div>
+      </div>
+    </div>
+
     <!-- Clerk JavaScript Frontend SDK (Instance bundle with full UI components support) -->
     <script async crossorigin="anonymous"
       data-clerk-publishable-key="pk_test_c2hpbmluZy10dXJrZXktMTMyNS5jbGVyay5hY2NvdW50cy5kZXYk"
       data-clerk-after-sign-out-url="/"
       src="https://shining-turkey-1325.clerk.accounts.dev/npm/@clerk/clerk-js@latest/dist/clerk.browser.js"
       type="text/javascript"></script>
-    <script src="app.js?v=27"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js"></script>
+    <script src="app.js?v=29"></script>
     <script src="https://js.hcaptcha.com/1/api.js?onload=initHcaptcha&render=explicit" async defer></script>
 </body>
 

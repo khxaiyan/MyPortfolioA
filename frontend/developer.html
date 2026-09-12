@@ -213,6 +213,11 @@
       line-height: 1.6;
     }
 
+    .glyph-5 {
+      color: var(--red) !important;
+      font-family: inherit;
+    }
+
     /* Form Fields */
     .cust-section {
       margin-bottom: 24px;
@@ -436,6 +441,178 @@
       box-shadow: 0 24px 50px rgba(0, 0, 0, 0.8), 0 0 35px var(--border-accent-glow, rgba(255, 42, 95, 0.15));
       padding: 22px 24px;
       position: relative;
+    }
+
+    /* ── Premium Custom Glassmorphism Popup Modal & Alerts ── */
+    .app-popup-backdrop {
+      position: fixed;
+      inset: 0;
+      background: rgba(4, 6, 12, 0.78);
+      backdrop-filter: blur(16px);
+      -webkit-backdrop-filter: blur(16px);
+      z-index: 100005;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 18px;
+      opacity: 0;
+      visibility: hidden;
+      transition: opacity 0.22s cubic-bezier(0.16, 1, 0.3, 1), visibility 0.22s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+
+    .app-popup-backdrop.active {
+      opacity: 1;
+      visibility: visible;
+    }
+
+    .app-popup-card {
+      position: relative;
+      width: 100%;
+      max-width: 440px;
+      background: linear-gradient(165deg, rgba(22, 25, 36, 0.96) 0%, rgba(13, 15, 23, 0.98) 100%);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      border-radius: 18px;
+      box-shadow: 0 28px 70px rgba(0, 0, 0, 0.85), 0 0 35px var(--border-accent-glow, rgba(255, 42, 95, 0.14));
+      padding: 24px 24px 22px;
+      transform: scale(0.92) translateY(8px);
+      transition: transform 0.24s cubic-bezier(0.16, 1, 0.3, 1);
+      overflow: hidden;
+    }
+
+    .app-popup-backdrop.active .app-popup-card {
+      transform: scale(1) translateY(0);
+    }
+
+    .app-popup-top-glow {
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 3px;
+      background: linear-gradient(90deg, transparent, var(--red, #ff2a5f), transparent);
+    }
+
+    .app-popup-header-row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 14px;
+    }
+
+    .app-popup-tag {
+      font-family: var(--font-mono, monospace);
+      font-size: 0.68rem;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: var(--red, #ff2a5f);
+      background: var(--red-dim, rgba(255, 42, 95, 0.12));
+      padding: 3px 8px;
+      border-radius: 4px;
+      border: 1px solid var(--border-accent, rgba(255, 42, 95, 0.3));
+    }
+
+    .app-popup-close-btn {
+      background: transparent;
+      border: none;
+      color: var(--ink-dim, #888);
+      font-size: 1.1rem;
+      width: 28px;
+      height: 28px;
+      border-radius: 6px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      transition: all 0.18s ease;
+    }
+
+    .app-popup-close-btn:hover {
+      background: var(--surface-hover, rgba(255, 255, 255, 0.08));
+      color: var(--ink, #fff);
+      transform: rotate(90deg);
+    }
+
+    .app-popup-icon-wrap {
+      width: 54px;
+      height: 54px;
+      border-radius: 14px;
+      background: var(--red-dim, rgba(255, 42, 95, 0.12));
+      border: 1.5px solid var(--border-accent, rgba(255, 42, 95, 0.35));
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: var(--red, #ff2a5f);
+      margin: 0 auto 16px;
+      box-shadow: 0 0 24px var(--border-accent-glow, rgba(255, 42, 95, 0.2));
+    }
+
+    .app-popup-title {
+      font-family: var(--font-display, inherit);
+      font-size: 1.15rem;
+      font-weight: 700;
+      color: var(--ink, #fff);
+      margin: 0 0 8px 0;
+      text-align: center;
+      letter-spacing: -0.02em;
+    }
+
+    .app-popup-body {
+      font-size: 0.84rem;
+      color: var(--ink-dim, #99a);
+      line-height: 1.55;
+      margin: 0 0 20px 0;
+      text-align: center;
+      font-family: var(--font-mono, monospace);
+      word-break: break-word;
+    }
+
+    .app-popup-actions {
+      display: flex;
+      gap: 10px;
+      justify-content: center;
+      flex-wrap: wrap;
+    }
+
+    .app-popup-btn {
+      padding: 10px 18px;
+      border-radius: 8px;
+      font-size: 0.82rem;
+      font-weight: 600;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 6px;
+      transition: all 0.18s cubic-bezier(0.16, 1, 0.3, 1);
+      text-decoration: none;
+      font-family: var(--font-mono, monospace);
+    }
+
+    .app-popup-btn-primary {
+      background: var(--red-solid, #ff2a5f);
+      color: #ffffff;
+      border: none;
+      box-shadow: 0 0 20px var(--border-accent-glow, rgba(255, 42, 95, 0.35));
+      flex: 1;
+      min-width: 120px;
+    }
+
+    .app-popup-btn-primary:hover {
+      filter: brightness(1.15);
+      transform: translateY(-1px);
+    }
+
+    .app-popup-btn-secondary {
+      background: var(--surface-hover, rgba(255, 255, 255, 0.05));
+      color: var(--ink, #fff);
+      border: 1px solid var(--line-strong, rgba(255, 255, 255, 0.12));
+      flex: 1;
+      min-width: 110px;
+    }
+
+    .app-popup-btn-secondary:hover {
+      background: rgba(255, 255, 255, 0.1);
+      border-color: rgba(255, 255, 255, 0.2);
     }
 
     .avatar-modal-header {
@@ -1241,6 +1418,202 @@
             <div id="cust-avatar-status"
               style="display:none; margin-top:8px; font-size:0.72rem; font-family:var(--font-mono);"></div>
           </div>
+        </div>
+      </div>
+
+      <!-- ── // cv / resume ── -->
+      <div class="cust-section">
+        <div id="cust-cv-toggle" class="accordion-eyebrow-toggle" role="button" tabindex="0" aria-expanded="false"
+          aria-controls="cust-cv-card"
+          style="display:inline-flex; align-items:center; gap:7px; cursor:pointer; user-select:none; margin-bottom:8px;">
+          <p class="eyebrow" style="margin:0; cursor:pointer; color:var(--ink-dim); transition:color 0.15s;">// cv / resume</p>
+          <svg id="cust-cv-chevron" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+            stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"
+            style="color:var(--ink-faint); transition:transform 0.22s cubic-bezier(0.4, 0, 0.2, 1), color 0.15s; transform:rotate(-90deg);">
+            <path d="m6 9 6 6 6-6" />
+          </svg>
+        </div>
+        <div class="surface-card cust-card" id="cust-cv-card" data-display="flex"
+          style="display:none; flex-direction:column; padding:20px 18px; gap:16px; margin-top:2px;">
+
+          <!-- Toggle Header Visibility -->
+          <div style="display:flex; align-items:center; justify-content:space-between; padding-bottom:12px; border-bottom:1px solid var(--line);">
+            <div>
+              <p style="font-size:0.88rem; font-weight:600; color:var(--ink); margin:0 0 2px 0;">CV / Resume Button</p>
+              <p style="font-size:0.73rem; color:var(--ink-faint); margin:0;">Display the CV download pill in the header</p>
+            </div>
+            <label class="switch-label">
+              <input type="checkbox" id="cust-cv-enabled" class="switch-input" checked>
+              <span class="switch-slider"></span>
+            </label>
+          </div>
+
+          <!-- CV / Résumé Label Switcher & Customizer -->
+          <div class="field-group" style="padding-bottom:14px; border-bottom:1px solid var(--line);">
+            <div style="display:flex; align-items:center; justify-content:space-between; margin-bottom:8px; flex-wrap:wrap; gap:8px;">
+              <div>
+                <label class="field-label" for="cust-cv-label" style="margin:0;">Button Label (CV, Résumé, or Custom)</label>
+                <p style="font-size:0.72rem; color:var(--ink-faint); margin:2px 0 0 0;">Switch between presets or type your own custom button text</p>
+              </div>
+              <!-- Live Preview Badge -->
+              <div style="display:flex; align-items:center; gap:6px;">
+                <span style="font-size:0.68rem; color:var(--ink-faint); font-family:var(--font-mono);">Live Look:</span>
+                <span class="corner-tag" id="cust-cv-live-pill" style="position:static; text-decoration:none; padding:4px 10px; display:inline-flex; align-items:center; font-size:0.72rem; pointer-events:none; border-radius:var(--radius-sm);">
+                  <span id="cust-cv-live-icon-wrap" style="display:inline-flex; align-items:center; margin-right:5px; color:var(--red);">
+                    <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+                      <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8z" />
+                      <circle cx="12" cy="12" r="3" />
+                    </svg>
+                  </span>
+                  <span id="cust-cv-live-badge">CV</span>
+                </span>
+              </div>
+            </div>
+
+            <!-- Quick Preset Switcher Chips -->
+            <div style="display:flex; align-items:center; gap:6px; flex-wrap:wrap; margin-bottom:8px;">
+              <button type="button" class="cv-label-preset-chip" data-label="CV"
+                style="padding:5px 14px; font-size:0.72rem; font-family:var(--font-mono); font-weight:600; border-radius:14px; border:1px solid var(--line); background:var(--surface); color:var(--ink); cursor:pointer; transition:all 0.15s ease;">
+                CV
+              </button>
+              <button type="button" class="cv-label-preset-chip" data-label="Résumé"
+                style="padding:5px 14px; font-size:0.72rem; font-family:var(--font-mono); font-weight:600; border-radius:14px; border:1px solid var(--line); background:var(--surface); color:var(--ink); cursor:pointer; transition:all 0.15s ease;">
+                Résumé
+              </button>
+              <button type="button" class="cv-label-preset-chip" data-label="Resume"
+                style="padding:5px 14px; font-size:0.72rem; font-family:var(--font-mono); font-weight:600; border-radius:14px; border:1px solid var(--line); background:var(--surface); color:var(--ink); cursor:pointer; transition:all 0.15s ease;">
+                Resume
+              </button>
+              <button type="button" class="cv-label-preset-chip" data-label="GitHub"
+                style="padding:5px 14px; font-size:0.72rem; font-family:var(--font-mono); font-weight:600; border-radius:14px; border:1px solid var(--line); background:var(--surface); color:var(--ink); cursor:pointer; transition:all 0.15s ease;">
+                GitHub
+              </button>
+            </div>
+
+            <!-- Custom Input Text -->
+            <div style="position:relative;">
+              <input type="text" class="field-input" id="cust-cv-label"
+                placeholder="Type custom text (e.g. CV, Résumé, Portfolio, Profile...)"
+                value="CV" maxlength="24">
+            </div>
+
+            <!-- Action Mode: Preview vs Download -->
+            <div style="margin-top:10px; display:flex; align-items:center; justify-content:space-between; flex-wrap:wrap; gap:8px;">
+              <div>
+                <label style="font-size:0.75rem; font-weight:600; color:var(--ink); margin:0; display:block;">Click Action &amp; Icon</label>
+                <span style="font-size:0.7rem; color:var(--ink-faint);">Choose whether the button previews in a new tab or downloads directly</span>
+              </div>
+              <div style="display:inline-flex; align-items:center; background:var(--surface); border:1px solid var(--line); border-radius:18px; padding:3px; gap:3px;">
+                <button type="button" id="cust-cv-action-preview" class="cv-action-option" data-action="preview"
+                  style="padding:4px 12px; font-size:0.72rem; font-family:var(--font-mono); font-weight:600; border-radius:14px; border:1px solid var(--border-accent); background:var(--red-dim); color:var(--red); cursor:pointer; display:inline-flex; align-items:center; gap:5px; transition:all 0.15s ease;">
+                  <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8z" />
+                    <circle cx="12" cy="12" r="3" />
+                  </svg>
+                  Preview
+                </button>
+                <button type="button" id="cust-cv-action-download" class="cv-action-option" data-action="download"
+                  style="padding:4px 12px; font-size:0.72rem; font-family:var(--font-mono); font-weight:600; border-radius:14px; border:1px solid transparent; background:transparent; color:var(--ink-dim); cursor:pointer; display:inline-flex; align-items:center; gap:5px; transition:all 0.15s ease;">
+                  <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4" />
+                    <polyline points="7 10 12 15 17 10" />
+                    <line x1="12" y1="15" x2="12" y2="3" />
+                  </svg>
+                  Download
+                </button>
+              </div>
+              <input type="hidden" id="cust-cv-action" value="preview">
+            </div>
+          </div>
+
+          <!-- Drag & Drop / File Upload Area -->
+          <div style="display:flex; flex-direction:column; gap:8px;">
+            <label class="field-label">Upload CV Document</label>
+            <div id="cust-cv-dropzone"
+              style="position:relative; border:1.5px dashed var(--line-strong); border-radius:var(--radius); padding:24px 16px; text-align:center; background:var(--bg); cursor:pointer; transition:all 0.2s cubic-bezier(0.16, 1, 0.3, 1);">
+              <input type="file" id="cust-cv-file"
+                accept=".pdf,.docx,.doc,.txt,.rtf,.png,.jpg,.jpeg,.webp,.html,.htm,.md,.markdown,application/pdf,application/msword,application/vnd.openxmlformats-officedocument.wordprocessingml.document,application/rtf,text/plain,text/markdown,text/html,image/png,image/jpeg,image/webp"
+                style="position:absolute; inset:0; width:100%; height:100%; opacity:0; cursor:pointer; z-index:2;">
+              <div style="display:flex; flex-direction:column; align-items:center; gap:8px; pointer-events:none;">
+                <div style="width:42px; height:42px; border-radius:10px; background:var(--surface); border:1px solid var(--line); display:flex; align-items:center; justify-content:center; color:var(--red);">
+                  <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z" />
+                    <polyline points="14 2 14 8 20 8" />
+                    <line x1="12" y1="18" x2="12" y2="12" />
+                    <line x1="9" y1="15" x2="15" y2="15" />
+                  </svg>
+                </div>
+                <div>
+                  <p style="font-size:0.86rem; font-weight:600; color:var(--ink); margin:0 0 4px 0;" id="cust-cv-drop-title">
+                    Click or Drag &amp; Drop to Upload CV
+                  </p>
+                  <p style="font-size:0.72rem; color:var(--ink-faint); margin:0;" id="cust-cv-drop-sub">
+                    Supports 6 main formats: PDF, Word (.docx/.doc), RTF, TXT, Images, Markdown &amp; HTML (Max 15MB)
+                  </p>
+                </div>
+              </div>
+            </div>
+
+            <!-- Supported 6 Format Category Pills -->
+            <div style="display:flex; align-items:center; justify-content:center; gap:6px; flex-wrap:wrap; margin-top:2px;">
+              <span style="display:inline-flex; align-items:center; gap:4px; font-size:0.67rem; font-family:var(--font-mono); color:var(--ink-dim); background:var(--bg); border:1px solid var(--line); padding:3px 8px; border-radius:12px;">
+                📄 PDF (.pdf)
+              </span>
+              <span style="display:inline-flex; align-items:center; gap:4px; font-size:0.67rem; font-family:var(--font-mono); color:var(--ink-dim); background:var(--bg); border:1px solid var(--line); padding:3px 8px; border-radius:12px;">
+                📝 Word (.docx, .doc)
+              </span>
+              <span style="display:inline-flex; align-items:center; gap:4px; font-size:0.67rem; font-family:var(--font-mono); color:var(--ink-dim); background:var(--bg); border:1px solid var(--line); padding:3px 8px; border-radius:12px;">
+                📃 RTF (.rtf)
+              </span>
+              <span style="display:inline-flex; align-items:center; gap:4px; font-size:0.67rem; font-family:var(--font-mono); color:var(--ink-dim); background:var(--bg); border:1px solid var(--line); padding:3px 8px; border-radius:12px;">
+                📋 Plain Text (.txt)
+              </span>
+              <span style="display:inline-flex; align-items:center; gap:4px; font-size:0.67rem; font-family:var(--font-mono); color:var(--ink-dim); background:var(--bg); border:1px solid var(--line); padding:3px 8px; border-radius:12px;">
+                🖼️ Image (.png, .jpg, .webp)
+              </span>
+              <span style="display:inline-flex; align-items:center; gap:4px; font-size:0.67rem; font-family:var(--font-mono); color:var(--ink-dim); background:var(--bg); border:1px solid var(--line); padding:3px 8px; border-radius:12px;">
+                🌐 Web &amp; Code (.html, .md)
+              </span>
+            </div>
+          </div>
+
+          <!-- Active File Status Pill & Actions -->
+          <div id="cust-cv-status-card"
+            style="background:var(--surface-hover); border:1px solid var(--line); border-radius:var(--radius-sm); padding:10px 14px; display:flex; align-items:center; justify-content:space-between; gap:10px; flex-wrap:wrap;">
+            <div style="display:flex; align-items:center; gap:8px;">
+              <span id="cust-cv-badge"
+                style="font-family:var(--font-mono); font-size:0.66rem; font-weight:700; color:var(--red); background:var(--red-dim); border:1px solid var(--border-accent); padding:2px 7px; border-radius:6px; text-transform:uppercase;">
+                NONE
+              </span>
+              <span id="cust-cv-filename" style="font-family:var(--font-mono); font-size:0.78rem; color:var(--ink); word-break:break-all;">
+                No file selected
+              </span>
+              <span id="cust-cv-filesize" style="font-size:0.7rem; color:var(--ink-faint); font-family:var(--font-mono);">
+                (Disabled)
+              </span>
+            </div>
+            <div style="display:flex; align-items:center; gap:6px;">
+              <a id="cust-cv-preview-link" href="#" target="_blank" rel="noopener noreferrer" class="toolbar-btn"
+                style="padding:4px 12px; font-size:0.72rem; border-radius:14px; display:none; align-items:center; gap:5px; text-decoration:none; color:var(--ink);">
+                <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                  <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8z" />
+                  <circle cx="12" cy="12" r="3" />
+                </svg>
+                Preview CV
+              </a>
+            </div>
+          </div>
+
+          <!-- Or External URL -->
+          <div class="field-group" style="margin-top:2px;">
+            <label class="field-label" for="cust-cv-url">Or External Cloud Link (Google Drive, Notion, LinkedIn, etc.)</label>
+            <input type="text" class="field-input" id="cust-cv-url"
+              placeholder="e.g. https://drive.google.com/file/d/... or https://res.cloudinary.com/...">
+            <p style="font-size:0.72rem; color:var(--ink-faint); margin-top:4px; line-height:1.4;">
+              💡 <b>Tip:</b> If you upload a file above, this URL will automatically update. You can also paste an external Google Drive or Notion link directly.
+            </p>
+          </div>
+
         </div>
       </div>
 
@@ -2336,7 +2709,70 @@
     </div>
   </div>
 
+  <!-- ── Custom Glassmorphism App Popup / Notice Dialog ── -->
+  <div id="custom-app-popup" class="app-popup-backdrop" style="display:none;" role="dialog" aria-modal="true" aria-labelledby="app-popup-title">
+    <div class="app-popup-card">
+      <div class="app-popup-top-glow"></div>
+      <div class="app-popup-header-row">
+        <span id="app-popup-tag" class="app-popup-tag">// NOTICE</span>
+        <button type="button" id="app-popup-close-btn" class="app-popup-close-btn" aria-label="Close dialog">✕</button>
+      </div>
+      <div id="app-popup-icon" class="app-popup-icon-wrap"></div>
+      <h3 id="app-popup-title" class="app-popup-title">Notice</h3>
+      <div id="app-popup-body" class="app-popup-body"></div>
+      <div id="app-popup-actions" class="app-popup-actions"></div>
+    </div>
+  </div>
+
+  <!-- ── CV / Document In-Page Preview Modal ── -->
+  <div id="cv-preview-modal" class="modal-overlay" role="dialog" aria-modal="true" aria-labelledby="cv-modal-title" style="z-index:99999;">
+    <div class="modal-dialog cv-preview-dialog" style="max-width:920px; width:94%; max-height:92vh; padding:0; display:flex; flex-direction:column; overflow:hidden; border:1px solid var(--border-accent); box-shadow:0 24px 60px rgba(0,0,0,0.7), 0 0 35px var(--border-accent-glow); background:var(--surface);">
+      <!-- Modal Top Bar -->
+      <div style="display:flex; align-items:center; justify-content:space-between; padding:12px 18px; border-bottom:1px solid var(--line); background:var(--bg);">
+        <div style="display:flex; align-items:center; gap:10px;">
+          <span style="color:var(--red); display:flex; align-items:center;">
+            <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8z" />
+              <circle cx="12" cy="12" r="3" />
+            </svg>
+          </span>
+          <div style="display:flex; flex-direction:column; gap:2px;">
+            <h3 id="cv-modal-title" style="font-family:var(--font-display); font-size:0.95rem; font-weight:700; color:var(--ink); margin:0; line-height:1.2;">
+              Preview Document
+            </h3>
+            <span id="cv-modal-filename" style="font-family:var(--font-mono); font-size:0.7rem; color:var(--ink-faint); line-height:1;">Document</span>
+          </div>
+        </div>
+
+        <div style="display:flex; align-items:center; gap:8px;">
+          <a id="cv-modal-download-btn" href="#" download="document" class="toolbar-btn" style="padding:6px 14px; font-size:0.75rem; font-family:var(--font-mono); font-weight:600; display:inline-flex; align-items:center; gap:6px; background:var(--surface-hover); color:var(--ink); border:1px solid var(--line); border-radius:var(--radius-sm, 8px); text-decoration:none; cursor:pointer;" title="Download to device">
+            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4" />
+              <polyline points="7 10 12 15 17 10" />
+              <line x1="12" y1="15" x2="12" y2="3" />
+            </svg>
+            <span>Download</span>
+          </a>
+          <button type="button" id="cv-modal-close-btn" class="modal-close-btn" style="width:32px; height:32px; display:inline-flex; align-items:center; justify-content:center; background:var(--surface-hover); border:1px solid var(--line); border-radius:8px; color:var(--ink-dim); cursor:pointer; font-size:1rem;" aria-label="Close Preview">✕</button>
+        </div>
+      </div>
+
+      <!-- Modal Body (Viewer container) -->
+      <div id="cv-modal-viewer-body" style="flex:1; overflow-y:auto; overflow-x:hidden; position:relative; background:#121319; display:flex; flex-direction:column; align-items:center; min-height:450px; max-height:calc(92vh - 60px); width:100%;">
+        <div id="cv-modal-loading" style="display:flex; flex-direction:column; align-items:center; justify-content:center; gap:12px; color:var(--ink-dim); font-family:var(--font-mono); font-size:0.85rem; padding:60px 20px;">
+          <div style="width:30px; height:30px; border:2.5px solid var(--line-strong); border-top-color:var(--red); border-radius:50%; animation:spin 0.8s linear infinite;"></div>
+          <span>Rendering document preview...</span>
+        </div>
+        <div id="cv-pdf-canvas-container" style="display:flex; flex-direction:column; align-items:center; width:100%; gap:16px; padding:18px 12px;"></div>
+        <iframe id="cv-modal-iframe" style="display:none; width:100%; height:75vh; border:none; background:#ffffff;" title="Document Preview"></iframe>
+        <img id="cv-modal-img" style="display:none; max-width:96%; max-height:75vh; object-fit:contain; border-radius:6px; box-shadow:0 8px 30px rgba(0,0,0,0.5); margin:20px auto;" alt="CV Preview" />
+        <div id="cv-modal-text-container" style="display:none; width:100%; max-width:840px; padding:32px 24px; color:var(--ink); font-family:var(--font-sans, system-ui); font-size:0.92rem; line-height:1.7; word-break:break-word; overflow-wrap:break-word;"></div>
+      </div>
+    </div>
+  </div>
+
   <script src="config.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js"></script>
 
   <!-- Clerk JavaScript Frontend SDK (Loaded directly from your Clerk instance for full UI components support) -->
   <script async crossorigin="anonymous"
@@ -2346,6 +2782,128 @@
     type="text/javascript"></script>
 
   <script>
+
+    /* ── Universal Premium Glassmorphism Popup / Dialog System ── */
+    function showCustomPopup(opts) {
+      if (typeof opts === 'string') {
+        opts = { message: opts };
+      }
+      opts = opts || {};
+      var backdrop = document.getElementById('custom-app-popup');
+      if (!backdrop) {
+        console.warn('[Popup]', opts.message || opts.title);
+        return;
+      }
+
+      var tagEl = document.getElementById('app-popup-tag');
+      var iconEl = document.getElementById('app-popup-icon');
+      var titleEl = document.getElementById('app-popup-title');
+      var bodyEl = document.getElementById('app-popup-body');
+      var actionsEl = document.getElementById('app-popup-actions');
+      var closeBtn = document.getElementById('app-popup-close-btn');
+
+      var type = opts.type || 'info';
+      if (tagEl) {
+        tagEl.textContent = opts.tag || ('// ' + (type === 'document' ? 'CV SYSTEM' : type.toUpperCase()));
+        if (type === 'error' || type === 'warning' || type === 'document') {
+          tagEl.style.color = 'var(--red, #ff2a5f)';
+          tagEl.style.borderColor = 'var(--border-accent, rgba(255, 42, 95, 0.35))';
+          tagEl.style.background = 'var(--red-dim, rgba(255, 42, 95, 0.12))';
+        } else if (type === 'success') {
+          tagEl.style.color = '#10b981';
+          tagEl.style.borderColor = 'rgba(16, 185, 129, 0.35)';
+          tagEl.style.background = 'rgba(16, 185, 129, 0.12)';
+        }
+      }
+
+      if (titleEl) titleEl.textContent = opts.title || (type === 'document' ? 'No Document Uploaded' : 'Notice');
+      if (bodyEl) bodyEl.innerHTML = opts.message || '';
+
+      // Icon generation
+      var iconSvg = '';
+      if (type === 'document') {
+        iconSvg = '<svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/><polyline points="10 9 9 9 8 9"/></svg>';
+      } else if (type === 'warning' || type === 'error') {
+        iconSvg = '<svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m21.73 18-8-14a2 2 0 0 0-3.48 0l-8 14A2 2 0 0 0 4 21h16a2 2 0 0 0 1.73-3Z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>';
+      } else if (type === 'success') {
+        iconSvg = '<svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>';
+      } else {
+        iconSvg = '<svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="12" y1="16" x2="12" y2="12"/><line x1="12" y1="8" x2="12.01" y2="8"/></svg>';
+      }
+      if (iconEl) {
+        iconEl.innerHTML = opts.customIcon || iconSvg;
+        if (type === 'success') {
+          iconEl.style.color = '#10b981';
+          iconEl.style.borderColor = 'rgba(16, 185, 129, 0.4)';
+          iconEl.style.background = 'rgba(16, 185, 129, 0.12)';
+          iconEl.style.boxShadow = '0 0 24px rgba(16, 185, 129, 0.2)';
+        } else {
+          iconEl.style.color = 'var(--red, #ff2a5f)';
+          iconEl.style.borderColor = 'var(--border-accent, rgba(255, 42, 95, 0.35))';
+          iconEl.style.background = 'var(--red-dim, rgba(255, 42, 95, 0.12))';
+          iconEl.style.boxShadow = '0 0 24px var(--border-accent-glow, rgba(255, 42, 95, 0.2))';
+        }
+      }
+
+      function closePopup() {
+        backdrop.classList.remove('active');
+        setTimeout(function () {
+          backdrop.style.display = 'none';
+        }, 220);
+        document.removeEventListener('keydown', onKey);
+      }
+
+      function onKey(e) {
+        if (e.key === 'Escape') closePopup();
+      }
+      document.addEventListener('keydown', onKey);
+
+      if (closeBtn) closeBtn.onclick = closePopup;
+      backdrop.onclick = function (e) {
+        if (e.target === backdrop) closePopup();
+      };
+
+      if (actionsEl) {
+        actionsEl.innerHTML = '';
+        if (Array.isArray(opts.buttons) && opts.buttons.length > 0) {
+          opts.buttons.forEach(function (btn) {
+            var b = document.createElement('button');
+            b.type = 'button';
+            b.className = 'app-popup-btn ' + (btn.primary ? 'app-popup-btn-primary' : 'app-popup-btn-secondary');
+            b.innerHTML = btn.text;
+            b.onclick = function (e) {
+              closePopup();
+              if (typeof btn.onClick === 'function') btn.onClick(e);
+            };
+            actionsEl.appendChild(b);
+          });
+        } else {
+          var okBtn = document.createElement('button');
+          okBtn.type = 'button';
+          okBtn.className = 'app-popup-btn app-popup-btn-primary';
+          okBtn.textContent = opts.buttonText || 'Understood';
+          okBtn.onclick = function () {
+            closePopup();
+            if (typeof opts.onConfirm === 'function') opts.onConfirm();
+          };
+          actionsEl.appendChild(okBtn);
+        }
+      }
+
+      backdrop.style.display = 'flex';
+      void backdrop.offsetHeight; // force reflow for smooth transition
+      backdrop.classList.add('active');
+    }
+
+    // Intercept native browser alert to provide the sleek custom popup universally
+    window.alert = function (msg) {
+      showCustomPopup({
+        title: 'Notice',
+        tag: '// NOTICE',
+        message: String(msg || ''),
+        type: 'info'
+      });
+    };
 
     function parseRichText(raw) {
       if (!raw) return '';
@@ -2466,6 +3024,9 @@
         el.style.height = Math.max(el.scrollHeight + 4, el.id === 'cust-intro' ? 160 : (el.id === 'cust-bio' ? 100 : 120)) + 'px';
       }
 
+      var PREVIEW_ICON_SVG = '<svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8z" /><circle cx="12" cy="12" r="3" /></svg>';
+      var DOWNLOAD_ICON_SVG = '<svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4" /><polyline points="7 10 12 15 17 10" /><line x1="12" y1="15" x2="12" y2="3" /></svg>';
+
       function updateLivePreview() {
         var sitenameEl = document.getElementById('cust-sitename');
         var accentEl = document.getElementById('cust-accent');
@@ -2492,6 +3053,10 @@
 
         if (typeof updateLiveFontShowcase === 'function' && typeof currentFontFamily !== 'undefined') {
           updateLiveFontShowcase(currentFontFamily);
+        }
+        var cvInp = document.getElementById('cust-cv-label');
+        if (typeof syncCvLabelChips === 'function' && cvInp) {
+          syncCvLabelChips(cvInp.value);
         }
       }
 
@@ -2660,7 +3225,13 @@
         if (!hex) return;
         var norm = String(hex).trim().toLowerCase();
         if (currentPalette.length <= 1) {
-          alert('You must keep at least one color in your palette.');
+          showCustomPopup({
+            type: 'warning',
+            tag: '// PALETTE NOTICE',
+            title: 'Palette Required',
+            message: 'You must keep at least one color in your palette.',
+            buttonText: 'Understood'
+          });
           return;
         }
         var idx = currentPalette.indexOf(norm);
@@ -3711,6 +4282,646 @@
           }
         }
       }
+
+      /* ── CV / Resume File Upload Manager ── */
+      var pendingCvData = null;
+      var pendingCvFileName = '';
+
+      function getActiveCvUrl() {
+        if (pendingCvData) return pendingCvData;
+        var cvInp = document.getElementById('cust-cv-url');
+        if (cvInp && cvInp.value && cvInp.value.trim()) return cvInp.value.trim();
+        var link = document.getElementById('cust-cv-preview-link');
+        if (link) {
+          var du = link.getAttribute('data-url');
+          if (du && du !== '#' && !du.startsWith('javascript:')) return du;
+          var h = link.getAttribute('href');
+          if (h && h !== '#' && !h.startsWith('javascript:')) return h;
+        }
+        if (typeof CONFIG !== 'undefined' && CONFIG && CONFIG.cv_url) {
+          return CONFIG.cv_url;
+        }
+        try {
+          var saved = localStorage.getItem('portfolio_custom_config');
+          if (saved) {
+            var sc = JSON.parse(saved);
+            if (sc && sc.cv_url) return sc.cv_url;
+          }
+        } catch (_) {}
+        return '';
+      }
+
+      function updateCvDisplayUI(name, sizeStr, url) {
+        var badge = document.getElementById('cust-cv-badge');
+        var filenameEl = document.getElementById('cust-cv-filename');
+        var filesizeEl = document.getElementById('cust-cv-filesize');
+        var previewLink = document.getElementById('cust-cv-preview-link');
+        var dropTitle = document.getElementById('cust-cv-drop-title');
+        var dropSub = document.getElementById('cust-cv-drop-sub');
+        var cvUrlInput = document.getElementById('cust-cv-url');
+
+        if (!url && (!name || name === 'No file selected')) {
+          if (badge) badge.textContent = 'NONE';
+          if (filenameEl) filenameEl.textContent = 'No file selected';
+          if (filesizeEl) filesizeEl.textContent = '(Disabled)';
+          if (previewLink) {
+            previewLink.removeAttribute('data-url');
+            previewLink.href = '#';
+            previewLink.style.display = 'none';
+          }
+          if (dropTitle) dropTitle.textContent = 'Choose file or drag & drop here';
+          if (dropSub) dropSub.textContent = 'PDF, DOCX, Markdown, TXT, Images up to 15MB';
+          return;
+        }
+
+        var rawExt = (name && name.includes('.')) ? (name.split('.').pop() || '').toLowerCase() : '';
+        var badgeText = rawExt ? rawExt.toUpperCase() : 'DOC';
+        if (rawExt === 'docx' || rawExt === 'doc') badgeText = 'WORD';
+        else if (rawExt === 'png' || rawExt === 'jpg' || rawExt === 'jpeg' || rawExt === 'webp') badgeText = 'IMAGE';
+        else if (rawExt === 'md' || rawExt === 'markdown') badgeText = 'MD';
+        else if (rawExt === 'html' || rawExt === 'htm') badgeText = 'HTML';
+        if (url && (url.includes('drive.google.com') || url.includes('docs.google.com'))) badgeText = 'DRIVE';
+        else if (url && url.includes('notion.')) badgeText = 'NOTION';
+        else if (url && url.includes('github.com')) badgeText = 'GITHUB';
+        else if (url && url.includes('linkedin.com')) badgeText = 'LINKEDIN';
+        else if (url && /^(https?:\/\/)/i.test(url) && !rawExt) badgeText = 'LINK';
+        if (badge) badge.textContent = badgeText;
+        if (filenameEl) filenameEl.textContent = name || 'Document';
+        if (filesizeEl) filesizeEl.textContent = sizeStr ? ('(' + sizeStr + ')') : '';
+        if (previewLink) {
+          if (url) {
+            previewLink.setAttribute('data-url', url);
+            previewLink.href = (typeof url === 'string' && url.startsWith('data:')) ? '#' : url;
+            previewLink.style.display = 'inline-flex';
+          } else {
+            previewLink.removeAttribute('data-url');
+            previewLink.href = '#';
+            previewLink.style.display = 'none';
+          }
+        }
+        if (dropTitle) dropTitle.textContent = '✓ ' + (name || 'Document');
+        if (dropSub) dropSub.textContent = sizeStr ? ('File selected (' + sizeStr + ')') : 'Ready to save';
+        if (cvUrlInput && url && !url.startsWith('data:')) {
+          cvUrlInput.value = url;
+        }
+      }
+
+      async function handleCvFile(file) {
+        if (!file) return;
+        if (file.size > 15 * 1024 * 1024) {
+          showCustomPopup({
+            type: 'warning',
+            tag: '// FILE LIMIT',
+            title: 'File Size Exceeded',
+            message: 'The selected file exceeds the 15MB size limit.<br>Please select a smaller document or link an external cloud file.',
+            buttonText: 'Got It'
+          });
+          return;
+        }
+        var reader = new FileReader();
+        reader.onload = function (evt) {
+          pendingCvData = evt.target.result;
+          pendingCvFileName = file.name;
+          updateCvDisplayUI(file.name, (file.size / 1024).toFixed(1) + ' KB', pendingCvData);
+        };
+        reader.readAsDataURL(file);
+
+        // Upload to Cloudinary CDN if credentials exist
+        try {
+          var creds = (typeof getCloudinaryCredentials === 'function') ? getCloudinaryCredentials() : {};
+          if (creds.cloudName && creds.preset && typeof uploadToCloudinary === 'function') {
+            var dropSub = document.getElementById('cust-cv-drop-sub');
+            if (dropSub) dropSub.textContent = 'Uploading to Cloudinary CDN...';
+            var cleanBase = file.name.replace(/[^a-zA-Z0-9_-]/g, '_').replace(/\.[^/.]+$/, '');
+            var publicId = 'cv_' + cleanBase + '_' + Date.now();
+            var secureUrl = await uploadToCloudinary(file, 'MyPortfolioA', publicId);
+            if (secureUrl) {
+              pendingCvData = secureUrl;
+              var cvUrlInput = document.getElementById('cust-cv-url');
+              if (cvUrlInput) cvUrlInput.value = secureUrl;
+              updateCvDisplayUI(file.name, 'Cloud CDN (' + (file.size / 1024).toFixed(1) + ' KB)', secureUrl);
+              if (dropSub) dropSub.textContent = '✓ Uploaded to Cloudinary CDN! Saved automatically on Save.';
+            }
+          }
+        } catch (cErr) {
+          console.warn('Cloudinary CV upload notice:', cErr.message);
+        }
+      }
+
+      var cvFileInput = document.getElementById('cust-cv-file');
+      var cvDropzone = document.getElementById('cust-cv-dropzone');
+      if (cvDropzone) {
+        cvDropzone.addEventListener('dragover', function (e) {
+          e.preventDefault();
+          cvDropzone.style.borderColor = 'var(--red)';
+          cvDropzone.style.background = 'var(--surface-hover)';
+        });
+        cvDropzone.addEventListener('dragleave', function () {
+          cvDropzone.style.borderColor = 'var(--line-strong)';
+          cvDropzone.style.background = 'var(--bg)';
+        });
+        cvDropzone.addEventListener('drop', function (e) {
+          e.preventDefault();
+          cvDropzone.style.borderColor = 'var(--line-strong)';
+          cvDropzone.style.background = 'var(--bg)';
+          var droppedFile = e.dataTransfer && e.dataTransfer.files && e.dataTransfer.files[0];
+          if (droppedFile) {
+            handleCvFile(droppedFile);
+          }
+        });
+      }
+
+      if (cvFileInput) {
+        cvFileInput.addEventListener('change', function (e) {
+          var file = e.target.files && e.target.files[0];
+          if (file) handleCvFile(file);
+        });
+      }
+
+
+      var cvUrlInput = document.getElementById('cust-cv-url');
+      if (cvUrlInput) {
+        cvUrlInput.addEventListener('input', function () {
+          var val = cvUrlInput.value.trim();
+          if (val) {
+            pendingCvData = val;
+            pendingCvFileName = val.split('/').pop() || 'Remote CV';
+            updateCvDisplayUI(pendingCvFileName, 'External Link', val);
+          }
+        });
+      }
+
+      var cvLabelInput = document.getElementById('cust-cv-label');
+      var cvLiveBadge = document.getElementById('cust-cv-live-badge');
+      var cvPresetChips = document.querySelectorAll('.cv-label-preset-chip');
+      var cvActionHidden = document.getElementById('cust-cv-action');
+      var cvActionPreviewBtn = document.getElementById('cust-cv-action-preview');
+      var cvActionDownloadBtn = document.getElementById('cust-cv-action-download');
+      var cvLiveIconWrap = document.getElementById('cust-cv-live-icon-wrap');
+
+      var PREVIEW_ICON_SVG = '<svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8z" /><circle cx="12" cy="12" r="3" /></svg>';
+      var DOWNLOAD_ICON_SVG = '<svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4" /><polyline points="7 10 12 15 17 10" /><line x1="12" y1="15" x2="12" y2="3" /></svg>';
+
+      function formatCvLabelWithAccent(rawText) {
+        if (!rawText) return 'CV';
+        var accentInp = document.getElementById('cust-accent');
+        var accent = accentInp ? accentInp.value.trim() : 'x';
+        if (typeof formatWordmark === 'function') {
+          return formatWordmark(rawText, accent);
+        }
+        return rawText.replace(/\{([^}]+)\}/g, '<span class="glyph-5">$1</span>');
+      }
+
+      function syncCvLabelChips(currentVal) {
+        var chips = document.querySelectorAll('.cv-label-preset-chip');
+        var trimmed = (currentVal || '').trim();
+        var cleanForMatch = trimmed.replace(/\{([^}]+)\}/g, '$1').toLowerCase();
+        if (chips && chips.length) {
+          for (var i = 0; i < chips.length; i++) {
+            var chip = chips[i];
+            var chipVal = (chip.getAttribute('data-label') || '').toLowerCase();
+            if (chipVal && (chipVal === cleanForMatch || chipVal === trimmed.toLowerCase())) {
+              chip.style.borderColor = 'var(--red)';
+              chip.style.background = 'var(--red-dim)';
+              chip.style.color = 'var(--red)';
+            } else {
+              chip.style.borderColor = 'var(--line)';
+              chip.style.background = 'var(--surface)';
+              chip.style.color = 'var(--ink)';
+            }
+          }
+        }
+        var badge = document.getElementById('cust-cv-live-badge');
+        if (badge) {
+          badge.innerHTML = formatCvLabelWithAccent(trimmed || 'CV');
+        }
+        var previewBtn = document.getElementById('cust-cv-preview-link');
+        if (previewBtn) {
+          var actHidden = document.getElementById('cust-cv-action');
+          var act = (actHidden && actHidden.value === 'download') ? 'download' : 'preview';
+          var btnVerb = (act === 'download') ? 'Download ' : 'Preview ';
+          var iconSvg = (act === 'download') ? DOWNLOAD_ICON_SVG : PREVIEW_ICON_SVG;
+          var labelHtml = formatCvLabelWithAccent(trimmed || 'CV');
+          previewBtn.innerHTML = iconSvg + ' ' + btnVerb + labelHtml;
+        }
+      }
+
+      if (cvLabelInput) {
+        cvLabelInput.addEventListener('input', function () {
+          syncCvLabelChips(cvLabelInput.value);
+        });
+      }
+
+      if (cvPresetChips && cvPresetChips.forEach) {
+        cvPresetChips.forEach(function (chip) {
+          chip.addEventListener('click', function () {
+            var labelVal = chip.getAttribute('data-label') || 'CV';
+            if (cvLabelInput) {
+              cvLabelInput.value = labelVal;
+            }
+            syncCvLabelChips(labelVal);
+          });
+        });
+      }
+
+      /* ─── CV / Document In-Page Preview Modal Logic ─── */
+      function fetchDocumentText(targetUrl) {
+        if (targetUrl.startsWith('data:')) {
+          try {
+            var commaIdx = targetUrl.indexOf(',');
+            var meta = targetUrl.slice(0, commaIdx);
+            var payload = targetUrl.slice(commaIdx + 1);
+            if (meta.includes('base64')) {
+              var binary = atob(payload);
+              var bytes = new Uint8Array(binary.length);
+              for (var i = 0; i < binary.length; i++) bytes[i] = binary.charCodeAt(i);
+              var decoded = new TextDecoder('utf-8').decode(bytes);
+              return Promise.resolve(decoded);
+            }
+            return Promise.resolve(decodeURIComponent(payload));
+          } catch (e) {
+            return Promise.reject(e);
+          }
+        }
+        return fetch(targetUrl).then(function (res) {
+          if (!res.ok) throw new Error('Network error: ' + res.status);
+          return res.text();
+        });
+      }
+
+      function renderMarkdownDocument(raw) {
+        if (!raw) return '<p style="color:var(--ink-dim);">Empty document</p>';
+        var escaped = String(raw)
+          .replace(/&/g, '&amp;')
+          .replace(/</g, '&lt;')
+          .replace(/>/g, '&gt;')
+          .replace(/"/g, '&quot;');
+
+        escaped = escaped.replace(/```([\w-]*)\n([\s\S]*?)```/g, function (m, lang, code) {
+          return '<pre style="background:var(--bg); border:1px solid var(--line); border-radius:8px; padding:16px; margin:16px 0; overflow-x:auto; font-family:var(--font-mono); font-size:0.84rem; color:var(--ink);"><code>' + code.trim() + '</code></pre>';
+        });
+
+        var lines = escaped.split('\n');
+        var out = [];
+        var inList = false;
+
+        for (var i = 0; i < lines.length; i++) {
+          var line = lines[i];
+          var trimmed = line.trim();
+
+          if (/^(\*\*\*|---|___)$/.test(trimmed)) {
+            if (inList) { out.push('</ul>'); inList = false; }
+            out.push('<hr style="border:none; border-top:1px solid var(--line); margin:20px 0;">');
+            continue;
+          }
+          if (/^###\s+/.test(trimmed)) {
+            if (inList) { out.push('</ul>'); inList = false; }
+            out.push('<h3 style="font-family:var(--font-display); font-size:1.15rem; font-weight:700; color:var(--ink); margin:18px 0 8px 0;">' + trimmed.replace(/^###\s+/, '') + '</h3>');
+            continue;
+          }
+          if (/^##\s+/.test(trimmed)) {
+            if (inList) { out.push('</ul>'); inList = false; }
+            out.push('<h2 style="font-family:var(--font-display); font-size:1.35rem; font-weight:700; color:var(--ink); margin:24px 0 10px 0; padding-bottom:6px; border-bottom:1px solid var(--line);">' + trimmed.replace(/^##\s+/, '') + '</h2>');
+            continue;
+          }
+          if (/^#\s+/.test(trimmed)) {
+            if (inList) { out.push('</ul>'); inList = false; }
+            out.push('<h1 style="font-family:var(--font-display); font-size:1.6rem; font-weight:800; color:var(--ink); margin:22px 0 12px 0;">' + trimmed.replace(/^#\s+/, '') + '</h1>');
+            continue;
+          }
+          if (/^&gt;\s?/.test(trimmed)) {
+            if (inList) { out.push('</ul>'); inList = false; }
+            out.push('<blockquote style="border-left:3px solid var(--red); padding:8px 16px; margin:12px 0; background:var(--red-dim); color:var(--ink); font-style:italic; border-radius:0 6px 6px 0;">' + trimmed.replace(/^&gt;\s?/, '') + '</blockquote>');
+            continue;
+          }
+          if (/^[-*]\s+/.test(trimmed)) {
+            if (!inList) { out.push('<ul style="margin:8px 0 12px 22px; padding:0; display:flex; flex-direction:column; gap:6px;">'); inList = true; }
+            out.push('<li style="color:var(--ink);">' + trimmed.replace(/^[-*]\s+/, '') + '</li>');
+            continue;
+          } else if (inList) {
+            out.push('</ul>');
+            inList = false;
+          }
+          if (!trimmed) continue;
+
+          out.push('<p style="margin:8px 0; color:var(--ink); line-height:1.7;">' + trimmed + '</p>');
+        }
+        if (inList) out.push('</ul>');
+
+        var html = out.join('\n');
+        html = html.replace(/\[([^\]]+)\]\((https?:\/\/[^\s\)]+)\)/g, '<a href="$2" target="_blank" rel="noopener noreferrer" style="color:var(--red); text-decoration:underline;">$1</a>');
+        html = html.replace(/\{([^}]+)\}/g, '<span class="glyph-5">$1</span>');
+        html = html.replace(/\*\*([^*]+)\*\*/g, '<strong>$1</strong>');
+        html = html.replace(/__([^_]+)__/g, '<u>$1</u>');
+        html = html.replace(/(?:^|\s)\*([^*\s][^*]*[^*\s]|[^*])\*(?=\s|$|[.,!?:;])/g, ' <em>$1</em>');
+        html = html.replace(/(?:^|\s)_([^_\s][^_]*[^_\s]|[^_])_(?=\s|$|[.,!?:;])/g, ' <em>$1</em>');
+        html = html.replace(/`([^`]+)`/g, '<code style="background:var(--surface-hover); border:1px solid var(--line); border-radius:4px; padding:2px 6px; font-family:var(--font-mono); font-size:0.85em; color:var(--red);">$1</code>');
+
+        return html;
+      }
+
+      function openCvPreviewModal(url, label) {
+        var modal = document.getElementById('cv-preview-modal');
+        if (!modal) {
+          window.open(url, '_blank', 'noopener,noreferrer');
+          return;
+        }
+
+        var titleEl = document.getElementById('cv-modal-title');
+        var filenameEl = document.getElementById('cv-modal-filename');
+        var downloadBtn = document.getElementById('cv-modal-download-btn');
+        var closeBtn = document.getElementById('cv-modal-close-btn');
+        var loadingEl = document.getElementById('cv-modal-loading');
+        var canvasContainer = document.getElementById('cv-pdf-canvas-container');
+        var iframeEl = document.getElementById('cv-modal-iframe');
+        var imgEl = document.getElementById('cv-modal-img');
+        var textContainer = document.getElementById('cv-modal-text-container');
+
+        var cleanPath = (url || '').split('?')[0].split('#')[0];
+        var filename = cleanPath ? (cleanPath.split('/').pop() || (label || 'Document')) : (label || 'Document');
+        var plainLabel = label ? label.replace(/\{([^}]+)\}/g, '$1') : 'CV';
+
+        if (titleEl) titleEl.textContent = '// preview - ' + plainLabel;
+        if (filenameEl) filenameEl.textContent = filename;
+        if (downloadBtn) {
+          downloadBtn.href = url;
+          downloadBtn.setAttribute('download', filename);
+        }
+
+        // Reset viewer elements
+        if (loadingEl) loadingEl.style.display = 'flex';
+        if (canvasContainer) {
+          canvasContainer.innerHTML = '';
+          canvasContainer.style.display = 'none';
+        }
+        if (iframeEl) {
+          iframeEl.src = '';
+          iframeEl.style.display = 'none';
+        }
+        if (imgEl) {
+          imgEl.src = '';
+          imgEl.style.display = 'none';
+        }
+        if (textContainer) {
+          textContainer.innerHTML = '';
+          textContainer.style.display = 'none';
+        }
+
+        modal.classList.add('open');
+        document.body.style.overflow = 'hidden';
+
+        function closeModal() {
+          modal.classList.remove('open');
+          document.body.style.overflow = '';
+          if (iframeEl) iframeEl.src = '';
+        }
+
+        if (closeBtn) closeBtn.onclick = closeModal;
+        modal.onclick = function (e) {
+          if (e.target === modal) closeModal();
+        };
+        function escHandler(e) {
+          if (e.key === 'Escape') {
+            closeModal();
+            window.removeEventListener('keydown', escHandler);
+          }
+        }
+        window.addEventListener('keydown', escHandler);
+
+        var lowerPath = cleanPath.toLowerCase();
+        var isPdf = lowerPath.endsWith('.pdf') || (url && url.startsWith('data:application/pdf'));
+        var isImg = /\.(png|jpe?g|webp|gif|svg|bmp|ico)$/i.test(lowerPath) || (url && url.startsWith('data:image/'));
+        var isMarkdown = /\.(md|markdown)$/i.test(lowerPath) || (url && url.startsWith('data:text/markdown'));
+        var isPlainText = /\.(txt|rtf|json|csv|log)$/i.test(lowerPath) || (url && (url.startsWith('data:text/plain') || url.startsWith('data:text/rtf')));
+        var isHtml = /\.(html?|htm)$/i.test(lowerPath) || (url && url.startsWith('data:text/html'));
+        var isDocx = /\.(docx?|doc)$/i.test(lowerPath) || (url && (url.startsWith('data:application/vnd.openxmlformats') || url.startsWith('data:application/msword')));
+
+        if (isImg && imgEl) {
+          imgEl.src = url;
+          imgEl.style.display = 'block';
+          if (loadingEl) loadingEl.style.display = 'none';
+        } else if (isPdf) {
+          if (window.pdfjsLib && canvasContainer) {
+            try {
+              pdfjsLib.GlobalWorkerOptions.workerSrc = 'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js';
+              var pdfSource = url;
+              if (typeof url === 'string' && url.startsWith('data:application/pdf;base64,')) {
+                try {
+                  var rawB64 = url.split(',')[1];
+                  var binStr = window.atob(rawB64);
+                  var bLen = binStr.length;
+                  var u8 = new Uint8Array(bLen);
+                  for (var bi = 0; bi < bLen; bi++) {
+                    u8[bi] = binStr.charCodeAt(bi);
+                  }
+                  pdfSource = { data: u8 };
+                } catch (b64Err) {
+                  console.warn('Base64 decode error:', b64Err);
+                  pdfSource = url;
+                }
+              }
+              var loadingTask = pdfjsLib.getDocument(pdfSource);
+              loadingTask.promise.then(function (pdf) {
+                canvasContainer.innerHTML = '';
+                canvasContainer.style.display = 'flex';
+                if (loadingEl) loadingEl.style.display = 'none';
+
+                for (var i = 1; i <= pdf.numPages; i++) {
+                  (function (pageNum) {
+                    pdf.getPage(pageNum).then(function (page) {
+                      var scale = 1.5;
+                      var viewport = page.getViewport({ scale: scale });
+                      var canvas = document.createElement('canvas');
+                      canvas.className = 'cv-pdf-page-canvas';
+                      canvas.style.maxWidth = '96%';
+                      canvas.style.height = 'auto';
+                      canvas.style.borderRadius = '4px';
+                      canvas.style.boxShadow = '0 8px 24px rgba(0,0,0,0.55)';
+                      canvas.style.background = '#ffffff';
+                      var ctx = canvas.getContext('2d');
+                      canvas.height = viewport.height;
+                      canvas.width = viewport.width;
+                      page.render({ canvasContext: ctx, viewport: viewport });
+                      canvasContainer.appendChild(canvas);
+                    });
+                  })(i);
+                }
+              }).catch(function (err) {
+                console.warn('[PDF.js] Canvas render failed, fallback to iframe:', err);
+                if (loadingEl) loadingEl.style.display = 'none';
+                if (iframeEl) {
+                  iframeEl.src = (url.startsWith('data:') ? url : (url + '#toolbar=0'));
+                  iframeEl.style.display = 'block';
+                }
+              });
+            } catch (err) {
+              if (loadingEl) loadingEl.style.display = 'none';
+              if (iframeEl) {
+                iframeEl.src = (url.startsWith('data:') ? url : (url + '#toolbar=0'));
+                iframeEl.style.display = 'block';
+              }
+            }
+          } else {
+            if (loadingEl) loadingEl.style.display = 'none';
+            if (iframeEl) {
+              iframeEl.src = (url.startsWith('data:') ? url : (url + '#toolbar=0'));
+              iframeEl.style.display = 'block';
+            }
+          }
+        } else if (isMarkdown && textContainer) {
+          fetchDocumentText(url).then(function (mdText) {
+            textContainer.innerHTML = renderMarkdownDocument(mdText);
+            textContainer.style.display = 'block';
+            if (loadingEl) loadingEl.style.display = 'none';
+          }).catch(function (err) {
+            textContainer.innerHTML = '<p style="color:var(--red);">Could not load markdown preview: ' + escapeHtml(err.message) + '</p>';
+            textContainer.style.display = 'block';
+            if (loadingEl) loadingEl.style.display = 'none';
+          });
+        } else if (isPlainText && textContainer) {
+          fetchDocumentText(url).then(function (plainText) {
+            textContainer.innerHTML = '<pre style="font-family:var(--font-mono); font-size:0.86rem; color:var(--ink); white-space:pre-wrap; background:var(--surface); padding:24px; border-radius:8px; border:1px solid var(--line); line-height:1.65; max-width:100%; overflow-x:auto;">' + escapeHtml(plainText) + '</pre>';
+            textContainer.style.display = 'block';
+            if (loadingEl) loadingEl.style.display = 'none';
+          }).catch(function (err) {
+            textContainer.innerHTML = '<p style="color:var(--red);">Could not load text preview: ' + escapeHtml(err.message) + '</p>';
+            textContainer.style.display = 'block';
+            if (loadingEl) loadingEl.style.display = 'none';
+          });
+        } else if (isHtml && iframeEl) {
+          iframeEl.src = url;
+          iframeEl.style.display = 'block';
+          if (loadingEl) loadingEl.style.display = 'none';
+        } else if (isDocx) {
+          if (url.startsWith('http://') || url.startsWith('https://')) {
+            iframeEl.src = 'https://view.officeapps.live.com/op/embed.aspx?src=' + encodeURIComponent(url);
+            iframeEl.style.display = 'block';
+            if (loadingEl) loadingEl.style.display = 'none';
+          } else if (textContainer) {
+            textContainer.innerHTML = '<div style="text-align:center; padding:48px 24px; display:flex; flex-direction:column; align-items:center; gap:12px;"><div style="font-size:3.2rem; line-height:1;">📑</div><h4 style="font-family:var(--font-display); font-size:1.2rem; font-weight:700; color:var(--ink); margin:0;">' + escapeHtml(filename) + '</h4><p style="font-size:0.84rem; color:var(--ink-dim); margin:0; font-family:var(--font-mono);">Word Document Ready to View</p><div style="display:flex; gap:10px; margin-top:8px;"><a href="' + url + '" download="' + filename + '" class="toolbar-btn" style="padding:10px 22px; font-size:0.84rem; font-weight:600; background:var(--red-solid); color:#fff; border-radius:8px; display:inline-flex; align-items:center; gap:8px; text-decoration:none;"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4" /><polyline points="7 10 12 15 17 10" /><line x1="12" y1="15" x2="12" y2="3" /></svg><span>Download / Open Document</span></a></div></div>';
+            textContainer.style.display = 'block';
+            if (loadingEl) loadingEl.style.display = 'none';
+          }
+        } else {
+          if (loadingEl) loadingEl.style.display = 'none';
+          if (iframeEl) {
+            iframeEl.src = url;
+            iframeEl.style.display = 'block';
+          }
+        }
+      }
+
+      function syncCvActionUI(action) {
+        var act = (action === 'download') ? 'download' : 'preview';
+        if (cvActionHidden) cvActionHidden.value = act;
+        if (cvLiveIconWrap) {
+          cvLiveIconWrap.innerHTML = (act === 'download') ? DOWNLOAD_ICON_SVG : PREVIEW_ICON_SVG;
+        }
+        if (cvActionPreviewBtn && cvActionDownloadBtn) {
+          if (act === 'preview') {
+            cvActionPreviewBtn.style.background = 'var(--red-dim)';
+            cvActionPreviewBtn.style.color = 'var(--red)';
+            cvActionPreviewBtn.style.borderColor = 'var(--border-accent)';
+            cvActionDownloadBtn.style.background = 'transparent';
+            cvActionDownloadBtn.style.color = 'var(--ink-dim)';
+            cvActionDownloadBtn.style.borderColor = 'transparent';
+          } else {
+            cvActionDownloadBtn.style.background = 'var(--red-dim)';
+            cvActionDownloadBtn.style.color = 'var(--red)';
+            cvActionDownloadBtn.style.borderColor = 'var(--border-accent)';
+            cvActionPreviewBtn.style.background = 'transparent';
+            cvActionPreviewBtn.style.color = 'var(--ink-dim)';
+            cvActionPreviewBtn.style.borderColor = 'transparent';
+          }
+        }
+        var previewBtn = document.getElementById('cust-cv-preview-link');
+        if (previewBtn) {
+          var label = (cvLabelInput && cvLabelInput.value.trim()) ? cvLabelInput.value.trim() : 'CV';
+          var btnVerb = (act === 'download') ? 'Download ' : 'Preview ';
+          var iconSvg = (act === 'download') ? DOWNLOAD_ICON_SVG : PREVIEW_ICON_SVG;
+          var labelHtml = formatCvLabelWithAccent(label);
+          previewBtn.innerHTML = iconSvg + ' ' + btnVerb + labelHtml;
+
+          previewBtn.onclick = function (e) {
+            e.preventDefault();
+            e.stopPropagation();
+            var currentAct = (cvActionHidden && cvActionHidden.value === 'download') ? 'download' : 'preview';
+            var targetUrl = (typeof getActiveCvUrl === 'function') ? getActiveCvUrl() : (pendingCvData || (cvUrlInput && cvUrlInput.value.trim()) || '');
+            if (!targetUrl) {
+              showCustomPopup({
+                type: 'document',
+                tag: '// CV SYSTEM',
+                title: 'No Document Uploaded',
+                message: 'No CV or document has been uploaded yet.<br>Please choose a file or paste an external link first.',
+                buttons: [
+                  {
+                    text: '<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg> Choose File',
+                    primary: true,
+                    onClick: function () {
+                      var fi = document.getElementById('cust-cv-file');
+                      if (fi) fi.click();
+                    }
+                  },
+                  {
+                    text: '<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg> Paste Link',
+                    primary: false,
+                    onClick: function () {
+                      var urlInp = document.getElementById('cust-cv-url');
+                      if (urlInp) {
+                        urlInp.focus();
+                        urlInp.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                      }
+                    }
+                  },
+                  {
+                    text: 'Dismiss',
+                    primary: false
+                  }
+                ]
+              });
+              return false;
+            }
+            var currentLabel = (cvLabelInput && cvLabelInput.value.trim()) ? cvLabelInput.value.trim() : 'CV';
+            var cleanTarget = targetUrl.split('?')[0].split('#')[0];
+            var isExternalLink = !targetUrl.startsWith('data:') && /^(https?:\/\/)/i.test(targetUrl) && !/\.(pdf|docx?|rtf|txt|md|markdown|html?|png|jpe?g|webp)$/i.test(cleanTarget);
+
+            if (isExternalLink) {
+              window.open(targetUrl, '_blank', 'noopener,noreferrer');
+              return false;
+            }
+
+            if (currentAct === 'download') {
+              var a = document.createElement('a');
+              a.href = targetUrl;
+              var fn = (pendingCvFileName || 'document').replace(/[^a-zA-Z0-9._-]/g, '_');
+              if (!fn.includes('.')) {
+                fn += (targetUrl.startsWith('data:application/pdf') ? '.pdf' : '.bin');
+              }
+              a.download = fn;
+              document.body.appendChild(a);
+              a.click();
+              document.body.removeChild(a);
+              return false;
+            }
+            openCvPreviewModal(targetUrl, currentLabel);
+            return false;
+          };
+        }
+      }
+
+      if (cvActionPreviewBtn) {
+        cvActionPreviewBtn.addEventListener('click', function () {
+          syncCvActionUI('preview');
+        });
+      }
+      if (cvActionDownloadBtn) {
+        cvActionDownloadBtn.addEventListener('click', function () {
+          syncCvActionUI('download');
+        });
+      }
+
+      // Initialize CV preview button and action state immediately
+      syncCvActionUI((cvActionHidden && cvActionHidden.value) || 'preview');
 
       /* ── Universal Accordion Eyebrow Toggles & Section Manager ── */
       function setAccordionState(toggle, expand) {
@@ -5653,6 +6864,39 @@
         updateCloudinaryStatusUI();
         updateLivePreview();
 
+        /* Restore CV / Resume settings */
+        var cvUrl = cfg.cv_url || '';
+        pendingCvData = cvUrl || null;
+        if (cvUrl) {
+          pendingCvFileName = cvUrl.startsWith('data:') ? 'Uploaded Document' : (cvUrl.split('/').pop() || 'Document');
+        } else {
+          pendingCvFileName = '';
+        }
+        var cvUrlInput = document.getElementById('cust-cv-url');
+        if (cvUrlInput) cvUrlInput.value = cvUrl.startsWith('data:') ? '' : cvUrl;
+        var cvToggle = document.getElementById('cust-cv-enabled');
+        if (cvToggle) cvToggle.checked = (cfg.cv_enabled === true);
+        var cvLabelVal = cfg.cv_label || 'CV';
+        var cvLabelInp = document.getElementById('cust-cv-label');
+        if (cvLabelInp) cvLabelInp.value = cvLabelVal;
+        if (typeof syncCvLabelChips === 'function') {
+          syncCvLabelChips(cvLabelVal);
+        }
+        var cvActionVal = cfg.cv_action || 'preview';
+        if (typeof syncCvActionUI === 'function') {
+          syncCvActionUI(cvActionVal);
+        }
+        if (cvUrl) {
+          var displayCvName = cvUrl.startsWith('data:') ? 'Uploaded Document' : (cvUrl.split('/').pop() || 'Document');
+          if (typeof updateCvDisplayUI === 'function') {
+            updateCvDisplayUI(displayCvName, cvUrl.startsWith('data:') ? 'Saved File' : 'Active', cvUrl);
+          }
+        } else {
+          if (typeof updateCvDisplayUI === 'function') {
+            updateCvDisplayUI('No file selected', 'Disabled', '');
+          }
+        }
+
         /* Render skills in visual manager */
         var activeSkills = [];
         if (cfg.skills && Array.isArray(cfg.skills)) {
@@ -5813,8 +7057,16 @@
                 authorized: window.Clerk && window.Clerk.user ? isUserAuthorized(window.Clerk.user) : false
               });
               if (!isSilent) {
-                alert('Access Denied: Only authorized administrators can save changes.');
-                window.location.replace('/');
+                showCustomPopup({
+                  type: 'error',
+                  tag: '// ACCESS RESTRICTED',
+                  title: 'Access Denied',
+                  message: 'Only authorized administrators can save changes.',
+                  buttonText: 'Return Home',
+                  onConfirm: function () {
+                    window.location.replace('/');
+                  }
+                });
               }
               return;
             }
@@ -5938,12 +7190,22 @@
             resolvedAvatar = 'https://avatars.githubusercontent.com/u/225553218?v=4';
           }
 
+          var cvUrlVal = (document.getElementById('cust-cv-url') || {}).value || '';
+          var resolvedCv = (typeof pendingCvData !== 'undefined' && pendingCvData !== null) ? pendingCvData : (cvUrlVal.trim() || ((typeof CONFIG !== 'undefined' && CONFIG.cv_url) ? CONFIG.cv_url : ''));
+          var cvEnabledVal = document.getElementById('cust-cv-enabled') ? document.getElementById('cust-cv-enabled').checked : false;
+          var cvLabelVal = ((document.getElementById('cust-cv-label') || {}).value || '').trim() || 'CV';
+          var cvActionVal = (document.getElementById('cust-cv-action') || {}).value || 'preview';
+
           var themeColorMeta = document.getElementById('meta-theme-color');
           if (themeColorMeta) {
             themeColorMeta.setAttribute('content', currentThemeMode === 'light' ? '#ffffff' : '#0a0a0e');
           }
 
           var updated = {
+            cv_url: resolvedCv,
+            cv_enabled: cvEnabledVal,
+            cv_label: cvLabelVal,
+            cv_action: cvActionVal,
             github: (typeof cleanGitHubUsername === 'function')
               ? cleanGitHubUsername((document.getElementById('cust-github') || {}).value || '')
               : (((document.getElementById('cust-github') || {}).value || '').trim()),
@@ -6092,7 +7354,13 @@
             errStatus.textContent = '⚠️ Save error: ' + (saveErr && saveErr.message ? saveErr.message : saveErr);
           }
           if (!isSilent) {
-            alert('Save error: ' + (saveErr && saveErr.message ? saveErr.message : saveErr));
+            showCustomPopup({
+              type: 'error',
+              tag: '// SAVE FAILED',
+              title: 'Error Saving Settings',
+              message: 'Failed to save configuration:<br>' + (saveErr && saveErr.message ? saveErr.message : saveErr),
+              buttonText: 'Dismiss'
+            });
           }
         }
       }
@@ -6259,13 +7527,35 @@
         }
       }
 
+      var clerkAttempts = 0;
       function initClerk() {
         var pubKey = (typeof CONFIG !== 'undefined' && CONFIG.clerk_publishable_key)
           ? CONFIG.clerk_publishable_key
           : 'pk_test_c2hpbmluZy10dXJrZXktMTMyNS5jbGVyay5hY2NvdW50cy5kZXYk';
 
         if (!window.Clerk) {
+          clerkAttempts++;
+          if (clerkAttempts > 35) { // ~5 seconds
+            var loadingMsg = document.getElementById('clerk-loading-msg');
+            if (loadingMsg) {
+              loadingMsg.innerHTML = '<span style="color:var(--red);">⚠️ Authentication script could not be loaded.</span><br><span style="font-size:0.75rem; color:var(--ink-dim); display:inline-block; margin-top:6px;">If you are using <strong>Brave Shields</strong> or an ad blocker, please allow scripts or turn off Shields for this site, then <a href="javascript:location.reload()" style="color:var(--red); text-decoration:underline;">reload</a>.</span>';
+            }
+          }
           setTimeout(initClerk, 150);
+          return;
+        }
+
+        function onClerkReady() {
+          try {
+            window.Clerk.addListener(function () {
+              refreshLoginAuth();
+            });
+          } catch (_) {}
+          refreshLoginAuth();
+        }
+
+        if (window.Clerk.loaded) {
+          onClerkReady();
           return;
         }
 
@@ -6284,14 +7574,12 @@
             }
           }
         }).then(function () {
-          window.Clerk.addListener(function () {
-            refreshLoginAuth();
-          });
-          refreshLoginAuth();
+          onClerkReady();
         }).catch(function (err) {
           console.error('[Clerk] Load failed:', err);
           var loadingMsg = document.getElementById('clerk-loading-msg');
           if (loadingMsg) loadingMsg.textContent = 'Auth service ready. Click to sign in.';
+          refreshLoginAuth();
         });
       }
 
