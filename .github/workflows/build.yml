@@ -1,0 +1,36 @@
+name: Build Verification
+
+on:
+  push:
+    branches: ["main"]
+  pull_request:
+    branches: ["main"]
+
+jobs:
+  build:
+    name: Build & Verify
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 18
+          cache: "npm"
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Verify Build
+        run: npm run build
+
+      - name: Syntax Check
+        run: |
+          node --check api/config.js
+          node --check api/get-config.js
+          node --check api/save-config.js
+          node --check backend/dev-server.js
+          node --check backend/sync-env.js
+          node --check frontend/app.js
