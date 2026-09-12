@@ -483,11 +483,21 @@
     var textContainer = document.getElementById('cv-modal-text-container');
 
     var cleanPath = (url || 'document').split('?')[0].split('#')[0];
-    var filename = cleanPath.split('/').pop() || (label || 'CV');
+    var isDataUrl = url && url.startsWith('data:');
+    var filename = isDataUrl
+      ? (label ? label.replace(/\{([^}]+)\}/g, '$1') : 'CV') + '.pdf'
+      : (cleanPath.split('/').pop() || (label || 'CV'));
     var plainLabel = label ? label.replace(/\{([^}]+)\}/g, '$1') : 'CV';
 
     if (titleEl) titleEl.textContent = '// preview - ' + plainLabel;
-    if (filenameEl) filenameEl.textContent = filename;
+    if (filenameEl) {
+      if (isDataUrl) {
+        filenameEl.style.display = 'none';
+      } else {
+        filenameEl.style.display = '';
+        filenameEl.textContent = filename;
+      }
+    }
     if (downloadBtn) {
       downloadBtn.href = url;
       downloadBtn.setAttribute('download', filename);
@@ -521,7 +531,10 @@
       if (iframeEl) iframeEl.src = '';
     }
 
+    var cancelBtn = document.getElementById('cv-modal-cancel-btn');
+
     if (closeBtn) closeBtn.onclick = closeModal;
+    if (cancelBtn) cancelBtn.onclick = closeModal;
     modal.onclick = function (e) {
       if (e.target === modal) closeModal();
     };
@@ -1518,33 +1531,35 @@
       var icon = getDeviceIcon(d.icon || type);
 
       html += '<div class="device-card">';
-      html += '  <div class="device-top-row">';
-      html += '    <div class="device-icon-box">';
-      html += '      <iconify-icon icon="' + escapeHtml(icon) + '" width="18" height="18"></iconify-icon>';
-      html += '    </div>';
-      if (tag) {
-        html += '    <span class="device-tag">' + escapeHtml(tag) + '</span>';
-      }
+      html += '  <div class="device-icon-box">';
+      html += '    <iconify-icon icon="' + escapeHtml(icon) + '" width="22" height="22"></iconify-icon>';
       html += '  </div>';
+      html += '  <div class="device-content">';
+      html += '    <div class="device-header">';
+      html += '      <div class="device-title-area">';
       if (name) {
-        html += '  <h3 class="device-name">' + escapeHtml(name) + '</h3>';
+        html += '        <h3 class="device-name">' + escapeHtml(name) + '</h3>';
       }
       if (specs) {
-        html += '  <div class="device-specs">';
-        html += '    <span>' + escapeHtml(specs) + '</span>';
-        html += '  </div>';
+        html += '        <div class="device-specs"><span>' + escapeHtml(specs) + '</span></div>';
       }
+      html += '      </div>';
+      if (tag) {
+        html += '      <span class="device-tag">' + escapeHtml(tag) + '</span>';
+      }
+      html += '    </div>';
       if (desc) {
-        html += '  <p class="device-desc">' + parseRichText(desc) + '</p>';
+        html += '    <p class="device-desc">' + parseRichText(desc) + '</p>';
       }
       if (url) {
-        html += '  <div class="device-action">';
-        html += '    <a href="' + escapeHtml(url) + '" target="_blank" rel="noopener noreferrer" class="device-link">';
-        html += '      <span>View Specs</span>';
-        html += '      <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M7 17L17 7H7M17 7v10"/></svg>';
-        html += '    </a>';
-        html += '  </div>';
+        html += '    <div class="device-action">';
+        html += '      <a href="' + escapeHtml(url) + '" target="_blank" rel="noopener noreferrer" class="device-link">';
+        html += '        <span>View Specs</span>';
+        html += '        <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M7 17L17 7H7M17 7v10"/></svg>';
+        html += '      </a>';
+        html += '    </div>';
       }
+      html += '  </div>';
       html += '</div>';
     });
     html += '</div>';

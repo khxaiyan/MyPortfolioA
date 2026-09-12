@@ -2771,27 +2771,27 @@
   </div>
 
   <!-- ── CV / Document In-Page Preview Modal ── -->
-  <div id="cv-preview-modal" class="modal-overlay" role="dialog" aria-modal="true" aria-labelledby="cv-modal-title" style="z-index:99999;">
-    <div class="modal-dialog cv-preview-dialog" style="max-width:920px; width:94%; max-height:92vh; padding:0; display:flex; flex-direction:column; overflow:hidden; border:1px solid var(--border-accent); box-shadow:0 24px 60px rgba(0,0,0,0.7), 0 0 35px var(--border-accent-glow); background:var(--surface);">
+  <div id="cv-preview-modal" class="modal-overlay cv-modal-overlay" role="dialog" aria-modal="true" aria-labelledby="cv-modal-title">
+    <div class="modal-dialog cv-preview-dialog">
       <!-- Modal Top Bar -->
-      <div style="display:flex; align-items:center; justify-content:space-between; padding:12px 18px; border-bottom:1px solid var(--line); background:var(--bg);">
-        <div style="display:flex; align-items:center; gap:10px;">
-          <span style="color:var(--red); display:flex; align-items:center;">
+      <div class="cv-modal-header">
+        <div class="cv-modal-title-box">
+          <span class="cv-modal-icon">
             <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
               <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8z" />
               <circle cx="12" cy="12" r="3" />
             </svg>
           </span>
-          <div style="display:flex; flex-direction:column; gap:2px;">
-            <h3 id="cv-modal-title" style="font-family:var(--font-display); font-size:0.95rem; font-weight:700; color:var(--ink); margin:0; line-height:1.2;">
+          <div class="cv-modal-title-text">
+            <h3 id="cv-modal-title" class="cv-modal-title">
               Preview Document
             </h3>
-            <span id="cv-modal-filename" style="font-family:var(--font-mono); font-size:0.7rem; color:var(--ink-faint); line-height:1;">Document</span>
+            <span id="cv-modal-filename" class="cv-modal-filename">Document</span>
           </div>
         </div>
 
-        <div style="display:flex; align-items:center; gap:8px;">
-          <a id="cv-modal-download-btn" href="#" download="document" class="toolbar-btn" style="padding:6px 14px; font-size:0.75rem; font-family:var(--font-mono); font-weight:600; display:inline-flex; align-items:center; gap:6px; background:var(--surface-hover); color:var(--ink); border:1px solid var(--line); border-radius:var(--radius-sm, 8px); text-decoration:none; cursor:pointer;" title="Download to device">
+        <div class="cv-modal-actions">
+          <a id="cv-modal-download-btn" href="#" download="document" class="toolbar-btn cv-modal-download-btn" title="Download to device">
             <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
               <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4" />
               <polyline points="7 10 12 15 17 10" />
@@ -2799,20 +2799,35 @@
             </svg>
             <span>Download</span>
           </a>
-          <button type="button" id="cv-modal-close-btn" class="modal-close-btn" style="width:32px; height:32px; display:inline-flex; align-items:center; justify-content:center; background:var(--surface-hover); border:1px solid var(--line); border-radius:8px; color:var(--ink-dim); cursor:pointer; font-size:1rem;" aria-label="Close Preview">✕</button>
+          <button type="button" id="cv-modal-cancel-btn" class="cv-modal-cancel-btn" aria-label="Cancel Preview">
+            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+            <span>Cancel</span>
+          </button>
         </div>
       </div>
 
       <!-- Modal Body (Viewer container) -->
-      <div id="cv-modal-viewer-body" style="flex:1; overflow-y:auto; overflow-x:hidden; position:relative; background:#121319; display:flex; flex-direction:column; align-items:center; min-height:450px; max-height:calc(92vh - 60px); width:100%;">
-        <div id="cv-modal-loading" style="display:flex; flex-direction:column; align-items:center; justify-content:center; gap:12px; color:var(--ink-dim); font-family:var(--font-mono); font-size:0.85rem; padding:60px 20px;">
-          <div style="width:30px; height:30px; border:2.5px solid var(--line-strong); border-top-color:var(--red); border-radius:50%; animation:spin 0.8s linear infinite;"></div>
+      <div id="cv-modal-viewer-body" class="cv-modal-viewer-body">
+        <div id="cv-modal-loading" class="cv-modal-loading">
+          <div class="cv-modal-spinner"></div>
           <span>Rendering document preview...</span>
         </div>
-        <div id="cv-pdf-canvas-container" style="display:flex; flex-direction:column; align-items:center; width:100%; gap:16px; padding:18px 12px;"></div>
-        <iframe id="cv-modal-iframe" style="display:none; width:100%; height:75vh; border:none; background:#ffffff;" title="Document Preview"></iframe>
-        <img id="cv-modal-img" style="display:none; max-width:96%; max-height:75vh; object-fit:contain; border-radius:6px; box-shadow:0 8px 30px rgba(0,0,0,0.5); margin:20px auto;" alt="CV Preview" />
-        <div id="cv-modal-text-container" style="display:none; width:100%; max-width:840px; padding:32px 24px; color:var(--ink); font-family:var(--font-sans, system-ui); font-size:0.92rem; line-height:1.7; word-break:break-word; overflow-wrap:break-word;"></div>
+        <div id="cv-pdf-canvas-container" class="cv-pdf-canvas-container"></div>
+        <iframe id="cv-modal-iframe" class="cv-modal-iframe" title="Document Preview"></iframe>
+        <img id="cv-modal-img" class="cv-modal-img" alt="CV Preview" />
+        <div id="cv-modal-text-container" class="cv-modal-text-container"></div>
+      </div>
+
+      <!-- Floating Zoom Toolbar -->
+      <div id="cv-zoom-toolbar" class="cv-zoom-toolbar">
+        <button type="button" id="cv-zoom-out-btn" class="cv-zoom-btn" title="Zoom Out" aria-label="Zoom Out">
+          <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="5" y1="12" x2="19" y2="12"/></svg>
+        </button>
+        <span id="cv-zoom-level-text" class="cv-zoom-level">Fit</span>
+        <button type="button" id="cv-zoom-in-btn" class="cv-zoom-btn" title="Zoom In" aria-label="Zoom In">
+          <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+        </button>
+        <button type="button" id="cv-zoom-fit-btn" class="cv-zoom-btn cv-zoom-fit-btn" title="Fit to Screen">Fit</button>
       </div>
     </div>
   </div>
@@ -4832,11 +4847,21 @@
         var textContainer = document.getElementById('cv-modal-text-container');
 
         var cleanPath = (url || '').split('?')[0].split('#')[0];
-        var filename = cleanPath ? (cleanPath.split('/').pop() || (label || 'Document')) : (label || 'Document');
+        var isDataUrl = url && url.startsWith('data:');
+        var filename = isDataUrl
+          ? (label ? label.replace(/\{([^}]+)\}/g, '$1') : 'Document') + '.pdf'
+          : (cleanPath ? (cleanPath.split('/').pop() || (label || 'Document')) : (label || 'Document'));
         var plainLabel = label ? label.replace(/\{([^}]+)\}/g, '$1') : 'CV';
 
         if (titleEl) titleEl.textContent = '// preview - ' + plainLabel;
-        if (filenameEl) filenameEl.textContent = filename;
+        if (filenameEl) {
+          if (isDataUrl) {
+            filenameEl.style.display = 'none';
+          } else {
+            filenameEl.style.display = '';
+            filenameEl.textContent = filename;
+          }
+        }
         if (downloadBtn) {
           downloadBtn.href = url;
           downloadBtn.setAttribute('download', filename);
@@ -4870,7 +4895,10 @@
           if (iframeEl) iframeEl.src = '';
         }
 
+        var cancelBtn = document.getElementById('cv-modal-cancel-btn');
+
         if (closeBtn) closeBtn.onclick = closeModal;
+        if (cancelBtn) cancelBtn.onclick = closeModal;
         modal.onclick = function (e) {
           if (e.target === modal) closeModal();
         };
