@@ -4,8 +4,8 @@
 
 <p><em>A modern, high-performance, minimalist developer portfolio featuring zero-flash theme hydration, dynamic GitHub project and language synchronization, cloud persistence, and a secure serverless architecture.</em></p>
 
-[![Live Site](https://img.shields.io/badge/Live_Site-khxaiyan.vercel.app-00ff00?style=for-the-badge&logo=vercel&logoColor=black)](https://khxaiyan.vercel.app)
-[![GitHub](https://img.shields.io/badge/GitHub-@khxaiyan-181717?style=for-the-badge&logo=github&logoColor=white)](https://github.com/khxaiyan)
+[![Live Site](https://img.shields.io/badge/Live_Site-khxaiyan.vercel.app-000000?style=for-the-badge&logo=vercel&logoColor=black)](https://khxaiyan.vercel.app)   
+[![GitHub](https://img.shields.io/badge/GitHub-@khxaiyan-000000?style=for-the-badge&logo=github&logoColor=white)](https://github.com/khxaiyan)   
 [![License](https://img.shields.io/badge/License-MIT-blue?style=for-the-badge)](LICENSE)
 
 </div>
