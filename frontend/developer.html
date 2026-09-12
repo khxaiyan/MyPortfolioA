@@ -135,6 +135,11 @@
       user-select: none;
     }
 
+    body {
+      padding-top: 0 !important;
+      overflow-x: clip;
+    }
+
     .cust-container {
       width: 100%;
       max-width: 640px;
@@ -143,12 +148,19 @@
     }
 
     .cust-header {
+      position: sticky;
+      top: 0;
+      z-index: 1000;
       display: flex;
       align-items: center;
       justify-content: space-between;
       margin-bottom: 24px;
+      padding-top: 16px;
       padding-bottom: 14px;
+      background: var(--bg);
       border-bottom: 1px solid var(--line);
+      box-shadow: 0 4px 16px rgba(0, 0, 0, 0.25);
+      transition: background 0.25s, border-color 0.2s, box-shadow 0.2s;
     }
 
     .cust-title-group {
@@ -1216,11 +1228,6 @@
       </div>
       <div style="display:flex; align-items:center; gap:10px;">
         <div id="clerk-user-button"></div>
-        <button type="button" class="back-btn" id="btn-theme-toggle" title="Toggle dark / light theme"
-          style="cursor:pointer;">
-          <span id="theme-toggle-icon">🌙</span>
-          <span id="theme-toggle-label" style="font-size:0.75rem;">Theme</span>
-        </button>
         <a href="index.html" class="back-btn">
           <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
             stroke-linecap="round" stroke-linejoin="round">
@@ -2615,9 +2622,58 @@
             <strong>Unsigned</strong>.
           </p>
         </div>
+      <!-- 13. // advance settings (developer access trigger) -->
+      <div class="cust-section">
+        <div id="cust-advance-toggle" class="accordion-eyebrow-toggle" role="button" tabindex="0"
+          aria-expanded="false" aria-controls="cust-advance-card"
+          style="display:inline-flex; align-items:center; gap:7px; cursor:pointer; margin-bottom:8px; user-select:none;">
+          <p class="eyebrow" style="margin:0; cursor:pointer; color:var(--ink-dim); transition:color 0.15s;">// advance settings</p>
+          <svg id="cust-advance-chevron" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+            stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"
+            style="color:var(--ink-faint); transition:transform 0.22s cubic-bezier(0.4, 0, 0.2, 1), color 0.15s; transform:rotate(-90deg);">
+            <path d="m6 9 6 6 6-6" />
+          </svg>
+        </div>
+        <div class="surface-card cust-card" id="cust-advance-card"
+          style="padding:18px 20px; display:none; margin-top:2px;">
+          <div style="display:flex; align-items:center; justify-content:space-between; margin-bottom:12px; flex-wrap:wrap; gap:8px;">
+            <div style="display:flex; align-items:center; gap:8px;">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="var(--accent, #ff2a5f)" stroke-width="2"
+                stroke-linecap="round" stroke-linejoin="round">
+                <circle cx="12" cy="12" r="3" />
+                <path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z" />
+              </svg>
+              <span style="font-size:0.88rem; font-weight:600; color:var(--ink);">Developer Access &amp; Redirect Trigger</span>
+            </div>
+            <span id="cust-dev-clicks-badge"
+              style="font-size:0.68rem; font-family:var(--font-mono); padding:3px 9px; border-radius:10px; background:var(--bg); border:1px solid var(--line); color:var(--accent, #ff2a5f); font-weight:600;">
+              10 Clicks Required
+            </span>
+          </div>
+          <p style="font-size:0.73rem; color:var(--ink-faint); margin:0 0 14px 0; line-height:1.45;">
+            Configure how many times clicking the footer wordmark tag (<code>@khxaiyan</code>) triggers the popup to sign in and redirect directly to <code>http://localhost:3000/developer</code>.
+          </p>
+          <div class="field-group" style="margin-bottom:12px;">
+            <label class="field-label" for="cust-dev-trigger-clicks">Click Count Required to Redirect to /developer</label>
+            <div style="display:flex; align-items:center; gap:10px;">
+              <input type="number" class="field-input" id="cust-dev-trigger-clicks" min="1" max="50" step="1" value="10"
+                style="max-width:120px; font-family:var(--font-mono); font-size:0.95rem; font-weight:600; text-align:center;">
+              <span style="font-size:0.75rem; color:var(--ink-dim); font-family:var(--font-mono);">times clicked on footer tag</span>
+            </div>
+          </div>
+          <!-- Quick Click Presets -->
+          <div style="display:flex; align-items:center; gap:6px; flex-wrap:wrap; margin-top:8px;">
+            <span style="font-size:0.68rem; color:var(--ink-faint); font-family:var(--font-mono); margin-right:4px;">Quick Presets:</span>
+            <button type="button" class="toolbar-btn btn-click-preset" data-clicks="1" style="font-size:0.68rem; padding:3px 8px;">1 Click (Instant)</button>
+            <button type="button" class="toolbar-btn btn-click-preset" data-clicks="3" style="font-size:0.68rem; padding:3px 8px;">3 Clicks</button>
+            <button type="button" class="toolbar-btn btn-click-preset" data-clicks="5" style="font-size:0.68rem; padding:3px 8px;">5 Clicks</button>
+            <button type="button" class="toolbar-btn btn-click-preset" data-clicks="7" style="font-size:0.68rem; padding:3px 8px;">7 Clicks</button>
+            <button type="button" class="toolbar-btn btn-click-preset" data-clicks="10" style="font-size:0.68rem; padding:3px 8px;">10 Clicks (Default)</button>
+          </div>
+        </div>
       </div>
 
-      <!-- 13. // save & apply -->
+      <!-- 14. // save & apply -->
       <div class="cust-section">
         <p class="eyebrow">// save & apply</p>
         <div class="save-actions">
@@ -7307,6 +7363,51 @@
         });
       }
 
+      function updateDevClicksUI(val) {
+        var n = parseInt(val, 10);
+        if (isNaN(n) || n < 1) n = 10;
+        var badge = document.getElementById('cust-dev-clicks-badge');
+        if (badge) {
+          badge.textContent = n === 1 ? '1 Click Required' : n + ' Clicks Required';
+        }
+        var inp = document.getElementById('cust-dev-trigger-clicks');
+        if (inp && parseInt(inp.value, 10) !== n) {
+          inp.value = n;
+        }
+        document.querySelectorAll('.btn-click-preset').forEach(function (btn) {
+          var btnClicks = parseInt(btn.getAttribute('data-clicks'), 10);
+          if (btnClicks === n) {
+            btn.style.borderColor = 'var(--accent, #ff2a5f)';
+            btn.style.color = 'var(--ink)';
+            btn.style.background = 'rgba(255, 42, 95, 0.15)';
+          } else {
+            btn.style.borderColor = 'var(--line)';
+            btn.style.color = 'var(--ink-dim)';
+            btn.style.background = 'var(--surface)';
+          }
+        });
+      }
+
+      var clicksInput = document.getElementById('cust-dev-trigger-clicks');
+      if (clicksInput) {
+        clicksInput.addEventListener('input', function () {
+          updateDevClicksUI(this.value);
+        });
+        clicksInput.addEventListener('change', function () {
+          var v = parseInt(this.value, 10);
+          if (isNaN(v) || v < 1) v = 10;
+          if (v > 50) v = 50;
+          this.value = v;
+          updateDevClicksUI(v);
+        });
+      }
+      document.querySelectorAll('.btn-click-preset').forEach(function (btn) {
+        btn.addEventListener('click', function () {
+          var clicks = parseInt(this.getAttribute('data-clicks'), 10) || 10;
+          updateDevClicksUI(clicks);
+        });
+      });
+
       function loadConfigIntoForm(overrideCfg) {
         var cfg = Object.assign({}, typeof CONFIG !== 'undefined' ? CONFIG : {});
         try {
@@ -7316,6 +7417,9 @@
           }
         } catch (_) { }
         if (overrideCfg) Object.assign(cfg, overrideCfg);
+
+        var devClicks = cfg.dev_trigger_clicks != null ? parseInt(cfg.dev_trigger_clicks, 10) : 10;
+        updateDevClicksUI(devClicks);
 
         document.getElementById('cust-sitename').value = cfg.site_name || '';
         document.getElementById('cust-accent').value = cfg.accent_letter || 'x';
@@ -7722,6 +7826,10 @@
             cloudinary_upload_preset: ((document.getElementById('cust-cloudinary-preset') || {}).value || '').trim(),
             clerk_publishable_key: (typeof CONFIG !== 'undefined' && CONFIG.clerk_publishable_key) ? CONFIG.clerk_publishable_key : 'pk_test_c2hpbmluZy10dXJrZXktMTMyNS5jbGVyay5hY2NvdW50cy5kZXYk',
             clerk_frontend_api: 'https://shining-turkey-1325.clerk.accounts.dev',
+            dev_trigger_clicks: (function () {
+              var v = parseInt((document.getElementById('cust-dev-trigger-clicks') || {}).value, 10);
+              return (isNaN(v) || v < 1) ? 10 : v;
+            })(),
             section_order: (typeof currentSectionOrder !== 'undefined' && Array.isArray(currentSectionOrder) && currentSectionOrder.length > 0)
               ? currentSectionOrder.slice()
               : (typeof RAIL_SECTION_DEFAULT_ORDER !== 'undefined' ? RAIL_SECTION_DEFAULT_ORDER.slice() : ['intro', 'skills', 'qualifications', 'projects', 'devices', 'reach', 'message'])

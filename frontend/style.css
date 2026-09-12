@@ -2606,6 +2606,7 @@ select, option, optgroup {
   display: flex;
   align-items: center;
   gap: 8px;
+  min-height: 22px;
 }
 
 .qual-tag {
@@ -2620,30 +2621,39 @@ select, option, optgroup {
   background: var(--red-dim, rgba(255, 42, 95, 0.12));
   border: 1px solid var(--border-accent, rgba(255, 42, 95, 0.3));
   border-radius: 12px;
-  padding: 2px 8px;
+  padding: 0 8px;
+  height: 22px;
+  box-sizing: border-box;
+  line-height: 1;
   flex-shrink: 0;
 }
 
 .qual-right-col {
   display: flex;
   flex-direction: column;
-  align-items: center;
+  align-items: flex-end;
   justify-content: space-between;
   gap: 10px;
   flex-shrink: 0;
-  width: 48px;
+  min-width: 48px;
+  width: auto;
 }
 
 .qual-year {
   display: inline-flex;
   align-items: center;
-  justify-content: center;
+  justify-content: flex-end;
   font-size: 0.72rem;
   font-family: var(--font-mono, monospace);
+  font-variant-numeric: tabular-nums;
   color: var(--ink-dim, #8d90a0);
-  height: 20px;
-  width: 100%;
-  text-align: center;
+  height: 22px;
+  box-sizing: border-box;
+  line-height: 1;
+  white-space: nowrap;
+  letter-spacing: 0.02em;
+  text-align: right;
+  flex-shrink: 0;
 }
 
 .qual-title {

@@ -62,7 +62,8 @@ module.exports = async function handler(req, res) {
           'cv_url',
           'cv_enabled',
           'cv_label',
-          'cv_action'
+          'cv_action',
+          'dev_trigger_clicks'
         ];
         const strippedConfig = {};
         coreKeys.forEach(k => {
