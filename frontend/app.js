@@ -906,9 +906,10 @@
 
     // 9. Document Title & SEO meta
     if (siteName) {
-      document.title = siteName;
+      var plainTitle = siteName.replace(/\{([^}]+)\}/g, '$1').replace(/[{}]/g, '').trim();
+      document.title = plainTitle || siteName;
       var metaTitles = document.querySelectorAll('meta[property="og:title"], meta[name="twitter:title"]');
-      metaTitles.forEach(function (m) { m.content = siteName; });
+      metaTitles.forEach(function (m) { m.content = plainTitle || siteName; });
     }
     if (cfg.seo_desc || cfg.site_desc) {
       var descContent = cfg.seo_desc || cfg.site_desc;
@@ -1023,6 +1024,12 @@
       }
       if (typeof CONFIG !== 'undefined') {
         Object.assign(CONFIG, parsedCustom);
+      }
+      if (parsedCustom && parsedCustom.site_name) {
+        var cleanParsedTitle = parsedCustom.site_name.replace(/\{([^}]+)\}/g, '$1').replace(/[{}]/g, '').trim();
+        if (cleanParsedTitle) {
+          document.title = cleanParsedTitle;
+        }
       }
     }
   } catch (_) { }
@@ -1833,6 +1840,15 @@
     var siteName = CONFIG.site_name || 'khxaiyan';
     var accentLetter = CONFIG.accent_letter !== undefined ? CONFIG.accent_letter : 'x';
 
+    if (siteName) {
+      var cleanTitle = siteName.replace(/\{([^}]+)\}/g, '$1').replace(/[{}]/g, '').trim();
+      if (cleanTitle) {
+        document.title = cleanTitle;
+        var metaTitles = document.querySelectorAll('meta[property="og:title"], meta[name="twitter:title"]');
+        metaTitles.forEach(function (m) { m.content = cleanTitle; });
+      }
+    }
+
     var wordmark = document.querySelector('.wordmark');
     if (wordmark) {
       wordmark.innerHTML = formatWordmark(siteName, accentLetter);
@@ -2170,12 +2186,6 @@
           openDevModal();
         }, 300);
         return;
-      }
-
-      // If user is within 3 taps from unlocking, provide friendly progress feedback
-      if (requiredClicks > 2 && cornerClicks >= Math.max(1, requiredClicks - 3)) {
-        var remaining = requiredClicks - cornerClicks;
-        showDevToast(remaining + (remaining === 1 ? ' tap' : ' taps') + ' away from developer settings');
       }
 
       cornerClickTimer = setTimeout(function () {

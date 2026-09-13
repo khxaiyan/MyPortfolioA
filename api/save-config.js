@@ -1,6 +1,7 @@
 const fs = require('fs');
 const path = require('path');
 const { connectToDatabase } = require('./lib/mongodb');
+const { generateOgSvg } = require('./lib/og-generator');
 
 /**
  * Configuration Save Endpoint (/api/save-config)
@@ -74,6 +75,11 @@ module.exports = async function handler(req, res) {
         const formattedConfig = `var CONFIG = ${JSON.stringify(strippedConfig, null, 2)};\nif (typeof window !== 'undefined') {\n  window.CONFIG = Object.assign(window.CONFIG || {}, CONFIG);\n}\n`;
         fs.writeFileSync(configPath, formattedConfig, 'utf-8');
       }
+
+      // Also update the SVG Open Graph template file
+      const ogPath = path.join(__dirname, '..', 'frontend', 'og-template.svg');
+      const updatedSvg = generateOgSvg(newConfig);
+      fs.writeFileSync(ogPath, updatedSvg, 'utf-8');
     } catch (_) {}
 
     // 1. Save to MongoDB
