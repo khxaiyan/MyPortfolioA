@@ -639,20 +639,15 @@
         }
       }
     } else if (isMarkdown && textContainer) {
-      if (typeof window.openReadmeModal === 'function') {
-        closeModal();
-        window.openReadmeModal(url, label);
-      } else {
-        fetchDocumentText(url).then(function (mdText) {
-          textContainer.innerHTML = renderMarkdownDocument(mdText);
-          textContainer.style.display = 'block';
-          if (loadingEl) loadingEl.style.display = 'none';
-        }).catch(function (err) {
-          textContainer.innerHTML = '<p style="color:var(--red);">Could not load markdown preview: ' + escapeHtml(err.message) + '</p>';
-          textContainer.style.display = 'block';
-          if (loadingEl) loadingEl.style.display = 'none';
-        });
-      }
+      fetchDocumentText(url).then(function (mdText) {
+        textContainer.innerHTML = renderMarkdownDocument(mdText);
+        textContainer.style.display = 'block';
+        if (loadingEl) loadingEl.style.display = 'none';
+      }).catch(function (err) {
+        textContainer.innerHTML = '<p style="color:var(--red);">Could not load markdown preview: ' + escapeHtml(err.message) + '</p>';
+        textContainer.style.display = 'block';
+        if (loadingEl) loadingEl.style.display = 'none';
+      });
     } else if (isPlainText && textContainer) {
       fetchDocumentText(url).then(function (plainText) {
         textContainer.innerHTML = '<pre style="font-family:var(--font-mono); font-size:0.86rem; color:var(--ink); white-space:pre-wrap; background:var(--surface); padding:24px; border-radius:8px; border:1px solid var(--line); line-height:1.65; max-width:100%; overflow-x:auto;">' + escapeHtml(plainText) + '</pre>';
@@ -895,13 +890,6 @@
             if (isExternalWeb) return true;
             e.preventDefault();
             e.stopPropagation();
-            var lowerP = plainLabel.toLowerCase();
-            var isMarkdownTarget = isDataUrl ? (cvTarget.startsWith('data:text/markdown') || cvTarget.startsWith('data:text/plain')) : /\.(md|markdown)$/i.test(cleanPath);
-            var isReadmeMode = lowerP === 'readme.md' || lowerP === 'readme' || isMarkdownTarget;
-            if (isReadmeMode && typeof window.openReadmeModal === 'function') {
-              window.openReadmeModal(cvTarget, cvLabelText);
-              return false;
-            }
             openCvPreviewModal(cvTarget, cvLabelText);
             return false;
           };
