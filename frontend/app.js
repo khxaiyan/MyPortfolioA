@@ -631,7 +631,7 @@
     var lowerPath = cleanPath.toLowerCase();
     var isPdf = lowerPath.endsWith('.pdf') || (url && url.startsWith('data:application/pdf'));
     var isImg = /\.(png|jpe?g|webp|gif|svg|bmp|ico)$/i.test(lowerPath) || (url && url.startsWith('data:image/'));
-    var isMarkdown = /\.(md|markdown)$/i.test(lowerPath) || (url && url.startsWith('data:text/markdown'));
+    var isMarkdown = /\.(md|markdown)$/i.test(lowerPath) || /\.(md|markdown)$/i.test(filename) || (url && (url.startsWith('data:text/markdown') || url.startsWith('data:text/x-markdown')));
     var isPlainText = /\.(txt|rtf|json|csv|log)$/i.test(lowerPath) || (url && (url.startsWith('data:text/plain') || url.startsWith('data:text/rtf')));
     var isHtml = /\.(html?|htm)$/i.test(lowerPath) || (url && url.startsWith('data:text/html'));
     var isDocx = /\.(docx?|doc)$/i.test(lowerPath) || (url && (url.startsWith('data:application/vnd.openxmlformats') || url.startsWith('data:application/msword')));

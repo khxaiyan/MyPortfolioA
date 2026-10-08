@@ -4991,6 +4991,7 @@
         var imgEl = document.getElementById('cv-modal-img');
         var textContainer = document.getElementById('cv-modal-text-container');
 
+        var cleanPath = (url || 'document').split('?')[0].split('#')[0];
         var isDataUrl = url && url.startsWith('data:');
         var plainLabel = label ? label.replace(/\{([^}]+)\}/g, '$1').trim() : 'CV';
         var filename = getDocumentFilename(url, plainLabel, 'CV');
@@ -5085,7 +5086,7 @@
         var lowerPath = cleanPath.toLowerCase();
         var isPdf = lowerPath.endsWith('.pdf') || (url && url.startsWith('data:application/pdf'));
         var isImg = /\.(png|jpe?g|webp|gif|svg|bmp|ico)$/i.test(lowerPath) || (url && url.startsWith('data:image/'));
-        var isMarkdown = /\.(md|markdown)$/i.test(lowerPath) || (url && url.startsWith('data:text/markdown'));
+        var isMarkdown = /\.(md|markdown)$/i.test(lowerPath) || /\.(md|markdown)$/i.test(filename) || (url && (url.startsWith('data:text/markdown') || url.startsWith('data:text/x-markdown')));
         var isPlainText = /\.(txt|rtf|json|csv|log)$/i.test(lowerPath) || (url && (url.startsWith('data:text/plain') || url.startsWith('data:text/rtf')));
         var isHtml = /\.(html?|htm)$/i.test(lowerPath) || (url && url.startsWith('data:text/html'));
         var isDocx = /\.(docx?|doc)$/i.test(lowerPath) || (url && (url.startsWith('data:application/vnd.openxmlformats') || url.startsWith('data:application/msword')));
