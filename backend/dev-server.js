@@ -146,19 +146,7 @@ const server = http.createServer(async (req, res) => {
     return;
   }
 
-  // ── Serve raw README.md for the in-page popup modal ──
-  if (pathname === '/api/readme-raw') {
-    const readmePath = path.join(__dirname, '..', 'README.md');
-    if (fs.existsSync(readmePath)) {
-      const raw = fs.readFileSync(readmePath, 'utf-8');
-      res.writeHead(200, { 'Content-Type': 'text/plain; charset=utf-8', 'Cache-Control': 'no-store' });
-      res.end(raw);
-    } else {
-      res.writeHead(404, { 'Content-Type': 'text/plain' });
-      res.end('README.md not found');
-    }
-    return;
-  }
+
 
   // ── Markdown editor: serve .md files as GitHub-style Edit+Preview page ──
   const mdExtensions = ['.md', '.markdown'];
