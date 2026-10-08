@@ -1620,6 +1620,25 @@
               </div>
               <input type="hidden" id="cust-cv-action" value="preview">
             </div>
+
+            <!-- Preview Modal Download Button Control -->
+            <div style="margin-top:12px; padding-top:10px; border-top:1px dashed var(--line); display:flex; align-items:center; justify-content:space-between; flex-wrap:wrap; gap:8px;">
+              <div>
+                <label class="field-label" for="cust-cv-download-enabled" style="margin:0; font-size:0.75rem; font-weight:600; color:var(--ink); display:flex; align-items:center; gap:6px;">
+                  <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="var(--accent, #ff2a5f)" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4" />
+                    <polyline points="7 10 12 15 17 10" />
+                    <line x1="12" y1="15" x2="12" y2="3" />
+                  </svg>
+                  Preview Modal Download Button
+                </label>
+                <span style="font-size:0.7rem; color:var(--ink-faint);">Show or hide the red Download button inside the preview popup</span>
+              </div>
+              <label class="switch-label" style="flex-shrink:0;">
+                <input type="checkbox" id="cust-cv-download-enabled" class="switch-input" checked>
+                <span class="switch-slider"></span>
+              </label>
+            </div>
           </div>
 
           <!-- Drag & Drop / File Upload Area -->
@@ -2708,6 +2727,27 @@
             <button type="button" class="toolbar-btn btn-click-preset" data-clicks="5" style="font-size:0.68rem; padding:3px 8px;">5 Clicks</button>
             <button type="button" class="toolbar-btn btn-click-preset" data-clicks="7" style="font-size:0.68rem; padding:3px 8px;">7 Clicks</button>
             <button type="button" class="toolbar-btn btn-click-preset" data-clicks="10" style="font-size:0.68rem; padding:3px 8px;">10 Clicks (Default)</button>
+          </div>
+
+          <!-- Preview Modal Download Button Control -->
+          <div style="margin-top:16px; padding-top:14px; border-top:1px solid var(--line); display:flex; align-items:center; justify-content:space-between; gap:12px; flex-wrap:wrap;">
+            <div style="max-width:440px;">
+              <div style="display:flex; align-items:center; gap:8px; margin-bottom:3px;">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="var(--accent, #ff2a5f)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                  <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/>
+                  <polyline points="7 10 12 15 17 10"/>
+                  <line x1="12" y1="15" x2="12" y2="3"/>
+                </svg>
+                <span style="font-size:0.88rem; font-weight:600; color:var(--ink);">Document Preview Download Button</span>
+              </div>
+              <p style="font-size:0.73rem; color:var(--ink-faint); margin:0; line-height:1.45;">
+                Show or hide the red <strong>Download</strong> button in the top toolbar of the preview modal (README.md, CV, PDF, docs). When hidden, visitors can view and read the file without downloading it.
+              </p>
+            </div>
+            <label class="switch-label" style="flex-shrink:0;">
+              <input type="checkbox" id="cust-advance-cv-download-enabled" class="switch-input" checked>
+              <span class="switch-slider"></span>
+            </label>
           </div>
         </div>
       </div>
@@ -4891,6 +4931,49 @@
         return '<pre style="font-family:var(--font-mono); font-size:0.86rem; color:var(--ink); white-space:pre-wrap; background:var(--surface); padding:20px; border-radius:8px; border:1px solid var(--line);">' + escaped + '</pre>';
       }
 
+      function getDocumentFilename(url, label, defaultBase) {
+        var rawLabel = (label && typeof label === 'string' && label.trim())
+          ? label.replace(/\{([^}]+)\}/g, '$1').trim()
+          : (defaultBase || 'Document');
+
+        // 1. If label itself already has a recognized file extension, keep it!
+        var labelExtMatch = rawLabel.match(/\.(pdf|docx?|txt|rtf|md|markdown|html?|png|jpe?g|webp|gif|svg|csv|json)$/i);
+        if (labelExtMatch) {
+          return rawLabel;
+        }
+
+        // 2. If it is a data URL, determine extension strictly from MIME type
+        if (url && typeof url === 'string' && url.startsWith('data:')) {
+          var mime = (url.split(';')[0].split(':')[1] || '').toLowerCase().trim();
+          if (mime.includes('markdown')) return rawLabel + '.md';
+          if (mime === 'text/plain') return rawLabel + '.txt';
+          if (mime === 'application/pdf') return rawLabel + '.pdf';
+          if (mime.includes('wordprocessingml') || mime.includes('officedocument')) return rawLabel + '.docx';
+          if (mime.includes('msword')) return rawLabel + '.doc';
+          if (mime.includes('rtf')) return rawLabel + '.rtf';
+          if (mime === 'text/html') return rawLabel + '.html';
+          if (mime === 'text/csv') return rawLabel + '.csv';
+          if (mime === 'application/json') return rawLabel + '.json';
+          if (mime === 'image/png') return rawLabel + '.png';
+          if (mime === 'image/jpeg' || mime === 'image/jpg') return rawLabel + '.jpg';
+          if (mime === 'image/webp') return rawLabel + '.webp';
+          if (mime === 'image/svg+xml') return rawLabel + '.svg';
+          if (mime === 'image/gif') return rawLabel + '.gif';
+        }
+
+        // 3. If it's a URL path, determine extension from the path
+        var cleanPath = (url && typeof url === 'string') ? url.split('?')[0].split('#')[0] : '';
+        if (cleanPath && !cleanPath.startsWith('data:')) {
+          var urlFileName = cleanPath.split('/').pop() || '';
+          var urlExtMatch = urlFileName.match(/\.(pdf|docx?|txt|rtf|md|markdown|html?|png|jpe?g|webp|gif|svg|csv|json)$/i);
+          if (urlExtMatch) {
+            return rawLabel + urlExtMatch[0].toLowerCase();
+          }
+        }
+
+        return rawLabel + '.pdf';
+      }
+
       function openCvPreviewModal(url, label) {
         var modal = document.getElementById('cv-preview-modal');
         if (!modal) {
@@ -4908,12 +4991,9 @@
         var imgEl = document.getElementById('cv-modal-img');
         var textContainer = document.getElementById('cv-modal-text-container');
 
-        var cleanPath = (url || '').split('?')[0].split('#')[0];
         var isDataUrl = url && url.startsWith('data:');
-        var filename = isDataUrl
-          ? (label ? label.replace(/\{([^}]+)\}/g, '$1') : 'Document') + '.pdf'
-          : (cleanPath ? (cleanPath.split('/').pop() || (label || 'Document')) : (label || 'Document'));
-        var plainLabel = label ? label.replace(/\{([^}]+)\}/g, '$1') : 'CV';
+        var plainLabel = label ? label.replace(/\{([^}]+)\}/g, '$1').trim() : 'CV';
+        var filename = getDocumentFilename(url, plainLabel, 'CV');
 
         if (titleEl) titleEl.textContent = '// preview - ' + plainLabel;
         if (filenameEl) {
@@ -4925,8 +5005,38 @@
           }
         }
         if (downloadBtn) {
+          var allowDownload = true;
+          var cvDownloadToggle = document.getElementById('cust-cv-download-enabled') || document.getElementById('cust-advance-cv-download-enabled');
+          if (cvDownloadToggle) {
+            allowDownload = cvDownloadToggle.checked;
+          } else if (typeof CONFIG !== 'undefined' && CONFIG && CONFIG.cv_download_enabled === false) {
+            allowDownload = false;
+          }
+          try {
+            var localSaved = localStorage.getItem('portfolio_custom_config');
+            if (localSaved && !cvDownloadToggle) {
+              var parsed = JSON.parse(localSaved);
+              if (parsed && parsed.cv_download_enabled === false) {
+                allowDownload = false;
+              }
+            }
+          } catch (_) {}
+
+          downloadBtn.style.display = allowDownload ? '' : 'none';
           downloadBtn.href = url;
           downloadBtn.setAttribute('download', filename);
+          downloadBtn.onclick = function (e) {
+            if (isDataUrl) {
+              e.preventDefault();
+              var a = document.createElement('a');
+              a.href = url;
+              a.download = filename;
+              document.body.appendChild(a);
+              a.click();
+              document.body.removeChild(a);
+              return false;
+            }
+          };
         }
 
         // Reset viewer elements
@@ -5177,10 +5287,7 @@
             if (currentAct === 'download') {
               var a = document.createElement('a');
               a.href = targetUrl;
-              var fn = (pendingCvFileName || 'document').replace(/[^a-zA-Z0-9._-]/g, '_');
-              if (!fn.includes('.')) {
-                fn += (targetUrl.startsWith('data:application/pdf') ? '.pdf' : '.bin');
-              }
+              var fn = getDocumentFilename(targetUrl, pendingCvFileName || currentLabel, 'document');
               a.download = fn;
               document.body.appendChild(a);
               a.click();
@@ -7404,6 +7511,27 @@
         });
       });
 
+      var cvToggle1 = document.getElementById('cust-cv-download-enabled');
+      var cvToggle2 = document.getElementById('cust-advance-cv-download-enabled');
+      function syncCvDownloadToggles(val) {
+        if (cvToggle1) cvToggle1.checked = val;
+        if (cvToggle2) cvToggle2.checked = val;
+        var modalDownloadBtn = document.getElementById('cv-modal-download-btn');
+        if (modalDownloadBtn) {
+          modalDownloadBtn.style.display = val ? '' : 'none';
+        }
+      }
+      if (cvToggle1) {
+        cvToggle1.addEventListener('change', function () {
+          syncCvDownloadToggles(this.checked);
+        });
+      }
+      if (cvToggle2) {
+        cvToggle2.addEventListener('change', function () {
+          syncCvDownloadToggles(this.checked);
+        });
+      }
+
       function loadConfigIntoForm(overrideCfg) {
         var cfg = Object.assign({}, typeof CONFIG !== 'undefined' ? CONFIG : {});
         try {
@@ -7416,6 +7544,8 @@
 
         var devClicks = cfg.dev_trigger_clicks != null ? parseInt(cfg.dev_trigger_clicks, 10) : 10;
         updateDevClicksUI(devClicks);
+
+        syncCvDownloadToggles(cfg.cv_download_enabled !== false);
 
         document.getElementById('cust-sitename').value = cfg.site_name || '';
         document.getElementById('cust-accent').value = cfg.accent_letter || 'x';
@@ -7825,6 +7955,10 @@
             dev_trigger_clicks: (function () {
               var v = parseInt((document.getElementById('cust-dev-trigger-clicks') || {}).value, 10);
               return (isNaN(v) || v < 1) ? 10 : v;
+            })(),
+            cv_download_enabled: (function () {
+              var el = document.getElementById('cust-cv-download-enabled') || document.getElementById('cust-advance-cv-download-enabled');
+              return el ? el.checked : true;
             })(),
             section_order: (typeof currentSectionOrder !== 'undefined' && Array.isArray(currentSectionOrder) && currentSectionOrder.length > 0)
               ? currentSectionOrder.slice()

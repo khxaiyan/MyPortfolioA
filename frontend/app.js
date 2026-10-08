@@ -477,6 +477,49 @@
     return html;
   }
 
+  function getDocumentFilename(url, label, defaultBase) {
+    var rawLabel = (label && typeof label === 'string' && label.trim())
+      ? label.replace(/\{([^}]+)\}/g, '$1').trim()
+      : (defaultBase || 'Document');
+
+    // 1. If label itself already has a recognized file extension, keep it!
+    var labelExtMatch = rawLabel.match(/\.(pdf|docx?|txt|rtf|md|markdown|html?|png|jpe?g|webp|gif|svg|csv|json)$/i);
+    if (labelExtMatch) {
+      return rawLabel;
+    }
+
+    // 2. If it is a data URL, determine extension strictly from MIME type
+    if (url && typeof url === 'string' && url.startsWith('data:')) {
+      var mime = (url.split(';')[0].split(':')[1] || '').toLowerCase().trim();
+      if (mime.includes('markdown')) return rawLabel + '.md';
+      if (mime === 'text/plain') return rawLabel + '.txt';
+      if (mime === 'application/pdf') return rawLabel + '.pdf';
+      if (mime.includes('wordprocessingml') || mime.includes('officedocument')) return rawLabel + '.docx';
+      if (mime.includes('msword')) return rawLabel + '.doc';
+      if (mime.includes('rtf')) return rawLabel + '.rtf';
+      if (mime === 'text/html') return rawLabel + '.html';
+      if (mime === 'text/csv') return rawLabel + '.csv';
+      if (mime === 'application/json') return rawLabel + '.json';
+      if (mime === 'image/png') return rawLabel + '.png';
+      if (mime === 'image/jpeg' || mime === 'image/jpg') return rawLabel + '.jpg';
+      if (mime === 'image/webp') return rawLabel + '.webp';
+      if (mime === 'image/svg+xml') return rawLabel + '.svg';
+      if (mime === 'image/gif') return rawLabel + '.gif';
+    }
+
+    // 3. If it's a URL path, determine extension from the path
+    var cleanPath = (url && typeof url === 'string') ? url.split('?')[0].split('#')[0] : '';
+    if (cleanPath && !cleanPath.startsWith('data:')) {
+      var urlFileName = cleanPath.split('/').pop() || '';
+      var urlExtMatch = urlFileName.match(/\.(pdf|docx?|txt|rtf|md|markdown|html?|png|jpe?g|webp|gif|svg|csv|json)$/i);
+      if (urlExtMatch) {
+        return rawLabel + urlExtMatch[0].toLowerCase();
+      }
+    }
+
+    return rawLabel + '.pdf';
+  }
+
   function openCvPreviewModal(url, label) {
     var modal = document.getElementById('cv-preview-modal');
     if (!modal) {
@@ -496,10 +539,8 @@
 
     var cleanPath = (url || 'document').split('?')[0].split('#')[0];
     var isDataUrl = url && url.startsWith('data:');
-    var filename = isDataUrl
-      ? (label ? label.replace(/\{([^}]+)\}/g, '$1') : 'CV') + '.pdf'
-      : (cleanPath.split('/').pop() || (label || 'CV'));
-    var plainLabel = label ? label.replace(/\{([^}]+)\}/g, '$1') : 'CV';
+    var plainLabel = label ? label.replace(/\{([^}]+)\}/g, '$1').trim() : 'CV';
+    var filename = getDocumentFilename(url, plainLabel, 'CV');
 
     if (titleEl) titleEl.textContent = '// preview - ' + plainLabel;
     if (filenameEl) {
@@ -511,8 +552,37 @@
       }
     }
     if (downloadBtn) {
+      var allowDownload = true;
+      if (typeof window !== 'undefined' && window.CONFIG && window.CONFIG.cv_download_enabled === false) {
+        allowDownload = false;
+      }
+      try {
+        var localSaved = localStorage.getItem('portfolio_custom_config');
+        if (localSaved) {
+          var parsed = JSON.parse(localSaved);
+          if (parsed && parsed.cv_download_enabled === false) {
+            allowDownload = false;
+          } else if (parsed && parsed.cv_download_enabled === true) {
+            allowDownload = true;
+          }
+        }
+      } catch (_) {}
+
+      downloadBtn.style.display = allowDownload ? '' : 'none';
       downloadBtn.href = url;
       downloadBtn.setAttribute('download', filename);
+      downloadBtn.onclick = function (e) {
+        if (isDataUrl) {
+          e.preventDefault();
+          var a = document.createElement('a');
+          a.href = url;
+          a.download = filename;
+          document.body.appendChild(a);
+          a.click();
+          document.body.removeChild(a);
+          return false;
+        }
+      };
     }
 
     // Reset viewer elements
@@ -864,7 +934,7 @@
         var plainLabel = cvLabelText.replace(/\{([^}]+)\}/g, '$1');
 
         if (cvAction === 'download' && !isExternalWeb) {
-          var cleanName = (isDataUrl ? (plainLabel + '.pdf') : (cleanPath.split('/').pop() || (plainLabel + '.pdf')));
+          var cleanName = getDocumentFilename(cvTarget, plainLabel, 'CV');
           cvBtn.setAttribute('download', cleanName);
           cvBtn.innerHTML = DOWNLOAD_ICON_SVG + '<span>' + formattedLabel + '</span>';
           cvBtn.title = 'Download ' + plainLabel;
@@ -2013,7 +2083,7 @@
         var plainLabel = cvLabelText.replace(/\{([^}]+)\}/g, '$1');
 
         if (cvAction === 'download' && !isExternalWeb) {
-          var cleanName = (isDataUrl ? (plainLabel + '.pdf') : (cleanPath.split('/').pop() || (plainLabel + '.pdf')));
+          var cleanName = getDocumentFilename(cvTarget, plainLabel, 'CV');
           cvBtn.setAttribute('download', cleanName);
           cvBtn.innerHTML = DOWNLOAD_ICON_SVG + '<span>' + formattedLabel + '</span>';
           cvBtn.title = 'Download ' + plainLabel;

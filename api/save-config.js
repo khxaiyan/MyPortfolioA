@@ -64,6 +64,7 @@ module.exports = async function handler(req, res) {
           'cv_enabled',
           'cv_label',
           'cv_action',
+          'cv_download_enabled',
           'dev_trigger_clicks'
         ];
         const strippedConfig = {};
