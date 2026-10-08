@@ -395,18 +395,29 @@
 
   function renderMarkdownDocument(raw) {
     if (!raw) return '<p style="color:var(--ink-dim);">Empty document</p>';
-    var escaped = String(raw)
-      .replace(/&/g, '&amp;')
-      .replace(/</g, '&lt;')
-      .replace(/>/g, '&gt;')
-      .replace(/"/g, '&quot;');
 
-    // Code blocks: ```lang ... ```
-    escaped = escaped.replace(/```([\w-]*)\n([\s\S]*?)```/g, function (m, lang, code) {
-      return '<pre style="background:var(--bg); border:1px solid var(--line); border-radius:8px; padding:16px; margin:16px 0; overflow-x:auto; font-family:var(--font-mono); font-size:0.84rem; color:var(--ink);"><code>' + code.trim() + '</code></pre>';
-    });
+    // Unescape common backslash escapes from stored JSON/Base64 payloads
+    var cleanRaw = String(raw)
+      .replace(/\\([!\[\]()&_*~`+])/g, function(_, c) { return c; });
 
-    var lines = escaped.split('\n');
+    // Use marked + DOMPurify if available for complete GitHub-flavored HTML & image support
+    if (typeof marked !== 'undefined') {
+      try {
+        var dirty = marked.parse(cleanRaw);
+        if (typeof DOMPurify !== 'undefined') {
+          return DOMPurify.sanitize(dirty, {
+            ADD_TAGS: ['iframe', 'img', 'p', 'div', 'span', 'br', 'hr', 'a', 'h1', 'h2', 'h3', 'h4', 'h5', 'h6', 'ul', 'ol', 'li', 'blockquote', 'pre', 'code', 'table', 'thead', 'tbody', 'tr', 'th', 'td', 'svg', 'path', 'circle', 'line', 'polyline', 'rect', 'details', 'summary', 'strong', 'em', 'del', 'kbd'],
+            ADD_ATTR: ['src', 'alt', 'width', 'height', 'align', 'style', 'href', 'target', 'rel', 'class', 'id', 'title']
+          });
+        }
+        return dirty;
+      } catch (e) {
+        console.warn('marked parse error:', e);
+      }
+    }
+
+    // Fallback lightweight parser that understands HTML and markdown images
+    var lines = cleanRaw.split('\n');
     var out = [];
     var inList = false;
 
@@ -434,11 +445,6 @@
         out.push('<h1 style="font-family:var(--font-display); font-size:1.6rem; font-weight:800; color:var(--ink); margin:22px 0 12px 0;">' + trimmed.replace(/^#\s+/, '') + '</h1>');
         continue;
       }
-      if (/^&gt;\s?/.test(trimmed)) {
-        if (inList) { out.push('</ul>'); inList = false; }
-        out.push('<blockquote style="border-left:3px solid var(--red); padding:8px 16px; margin:12px 0; background:var(--red-dim); color:var(--ink); font-style:italic; border-radius:0 6px 6px 0;">' + trimmed.replace(/^&gt;\s?/, '') + '</blockquote>');
-        continue;
-      }
       if (/^[-*]\s+/.test(trimmed)) {
         if (!inList) { out.push('<ul style="margin:8px 0 12px 22px; padding:0; display:flex; flex-direction:column; gap:6px;">'); inList = true; }
         out.push('<li style="color:var(--ink);">' + trimmed.replace(/^[-*]\s+/, '') + '</li>');
@@ -454,14 +460,20 @@
     if (inList) out.push('</ul>');
 
     var html = out.join('\n');
+    // Parse markdown image badges: ![alt](url)
+    html = html.replace(/!\[([^\]]*)\]\((https?:\/\/[^\s\)]+)\)/g, '<img src="$2" alt="$1" style="max-width:100%; vertical-align:middle; margin:2px 4px 2px 0;">');
+    // Parse standard markdown links: [label](url)
     html = html.replace(/\[([^\]]+)\]\((https?:\/\/[^\s\)]+)\)/g, '<a href="$2" target="_blank" rel="noopener noreferrer" style="color:var(--red); text-decoration:underline;">$1</a>');
-    html = html.replace(/\{([^}]+)\}/g, '<span class="glyph-5">$1</span>');
     html = html.replace(/\*\*([^*]+)\*\*/g, '<strong>$1</strong>');
-    html = html.replace(/__([^_]+)__/g, '<u>$1</u>');
     html = html.replace(/(?:^|\s)\*([^*\s][^*]*[^*\s]|[^*])\*(?=\s|$|[.,!?:;])/g, ' <em>$1</em>');
-    html = html.replace(/(?:^|\s)_([^_\s][^_]*[^_\s]|[^_])_(?=\s|$|[.,!?:;])/g, ' <em>$1</em>');
     html = html.replace(/`([^`]+)`/g, '<code style="background:var(--surface-hover); border:1px solid var(--line); border-radius:4px; padding:2px 6px; font-family:var(--font-mono); font-size:0.85em; color:var(--red);">$1</code>');
 
+    if (typeof DOMPurify !== 'undefined') {
+      return DOMPurify.sanitize(html, {
+        ADD_TAGS: ['iframe', 'img', 'p', 'div', 'span', 'br', 'hr', 'a', 'h1', 'h2', 'h3', 'h4', 'h5', 'h6', 'ul', 'ol', 'li', 'blockquote', 'pre', 'code', 'table', 'thead', 'tbody', 'tr', 'th', 'td', 'svg', 'path'],
+        ADD_ATTR: ['src', 'alt', 'width', 'height', 'align', 'style', 'href', 'target', 'rel', 'class', 'id', 'title']
+      });
+    }
     return html;
   }
 
@@ -884,7 +896,8 @@
             e.preventDefault();
             e.stopPropagation();
             var lowerP = plainLabel.toLowerCase();
-            var isReadmeMode = lowerP === 'readme.md' || lowerP === 'readme' || isMarkdown;
+            var isMarkdownTarget = isDataUrl ? (cvTarget.startsWith('data:text/markdown') || cvTarget.startsWith('data:text/plain')) : /\.(md|markdown)$/i.test(cleanPath);
+            var isReadmeMode = lowerP === 'readme.md' || lowerP === 'readme' || isMarkdownTarget;
             if (isReadmeMode && typeof window.openReadmeModal === 'function') {
               window.openReadmeModal(cvTarget, cvLabelText);
               return false;

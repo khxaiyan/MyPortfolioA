@@ -1282,12 +1282,7 @@
 
           marked.use({ renderer: renderer, gfm: true, breaks: false });
           var cleanRaw = String(rawText || '')
-            .replace(/!\\\[/g, '![')
-            .replace(/\\&/g, '&')
-            .replace(/\\\[/g, '[')
-            .replace(/\\\]/g, ']')
-            .replace(/\\\(/g, '(')
-            .replace(/\\\)/g, ')');
+            .replace(/\\([!\[\]()&_*~`+])/g, function(_, c) { return c; });
           var dirty = marked.parse(cleanRaw);
 
           // GitHub Alert Callouts transformation
