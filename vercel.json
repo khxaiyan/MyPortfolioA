@@ -12,6 +12,14 @@
     {
       "source": "/api/config.js",
       "destination": "/api/config"
+    },
+    {
+      "source": "/:file*.md",
+      "destination": "/api/md?path=/:file*.md"
+    },
+    {
+      "source": "/:file*.markdown",
+      "destination": "/api/md?path=/:file*.markdown"
     }
   ],
   "redirects": [

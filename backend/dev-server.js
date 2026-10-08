@@ -2,6 +2,7 @@ const http = require('http');
 const fs = require('fs');
 const path = require('path');
 const url = require('url');
+const { _renderEditorPage } = require('../api/md');
 
 const PORT = process.env.PORT || 3000;
 const FRONTEND_DIR = path.join(__dirname, '..', 'frontend');
@@ -106,6 +107,63 @@ const server = http.createServer(async (req, res) => {
         res.end(JSON.stringify({ error: err.message }));
       }
     });
+    return;
+  }
+
+  // ── Handle /api/md-save (save .md file to disk) ──
+  if (pathname === '/api/md-save' && req.method === 'POST') {
+    let body = '';
+    req.on('data', chunk => { body += chunk; });
+    req.on('end', () => {
+      try {
+        const { path: filePath, content } = JSON.parse(body);
+        if (!filePath || typeof content !== 'string') {
+          res.writeHead(400, { 'Content-Type': 'application/json' });
+          res.end(JSON.stringify({ error: 'Missing path or content' }));
+          return;
+        }
+        const safePath = filePath.replace(/^\/+/, '').replace(/\.\.\//g, '');
+        if (!safePath.match(/\.(md|markdown)$/i)) {
+          res.writeHead(400, { 'Content-Type': 'application/json' });
+          res.end(JSON.stringify({ error: 'Only .md files allowed' }));
+          return;
+        }
+        const ROOT = path.join(__dirname, '..');
+        const absPath = path.join(ROOT, safePath);
+        if (!absPath.startsWith(ROOT)) {
+          res.writeHead(403, { 'Content-Type': 'application/json' });
+          res.end(JSON.stringify({ error: 'Forbidden' }));
+          return;
+        }
+        fs.writeFileSync(absPath, content, 'utf-8');
+        res.writeHead(200, { 'Content-Type': 'application/json' });
+        res.end(JSON.stringify({ ok: true, saved: safePath }));
+      } catch (e) {
+        res.writeHead(500, { 'Content-Type': 'application/json' });
+        res.end(JSON.stringify({ error: e.message }));
+      }
+    });
+    return;
+  }
+
+  // ── Markdown editor: serve .md files as GitHub-style Edit+Preview page ──
+  const mdExtensions = ['.md', '.markdown'];
+  const possibleMdPath = path.join(__dirname, '..', pathname);
+  const possibleMdExt = path.extname(pathname).toLowerCase();
+  if (mdExtensions.includes(possibleMdExt) && fs.existsSync(possibleMdPath)) {
+    try {
+      const mdContent = fs.readFileSync(possibleMdPath, 'utf-8');
+      const filename = path.basename(possibleMdPath);
+      const repoName = path.basename(path.join(__dirname, '..'));
+      // pathname starts with '/', strip the leading slash for the relative path
+      const relPath = pathname.replace(/^\//, '');
+      const html = _renderEditorPage(filename, relPath, mdContent, repoName);
+      res.writeHead(200, { 'Content-Type': 'text/html; charset=utf-8', 'Cache-Control': 'no-store' });
+      res.end(html);
+    } catch (e) {
+      res.writeHead(500, { 'Content-Type': 'text/plain' });
+      res.end('Error rendering markdown: ' + e.message);
+    }
     return;
   }
 
