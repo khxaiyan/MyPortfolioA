@@ -18,9 +18,9 @@
   "author": "khxaiyan",
   "license": "MIT",
   "dependencies": {
-    "@clerk/clerk-js": "^6.39.1",
+    "@clerk/clerk-js": "^6.40.1",
     "highlight.js": "^11.12.0",
-    "inngest": "^4.24.0",
+    "inngest": "^4.26.0",
     "marked": "^18.1.1",
     "mongodb": "^7.7.0"
   }
