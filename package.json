@@ -18,10 +18,10 @@
   "author": "khxaiyan",
   "license": "MIT",
   "dependencies": {
-    "@clerk/clerk-js": "^6.42.1",
+    "@clerk/clerk-js": "^6.42.3",
     "highlight.js": "^11.12.0",
     "inngest": "^4.26.2",
-    "marked": "^18.1.2",
+    "marked": "^18.1.3",
     "mongodb": "^7.8.0"
   }
 }
